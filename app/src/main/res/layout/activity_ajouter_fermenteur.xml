@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="50dp">
 
     <TableRow
         android:layout_width="match_parent"
@@ -13,7 +14,8 @@
             android:text="Numéro voulu"
             android:textSize="20dp"
             android:textColor="@color/noir"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical" />
 
         <EditText
             android:layout_width="match_parent"
@@ -22,7 +24,8 @@
             android:ems="4"
             android:id="@+id/editNumero"
             android:editable="false"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical" />
 
     </TableRow>
 
@@ -31,21 +34,23 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/txtQuantite"
             android:text="Quantité (Litres)"
             android:textSize="20dp"
             android:textColor="@color/noir"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical" />
 
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:inputType="number"
             android:ems="4"
             android:id="@+id/editQuantite"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical" />
 
     </TableRow>
 
@@ -60,13 +65,15 @@
             android:text="Emplacement"
             android:textSize="20dp"
             android:textColor="@color/noir"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical" />
 
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/editEmplacement"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical" />
 
     </TableRow>
 
@@ -76,20 +83,20 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/txtLavageAcide"
             android:text="Date du lavage acide"
             android:textSize="20dp"
             android:textColor="@color/noir"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="date"
-            android:ems="10"
-            android:id="@+id/editLavageAcide"
-            android:layout_weight="1" />
+        <DatePicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/datePicker"
+            android:layout_gravity="center_horizontal" />
+
     </TableRow>
 
 </TableLayout>
