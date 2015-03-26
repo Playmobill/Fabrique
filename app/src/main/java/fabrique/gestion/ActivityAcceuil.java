@@ -42,7 +42,8 @@ public class ActivityAcceuil extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, ActivityTableauDeBord.class);
             startActivity(intent);
         } else if (view.equals(btnConfiguration)) {
-
+            Intent intent = new Intent(this, ActivityConfiguration.class);
+            startActivity(intent);
         }
     }
 }

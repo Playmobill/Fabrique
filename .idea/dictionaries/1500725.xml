@@ -2,14 +2,18 @@
   <dictionary name="1500725">
     <words>
       <w>acide</w>
+      <w>adapteur</w>
       <w>affichage</w>
       <w>affiche</w>
+      <w>ajouter</w>
+      <w>autre</w>
       <w>blanc</w>
       <w>brassin</w>
       <w>calendrier</w>
       <w>capacite</w>
       <w>cliquer</w>
       <w>commentaire</w>
+      <w>configuraton</w>
       <w>contenant</w>
       <w>cuve</w>
       <w>cuves</w>
@@ -18,6 +22,7 @@
       <w>duree</w>
       <w>ecran</w>
       <w>etat</w>
+      <w>etats</w>
       <w>fabrique</w>
       <w>fenetre</w>
       <w>fermenteur</w>
@@ -36,12 +41,16 @@
       <w>noir</w>
       <w>nouvelle</w>
       <w>numero</w>
+      <w>numéro</w>
       <w>parametre</w>
       <w>parametres</w>
+      <w>quantite</w>
+      <w>quantité</w>
       <w>simplifie</w>
       <w>taille</w>
       <w>tous</w>
       <w>vide</w>
+      <w>voulu</w>
     </words>
   </dictionary>
 </component>

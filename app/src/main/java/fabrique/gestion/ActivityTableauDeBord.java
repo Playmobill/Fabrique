@@ -8,10 +8,11 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Window;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
+import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.Cuve;
 import fabrique.gestion.Objets.Fermenteur;
@@ -21,8 +22,6 @@ import fabrique.gestion.Widget.BoutonFermenteur;
 public class ActivityTableauDeBord extends Activity /*implements View.OnClickListener*/ {
 
     private DisplayMetrics tailleEcran;
-
-    private Fermenteur[] fermenteurs;
 
     private Cuve[] cuves;
 
@@ -37,47 +36,28 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        //Jeu de donnees
-        initialiserFermenteurs();
-
         initialiserCuves();
 
         //Taille ecran
         tailleEcran = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(tailleEcran);
 
-        //Layout pour le defilement horizontal
-        HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(this);
-        layoutHorizontalScroll.setBackgroundColor(getResources().getColor(R.color.gris));
-
-            //Tableau pour les elements de la fenetre
-            TableLayout layoutTableau = new TableLayout(this);
-
-                //Ligne 1 du tableau qui affiche le texte "Fermenteurs"
-                TableRow ligne1 = nouvelleLigneTexte("Fermenteurs");
-
-                //Ligne 2 du tableau qui affiche tous les fermenteurs
-                TableRow ligne2 = intialiserLigneFermenteur();
-
-                //Ligne 3 du tableau qui affiche le texte "Garde"
-                TableRow ligne3 = nouvelleLigneTexte("Garde");
-
-                //Ligne 3 du tableau qui affiche le texte "Garde"
-                TableRow ligne4 = intialiserLigneGarde();
+        //Tableau pour les elements de la fenetre
+        LinearLayout layout = new TableLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setBackgroundColor(getResources().getColor(R.color.gris));
 
         //Ajout
 
-                layoutTableau.addView(ligne1);
+        layout.addView(nouvelleLigneTexte("Fermenteurs"));
 
-                layoutTableau.addView(ligne2);
+        layout.addView(intialiserLigneFermenteur());
 
-                layoutTableau.addView(ligne3);
+        layout.addView(nouvelleLigneTexte("Garde"));
 
-                layoutTableau.addView(ligne4);
+        layout.addView(intialiserLigneGarde());
 
-            layoutHorizontalScroll.addView(layoutTableau);
-
-        setContentView(layoutHorizontalScroll);
+        setContentView(layout);
     }
 
     /*@Override
@@ -95,45 +75,40 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         boutonActif.max();
     }*/
 
-    public TableRow nouvelleLigneTexte(String texte) {
-        TableRow ligne = new TableRow(this);
-
-        TableRow.LayoutParams parametreLigne = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
-        parametreLigne.span = 2;
-
+    public TextView nouvelleLigneTexte(String texte) {
         TextView txt = new TextView(this);
         txt.setText(texte);
         txt.setTextColor(Color.BLACK);
         txt.setTypeface(null, Typeface.BOLD);
         txt.setTextSize(30);
-        txt.setLayoutParams(parametreLigne);
 
-        ligne.addView(txt);
-
-        return ligne;
+        return txt;
     }
 
-    public TableRow intialiserLigneFermenteur() {
-        TableRow ligne = new TableRow(this);
+    public HorizontalScrollView intialiserLigneFermenteur() {
+        LinearLayout ligne = new LinearLayout(this);
 
-        TableRow.LayoutParams parametreFermenteur = new TableRow.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.widthPixels/5);
-        parametreFermenteur.setMargins(0, 20, 0, 20);
+        LinearLayout.LayoutParams parametreFermenteur = new LinearLayout.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.heightPixels/2);
 
-        for (final Fermenteur fermenteur : fermenteurs) {
+        for (final Fermenteur fermenteur : TableFermenteur.instance().fermenteurs()) {
             BoutonFermenteur boutonFermenteur = new BoutonFermenteur(this, fermenteur);
             //boutons.add(boutonFermenteur);
             //boutonFermenteur.setOnClickListener(this);
             boutonFermenteur.setLayoutParams(parametreFermenteur);
             ligne.addView(boutonFermenteur);
         }
-        return ligne;
+
+        //Layout pour le defilement horizontal
+        HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(this);
+        layoutHorizontalScroll.addView(ligne);
+
+        return layoutHorizontalScroll;
     }
 
-    public TableRow intialiserLigneGarde() {
-        TableRow ligne = new TableRow(this);
+    public HorizontalScrollView intialiserLigneGarde() {
+        LinearLayout ligne = new LinearLayout(this);
 
-        TableRow.LayoutParams parametreCuve = new TableRow.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.widthPixels/5);
-        parametreCuve.setMargins(0, 20, 0, 20);
+        LinearLayout.LayoutParams parametreCuve = new LinearLayout.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.heightPixels/2);
 
         for (final Cuve cuve : cuves) {
             BoutonCuve boutonCuve = new BoutonCuve(this, cuve);
@@ -142,34 +117,17 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
             boutonCuve.setLayoutParams(parametreCuve);
             ligne.addView(boutonCuve);
         }
-        return ligne;
-    }
 
-    public void initialiserFermenteurs() {
-        //Fermenteur 1 contenant brassin 1
-        fermenteurs = new Fermenteur[2];
-        fermenteurs[0] = new Fermenteur();
-        fermenteurs[0].setId(0);
-        fermenteurs[0].setNumero(1);
-        fermenteurs[0].setCapacite(100);
-        fermenteurs[0].setEtat(1);
-            //Brassin 1
-            Brassin brassin1 = new Brassin();
-            brassin1.setId(0);
-            brassin1.setNumero(312);
-            fermenteurs[0].setBrassin(brassin1);
+        //Layout pour le defilement horizontal
+        HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(this);
+        layoutHorizontalScroll.addView(ligne);
 
-        //Fermenteur 2
-        fermenteurs[1] = new Fermenteur();
-        fermenteurs[1].setId(1);
-        fermenteurs[1].setNumero(2);
-        fermenteurs[1].setDateEtat(System.currentTimeMillis()-1000*60*60*24);
-        fermenteurs[1].setEtat(0);
+        return layoutHorizontalScroll;
     }
 
     public void initialiserCuves() {
         //Cuve 1 contenant brassin 2
-        cuves = new Cuve[4];
+        cuves = new Cuve[8];
         cuves[0] = new Cuve();
         cuves[0].setId(0);
         cuves[0].setNumero(1);
@@ -203,5 +161,32 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         cuves[3].setId(3);
         cuves[3].setNumero(4);
         cuves[3].setEtat(3);
+
+        //Cuve 5 contenant brassin2
+        cuves[4] = new Cuve();
+        cuves[4].setId(0);
+        cuves[4].setNumero(1);
+        cuves[4].setEtat(1);
+        cuves[4].setCommentaireEtat("2psi");
+        cuves[4].setBrassin(brassin2);
+        cuves[4].setDateEtat(System.currentTimeMillis() - 1000 * 60 * 60 * 24);
+
+        //Cuve 6
+        cuves[5] = new Cuve();
+        cuves[5].setId(1);
+        cuves[5].setNumero(2);
+
+        //Cuve 7 contenant Brassin 3
+        cuves[6] = new Cuve();
+        cuves[6].setId(2);
+        cuves[6].setNumero(3);
+        cuves[6].setEtat(2);
+        cuves[6].setBrassin(brassin3);
+
+        //Cuve 8
+        cuves[7] = new Cuve();
+        cuves[7].setId(3);
+        cuves[7].setNumero(4);
+        cuves[7].setEtat(3);
     }
 }
