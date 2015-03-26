@@ -91,6 +91,9 @@ public class Cuve {
     public void setEtat(int etat) {
         this.etat = etat;
         dateEtat = System.currentTimeMillis();
+        if (etat == 0) {
+            brassin = null;
+        }
     }
 
     public void setDateEtat(long dateEtat) {
@@ -103,6 +106,5 @@ public class Cuve {
 
     public void setBrassin(Brassin brassin) {
         this.brassin = brassin;
-        etat = 1;
     }
 }
