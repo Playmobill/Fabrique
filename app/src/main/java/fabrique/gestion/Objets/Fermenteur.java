@@ -2,6 +2,7 @@ package fabrique.gestion.Objets;
 
 import java.util.Calendar;
 
+import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatFermenteur;
 
 public class Fermenteur {
@@ -12,9 +13,11 @@ public class Fermenteur {
 
     private int capacite;
 
-    private String dateLavageAcide;
+    private int emplacement;
 
-    private int etat = 0;
+    private long dateLavageAcide;
+
+    private int etat;
 
     private long dateEtat;
 
@@ -32,15 +35,16 @@ public class Fermenteur {
         return capacite;
     }
 
-    public String getDateLavageAcide() {
+    public String getEmplacement() {
+        return TableEmplacement.instance().emplacement(emplacement);
+    }
+
+    public long getDateLavageAcide() {
         return dateLavageAcide;
     }
 
     public String getEtat() {
-        if (etat == 1) {
-            return TableEtatFermenteur.instance().etat(etat) + "\n" + brassin.getNumero();
-        }
-        return TableEtatFermenteur.instance().etat(etat) + "\n";
+        return TableEtatFermenteur.instance().etat(etat);
     }
 
     public String getDateEtat() {
@@ -65,7 +69,11 @@ public class Fermenteur {
         this.capacite = capacite;
     }
 
-    public void setDateLavageAcide(String dateLavageAcide) {
+    public void setEmplacement(int emplacement) {
+        this.emplacement = emplacement;
+    }
+
+    public void setDateLavageAcide(long dateLavageAcide) {
         this.dateLavageAcide = dateLavageAcide;
     }
 
@@ -80,6 +88,5 @@ public class Fermenteur {
 
     public void setBrassin(Brassin brassin) {
         this.brassin = brassin;
-        etat = 1;
     }
 }

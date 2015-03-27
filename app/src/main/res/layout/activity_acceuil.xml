@@ -11,33 +11,29 @@
         android:layout_gravity="center">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Application"
+            android:text="Tableau de bord"
             android:id="@+id/BtnApplication"
-            android:layout_gravity="center"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:layout_weight="1"
             android:layout_margin="25dp"
             android:clickable="true"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Configuration"
+            android:text="Gestion"
             android:id="@+id/BtnConfiguration"
-            android:layout_gravity="center"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:layout_weight="1"
             android:layout_margin="25dp"
             android:clickable="true"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc" />

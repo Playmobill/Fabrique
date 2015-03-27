@@ -2,6 +2,7 @@ package fabrique.gestion.Objets;
 
 import java.util.Calendar;
 
+import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatCuve;
 
 public class Cuve {
@@ -12,15 +13,22 @@ public class Cuve {
 
     private int capacite;
 
-    private String dateLavageAcide;
+    private int emplacement;
 
-    private int etat = 0;
+    private long dateLavageAcide;
 
-    private long dateEtat = System.currentTimeMillis();
+    private int etat;
+
+    private long dateEtat;
 
     private String commentaireEtat;
 
     private Brassin brassin;
+
+    public Cuve() {
+        commentaireEtat = "";
+        dateLavageAcide = 0;
+    }
 
     public int getId() {
         return id;
@@ -34,15 +42,16 @@ public class Cuve {
         return capacite;
     }
 
-    public String getDateLavageAcide() {
+    public String getEmplacement() {
+        return TableEmplacement.instance().emplacement(emplacement);
+    }
+
+    public long getDateLavageAcide() {
         return dateLavageAcide;
     }
 
     public String getEtat() {
-        if ((etat == 0) || (etat == 3)) {
-            return TableEtatCuve.instance().etat(etat) + "\n";
-        }
-        return TableEtatCuve.instance().etat(etat) + "\n" + brassin.getNumero();
+        return TableEtatCuve.instance().etat(etat) + "\n";
     }
 
     public String getDateEtat() {
@@ -63,10 +72,7 @@ public class Cuve {
         if (commentaireEtat != null) {
             texte = texte + commentaireEtat;
         }
-
-        if (etat == 1) {
-            texte = texte + " depuis " + getDureeEtat();
-        }
+        texte = texte + " depuis " + getDureeEtat();
         return texte;
     }
 
@@ -86,16 +92,13 @@ public class Cuve {
         this.capacite = capacite;
     }
 
-    public void setDateLavageAcide(String dateLavageAcide) {
+    public void setDateLavageAcide(long dateLavageAcide) {
         this.dateLavageAcide = dateLavageAcide;
     }
 
     public void setEtat(int etat) {
         this.etat = etat;
         dateEtat = System.currentTimeMillis();
-        if (etat == 0) {
-            brassin = null;
-        }
     }
 
     public void setDateEtat(long dateEtat) {

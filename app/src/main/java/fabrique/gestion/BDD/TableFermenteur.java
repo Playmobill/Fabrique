@@ -7,11 +7,13 @@ import fabrique.gestion.Objets.Fermenteur;
 
 public class TableFermenteur {
 
-    private ArrayList<Fermenteur> fermenteurs = new ArrayList<Fermenteur>();
+    private ArrayList<Fermenteur> fermenteurs;
 
     private static TableFermenteur instance;
 
     private TableFermenteur() {
+        fermenteurs = new ArrayList<>();
+
         //Fermenteur 1 contenant brassin 1
         Fermenteur fermenteur = new Fermenteur();
         fermenteur.setId(0);

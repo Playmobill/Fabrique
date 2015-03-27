@@ -9,6 +9,7 @@ public class TableEtatFermenteur {
     private ArrayList<String> etats;
 
     private TableEtatFermenteur() {
+        etats = new ArrayList<>();
         etats.add("Vide");
         etats.add("Fermentation");
         etats.add("Lavé");
