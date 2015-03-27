@@ -19,11 +19,11 @@ public class TableFermenteur {
         fermenteur.setCapacite(100);
         fermenteur.setEtat(1);
             //Brassin 1
-            Brassin brassin1 = new Brassin();
+            /*Brassin brassin1 = new Brassin();
             brassin1.setId(0);
             brassin1.setNumero(312);
         fermenteur.setBrassin(brassin1);
-        fermenteurs.add(fermenteur);
+        fermenteurs.add(fermenteur);*/
 
         //Fermenteur 2
         fermenteur = new Fermenteur();
