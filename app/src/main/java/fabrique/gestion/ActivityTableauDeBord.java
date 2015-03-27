@@ -1,12 +1,14 @@
 package fabrique.gestion;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -24,6 +26,8 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
     private DisplayMetrics tailleEcran;
 
     private Cuve[] cuves;
+
+    private Button btnRetour;
 
     /*private Bouton boutonActif;
 
@@ -75,6 +79,12 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         boutonActif.max();
     }*/
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, ActivityAccueil.class);
+        startActivity(intent);
+    }
+
     public TextView nouvelleLigneTexte(String texte) {
         TextView txt = new TextView(this);
         txt.setText(texte);
@@ -90,7 +100,7 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
 
         LinearLayout.LayoutParams parametreFermenteur = new LinearLayout.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.heightPixels*9/20);
 
-        for (final Fermenteur fermenteur : TableFermenteur.instance().fermenteurs()) {
+        for (Fermenteur fermenteur : TableFermenteur.instance().fermenteurs()) {
             BoutonFermenteur boutonFermenteur = new BoutonFermenteur(this, fermenteur);
             //boutons.add(boutonFermenteur);
             //boutonFermenteur.setOnClickListener(this);
@@ -110,7 +120,7 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
 
         LinearLayout.LayoutParams parametreCuve = new LinearLayout.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.heightPixels*9/20);
 
-        for (final Cuve cuve : cuves) {
+        for (Cuve cuve : cuves) {
             BoutonCuve boutonCuve = new BoutonCuve(this, cuve);
             //boutonCuve.setOnClickListener(this);
             //boutons.add(boutonCuve);

@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 public class TableEmplacement {
 
-    private ArrayList<String> emplacements = new ArrayList<String>();
+    private ArrayList<String> emplacements;
 
     private static TableEmplacement instance;
 
     private TableEmplacement() {
+        emplacements = new ArrayList<>();
         emplacements.add("RC");
         emplacements.add("SS");
         emplacements.add("Ch.Froide");

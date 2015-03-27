@@ -9,6 +9,7 @@ public class TableEtatCuve {
     private ArrayList<String> etats;
 
     private TableEtatCuve() {
+        etats = new ArrayList<>();
         etats.add("Vide");
         etats.add("Gazéification");
         etats.add("En service");

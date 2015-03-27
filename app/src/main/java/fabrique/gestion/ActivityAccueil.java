@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
-public class ActivityAcceuil extends Activity implements View.OnClickListener {
+public class ActivityAccueil extends Activity implements View.OnClickListener {
 
     Button btnApplication, btnConfiguration;
 
@@ -42,8 +42,13 @@ public class ActivityAcceuil extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, ActivityTableauDeBord.class);
             startActivity(intent);
         } else if (view.equals(btnConfiguration)) {
-            Intent intent = new Intent(this, ActivityConfiguration.class);
+            Intent intent = new Intent(this, ActivityGestion.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        onPause();
     }
 }

@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
-public class ActivityConfiguration extends Activity implements View.OnClickListener {
+public class ActivityGestion extends Activity implements View.OnClickListener {
 
     private Button fermenteur, cuve, fut, brassin, configuration, autre;
 
@@ -20,9 +20,15 @@ public class ActivityConfiguration extends Activity implements View.OnClickListe
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        setContentView(R.layout.activity_configuration);
+        setContentView(R.layout.activity_gestion);
 
         initialiserBouton();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, ActivityAccueil.class);
+        startActivity(intent);
     }
 
     public void initialiserBouton() {
