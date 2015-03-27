@@ -14,7 +14,6 @@ public class TableFermenteur {
     private TableFermenteur() {
         //Fermenteur 1 contenant brassin 1
         Fermenteur fermenteur = new Fermenteur();
-        fermenteur = new Fermenteur();
         fermenteur.setId(0);
         fermenteur.setNumero(1);
         fermenteur.setCapacite(100);

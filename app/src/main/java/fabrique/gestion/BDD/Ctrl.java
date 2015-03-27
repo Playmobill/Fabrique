@@ -1,4 +1,4 @@
-package fabrique.gestion.Controlleur;
+package fabrique.gestion.BDD;
 
 import android.content.Context;
 import android.database.Cursor;

@@ -1,4 +1,4 @@
-package fabrique.gestion.Controlleur;
+package fabrique.gestion.BDD;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,11 +8,20 @@ import java.util.ArrayList;
 /**
  * Created by thibaut on 26/03/15.
  */
-public class TypeBiereCtrl extends Ctrl{
+public class TableTypeBiere extends Ctrl{
 
     public ArrayList<String[]> result;
 
-    public TypeBiereCtrl(Context ctxt){
+    private static TableTypeBiere instance;
+
+    public TableTypeBiere instance(Context ctxt){
+        if(instance == null){
+            instance = new TableTypeBiere(ctxt);
+        }
+        return instance;
+    }
+
+    private TableTypeBiere(Context ctxt){
         super(ctxt);
         result = new ArrayList<>();
 
