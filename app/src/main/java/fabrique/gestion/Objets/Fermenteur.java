@@ -2,6 +2,8 @@ package fabrique.gestion.Objets;
 
 import java.util.Calendar;
 
+import fabrique.gestion.BDD.TableEtatFermenteur;
+
 public class Fermenteur {
 
     private int id;
@@ -36,9 +38,9 @@ public class Fermenteur {
 
     public String getEtat() {
         if (etat == 1) {
-            return EtatFermenteur.etat(etat) + "\n" + brassin.getNumero();
+            return TableEtatFermenteur.instance().etat(etat) + "\n" + brassin.getNumero();
         }
-        return EtatFermenteur.etat(etat) + "\n";
+        return TableEtatFermenteur.instance().etat(etat) + "\n";
     }
 
     public String getDateEtat() {

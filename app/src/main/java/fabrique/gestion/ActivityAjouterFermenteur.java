@@ -7,7 +7,9 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import fabrique.gestion.Objets.EtatFermenteur;
+import java.util.ArrayList;
+
+import fabrique.gestion.BDD.TableEmplacement;
 
 public class ActivityAjouterFermenteur extends Activity {
 
@@ -21,9 +23,9 @@ public class ActivityAjouterFermenteur extends Activity {
 
         Spinner spinner = (Spinner)this.findViewById(R.id.editEmplacement);
 
-        String[] etats = EtatFermenteur.etats();
+        ArrayList<String> emplacements = TableEmplacement.instance().emplacements();
 
-        ArrayAdapter<String> adapteur = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, etats);
+        ArrayAdapter<String> adapteur = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, emplacements);
         adapteur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapteur);

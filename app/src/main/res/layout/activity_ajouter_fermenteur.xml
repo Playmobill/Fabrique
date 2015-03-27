@@ -5,97 +5,117 @@
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nouveau fermenteur"
+            android:id="@+id/txtTitre"
+            android:textSize="30dp"
+            android:textColor="@color/noir"
+            android:textAlignment="center" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
+
+        <TextView
             android:id="@+id/txtNumero"
             android:text="Numéro voulu"
             android:textSize="20dp"
+            android:numeric="integer"
             android:textColor="@color/noir"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:singleLine="true"
+            android:textStyle="normal"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1" />
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:inputType="number"
-            android:ems="4"
             android:id="@+id/editNumero"
-            android:editable="false"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1" />
 
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/txtQuantite"
             android:text="Quantité (Litres)"
             android:textSize="20dp"
+            android:numeric="integer"
             android:textColor="@color/noir"
+            android:singleLine="true"
+            android:textStyle="normal"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_gravity="center_vertical" />
+            android:layout_width="match_parent" />
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:inputType="number"
-            android:ems="4"
             android:id="@+id/editQuantite"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_gravity="center_vertical" />
+            android:layout_width="match_parent" />
 
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/txtEmplacement"
             android:text="Emplacement"
             android:textSize="20dp"
             android:textColor="@color/noir"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical" />
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1" />
 
         <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/editEmplacement"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical" />
+            style="@style/Widget.AppCompat.Spinner"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1" />
 
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:layout_margin="4dp">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/txtLavageAcide"
             android:text="Date du lavage acide"
             android:textSize="20dp"
             android:textColor="@color/noir"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical" />
+            android:layout_weight="1" />
 
         <DatePicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/datePicker"
-            android:layout_gravity="center_horizontal" />
+            style="@android:style/Widget.DatePicker"
+            android:layout_weight="1" />
 
     </TableRow>
 

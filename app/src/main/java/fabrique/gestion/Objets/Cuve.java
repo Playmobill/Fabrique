@@ -2,6 +2,8 @@ package fabrique.gestion.Objets;
 
 import java.util.Calendar;
 
+import fabrique.gestion.BDD.TableEtatCuve;
+
 public class Cuve {
 
     private int id;
@@ -38,9 +40,9 @@ public class Cuve {
 
     public String getEtat() {
         if ((etat == 0) || (etat == 3)) {
-            return EtatCuve.etat(etat) + "\n";
+            return TableEtatCuve.instance().etat(etat) + "\n";
         }
-        return EtatCuve.etat(etat) + "\n" + brassin.getNumero();
+        return TableEtatCuve.instance().etat(etat) + "\n" + brassin.getNumero();
     }
 
     public String getDateEtat() {
