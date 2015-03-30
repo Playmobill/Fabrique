@@ -29,6 +29,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(createTEtatFermenteur);
         db.execSQL(createTFermenteur);
         db.execSQL(createTEtatCuve);
+        db.execSQL(createTCuve);
     }
 
     @Override
