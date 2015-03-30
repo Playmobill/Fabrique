@@ -13,12 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import fabrique.gestion.BDD.TableBrassin;
-import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.Objets.Cuve;
-import fabrique.gestion.Objets.Fermenteur;
-import fabrique.gestion.Widget.BoutonCuve;
-import fabrique.gestion.Widget.BoutonFermenteur;
 
 public class ActivityTableauDeBord extends Activity /*implements View.OnClickListener*/ {
 
@@ -97,13 +92,13 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
 
         LinearLayout.LayoutParams parametreFermenteur = new LinearLayout.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.heightPixels*9/20);
 
-        for (Fermenteur fermenteur : TableFermenteur.instance().fermenteurs()) {
+        /*r (Fermenteur fermenteur : TableFermenteur.instance().fermenteurs()) {
             BoutonFermenteur boutonFermenteur = new BoutonFermenteur(this, fermenteur);
             //boutons.add(boutonFermenteur);
             //boutonFermenteur.setOnClickListener(this);
             boutonFermenteur.setLayoutParams(parametreFermenteur);
             ligne.addView(boutonFermenteur);
-        }
+        }*/
 
         //Layout pour le defilement horizontal
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(this);
@@ -117,13 +112,13 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
 
         LinearLayout.LayoutParams parametreCuve = new LinearLayout.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.heightPixels*9/20);
 
-        for (Cuve cuve : cuves) {
+        /*for (Cuve cuve : cuves) {
             BoutonCuve boutonCuve = new BoutonCuve(this, cuve);
             //boutonCuve.setOnClickListener(this);
             //boutons.add(boutonCuve);
             boutonCuve.setLayoutParams(parametreCuve);
             ligne.addView(boutonCuve);
-        }
+        }*/
 
         //Layout pour le defilement horizontal
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(this);
@@ -133,7 +128,7 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
     }
 
     public void initialiser() {
-        //Brassin 0
+        /*Brassin 0
         TableBrassin.instance(this).ajouter(313, null, null, System.currentTimeMillis(), 20, 0, null, 1.0F, 1.0F, 1.0F);
 
         //Brassin 1
@@ -165,6 +160,6 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         cuves[3] = new Cuve();
         cuves[3].setId(3);
         cuves[3].setNumero(4);
-        cuves[3].setEtat(3);
+        cuves[3].setEtat(3);*/
     }
 }

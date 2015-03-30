@@ -1,11 +1,13 @@
 package fabrique.gestion.Objets;
 
+import android.content.Context;
+
 import java.util.Calendar;
 
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatFermenteur;
 
-public class Fermenteur Comparable<Fermenteur> {
+public class Fermenteur implements Comparable<Fermenteur> {
 
     private int id;
 
@@ -35,16 +37,16 @@ public class Fermenteur Comparable<Fermenteur> {
         return capacite;
     }
 
-    public String getEmplacement() {
-        return TableEmplacement.instance().emplacement(emplacement);
+    public String getEmplacement(Context contexte) {
+        return TableEmplacement.instance(contexte).emplacement(emplacement);
     }
 
     public long getDateLavageAcide() {
         return dateLavageAcide;
     }
 
-    public String getEtat() {
-        return TableEtatFermenteur.instance().etat(etat);
+    public String getEtat(Context contexte) {
+        return TableEtatFermenteur.instance(contexte).etat(etat);
     }
 
     public String getDateEtat() {
@@ -89,5 +91,31 @@ public class Fermenteur Comparable<Fermenteur> {
     public void setBrassin(Brassin brassin) {
         this.brassin = brassin;
     }
-        
+
+    public Fermenteur(int id, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, Brassin brassin){
+        this.id = id;
+        this.numero = numero;
+        this.capacite = capacite;
+        this.emplacement = emplacement;
+        this.dateLavageAcide = dateLavageAcide;
+        this.etat = etat;
+        this.dateEtat = dateEtat;
+        this.brassin = brassin;
+    }
+
+    @Override
+    public int compareTo(Fermenteur fermenteur) {
+        if (numero == fermenteur.numero) {
+            if (id == fermenteur.id) {
+                return 0;
+            } else if (id > fermenteur.id) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else if (numero > fermenteur.numero) {
+            return 1;
+        }
+        return -1;
+    }
 }

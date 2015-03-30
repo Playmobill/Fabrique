@@ -10,7 +10,7 @@ import fabrique.gestion.Objets.TypeBiere;
 /**
  * Created by thibaut on 26/03/15.
  */
-public class TableTypeBiere extends Ctrl{
+public class TableTypeBiere extends Controle {
 
     private ArrayList<TypeBiere> result;
 
@@ -27,7 +27,7 @@ public class TableTypeBiere extends Ctrl{
         super(ctxt);
         result = new ArrayList<>();
 
-        Cursor tmp = super.select("TypeBiere", new String[] {"*"});
+        Cursor tmp = super.select("TypeBiere");
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             result.add(new TypeBiere(tmp.getInt(0), tmp.getString(1)));
         }

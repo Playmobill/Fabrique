@@ -5,10 +5,9 @@ import android.database.Cursor;
 
 import java.util.ArrayList;
 
-import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.Fermenteur;
 
-public class TableFermenteur extends Ctrl{
+public class TableFermenteur extends Controle {
 
     private ArrayList<Fermenteur> result;
 
@@ -25,7 +24,7 @@ public class TableFermenteur extends Ctrl{
         super(ctxt);
         result = new ArrayList<>();
 
-        Cursor tmp = super.select("Fermenteur", new String[] {"*"});
+        Cursor tmp = super.select("Fermenteur");
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             for (int i = 0; i < TableBrassin.instance(ctxt).listeSize(); i++) {
                 if(tmp.getInt(7) == TableBrassin.instance(ctxt).recuperer(i).getId()){
@@ -50,7 +49,7 @@ public class TableFermenteur extends Ctrl{
         return result.get(index);
     }
 
-    public void modifier(Context ctxt,int index, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat,int id_brassin){
+    public void modifier(Context ctxt, int index, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat,int id_brassin){
         result.get(index).setNumero(numero);
         result.get(index).setCapacite(capacite);
         result.get(index).setEmplacement(emplacement);

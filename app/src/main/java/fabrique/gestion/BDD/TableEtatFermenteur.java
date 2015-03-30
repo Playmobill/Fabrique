@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import fabrique.gestion.Objets.EtatFermenteur;
 
-public class TableEtatFermenteur extends Ctrl{
+public class TableEtatFermenteur extends Controle {
 
     private ArrayList<EtatFermenteur> result;
     private static TableEtatFermenteur instance;
@@ -24,7 +24,7 @@ public class TableEtatFermenteur extends Ctrl{
         super(ctxt);
         result = new ArrayList<>();
 
-        Cursor tmp = super.select("EtatFermenteur", new String[] {"*"});
+        Cursor tmp = super.select("EtatFermenteur");
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             result.add(new EtatFermenteur(tmp.getInt(0), tmp.getString(1)));
         }

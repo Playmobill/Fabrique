@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import fabrique.gestion.Objets.Emplacement;
 
-public class TableEmplacement extends Ctrl{
+public class TableEmplacement extends Controle {
 
     private ArrayList<Emplacement> result;
     private static TableEmplacement instance;
@@ -23,7 +23,7 @@ public class TableEmplacement extends Ctrl{
         super(ctxt);
         result = new ArrayList<>();
 
-        Cursor tmp = super.select("Emplacement", new String[] {"*"});
+        Cursor tmp = super.select("Emplacement");
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             result.add(new Emplacement(tmp.getInt(0), tmp.getString(1)));
         }

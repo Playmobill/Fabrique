@@ -47,8 +47,8 @@ public class ActivityAccueil extends Activity implements View.OnClickListener {
         }
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
-        super.onPause();
-    }
+        super.onDestroy();
+    }*/
 }

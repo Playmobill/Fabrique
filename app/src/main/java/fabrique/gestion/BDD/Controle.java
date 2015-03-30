@@ -9,7 +9,7 @@ public abstract class Controle {
     public final static int version = 1;
     protected final static String nomBDD = "Brasserie";
 
-    protected SQLiteDatabase bdd;
+    protected SQLiteDatabase BDD;
     protected DBHandler dbHandler;
 
     public Controle(Context contexte){
@@ -18,19 +18,19 @@ public abstract class Controle {
     }
 
     public SQLiteDatabase ouvrir() {
-        bdd = dbHandler.getWritableDatabase();
-        return bdd;
+        BDD = dbHandler.getWritableDatabase();
+        return BDD;
     }
 
     public void fermer() {
-        bdd.close();
+        BDD.close();
     }
 
     public SQLiteDatabase bdd(){
-        return bdd;
+        return BDD;
     }
 
     public Cursor select(String table){
-        return bdd.query(table, null, null, null, null, null, null);
+        return BDD.query(table, null, null, null, null, null, null);
     }
 }
