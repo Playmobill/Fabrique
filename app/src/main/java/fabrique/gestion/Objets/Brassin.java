@@ -1,12 +1,12 @@
 package fabrique.gestion.Objets;
 
-public class Brassin {
+public class Brassin implements Comparable<Brassin> {
 
     private int id;
     private int numero;
     private String commentaire;
     private String acronyme;
-    private int dateCreation;
+    private long dateCreation;
     private int quantite;
     private int id_typeBiere;
     private String couleur;
@@ -15,10 +15,9 @@ public class Brassin {
     private float pourcentageAlcool;
 
     public int getNumero() { return numero; }
-    public int getId() { return id; }
     public String getAcronyme() { return acronyme; }
     public String getCommentaire() { return commentaire; }
-    public int getDateCreation() { return dateCreation; }
+    public long getDateCreation() { return dateCreation; }
     public int getQuantite() { return quantite; }
     public int getId_typeBiere() { return id_typeBiere; }
     public String getCouleur() { return couleur; }
@@ -27,10 +26,9 @@ public class Brassin {
     public float getPourcentageAlcool() { return pourcentageAlcool; }
 
     public void setNumero(int numero) { this.numero = numero; }
-    public void setId(int id) { this.id = id; }
-    public void setCommentaire(String commentaire) { this.commentaire = commentaire; }
-    public void setDateCreation(int dateCreation) { this.dateCreation = dateCreation; }
     public void setAcronyme(String acronyme) { this.acronyme = acronyme; }
+    public void setCommentaire(String commentaire) { this.commentaire = commentaire; }
+    public void setDateCreation(long dateCreation) { this.dateCreation = dateCreation; }
     public void setQuantite(int quantite) { this.quantite = quantite; }
     public void setId_typeBiere(int id_typeBiere) { this.id_typeBiere = id_typeBiere; }
     public void setCouleur(String couleur) { this.couleur = couleur; }
@@ -38,7 +36,7 @@ public class Brassin {
     public void setDensiteFinale(float densiteFinale) { this.densiteFinale = densiteFinale; }
     public void setPourcentageAlcool(float pourcentageAlcool) { this.pourcentageAlcool = pourcentageAlcool; }
 
-    public Brassin(int id, int numero, String commentaire, String acronyme, int dateCreation, int quantite, int id_typeBiere, String couleur, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
+    public Brassin(int id, int numero, String commentaire, String acronyme, long dateCreation, int quantite, int id_typeBiere, String couleur, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
         this.id = id;
         this.numero = numero;
         this.commentaire = commentaire;
@@ -50,5 +48,21 @@ public class Brassin {
         this.densiteOriginale = densiteOriginale;
         this.densiteFinale = densiteFinale;
         this.pourcentageAlcool = pourcentageAlcool;
+    }
+
+    @Override
+    public int compareTo(Brassin brassin) {
+        if (numero == brassin.numero) {
+            if (id == brassin.id) {
+                return 0;
+            } else if (id > brassin.id) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else if (numero > brassin.numero) {
+            return 1;
+        }
+        return -1;
     }
 }

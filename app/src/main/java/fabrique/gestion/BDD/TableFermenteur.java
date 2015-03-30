@@ -2,7 +2,6 @@ package fabrique.gestion.BDD;
 
 import java.util.ArrayList;
 
-import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.Fermenteur;
 
 public class TableFermenteur {
@@ -20,11 +19,7 @@ public class TableFermenteur {
         fermenteur.setNumero(1);
         fermenteur.setCapacite(100);
         fermenteur.setEtat(1);
-            //Brassin 1
-            Brassin brassin1 = new Brassin();
-            brassin1.setId(0);
-            brassin1.setNumero(312);
-        fermenteur.setBrassin(brassin1);
+        fermenteur.setBrassin(TableBrassin.instance(null).brassin(0));
         fermenteurs.add(fermenteur);
 
         //Fermenteur 2

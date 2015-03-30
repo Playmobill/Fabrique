@@ -8,14 +8,13 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableFermenteur;
-import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.Cuve;
 import fabrique.gestion.Objets.Fermenteur;
 import fabrique.gestion.Widget.BoutonCuve;
@@ -26,8 +25,6 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
     private DisplayMetrics tailleEcran;
 
     private Cuve[] cuves;
-
-    private Button btnRetour;
 
     /*private Bouton boutonActif;
 
@@ -40,7 +37,7 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        initialiserCuves();
+        initialiser();
 
         //Taille ecran
         tailleEcran = new DisplayMetrics();
@@ -135,19 +132,21 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         return layoutHorizontalScroll;
     }
 
-    public void initialiserCuves() {
-        //Cuve 1 contenant brassin 2
-        cuves = new Cuve[8];
+    public void initialiser() {
+        //Brassin 0
+        TableBrassin.instance(this).ajouter(313, null, null, System.currentTimeMillis(), 20, 0, null, 1.0F, 1.0F, 1.0F);
+
+        //Brassin 1
+        TableBrassin.instance(this).ajouter(314, null, null, System.currentTimeMillis(), 20, 0, null, 1.0F, 1.0F, 1.0F);
+
+        //Cuve 1 contenant brassin 0
+        cuves = new Cuve[4];
         cuves[0] = new Cuve();
         cuves[0].setId(0);
         cuves[0].setNumero(1);
         cuves[0].setEtat(1);
         cuves[0].setCommentaireEtat("2psi");
-        //Brassin 2
-            Brassin brassin2 = new Brassin();
-            brassin2.setId(1);
-            brassin2.setNumero(313);
-            cuves[0].setBrassin(brassin2);
+        cuves[0].setBrassin(0);
         cuves[0].setDateEtat(System.currentTimeMillis() - 1000 * 60 * 60 * 24);
 
         //Cuve 2
@@ -155,48 +154,17 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         cuves[1].setId(1);
         cuves[1].setNumero(2);
 
-        //Cuve 3 contenant Brassin 3
+        //Cuve 3 contenant Brassin 1
         cuves[2] = new Cuve();
         cuves[2].setId(2);
         cuves[2].setNumero(3);
         cuves[2].setEtat(2);
-            //Brassin 3
-            Brassin brassin3 = new Brassin();
-            brassin3.setId(2);
-            brassin3.setNumero(314);
-            cuves[2].setBrassin(brassin3);
+        cuves[2].setBrassin(1);
 
         //Cuve 4
         cuves[3] = new Cuve();
         cuves[3].setId(3);
         cuves[3].setNumero(4);
         cuves[3].setEtat(3);
-
-        //Cuve 5 contenant brassin2
-        cuves[4] = new Cuve();
-        cuves[4].setId(0);
-        cuves[4].setNumero(1);
-        cuves[4].setEtat(1);
-        cuves[4].setCommentaireEtat("2psi");
-        cuves[4].setBrassin(brassin2);
-        cuves[4].setDateEtat(System.currentTimeMillis() - 1000 * 60 * 60 * 24);
-
-        //Cuve 6
-        cuves[5] = new Cuve();
-        cuves[5].setId(1);
-        cuves[5].setNumero(2);
-
-        //Cuve 7 contenant Brassin 3
-        cuves[6] = new Cuve();
-        cuves[6].setId(2);
-        cuves[6].setNumero(3);
-        cuves[6].setEtat(2);
-        cuves[6].setBrassin(brassin3);
-
-        //Cuve 8
-        cuves[7] = new Cuve();
-        cuves[7].setId(3);
-        cuves[7].setNumero(4);
-        cuves[7].setEtat(3);
     }
 }

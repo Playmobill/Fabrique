@@ -2,10 +2,11 @@ package fabrique.gestion.Objets;
 
 import java.util.Calendar;
 
+import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatCuve;
 
-public class Cuve {
+public class Cuve implements Comparable<Cuve> {
 
     private int id;
 
@@ -23,11 +24,12 @@ public class Cuve {
 
     private String commentaireEtat;
 
-    private Brassin brassin;
+    private int brassin;
 
     public Cuve() {
         commentaireEtat = "";
         dateLavageAcide = 0;
+        brassin = -1;
     }
 
     public int getId() {
@@ -77,7 +79,10 @@ public class Cuve {
     }
 
     public Brassin getBrassin() {
-        return brassin;
+        if (brassin != -1) {
+            return TableBrassin.instance(null).brassin(brassin);
+        }
+        return null;
     }
 
     public void setId(int id) {
@@ -90,6 +95,10 @@ public class Cuve {
 
     public void setCapacite(int capacite) {
         this.capacite = capacite;
+    }
+
+    public void setEmplacement(int emplacement) {
+        this.emplacement = emplacement;
     }
 
     public void setDateLavageAcide(long dateLavageAcide) {
@@ -109,7 +118,23 @@ public class Cuve {
         this.commentaireEtat = commentaireEtat;
     }
 
-    public void setBrassin(Brassin brassin) {
+    public void setBrassin(int brassin) {
         this.brassin = brassin;
+    }
+
+    @Override
+    public int compareTo(Cuve cuve) {
+        if (numero == cuve.numero) {
+            if (id == cuve.id) {
+                return 0;
+            } else if (id > cuve.id) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else if (numero > cuve.numero) {
+            return 1;
+        }
+        return -1;
     }
 }

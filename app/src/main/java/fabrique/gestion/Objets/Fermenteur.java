@@ -5,7 +5,7 @@ import java.util.Calendar;
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatFermenteur;
 
-public class Fermenteur {
+public class Fermenteur implements Comparable<Fermenteur> {
 
     private int id;
 
@@ -88,5 +88,21 @@ public class Fermenteur {
 
     public void setBrassin(Brassin brassin) {
         this.brassin = brassin;
+    }
+
+    @Override
+    public int compareTo(Fermenteur fermenteur) {
+        if (numero == fermenteur.numero) {
+            if (id == fermenteur.id) {
+                return 0;
+            } else if (id > fermenteur.id) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else if (numero > fermenteur.numero) {
+            return 1;
+        }
+        return -1;
     }
 }

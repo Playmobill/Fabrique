@@ -3,21 +3,29 @@
     <words>
       <w>accueil</w>
       <w>acide</w>
+      <w>acronyme</w>
       <w>adapteur</w>
       <w>affichage</w>
       <w>affiche</w>
       <w>ajouter</w>
+      <w>alcool</w>
       <w>autre</w>
+      <w>biere</w>
       <w>blanc</w>
       <w>brassin</w>
+      <w>brassins</w>
       <w>calendrier</w>
       <w>capacite</w>
       <w>cliquer</w>
       <w>commentaire</w>
       <w>configuraton</w>
       <w>contenant</w>
+      <w>contexte</w>
+      <w>controle</w>
+      <w>couleur</w>
       <w>cuve</w>
       <w>cuves</w>
+      <w>densite</w>
       <w>depuis</w>
       <w>donnees</w>
       <w>duree</w>
@@ -28,6 +36,7 @@
       <w>fenetre</w>
       <w>fermenteur</w>
       <w>fermenteurs</w>
+      <w>fermer</w>
       <w>froide</w>
       <w>garde</w>
       <w>gazeification</w>
@@ -45,8 +54,11 @@
       <w>nouvelle</w>
       <w>numero</w>
       <w>numéro</w>
+      <w>originale</w>
+      <w>ouvrir</w>
       <w>parametre</w>
       <w>parametres</w>
+      <w>pourcentage</w>
       <w>quantite</w>
       <w>quantité</w>
       <w>retour</w>
