@@ -20,7 +20,7 @@ public class BoutonFermenteur extends Bouton {
 
     public void min() {
         super.min();
-        String texte = "F" + fermenteur.getNumero() + "\n" + "\n" + fermenteur.getEtat() + "\n";
+        String texte = "F" + fermenteur.getNumero() + "\n" + "\n" + fermenteur.getEtat(null) + "\n";
         if (fermenteur.getBrassin() != null) {
             texte = texte + fermenteur.getBrassin().getNumero();
         }
@@ -35,9 +35,9 @@ public class BoutonFermenteur extends Bouton {
             texte = texte + fermenteur.getCapacite() + "L";
         }
 
-        texte = texte + "\n" + fermenteur.getEmplacement() + "\n";
+        texte = texte + "\n" + fermenteur.getEmplacement(null) + "\n";
 
-        texte = texte + fermenteur.getEtat() + "\n";
+        texte = texte + fermenteur.getEtat(null) + "\n";
 
         if (fermenteur.getBrassin() != null) {
             texte = texte + fermenteur.getBrassin().getNumero();

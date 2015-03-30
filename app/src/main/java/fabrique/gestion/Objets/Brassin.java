@@ -1,6 +1,6 @@
 package fabrique.gestion.Objets;
 
-public class Brassin {
+public class Brassin implements Comparable<Brassin> {
 
     private int id;
     private int numero;
@@ -52,4 +52,19 @@ public class Brassin {
         this.pourcentageAlcool = pourcentageAlcool;
     }
 
+    @Override
+    public int compareTo(Brassin brassin) {
+        if (numero == brassin.numero) {
+            if (id == brassin.id) {
+                return 0;
+            } else if (id > brassin.id) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else if (numero > brassin.numero) {
+            return 1;
+        }
+        return -1;
+    }
 }

@@ -10,7 +10,7 @@ import fabrique.gestion.Objets.Brassin;
 /**
  * Created by thibaut on 27/03/15.
  */
-public class TableBrassin extends Ctrl{
+public class TableBrassin extends Controle {
 
     private ArrayList<Brassin> result;
 
@@ -27,7 +27,7 @@ public class TableBrassin extends Ctrl{
         super(ctxt);
         result = new ArrayList<>();
 
-        Cursor tmp = super.select("Brassin", new String[] {"*"});
+        Cursor tmp = super.select("Brassin");
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             result.add(new Brassin(tmp.getInt(0), tmp.getInt(1), tmp.getString(2), tmp.getString(3), tmp.getInt(4), tmp.getInt(5), tmp.getInt(6), tmp.getString(7), tmp.getFloat(8), tmp.getFloat(9), tmp.getFloat(10)));
         }

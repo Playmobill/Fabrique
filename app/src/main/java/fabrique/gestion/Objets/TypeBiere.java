@@ -1,9 +1,6 @@
 package fabrique.gestion.Objets;
 
-/**
- * Created by thibaut on 27/03/15.
- */
-public class TypeBiere {
+public class TypeBiere implements Comparable<TypeBiere> {
 
     private int id;
     private String texte;
@@ -12,10 +9,19 @@ public class TypeBiere {
     public String getTexte() { return texte; }
 
     public void setTexte(String texte) { this.texte = texte; }
-    public void setId(int id) { this.id = id; }
 
     public TypeBiere(int id, String texte){
         this.id = id;
         this.texte = texte;
+    }
+
+    @Override
+    public int compareTo(TypeBiere type) {
+        if (id == type.getId()) {
+            return 0;
+        } else if (id > type.getId()) {
+            return 1;
+        }
+        return -1;
     }
 }
