@@ -42,6 +42,8 @@ public class TableEtatFermenteur extends Controle {
             result.add(new EtatFermenteur(result.size(), texte));
 
             BDD.setTransactionSuccessful();
+        } catch(Exception e) {
+            System.out.println(e);
         } finally {
             BDD.endTransaction();
         }

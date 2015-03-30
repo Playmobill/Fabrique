@@ -12,9 +12,8 @@
             android:layout_height="wrap_content"
             android:text="Nouveau fermenteur"
             android:id="@+id/txtTitre"
-            android:textSize="30dp"
-            android:textColor="@color/noir"
-            android:textAlignment="center" />
+            android:textSize="30sp"
+            android:textColor="@color/noir" />
     </TableRow>
 
     <TableRow
@@ -24,8 +23,7 @@
         <TextView
             android:id="@+id/txtNumero"
             android:text="Numéro voulu"
-            android:textSize="20dp"
-            android:numeric="integer"
+            android:textSize="20sp"
             android:textColor="@color/noir"
             android:layout_gravity="center_vertical"
             android:singleLine="true"
@@ -51,8 +49,6 @@
         <TextView
             android:id="@+id/txtQuantite"
             android:text="Quantité (Litres)"
-            android:textSize="20dp"
-            android:numeric="integer"
             android:textColor="@color/noir"
             android:singleLine="true"
             android:textStyle="normal"
@@ -76,7 +72,7 @@
         <TextView
             android:id="@+id/txtEmplacement"
             android:text="Emplacement"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/noir"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
@@ -98,7 +94,7 @@
         <TextView
             android:id="@+id/txtEtat"
             android:text="Etat"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/noir"
             android:layout_height="match_parent"
             android:layout_width="match_parent"

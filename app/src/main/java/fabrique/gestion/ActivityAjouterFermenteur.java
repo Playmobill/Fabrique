@@ -38,7 +38,7 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
         setContentView(R.layout.activity_ajouter_fermenteur);
 
         editNumero = (EditText)findViewById(R.id.editNumero);
-        TableFermenteur tableFermenteur = TableFermenteur.instance(getBaseContext());
+        TableFermenteur tableFermenteur = TableFermenteur.instance(this);
         int i = 0;
         for (i=0; ((i<tableFermenteur.tailleResult()) && (tableFermenteur.recuperer(i).getNumero() == i+1)); i=i+1) {
         }
@@ -47,14 +47,14 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
         editQuantite = (EditText)findViewById(R.id.editQuantite);
 
         editEmplacement = (Spinner)this.findViewById(R.id.editEmplacement);
-        TableEmplacement tableEmplacement = TableEmplacement.instance(getBaseContext());
-        ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, tableEmplacement.emplacements());
+        TableEmplacement tableEmplacement = TableEmplacement.instance(this);
+        ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tableEmplacement.emplacements());
         adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editEmplacement.setAdapter(adapteurEmplacement);
 
         editEtat = (Spinner)this.findViewById(R.id.editEtat);
-        TableEtatFermenteur tableEtatFermenteur = TableEtatFermenteur.instance(getBaseContext());
-        ArrayAdapter<String> adapteurEtat = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, tableEtatFermenteur.etats());
+        TableEtatFermenteur tableEtatFermenteur = TableEtatFermenteur.instance(this);
+        ArrayAdapter<String> adapteurEtat = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tableEtatFermenteur.etats());
         adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editEtat.setAdapter(adapteurEtat);
 

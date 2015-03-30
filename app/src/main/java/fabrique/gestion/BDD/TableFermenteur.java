@@ -26,10 +26,14 @@ public class TableFermenteur extends Controle {
 
         Cursor tmp = super.select("Fermenteur");
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            for (int i = 0; i < TableBrassin.instance(ctxt).listeSize(); i++) {
-                if(tmp.getInt(7) == TableBrassin.instance(ctxt).recuperer(i).getId()){
-                    result.add(new Fermenteur(tmp.getInt(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getInt(4), tmp.getInt(5), tmp.getInt(6), TableBrassin.instance(ctxt).recuperer(i)));
+            if (tmp.getInt(7) != -1) {
+                for (int i = 0; i < TableBrassin.instance(ctxt).listeSize(); i++) {
+                    if (tmp.getInt(7) == TableBrassin.instance(ctxt).recuperer(i).getId()) {
+                        result.add(new Fermenteur(tmp.getInt(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getInt(4), tmp.getInt(5), tmp.getInt(6), TableBrassin.instance(ctxt).recuperer(i)));
+                    }
                 }
+            } else {
+                result.add(new Fermenteur(tmp.getInt(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getInt(4), tmp.getInt(5), tmp.getInt(6), null));
             }
         }
     }
@@ -51,7 +55,7 @@ public class TableFermenteur extends Controle {
 
     public void ajout(Context ctxt, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat){
         result.add(new Fermenteur(result.size(), numero, capacite, emplacement, dateLavageAcide, etat, dateEtat, null));
-        BDD.execSQL("INSERT INTO Fermenteur (numero,capacite,dateLavageAcide,id_etatFermenteur,dateEtat,id_brassin,id_emplacement) VALUES ("+numero+", "+capacite+", "+dateLavageAcide+", "+etat+","+dateEtat+",null ,"+emplacement+")");
+        BDD.execSQL("INSERT INTO Fermenteur (numero,capacite,dateLavageAcide,id_etatFermenteur,dateEtat,id_brassin,id_emplacement) VALUES ("+numero+", "+capacite+", "+dateLavageAcide+", "+etat+","+dateEtat+",-1 ,"+emplacement+")");
     }
 
     public int tailleResult() {
