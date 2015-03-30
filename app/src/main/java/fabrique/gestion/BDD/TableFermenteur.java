@@ -34,7 +34,7 @@ public class TableFermenteur extends Controle {
         }
     }
 
-    public void ajout(Context ctxt, int id, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, int id_brassin){
+    public void ajout(Context ctxt, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, int id_brassin){
 
         for (int i = 0; i < TableBrassin.instance(ctxt).listeSize(); i++) {
             if(id_brassin == TableBrassin.instance(ctxt).recuperer(i).getId()){
@@ -43,6 +43,15 @@ public class TableFermenteur extends Controle {
         }
 
         BDD.execSQL("INSERT INTO Fermenteur (numero,capacite,dateLavageAcide,id_etatFermenteur,dateEtat,id_brassin,id_emplacement) VALUES ("+numero+", "+capacite+", "+dateLavageAcide+", "+etat+","+dateEtat+","+id_brassin+","+emplacement+")");
+    }
+
+    public void ajout(Context ctxt, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat){
+        result.add(new Fermenteur(result.size(), numero, capacite, emplacement, dateLavageAcide, etat, dateEtat, null));
+        BDD.execSQL("INSERT INTO Fermenteur (numero,capacite,dateLavageAcide,id_etatFermenteur,dateEtat,id_brassin,id_emplacement) VALUES ("+numero+", "+capacite+", "+dateLavageAcide+", "+etat+","+dateEtat+",null ,"+emplacement+")");
+    }
+
+    public int tailleResult() {
+        return result.size();
     }
 
     public Fermenteur recuperer(int index){

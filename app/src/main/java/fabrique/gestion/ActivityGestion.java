@@ -36,33 +36,33 @@ public class ActivityGestion extends Activity implements View.OnClickListener {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         fermenteur = (Button)findViewById(R.id.btnFermenteur);
-        fermenteur.setWidth(metrics.widthPixels/2);
-        fermenteur.setHeight(metrics.heightPixels/3);
+        fermenteur.setWidth(metrics.widthPixels/3);
+        fermenteur.setHeight(metrics.heightPixels/4);
         fermenteur.setOnClickListener(this);
 
         cuve = (Button)findViewById(R.id.btnCuve);
-        cuve.setWidth(metrics.widthPixels/2);
-        cuve.setHeight(metrics.heightPixels/3);
+        cuve.setWidth(metrics.widthPixels/3);
+        cuve.setHeight(metrics.heightPixels/4);
         cuve.setOnClickListener(this);
 
         fut = (Button)findViewById(R.id.btnFut);
-        fut.setWidth(metrics.widthPixels/2);
-        fut.setHeight(metrics.heightPixels / 3);
+        fut.setWidth(metrics.widthPixels/3);
+        fut.setHeight(metrics.heightPixels/4);
         fut.setOnClickListener(this);
 
         brassin = (Button)findViewById(R.id.btnBrassin);
-        brassin.setWidth(metrics.widthPixels/2);
-        brassin.setHeight(metrics.heightPixels/3);
+        brassin.setWidth(metrics.widthPixels/3);
+        brassin.setHeight(metrics.heightPixels/4);
         brassin.setOnClickListener(this);
 
         configuration = (Button)findViewById(R.id.btnConfiguration);
-        configuration.setWidth(metrics.widthPixels/2);
-        configuration.setHeight(metrics.heightPixels/3);
+        configuration.setWidth(metrics.widthPixels/3);
+        configuration.setHeight(metrics.heightPixels/4);
         configuration.setOnClickListener(this);
 
         autre = (Button)findViewById(R.id.btnAutre);
-        autre.setWidth(metrics.widthPixels/2);
-        autre.setHeight(metrics.heightPixels/3);
+        autre.setWidth(metrics.widthPixels/3);
+        autre.setHeight(metrics.heightPixels/4);
         autre.setOnClickListener(this);
     }
 
@@ -72,7 +72,8 @@ public class ActivityGestion extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, ActivityAjouterFermenteur.class);
             startActivity(intent);
         } else if (view.equals(cuve)) {
-
+            Intent intent = new Intent(this, ActivityAjouterCuve.class);
+            startActivity(intent);
         } else if (view.equals(fut)) {
 
         } else if (view.equals(brassin)) {

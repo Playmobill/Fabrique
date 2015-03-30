@@ -54,4 +54,12 @@ public class TableEmplacement extends Controle {
         }
         return null;
     }
+
+    public String[] emplacements () {
+        String[] etats = new String[result.size()];
+        for (int i=0; i<result.size(); i++) {
+            etats[i] = emplacement(i);
+        }
+        return etats;
+    }
 }

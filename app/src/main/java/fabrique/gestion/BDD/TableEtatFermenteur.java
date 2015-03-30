@@ -55,4 +55,12 @@ public class TableEtatFermenteur extends Controle {
         }
         return null;
     }
+
+    public String[] etats () {
+        String[] etats = new String[result.size()];
+        for (int i=0; i<result.size(); i++) {
+            etats[i] = etat(i);
+        }
+        return etats;
+    }
 }

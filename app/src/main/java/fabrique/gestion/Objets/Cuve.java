@@ -16,6 +16,7 @@ public class Cuve implements Comparable<Cuve> {
     private long dateEtat;
     private String commentaireEtat;
     private Brassin brassin;
+
     public Cuve() {
         commentaireEtat = "";
         dateLavageAcide = 0;
@@ -60,6 +61,7 @@ public class Cuve implements Comparable<Cuve> {
     public Brassin getBrassin() {
         return brassin;
     }
+
     public void setId(int id) {
         this.id = id;
     }

@@ -14,12 +14,7 @@ public abstract class Controle {
 
     public Controle(Context contexte){
         dbHandler = new DBHandler(contexte, nomBDD, null, version);
-        ouvrir();
-    }
-
-    public SQLiteDatabase ouvrir() {
         BDD = dbHandler.getWritableDatabase();
-        return BDD;
     }
 
     public void fermer() {

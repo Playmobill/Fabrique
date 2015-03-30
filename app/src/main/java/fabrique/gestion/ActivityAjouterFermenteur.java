@@ -6,10 +6,17 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import fabrique.gestion.BDD.TableEtatFermenteur;
+import fabrique.gestion.BDD.TableFermenteur;
 
 public class ActivityAjouterFermenteur extends Activity implements View.OnClickListener {
 
@@ -30,25 +37,25 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
         setContentView(R.layout.activity_ajouter_fermenteur);
 
         editNumero = (EditText)findViewById(R.id.editNumero);
-        /*TableFermenteur tableFermenteur = TableFermenteur.instance();
+        TableFermenteur tableFermenteur = TableFermenteur.instance(this);
         int i;
-        for (i=0; ((i<tableFermenteur.fermenteurs().size()) && (tableFermenteur.fermenteur(i).getNumero() == i+1)); i=i+1) {
+        for (i=0; ((i<tableFermenteur.tailleResult()) && (tableFermenteur.recuperer(i).getNumero() == i+1)); i=i+1) {
         }
-        editNumero.setText("" + (i+1));*/
+        editNumero.setText("" + (i+1));
 
         editQuantite = (EditText)findViewById(R.id.editQuantite);
 
         editEmplacement = (Spinner)this.findViewById(R.id.editEmplacement);
-        /*ArrayList<String> emplacements = TableEmplacement.instance().emplacements();
-        ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, emplacements);
+        TableEtatFermenteur tableEmplacement = TableEtatFermenteur.instance(this);
+        ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tableEmplacement.etats());
         adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        editEmplacement.setAdapter(adapteurEmplacement);*/
+        editEmplacement.setAdapter(adapteurEmplacement);
 
         editEtat = (Spinner)this.findViewById(R.id.editEtat);
-        /*ArrayList<String> etats = TableEtatFermenteur.instance().etats();
-        ArrayAdapter<String> adapteurEtat = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, etats);
-        adapteurEtat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        editEtat.setAdapter(adapteurEtat);*/
+        TableEtatFermenteur tableEtatFermenteur = TableEtatFermenteur.instance(this);
+        ArrayAdapter<String> adapteurEtat = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tableEtatFermenteur.etats());
+        adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        editEtat.setAdapter(adapteurEtat);
 
         dateLavageAcide = (DatePicker)findViewById(R.id.dateLavageAcide);
 
@@ -59,24 +66,21 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if ((v.equals(btnAjouter)) && (editNumero.getText() != null) && (Integer.parseInt(editNumero.getText().toString())>0)) {
-            /*Fermenteur fermenteur = new Fermenteur();
-            fermenteur.setNumero(Integer.parseInt(editNumero.getText().toString()));
+            int numero = Integer.parseInt(editNumero.getText().toString());
 
-            if ((editQuantite.getText().toString() == null) || (editQuantite.getText().toString().equals(""))) {
-                fermenteur.setCapacite(0);
-            } else {
-                fermenteur.setCapacite(Integer.parseInt(editQuantite.getText().toString()));
+            int capacite = 0;
+            if ((editQuantite.getText().toString() != null) || (!editQuantite.getText().toString().equals(""))) {
+                capacite = Integer.parseInt(editQuantite.getText().toString());
             }
 
-            fermenteur.setEmplacement(editEmplacement.getSelectedItemPosition());
+            int emplacement = editEmplacement.getSelectedItemPosition();
 
-            fermenteur.setEtat(editEtat.getSelectedItemPosition());
+            int etat = editEtat.getSelectedItemPosition();
 
             Calendar calendar = new GregorianCalendar(dateLavageAcide.getYear(), dateLavageAcide.getMonth(), dateLavageAcide.getDayOfMonth());
-            long date = calendar.getTimeInMillis();
-            fermenteur.setDateLavageAcide(date);
+            long dateLavageAcide = calendar.getTimeInMillis();
 
-            TableFermenteur.instance().ajouter(fermenteur);*/
+            TableFermenteur.instance(null).ajout(null, numero, capacite, emplacement, dateLavageAcide, etat, System.currentTimeMillis());
 
             Intent intent = new Intent(this, ActivityTableauDeBord.class);
             startActivity(intent);

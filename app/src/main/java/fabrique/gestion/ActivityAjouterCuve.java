@@ -1,4 +1,4 @@
-package fabrique.gestion.Widget;
+package fabrique.gestion;
 
 import android.app.Activity;
 import android.content.Intent;
