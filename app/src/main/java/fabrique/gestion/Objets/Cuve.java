@@ -107,4 +107,16 @@ public class Cuve implements Comparable<Cuve> {
         }
         return -1;
     }
+
+    public Cuve(int id, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, String commentaireEtat, Brassin brassin){
+        this.id = id;
+        this.numero = numero;
+        this.capacite = capacite;
+        this.emplacement = emplacement;
+        this.dateLavageAcide = dateLavageAcide;
+        this.etat = etat;
+        this.dateEtat = dateEtat;
+        this.commentaireEtat = commentaireEtat;
+        this.brassin = brassin;
+    }
 }

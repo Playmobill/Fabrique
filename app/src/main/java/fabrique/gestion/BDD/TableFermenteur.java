@@ -34,6 +34,10 @@ public class TableFermenteur extends Controle {
         }
     }
 
+    public int listeSize() {
+        return result.size();
+    }
+
     public void ajout(Context ctxt, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, int id_brassin){
 
         for (int i = 0; i < TableBrassin.instance(ctxt).listeSize(); i++) {
