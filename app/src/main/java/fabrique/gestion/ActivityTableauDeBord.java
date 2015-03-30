@@ -68,7 +68,7 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
             boutonActif.min();
         }
         boutonActif = boutonClique;
-        boutonActif.max();
+        boutonActif.max(this);
     }*/
 
     @Override

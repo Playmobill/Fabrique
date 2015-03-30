@@ -27,7 +27,7 @@ public class BoutonCuve extends Bouton {
         setText(texte);
     }
 
-    public void max() {
+    public void max(Context ctxt) {
         super.max();
         String texte = "C" + cuve.getNumero() + "\n";
 
@@ -35,7 +35,7 @@ public class BoutonCuve extends Bouton {
             texte = texte + cuve.getCapacite() + "L";
         }
 
-        texte = texte + "\n" + cuve.getEmplacement() + "\n";
+        texte = texte + "\n" + cuve.getEmplacement(ctxt) + "\n";
 
         texte = texte + cuve.getEtat() + "\n";
 
