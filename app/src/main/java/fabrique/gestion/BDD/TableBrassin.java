@@ -12,7 +12,7 @@ import fabrique.gestion.Objets.Brassin;
  */
 public class TableBrassin extends Ctrl{
 
-    public ArrayList<Brassin> result;
+    private ArrayList<Brassin> result;
 
     private static TableBrassin instance;
 
@@ -36,6 +36,31 @@ public class TableBrassin extends Ctrl{
     public void ajout(int numero, String commentaire, String acronyme, int dateCreation, int quantite, int id_typeBiere, String couleur, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
         result.add(new Brassin(result.size(), numero, commentaire, acronyme, dateCreation, quantite, id_typeBiere, couleur, densiteOriginale, densiteFinale, pourcentageAlcool));
         BDD.execSQL("INSERT INTO Brassin (numero, commentaire, acronyme, dateCreation, quantite, id_typeBiere, couleur, densiteOriginale, densiteFinale, pourcentageAlcool) VALUES ("+numero+", '"+commentaire+"', '"+acronyme+"', "+dateCreation+", "+quantite+", "+id_typeBiere+", '"+couleur+"', "+densiteOriginale+", "+densiteFinale+", "+pourcentageAlcool+")");
+    }
+
+    public Brassin recuperer(int index){
+        return result.get(index);
+    }
+
+    public void modifier(int index, int numero, String commentaire, String acronyme, int dateCreation, int quantite, int id_typeBiere, String couleur, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
+        result.get(index).setNumero(numero);
+        result.get(index).setCommentaire(commentaire);
+        result.get(index).setAcronyme(acronyme);
+        result.get(index).setDateCreation(dateCreation);
+        result.get(index).setQuantite(quantite);
+        result.get(index).setId_typeBiere(id_typeBiere);
+        result.get(index).setCouleur(couleur);
+        result.get(index).setDensiteOriginale(densiteOriginale);
+        result.get(index).setDensiteFinale(densiteFinale);
+        result.get(index).setPourcentageAlcool(pourcentageAlcool);
+    }
+
+    public void supprimer(int index){
+        result.remove(index);
+    }
+
+    public int listeSize(){
+        return result.size();
     }
 
 }

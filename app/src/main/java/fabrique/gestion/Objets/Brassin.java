@@ -51,4 +51,5 @@ public class Brassin {
         this.densiteFinale = densiteFinale;
         this.pourcentageAlcool = pourcentageAlcool;
     }
+
 }

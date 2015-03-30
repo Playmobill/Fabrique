@@ -8,7 +8,7 @@ import fabrique.gestion.Objets.Emplacement;
 
 public class TableEmplacement extends Ctrl{
 
-    public ArrayList<Emplacement> result;
+    private ArrayList<Emplacement> result;
     private static TableEmplacement instance;
 
 
@@ -34,4 +34,24 @@ public class TableEmplacement extends Ctrl{
         BDD.execSQL("INSERT INTO Emplacement (texte) VALUES ('"+texte+"')");
     }
 
+    public Emplacement recuperer(int index){
+        return result.get(index);
+    }
+
+    public void modifier(int index, String texte){
+        result.get(index).setTexte(texte);
+    }
+
+    public void supprimer(int index){
+        result.remove(index);
+    }
+
+    public String emplacement(int numero){
+        for (int i = 0; i < result.size(); i++) {
+            if (result.get(i).getId() == numero){
+                return result.get(i).getTexte();
+            }
+        }
+        return null;
+    }
 }

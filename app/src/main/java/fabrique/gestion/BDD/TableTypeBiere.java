@@ -12,7 +12,7 @@ import fabrique.gestion.Objets.TypeBiere;
  */
 public class TableTypeBiere extends Ctrl{
 
-    public ArrayList<TypeBiere> result;
+    private ArrayList<TypeBiere> result;
 
     private static TableTypeBiere instance;
 
@@ -36,5 +36,17 @@ public class TableTypeBiere extends Ctrl{
     public void ajout(String texte){
         result.add(new TypeBiere(result.size(), texte));
         BDD.execSQL("INSERT INTO TypeBiere (texte) VALUES ('"+texte+"')");
+    }
+
+    public TypeBiere recuperer(int index){
+        return result.get(index);
+    }
+
+    public void modifier(int index, String texte){
+        result.get(index).setTexte(texte);
+    }
+
+    public void supprimer(int index){
+        result.remove(index);
     }
 }
