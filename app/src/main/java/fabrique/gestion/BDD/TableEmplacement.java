@@ -1,37 +1,57 @@
 package fabrique.gestion.BDD;
 
+import android.content.Context;
+import android.database.Cursor;
 import java.util.ArrayList;
 
-public class TableEmplacement {
+import fabrique.gestion.Objets.Emplacement;
 
-    private ArrayList<String> emplacements;
+public class TableEmplacement extends Ctrl{
 
+    private ArrayList<Emplacement> result;
     private static TableEmplacement instance;
 
-    private TableEmplacement() {
-        emplacements = new ArrayList<>();
-        emplacements.add("RC");
-        emplacements.add("SS");
-        emplacements.add("Ch.Froide");
-    }
 
-    public static TableEmplacement instance() {
-        if (instance == null) {
-            instance = new TableEmplacement();
+    public static TableEmplacement instance(Context ctxt){
+        if(instance == null){
+            instance = new TableEmplacement(ctxt);
         }
         return instance;
     }
 
-    public void ajouter(String emplacement) {
-        emplacements.add(emplacement);
+    private TableEmplacement(Context ctxt){
+        super(ctxt);
+        result = new ArrayList<>();
+
+        Cursor tmp = super.select("Emplacement", new String[] {"*"});
+        for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
+            result.add(new Emplacement(tmp.getInt(0), tmp.getString(1)));
+        }
     }
 
-    public String emplacement(int index ) {
-        return emplacements.get(index);
+    public void ajout(String texte){
+        result.add(new Emplacement(result.size(), texte));
+        BDD.execSQL("INSERT INTO Emplacement (texte) VALUES ('"+texte+"')");
     }
 
-    public ArrayList<String> emplacements() {
-        return emplacements;
+    public Emplacement recuperer(int index){
+        return result.get(index);
     }
 
+    public void modifier(int index, String texte){
+        result.get(index).setTexte(texte);
+    }
+
+    public void supprimer(int index){
+        result.remove(index);
+    }
+
+    public String emplacement(int numero){
+        for (int i = 0; i < result.size(); i++) {
+            if (result.get(i).getId() == numero){
+                return result.get(i).getTexte();
+            }
+        }
+        return null;
+    }
 }

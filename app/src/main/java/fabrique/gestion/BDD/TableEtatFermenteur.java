@@ -1,37 +1,58 @@
 package fabrique.gestion.BDD;
 
+import android.content.Context;
+import android.database.Cursor;
+
 import java.util.ArrayList;
 
-public class TableEtatFermenteur {
+import fabrique.gestion.Objets.EtatFermenteur;
 
+public class TableEtatFermenteur extends Ctrl{
+
+    private ArrayList<EtatFermenteur> result;
     private static TableEtatFermenteur instance;
 
-    private ArrayList<String> etats;
 
-    private TableEtatFermenteur() {
-        etats = new ArrayList<>();
-        etats.add("Vide");
-        etats.add("Fermentation");
-        etats.add("Lavé");
-    }
-
-    public static TableEtatFermenteur instance() {
-        if (instance == null) {
-            instance = new TableEtatFermenteur();
+    public static TableEtatFermenteur instance(Context ctxt){
+        if(instance == null){
+            instance = new TableEtatFermenteur(ctxt);
         }
         return instance;
     }
 
-    public void ajouter(String etat) {
-        etats.add(etat);
+    private TableEtatFermenteur(Context ctxt){
+        super(ctxt);
+        result = new ArrayList<>();
+
+        Cursor tmp = super.select("EtatFermenteur", new String[] {"*"});
+        for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
+            result.add(new EtatFermenteur(tmp.getInt(0), tmp.getString(1)));
+        }
     }
 
-    public String etat(int index) {
-        return etats.get(index);
+    public void ajout(String texte){
+        result.add(new EtatFermenteur(result.size(), texte));
+        BDD.execSQL("INSERT INTO EtatFermenteur (texte) VALUES ('"+texte+"')");
     }
 
-    public ArrayList<String> etats() {
-        return etats;
+    public EtatFermenteur recuperer(int index){
+        return result.get(index);
     }
 
+    public void modifier(int index, String texte){
+        result.get(index).setTexte(texte);
+    }
+
+    public void supprimer(int index){
+        result.remove(index);
+    }
+
+    public String etat(int numero){
+        for (int i = 0; i < result.size(); i++) {
+            if (result.get(i).getId() == numero){
+                return result.get(i).getTexte();
+            }
+        }
+        return null;
+    }
 }

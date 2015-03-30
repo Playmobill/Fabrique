@@ -7,37 +7,60 @@ import java.util.ArrayList;
 
 import fabrique.gestion.Objets.Brassin;
 
-public class TableBrassin extends Controle {
+/**
+ * Created by thibaut on 27/03/15.
+ */
+public class TableBrassin extends Ctrl{
 
-    private ArrayList<Brassin> brassins;
+    private ArrayList<Brassin> result;
 
     private static TableBrassin instance;
 
-    public static TableBrassin instance(Context contexte){
+    public static TableBrassin instance(Context ctxt){
         if(instance == null){
-            instance = new TableBrassin(contexte);
+            instance = new TableBrassin(ctxt);
         }
         return instance;
     }
 
-    private TableBrassin(Context contexte){
-        super(contexte);
-        brassins = new ArrayList<>();
+    private TableBrassin(Context ctxt){
+        super(ctxt);
+        result = new ArrayList<>();
 
-        Cursor tmp = super.select("Brassin");
-        if (tmp != null) {
-            for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-                brassins.add(new Brassin(tmp.getInt(0), tmp.getInt(1), tmp.getString(2), tmp.getString(3), tmp.getInt(4), tmp.getInt(5), tmp.getInt(6), tmp.getString(7), tmp.getFloat(8), tmp.getFloat(9), tmp.getFloat(10)));
-            }
+        Cursor tmp = super.select("Brassin", new String[] {"*"});
+        for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
+            result.add(new Brassin(tmp.getInt(0), tmp.getInt(1), tmp.getString(2), tmp.getString(3), tmp.getInt(4), tmp.getInt(5), tmp.getInt(6), tmp.getString(7), tmp.getFloat(8), tmp.getFloat(9), tmp.getFloat(10)));
         }
     }
 
-    public void ajouter(int numero, String commentaire, String acronyme, long dateCreation, int quantite, int id_typeBiere, String couleur, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
-        brassins.add(new Brassin(brassins.size(), numero, commentaire, acronyme, dateCreation, quantite, id_typeBiere, couleur, densiteOriginale, densiteFinale, pourcentageAlcool));
-        bdd.execSQL("INSERT INTO Brassin (numero, commentaire, acronyme, dateCreation, quantite, id_typeBiere, couleur, densiteOriginale, densiteFinale, pourcentageAlcool) VALUES ("+numero+", '"+commentaire+"', '"+acronyme+"', "+dateCreation+", "+quantite+", "+id_typeBiere+", '"+couleur+"', "+densiteOriginale+", "+densiteFinale+", "+pourcentageAlcool+")");
+    public void ajout(int numero, String commentaire, String acronyme, int dateCreation, int quantite, int id_typeBiere, String couleur, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
+        result.add(new Brassin(result.size(), numero, commentaire, acronyme, dateCreation, quantite, id_typeBiere, couleur, densiteOriginale, densiteFinale, pourcentageAlcool));
+        BDD.execSQL("INSERT INTO Brassin (numero, commentaire, acronyme, dateCreation, quantite, id_typeBiere, couleur, densiteOriginale, densiteFinale, pourcentageAlcool) VALUES ("+numero+", '"+commentaire+"', '"+acronyme+"', "+dateCreation+", "+quantite+", "+id_typeBiere+", '"+couleur+"', "+densiteOriginale+", "+densiteFinale+", "+pourcentageAlcool+")");
     }
 
-    public Brassin brassin(int index) {
-        return brassins.get(index);
+    public Brassin recuperer(int index){
+        return result.get(index);
     }
+
+    public void modifier(int index, int numero, String commentaire, String acronyme, int dateCreation, int quantite, int id_typeBiere, String couleur, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
+        result.get(index).setNumero(numero);
+        result.get(index).setCommentaire(commentaire);
+        result.get(index).setAcronyme(acronyme);
+        result.get(index).setDateCreation(dateCreation);
+        result.get(index).setQuantite(quantite);
+        result.get(index).setId_typeBiere(id_typeBiere);
+        result.get(index).setCouleur(couleur);
+        result.get(index).setDensiteOriginale(densiteOriginale);
+        result.get(index).setDensiteFinale(densiteFinale);
+        result.get(index).setPourcentageAlcool(pourcentageAlcool);
+    }
+
+    public void supprimer(int index){
+        result.remove(index);
+    }
+
+    public int listeSize(){
+        return result.size();
+    }
+
 }
