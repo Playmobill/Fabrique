@@ -35,7 +35,7 @@ public class BoutonFermenteur extends Bouton {
             texte = texte + fermenteur.getCapacite() + "L";
         }
 
-        texte = texte + "\n" + fermenteur.getEmplacement(null) + "\n";
+        texte = texte + "\n" + fermenteur.getEmplacement(this.getContext()) + "\n";
 
         texte = texte + fermenteur.getEtat(null) + "\n";
 

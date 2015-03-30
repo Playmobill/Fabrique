@@ -13,16 +13,12 @@ public abstract class Controle {
     protected DBHandler dbHandler;
 
     public Controle(Context contexte){
-        dbHandler = new DBHandler(contexte, nomBDD, null, version);
+        dbHandler = new DBHandler(contexte, nomBDD, null);
         BDD = dbHandler.getWritableDatabase();
     }
 
     public void fermer() {
         BDD.close();
-    }
-
-    public SQLiteDatabase bdd(){
-        return BDD;
     }
 
     public Cursor select(String table){

@@ -13,7 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.Objets.Cuve;
+import fabrique.gestion.Objets.Fermenteur;
+import fabrique.gestion.Widget.BoutonFermenteur;
 
 public class ActivityTableauDeBord extends Activity /*implements View.OnClickListener*/ {
 
@@ -92,13 +95,13 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
 
         LinearLayout.LayoutParams parametreFermenteur = new LinearLayout.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.heightPixels*9/20);
 
-        /*r (Fermenteur fermenteur : TableFermenteur.instance().fermenteurs()) {
+        for (Fermenteur fermenteur: TableFermenteur.instance(this).fermenteurs()) {
             BoutonFermenteur boutonFermenteur = new BoutonFermenteur(this, fermenteur);
             //boutons.add(boutonFermenteur);
             //boutonFermenteur.setOnClickListener(this);
             boutonFermenteur.setLayoutParams(parametreFermenteur);
             ligne.addView(boutonFermenteur);
-        }*/
+        }
 
         //Layout pour le defilement horizontal
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(this);

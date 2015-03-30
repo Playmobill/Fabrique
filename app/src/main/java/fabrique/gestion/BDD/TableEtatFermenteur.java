@@ -10,8 +10,8 @@ import fabrique.gestion.Objets.EtatFermenteur;
 public class TableEtatFermenteur extends Controle {
 
     private ArrayList<EtatFermenteur> result;
-    private static TableEtatFermenteur instance;
 
+    private static TableEtatFermenteur instance;
 
     public static TableEtatFermenteur instance(Context ctxt){
         if(instance == null){
@@ -22,17 +22,29 @@ public class TableEtatFermenteur extends Controle {
 
     private TableEtatFermenteur(Context ctxt){
         super(ctxt);
+
         result = new ArrayList<>();
 
         Cursor tmp = super.select("EtatFermenteur");
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             result.add(new EtatFermenteur(tmp.getInt(0), tmp.getString(1)));
         }
+
+        ajout("Vide");
+        ajout("Fermentation");
+        ajout("Lavé");
     }
 
     public void ajout(String texte){
-        result.add(new EtatFermenteur(result.size(), texte));
-        BDD.execSQL("INSERT INTO EtatFermenteur (texte) VALUES ('"+texte+"')");
+        BDD.beginTransaction();
+        try {
+            BDD.execSQL("INSERT INTO EtatFermenteur (texte) VALUES ('"+texte+"')");
+            result.add(new EtatFermenteur(result.size(), texte));
+
+            BDD.setTransactionSuccessful();
+        } finally {
+            BDD.endTransaction();
+        }
     }
 
     public EtatFermenteur recuperer(int index){

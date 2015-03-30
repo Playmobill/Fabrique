@@ -27,6 +27,10 @@ public class TableEmplacement extends Controle {
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             result.add(new Emplacement(tmp.getInt(0), tmp.getString(1)));
         }
+
+        ajout("SS");
+        ajout("RC");
+        ajout("Ch.Froide");
     }
 
     public void ajout(String texte){
