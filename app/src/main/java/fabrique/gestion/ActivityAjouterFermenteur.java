@@ -81,7 +81,7 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
             Calendar calendar = new GregorianCalendar(dateLavageAcide.getYear(), dateLavageAcide.getMonth(), dateLavageAcide.getDayOfMonth());
             long dateLavageAcide = calendar.getTimeInMillis();
 
-            TableFermenteur.instance(null).ajout(null, numero, capacite, emplacement, dateLavageAcide, etat, System.currentTimeMillis());
+            TableFermenteur.instance(this).ajout(null, numero, capacite, emplacement, dateLavageAcide, etat, System.currentTimeMillis(), -1);
 
             Intent intent = new Intent(this, ActivityTableauDeBord.class);
             startActivity(intent);
