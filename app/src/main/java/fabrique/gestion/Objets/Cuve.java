@@ -40,8 +40,8 @@ public class Cuve implements Comparable<Cuve> {
     public long getDateLavageAcide() {
         return dateLavageAcide;
     }
-    public String getEtat() {
-        return TableEtatCuve.instance().etat(etat) + "\n";
+    public String getEtat(Context ctxt) {
+        return TableEtatCuve.instance(ctxt).etat(etat) + "\n";
     }
     public String getDateEtat() {
         Calendar calendrier = Calendar.getInstance();
