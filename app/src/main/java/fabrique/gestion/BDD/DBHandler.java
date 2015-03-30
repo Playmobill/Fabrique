@@ -14,6 +14,8 @@ public class DBHandler extends SQLiteOpenHelper {
     private static String createTEmplacement = "CREATE TABLE IF NOT EXISTS Emplacement (id INTEGER PRIMARY KEY AUTOINCREMENT,texte TEXT)";
     private static String createTEtatFermenteur = "CREATE TABLE IF NOT EXISTS EtatFermenteur (id INTEGER PRIMARY KEY AUTOINCREMENT,texte TEXT)";
     private static String createTFermenteur = "CREATE TABLE IF NOT EXISTS Fermenteur (id INTEGER PRIMARY KEY AUTOINCREMENT,numero INTEGER,capacite INTEGER,dateLavageAcide INTEGER,id_etatFermenteur INTEGER NOT NULL,dateEtat INTEGER,id_brassin INTEGER,id_emplacement INTEGER NOT NULL)";
+    private static String createTEtatCuve = "CREATE TABLE EtatCuve(id INTEGER PRIMARY KEY AUTOINCREMENT,texte TEXT)";
+    private static String createTCuve = "CREATE TABLE Cuve (id INTEGER PRIMARY KEY AUTOINCREMENT, numero INTEGER, capacite INTEGER, dateLavageAcide INTEGER, id_emplacement INTEGER NOT NULL, id_etatCuve INTEGER NOT NULL, dateEtat INTEGER, commentaireEtat TEXT, id_brassin INTEGER)";
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory) {
         super(context, name, factory, 1);
@@ -26,6 +28,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(createTEmplacement);
         db.execSQL(createTEtatFermenteur);
         db.execSQL(createTFermenteur);
+        db.execSQL(createTEtatCuve);
     }
 
     @Override
