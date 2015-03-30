@@ -68,4 +68,8 @@ public class TableFermenteur extends Ctrl{
     public void supprimer(int index){
         result.remove(index);
     }
+
+    public ArrayList<Fermenteur> fermenteurs(){
+        return result;
+    }
 }

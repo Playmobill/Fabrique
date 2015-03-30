@@ -1,5 +1,7 @@
 package fabrique.gestion.Objets;
 
+import android.content.Context;
+
 import java.util.Calendar;
 
 import fabrique.gestion.BDD.TableEmplacement;
@@ -42,8 +44,8 @@ public class Cuve {
         return capacite;
     }
 
-    public String getEmplacement() {
-        return TableEmplacement.instance().emplacement(emplacement);
+    public String getEmplacement(Context ctxt) {
+        return TableEmplacement.instance(ctxt).emplacement(emplacement);
     }
 
     public long getDateLavageAcide() {
