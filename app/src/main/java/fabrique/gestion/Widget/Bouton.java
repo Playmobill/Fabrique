@@ -28,4 +28,12 @@ public abstract class Bouton extends Button implements View.OnClickListener {
             min();
         }
     }
+
+    public void changerEtat() {
+        if (min) {
+            max();
+        } else {
+            min();
+        }
+    }
 }
