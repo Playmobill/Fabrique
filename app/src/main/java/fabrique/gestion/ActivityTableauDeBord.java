@@ -33,7 +33,9 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
 
     private ArrayList<Bouton> boutons = new ArrayList<Bouton>();
 
-    private int index = -1;
+    private int indexFermenteur = -1;
+
+    private int indexCuve = -1;
 
     private Button btnFermenteur, btnCuve;
 
@@ -85,11 +87,11 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if ((v.equals(btnFermenteur)) && (index != -1)) {
+        if ((v.equals(btnFermenteur)) && (indexFermenteur != -1)) {
             Intent intent = new Intent(this, ActivityVueFermenteur.class);
-            intent.putExtra("index", index);
+            intent.putExtra("index", indexFermenteur);
             startActivity(intent);
-        } else if ((v.equals(btnCuve)) && (index != -1)) {
+        } else if ((v.equals(btnCuve)) && (indexCuve != -1)) {
             /*Intent intent = new Intent(this, ActivityVueCuve.class);
             intent.putExtra("index", index);
             startActivity(intent);*/
@@ -98,7 +100,12 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
             for (int i = 0; i < boutons.size(); i++) {
                 if (v.equals(boutons.get(i))) {
                     //boutonClique = boutons.get(i);
-                    index = i;
+                    if (boutons.get(i) instanceof BoutonFermenteur) {
+                        indexFermenteur = i;
+                    }
+                    if (boutons.get(i) instanceof BoutonCuve) {
+                        indexCuve = i;
+                    }
                     boutons.get(i).changerEtat();
                 }
             }
