@@ -10,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.view.Window;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -57,7 +58,10 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
 
         layout.addView(intialiserLigneGarde());
 
-        setContentView(layout);
+        ScrollView layoutVerticalScroll = new ScrollView(this);
+        layoutVerticalScroll.addView(layout);
+
+        setContentView(layoutVerticalScroll);
     }
 
     /*@Override
