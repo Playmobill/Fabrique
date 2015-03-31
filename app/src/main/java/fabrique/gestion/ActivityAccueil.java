@@ -49,6 +49,5 @@ public class ActivityAccueil extends Activity implements View.OnClickListener {
 
     @Override
     public void onBackPressed() {
-        System.exit(0);
     }
 }

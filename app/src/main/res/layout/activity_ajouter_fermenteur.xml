@@ -1,147 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:padding="20dp">
 
-    <TableRow
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:padding="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <TableRow
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nouveau fermenteur"
-            android:id="@+id/txtTitre"
-            android:textSize="30sp"
-            android:textColor="@color/noir" />
-    </TableRow>
+            android:layout_marginBottom="10dp">
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <TextView
+                android:text="Nouveau fermenteur"
+                android:id="@+id/txtTitre"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/txtNumero"
-            android:text="Numéro voulu"
-            android:textSize="20sp"
-            android:textColor="@color/noir"
-            android:layout_gravity="center_vertical"
-            android:singleLine="true"
-            android:textStyle="normal"
-            android:layout_height="match_parent"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_weight="1" />
-
-        <EditText
-            android:inputType="number"
-            android:id="@+id/editNumero"
-            android:layout_gravity="center_vertical"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:layout_weight="1" />
-
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/txtQuantite"
-            android:text="Quantité (Litres)"
-            android:textColor="@color/noir"
-            android:singleLine="true"
-            android:textStyle="normal"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_width="match_parent" />
-
-        <EditText
-            android:inputType="number"
-            android:id="@+id/editQuantite"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_width="match_parent" />
-
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/txtEmplacement"
-            android:text="Emplacement"
-            android:textSize="20sp"
-            android:textColor="@color/noir"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:layout_weight="1" />
-
-        <Spinner
-            android:id="@+id/editEmplacement"
-            style="@style/Widget.AppCompat.Spinner"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:layout_weight="1" />
-
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/txtEtat"
-            android:text="Etat"
-            android:textSize="20sp"
-            android:textColor="@color/noir"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:layout_weight="1" />
-
-        <Spinner
-            android:id="@+id/editEtat"
-            style="@style/Widget.AppCompat.Spinner"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:layout_weight="1" />
-
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/txtLavageAcide"
-            android:text="Date du lavage acide"
-            android:textSize="20sp"
-            android:textColor="@color/noir"
-            android:layout_weight="1" />
-
-        <DatePicker
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/dateLavageAcide"
-            style="@android:style/Widget.DatePicker"
-            android:layout_weight="1" />
-
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ajouter"
-            android:id="@+id/btnAjouter"
-            android:layout_gravity="center" />
+            android:layout_marginBottom="10dp">
 
-    </TableRow>
+            <TextView
+                android:id="@+id/txtNumero"
+                android:text="Numéro voulu"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
 
-</TableLayout>
+            <EditText
+                android:inputType="number"
+                android:textSize="30sp"
+                android:id="@+id/editNumero"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/txtQuantite"
+                android:text="Quantité (Litres)"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+
+            <EditText
+                android:inputType="number"
+                android:textSize="30sp"
+                android:id="@+id/editQuantite"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/txtEmplacement"
+                android:text="Emplacement"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/editEmplacement"
+                android:textSize="30sp"
+                style="@style/Widget.AppCompat.Spinner"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/txtEtat"
+                android:text="Etat"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/editEtat"
+                android:textSize="30sp"
+                style="@style/Widget.AppCompat.Spinner"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/txtLavageAcide"
+                android:text="Date du lavage acide"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <!--<DatePicker
+                android:id="@+id/dateLavageAcide"
+                style="@android:style/Widget.DatePicker"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <EditText
+                    android:id="@+id/editText"
+                    android:textSize="30sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:editable="false" />
+
+                <ImageButton
+                    android:id="@+id/imageButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/editText"
+                    android:layout_toRightOf="@+id/editText"
+                    android:cropToPadding="true"
+                    android:src="@drawable/calendar_icon2"
+                    android:adjustViewBounds="true" />
+
+            </RelativeLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:text="Ajouter"
+                android:textSize="30sp"
+                android:id="@+id/btnAjouter"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textColor="@color/noir"
+                android:background="@color/blanc" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</ScrollView>

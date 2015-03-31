@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="1500725">
     <words>
+      <w>acces</w>
       <w>accueil</w>
       <w>acide</w>
       <w>acronyme</w>
@@ -10,6 +11,7 @@
       <w>ajout</w>
       <w>ajouter</w>
       <w>alcool</w>
+      <w>annee</w>
       <w>autre</w>
       <w>biere</w>
       <w>blanc</w>
@@ -52,6 +54,7 @@
       <w>ligne</w>
       <w>liste</w>
       <w>marron</w>
+      <w>mois</w>
       <w>noir</w>
       <w>nouveau</w>
       <w>nouvelle</w>
@@ -70,6 +73,8 @@
       <w>simplifie</w>
       <w>supprimer</w>
       <w>taille</w>
+      <w>textview</w>
+      <w>timepicker</w>
       <w>tous</w>
       <w>vide</w>
       <w>voulu</w>

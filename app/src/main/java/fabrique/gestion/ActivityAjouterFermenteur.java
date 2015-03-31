@@ -1,16 +1,18 @@
 package fabrique.gestion;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import java.util.Calendar;
@@ -22,13 +24,17 @@ import fabrique.gestion.BDD.TableFermenteur;
 
 public class ActivityAjouterFermenteur extends Activity implements View.OnClickListener {
 
-    Button btnAjouter;
+    private Button btnAjouter;
 
-    EditText editNumero, editQuantite;
+    private EditText editNumero, editQuantite;
 
-    Spinner editEmplacement, editEtat;
+    private Spinner editEmplacement, editEtat;
 
-    DatePicker dateLavageAcide;
+    private ImageButton dateLavageAcide;
+    protected int jour;
+    protected int mois;
+    protected int annee;
+    private EditText editDateLavageAcide;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,21 +57,28 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
 
         editEmplacement = (Spinner)this.findViewById(R.id.editEmplacement);
         TableEmplacement tableEmplacement = TableEmplacement.instance(this);
-        ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tableEmplacement.emplacements());
+        ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(this, R.layout.spinner_style, tableEmplacement.emplacements());
         adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editEmplacement.setAdapter(adapteurEmplacement);
 
         editEtat = (Spinner)this.findViewById(R.id.editEtat);
         TableEtatFermenteur tableEtatFermenteur = TableEtatFermenteur.instance(this);
-        ArrayAdapter<String> adapteurEtat = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tableEtatFermenteur.etats());
+        ArrayAdapter<String> adapteurEtat = new ArrayAdapter<>(this, R.layout.spinner_style, tableEtatFermenteur.etats());
         adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editEtat.setAdapter(adapteurEtat);
 
-        dateLavageAcide = (DatePicker)findViewById(R.id.dateLavageAcide);
+        dateLavageAcide = (ImageButton) findViewById(R.id.imageButton1);
+        dateLavageAcide.setOnClickListener(this);
+
+        Calendar calendrier = Calendar.getInstance();
+        jour = calendrier.get(Calendar.DAY_OF_MONTH);
+        mois = calendrier.get(Calendar.MONTH);
+        annee = calendrier.get(Calendar.YEAR);
+        editDateLavageAcide = (EditText) findViewById(R.id.editText);
+        editDateLavageAcide.setText(jour + " / " + (mois + 1) + " / " + annee);
 
         btnAjouter = (Button)findViewById(R.id.btnAjouter);
         btnAjouter.setOnClickListener(this);
-        Log.i("AjouterFermenteur", "Ligne 68");
     }
 
     @Override
@@ -82,15 +95,32 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
 
             int etat = editEtat.getSelectedItemPosition();
 
-            Calendar calendar = new GregorianCalendar(dateLavageAcide.getYear(), dateLavageAcide.getMonth(), dateLavageAcide.getDayOfMonth());
+            Calendar calendar = new GregorianCalendar(annee, mois, jour);
             long dateLavageAcide = calendar.getTimeInMillis();
 
             TableFermenteur.instance(this).ajout(null, numero, capacite, emplacement, dateLavageAcide, etat, System.currentTimeMillis(), -1);
 
             Intent intent = new Intent(this, ActivityTableauDeBord.class);
             startActivity(intent);
+        } else if (v.equals(dateLavageAcide)){
+            showDialog(0);
         }
     }
+
+    @Override
+    @Deprecated
+    protected Dialog onCreateDialog(int id) {
+        return new DatePickerDialog(this, datePickerListener, annee, mois, jour);
+    }
+
+    private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+        public void onDateSet(DatePicker view, int annee2, int mois2, int jour2) {
+            jour = jour2;
+            mois = mois2;
+            annee = annee2;
+            editDateLavageAcide.setText(jour + " / " + (mois + 1) + " / " + annee);
+        }
+    };
 
     @Override
     public void onBackPressed() {
