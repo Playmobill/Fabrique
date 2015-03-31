@@ -2,7 +2,6 @@ package fabrique.gestion.BDD;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -28,7 +27,6 @@ public class TableEmplacement extends Controle {
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             emplacements.add(new Emplacement(tmp.getInt(0), tmp.getString(1)));
-            Log.i("TableEmplacement", "BDD " + tmp.getString(1));
         }
 
         ajouter("SS");
@@ -64,7 +62,6 @@ public class TableEmplacement extends Controle {
     public String[] emplacements () {
         String[] etats = new String[emplacements.size()];
         for (int i=0; i<emplacements.size(); i++) {
-            Log.i("TableEmplacement", "Tableau " + emplacement(i));
             etats[i] = emplacement(i);
         }
         return etats;

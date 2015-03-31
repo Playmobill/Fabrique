@@ -2,7 +2,6 @@ package fabrique.gestion.BDD;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -27,7 +26,6 @@ public class TableFermenteur extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            Log.i("Coucou", ""+tmp.getInt(7)+"");
             if (tmp.getInt(7) != -1) {
                 for (int i = 0; i < TableBrassin.instance(contexte).tailleListe(); i++) {
                     if (tmp.getInt(7) == TableBrassin.instance(contexte).recuperer(i).getId()) {

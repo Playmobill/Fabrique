@@ -2,7 +2,6 @@ package fabrique.gestion.BDD;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -28,7 +27,6 @@ public class TableEtatFermenteur extends Controle {
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             etats.add(new EtatFermenteur(tmp.getInt(0), tmp.getString(1)));
-            Log.i("TableEtatFermenteur", "BDD " + tmp.getString(1));
         }
 
         ajouter("Vide");
@@ -60,7 +58,6 @@ public class TableEtatFermenteur extends Controle {
     public String[] etats () {
         String[] etats2 = new String[etats.size()];
         for (int i=0; i<etats.size(); i++) {
-            Log.i("TableEtatFermenteur", "Tableau " + etat(i));
             etats2[i] = etat(i);
         }
         return etats2;
