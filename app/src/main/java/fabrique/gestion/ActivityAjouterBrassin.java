@@ -44,7 +44,7 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
 
     @Override
     public void onBackPressed() {
-
+        System.exit(0);
     }
 
 }

@@ -77,6 +77,8 @@ public class ActivityGestion extends Activity implements View.OnClickListener {
         } else if (view.equals(fut)) {
 
         } else if (view.equals(brassin)) {
+            Intent intent = new Intent(this, ActivityAjouterBrassin.class);
+            startActivity(intent);
 
         } else if (view.equals(configuration)) {
 
