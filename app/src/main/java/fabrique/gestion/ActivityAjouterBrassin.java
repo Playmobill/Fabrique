@@ -44,7 +44,8 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
 
     @Override
     public void onBackPressed() {
-        System.exit(0);
+        Intent intent = new Intent(this, ActivityGestion.class);
+        startActivity(intent);
     }
 
 }
