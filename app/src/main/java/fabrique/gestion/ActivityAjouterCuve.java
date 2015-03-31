@@ -53,13 +53,13 @@ public class ActivityAjouterCuve extends Activity implements View.OnClickListene
 
         editQuantite = (EditText)findViewById(R.id.editQuantite);
 
-        editEmplacement = (Spinner)this.findViewById(R.id.editEmplacement);
+        editEmplacement = (Spinner)findViewById(R.id.editEmplacement);
         TableEmplacement tableEmplacement = TableEmplacement.instance(this);
         ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(this, R.layout.spinner_style, tableEmplacement.emplacements());
         adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editEmplacement.setAdapter(adapteurEmplacement);
 
-        editEtat = (Spinner)this.findViewById(R.id.editEtat);
+        editEtat = (Spinner)findViewById(R.id.editEtat);
         TableEtatCuve tableEtatCuve = TableEtatCuve.instance(this);
         ArrayAdapter<String> adapteurEtat = new ArrayAdapter<>(this, R.layout.spinner_style, tableEtatCuve.etats());
         adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

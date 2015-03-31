@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--Description Fermenteur-->
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fermenteur "
+            android:id="@+id/texteTitre" />
+    </TableRow>
+
+    <!--Description brassin-->
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </TableRow>
+
+    <!--Historique brassin-->
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </TableRow>
+
+    <!--Historique fermenteur-->
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </TableRow>
+
+    <!--Bouton modifier et retour-->
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Modifier"
+            android:id="@+id/button" />
+    </TableRow>
+
+</TableLayout>

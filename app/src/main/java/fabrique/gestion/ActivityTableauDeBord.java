@@ -7,27 +7,37 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableFermenteur;
-import fabrique.gestion.Objets.Cuve;
+import fabrique.gestion.Widget.Bouton;
 import fabrique.gestion.Widget.BoutonCuve;
 import fabrique.gestion.Widget.BoutonFermenteur;
 
-public class ActivityTableauDeBord extends Activity /*implements View.OnClickListener*/ {
+public class ActivityTableauDeBord extends Activity implements View.OnClickListener {
 
     private DisplayMetrics tailleEcran;
 
-    private Cuve[] cuves;
+    private Bouton boutonActif;
 
-    /*private Bouton boutonActif;
+    private ArrayList<Bouton> boutons = new ArrayList<Bouton>();
 
-    private ArrayList<Bouton> boutons = new ArrayList<Bouton>();*/
+    private int indexFermenteur = -1;
+
+    private int indexCuve = -1;
+
+    private Button btnFermenteur, btnCuve;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +45,6 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        initialiser();
 
         //Taille ecran
         tailleEcran = new DisplayMetrics();
@@ -48,7 +56,6 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         layout.setBackgroundColor(getResources().getColor(R.color.gris));
 
         //Ajout
-
         layout.addView(nouvelleLigneTexte("Fermenteurs"));
 
         layout.addView(intialiserLigneFermenteur());
@@ -57,23 +64,58 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
 
         layout.addView(intialiserLigneGarde());
 
-        setContentView(layout);
+        TableRow ligne = new TableRow(this);
+
+        btnFermenteur = new Button(this);
+        btnFermenteur.setText("Fermenteur");
+        btnFermenteur.setOnClickListener(this);
+
+        btnCuve = new Button(this);
+        btnCuve.setText("Cuve");
+        btnCuve.setOnClickListener(this);
+
+        ligne.addView(btnFermenteur);
+        ligne.addView(btnCuve);
+
+        layout.addView(ligne);
+
+        ScrollView layoutVerticalScroll = new ScrollView(this);
+        layoutVerticalScroll.addView(layout);
+
+        setContentView(layoutVerticalScroll);
     }
 
-    /*@Override
+    @Override
     public void onClick(View v) {
-        Bouton boutonClique = null;
-        for (int i=0; i<boutons.size(); i++) {
-            if (v.equals(boutons.get(i))) {
-                boutonClique = boutons.get(i);
+        if ((v.equals(btnFermenteur)) && (indexFermenteur != -1)) {
+            Intent intent = new Intent(this, ActivityVueFermenteur.class);
+            intent.putExtra("index", indexFermenteur);
+            startActivity(intent);
+        } else if ((v.equals(btnCuve)) && (indexCuve != -1)) {
+            /*Intent intent = new Intent(this, ActivityVueCuve.class);
+            intent.putExtra("index", index);
+            startActivity(intent);*/
+        } else {
+            //Bouton boutonClique = null;
+            for (int i = 0; i < boutons.size(); i++) {
+                if (v.equals(boutons.get(i))) {
+                    //boutonClique = boutons.get(i);
+                    if (boutons.get(i) instanceof BoutonFermenteur) {
+                        indexFermenteur = i;
+                    }
+                    if (boutons.get(i) instanceof BoutonCuve) {
+                        indexCuve = i;
+                    }
+                    boutons.get(i).changerEtat();
+                }
             }
+            /*if (boutonActif != null) {
+                boutonActif.min();
+            }
+            boutonActif = boutonClique;
+            boutonActif.max();*/
         }
-        if (boutonActif != null) {
-            boutonActif.min();
-        }
-        boutonActif = boutonClique;
-        boutonActif.max(this);
-    }*/
+    }
 
     @Override
     public void onBackPressed() {
@@ -87,7 +129,6 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         txt.setTextColor(Color.BLACK);
         txt.setTypeface(null, Typeface.BOLD);
         txt.setTextSize(30);
-
         return txt;
     }
 
@@ -98,8 +139,8 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         TableFermenteur tableFermenteur = TableFermenteur.instance(this);
         for (int i=0; i<tableFermenteur.tailleListe(); i=i+1) {
             BoutonFermenteur boutonFermenteur = new BoutonFermenteur(this, tableFermenteur.recuperer(i));
-            //boutons.add(boutonFermenteur);
-            //boutonFermenteur.setOnClickListener(this);
+            boutons.add(boutonFermenteur);
+            boutonFermenteur.setOnClickListener(this);
             boutonFermenteur.setLayoutParams(parametreFermenteur);
             ligne.addView(boutonFermenteur);
         }
@@ -119,8 +160,8 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         TableCuve tableCuve = TableCuve.instance(this);
         for (int i=0; i<tableCuve.tailleListe(); i=i+1) {
             BoutonCuve boutonCuve = new BoutonCuve(this, tableCuve.recuperer(i));
-            //boutonCuve.setOnClickListener(this);
-            //boutons.add(boutonCuve);
+            boutonCuve.setOnClickListener(this);
+            boutons.add(boutonCuve);
             boutonCuve.setLayoutParams(parametreCuve);
             ligne.addView(boutonCuve);
         }
@@ -130,41 +171,5 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         layoutHorizontalScroll.addView(ligne);
 
         return layoutHorizontalScroll;
-    }
-
-    public void initialiser() {
-        /*Brassin 0
-        TableBrassin.instance(this).ajouter(313, null, null, System.currentTimeMillis(), 20, 0, null, 1.0F, 1.0F, 1.0F);
-
-        //Brassin 1
-        TableBrassin.instance(this).ajouter(314, null, null, System.currentTimeMillis(), 20, 0, null, 1.0F, 1.0F, 1.0F);
-
-        //Cuve 1 contenant brassin 0
-        cuves = new Cuve[4];
-        cuves[0] = new Cuve();
-        cuves[0].setId(0);
-        cuves[0].setNumero(1);
-        cuves[0].setEtat(1);
-        cuves[0].setCommentaireEtat("2psi");
-        cuves[0].setBrassin(0);
-        cuves[0].setDateEtat(System.currentTimeMillis() - 1000 * 60 * 60 * 24);
-
-        //Cuve 2
-        cuves[1] = new Cuve();
-        cuves[1].setId(1);
-        cuves[1].setNumero(2);
-
-        //Cuve 3 contenant Brassin 1
-        cuves[2] = new Cuve();
-        cuves[2].setId(2);
-        cuves[2].setNumero(3);
-        cuves[2].setEtat(2);
-        cuves[2].setBrassin(1);
-
-        //Cuve 4
-        cuves[3] = new Cuve();
-        cuves[3].setId(3);
-        cuves[3].setNumero(4);
-        cuves[3].setEtat(3);*/
     }
 }
