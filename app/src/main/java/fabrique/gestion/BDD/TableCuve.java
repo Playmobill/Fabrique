@@ -6,66 +6,57 @@ import android.database.Cursor;
 import java.util.ArrayList;
 
 import fabrique.gestion.Objets.Cuve;
-import fabrique.gestion.Objets.Emplacement;
 
-/**
- * Created by thibaut on 30/03/15.
- */
 public class TableCuve extends Controle{
 
-    private ArrayList<Cuve> result;
-    private static TableCuve instance;
+    private ArrayList<Cuve> cuves;
 
+    private static TableCuve INSTANCE;
 
-    public static TableCuve instance(Context ctxt){
-        if(instance == null){
-            instance = new TableCuve(ctxt);
+    public static TableCuve instance(Context contexte){
+        if(INSTANCE == null){
+            INSTANCE = new TableCuve(contexte);
         }
-        return instance;
+        return INSTANCE;
     }
 
-    private TableCuve(Context ctxt){
-        super(ctxt);
-        result = new ArrayList<>();
+    private TableCuve(Context contexte){
+        super(contexte, "Cuve");
 
-        Cursor tmp = super.select("Cuve");
+        cuves = new ArrayList<>();
+
+        Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            for (int i = 0; i < TableBrassin.instance(ctxt).listeSize(); i++) {
-                if(tmp.getInt(8) == TableBrassin.instance(ctxt).recuperer(i).getId()){
-                    result.add(new Cuve(tmp.getInt(0), tmp.getInt(1), tmp.getInt(2),tmp.getInt(3), tmp.getInt(4), tmp.getInt(5), tmp.getInt(6),tmp.getString(7), TableBrassin.instance(ctxt).recuperer(i)));
+            for (int i = 0; i < TableBrassin.instance(contexte).tailleListe(); i++) {
+                if(tmp.getInt(8) == TableBrassin.instance(contexte).recuperer(i).getId()){
+                    cuves.add(new Cuve(tmp.getInt(0), tmp.getInt(1), tmp.getInt(2),tmp.getInt(3), tmp.getInt(4), tmp.getInt(5), tmp.getInt(6),tmp.getString(7), TableBrassin.instance(contexte).recuperer(i)));
                 }
             }
         }
     }
 
-    private int listeSize() {
-        return result.size();
-    }
-
-    public void ajout(Context ctxt, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, String commentaireEtat, int id_brassin){
-        for (int i = 0; i < TableBrassin.instance(ctxt).listeSize(); i++) {
-            if(id_brassin == TableBrassin.instance(ctxt).recuperer(i).getId()){
-                result.add(new Cuve(result.size(), numero, capacite, emplacement, dateLavageAcide, etat, dateEtat, commentaireEtat, TableBrassin.instance(ctxt).recuperer(i)));
+    public void ajouter(Context contexte, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, String commentaireEtat, int id_brassin) {
+        if (id_brassin != -1) {
+            for (int i = 0; i < TableBrassin.instance(contexte).tailleListe(); i++) {
+                if (id_brassin == TableBrassin.instance(contexte).recuperer(i).getId()) {
+                    cuves.add(new Cuve(cuves.size(), numero, capacite, emplacement, dateLavageAcide, etat, dateEtat, commentaireEtat, TableBrassin.instance(contexte).recuperer(i)));
+                }
             }
+        } else {
+            cuves.add(new Cuve(cuves.size(), numero, capacite, emplacement, dateLavageAcide, etat, dateEtat, commentaireEtat, null));
         }
-        BDD.execSQL("INSERT INTO Cuve (numero, capacite, dateLavageAcide, id_emplacement, id_etatCuve, dateEtat, commentaireEtat, id_brassin) VALUES ("+numero+", "+capacite+", "+dateLavageAcide+", "+emplacement+", "+etat+", "+dateEtat+", '"+commentaireEtat+"', "+id_brassin+")");
-    }
-
-    public void ajout(Context ctxt, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, String commentaireEtat){
-        result.add(new Cuve(result.size(), numero, capacite, emplacement, dateLavageAcide, etat, dateEtat, commentaireEtat, null));
-        BDD.execSQL("INSERT INTO Cuve (numero, capacite, dateLavageAcide, id_emplacement, id_etatCuve, dateEtat, commentaireEtat) VALUES ("+numero+", "+capacite+", "+dateLavageAcide+", "+emplacement+", "+etat+", "+dateEtat+", '"+commentaireEtat+"')");
+        accesBDD.execSQL("INSERT INTO Cuve (numero, capacite, id_emplacement, dateLavageAcide, id_etatCuve, dateEtat, commentaireEtat, id_brassin) VALUES (" + numero + ", " + capacite + ", " + emplacement + ", " + dateLavageAcide + ", " + etat + ", " + dateEtat + ", '" + commentaireEtat + "', " + id_brassin + ")");
     }
 
     public Cuve recuperer(int index){
-        return result.get(index);
-    }
-
-    public void modifier(int index){
-        result.get(index);
+        return cuves.get(index);
     }
 
     public void supprimer(int index){
-        result.remove(index);
+        cuves.remove(index);
     }
 
+    public int tailleListe() {
+        return cuves.size();
+    }
 }

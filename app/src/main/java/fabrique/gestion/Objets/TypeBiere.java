@@ -1,25 +1,23 @@
 package fabrique.gestion.Objets;
 
-public class TypeBiere implements Comparable<TypeBiere> {
+public class TypeBiere extends Objet implements Comparable<TypeBiere> {
 
-    private int id;
     private String texte;
 
-    public int getId() { return id; }
+    public TypeBiere(int id, String texte){
+        super(id);
+        this.texte = texte;
+    }
+
     public String getTexte() { return texte; }
 
     public void setTexte(String texte) { this.texte = texte; }
 
-    public TypeBiere(int id, String texte){
-        this.id = id;
-        this.texte = texte;
-    }
-
     @Override
     public int compareTo(TypeBiere type) {
-        if (id == type.getId()) {
+        if (getId() == type.getId()) {
             return 0;
-        } else if (id > type.getId()) {
+        } else if (getId() > type.getId()) {
             return 1;
         }
         return -1;

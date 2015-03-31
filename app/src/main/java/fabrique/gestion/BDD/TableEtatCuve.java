@@ -9,51 +9,50 @@ import fabrique.gestion.Objets.EtatCuve;
 
 public class TableEtatCuve extends Controle{
 
-    private ArrayList<EtatCuve> result;
-    private static TableEtatCuve instance;
+    private ArrayList<EtatCuve> etats;
 
+    private static TableEtatCuve INSTANCE;
 
-    public static TableEtatCuve instance(Context ctxt){
-        if(instance == null){
-            instance = new TableEtatCuve(ctxt);
+    public static TableEtatCuve instance(Context contexte){
+        if(INSTANCE == null){
+            INSTANCE = new TableEtatCuve(contexte);
         }
-        return instance;
+        return INSTANCE;
     }
 
-    private TableEtatCuve(Context ctxt){
-        super(ctxt);
-        result = new ArrayList<>();
+    private TableEtatCuve(Context contexte){
+        super(contexte, "EtatCuve");
+        etats = new ArrayList<>();
 
-        Cursor tmp = super.select("EtatCuve");
+        Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            result.add(new EtatCuve(tmp.getInt(0), tmp.getString(1)));
+            etats.add(new EtatCuve(tmp.getInt(0), tmp.getString(1)));
         }
     }
 
-    public void ajout(String texte){
-        result.add(new EtatCuve(result.size(), texte));
-        BDD.execSQL("INSERT INTO EtatCuve (texte) VALUES ('"+texte+"')");
+    public void ajouter(String texte){
+        etats.add(new EtatCuve(etats.size(), texte));
+        accesBDD.execSQL("INSERT INTO EtatCuve (texte) VALUES ('"+texte+"')");
     }
 
     public EtatCuve recuperer(int index){
-        return result.get(index);
-    }
-
-    public void modifier(int index, String texte){
-        result.get(index).setTexte(texte);
+        return etats.get(index);
     }
 
     public void supprimer(int index){
-        result.remove(index);
+        etats.remove(index);
+    }
+
+    public int tailleListe() {
+        return etats.size();
     }
 
     public String etat(int numero){
-        for (int i = 0; i < result.size(); i++) {
-            if (result.get(i).getId() == numero){
-                return result.get(i).getTexte();
+        for (int i = 0; i < etats.size(); i++) {
+            if (etats.get(i).getId() == numero){
+                return etats.get(i).getTexte();
             }
         }
         return null;
     }
-
 }

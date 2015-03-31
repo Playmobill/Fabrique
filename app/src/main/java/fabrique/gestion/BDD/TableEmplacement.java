@@ -2,66 +2,69 @@ package fabrique.gestion.BDD;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import fabrique.gestion.Objets.Emplacement;
 
 public class TableEmplacement extends Controle {
 
-    private ArrayList<Emplacement> result;
-    private static TableEmplacement instance;
+    private ArrayList<Emplacement> emplacements;
 
+    private static TableEmplacement INSTANCE;
 
-    public static TableEmplacement instance(Context ctxt){
-        if(instance == null){
-            instance = new TableEmplacement(ctxt);
+    public static TableEmplacement instance(Context contexte){
+        if(INSTANCE == null){
+            INSTANCE = new TableEmplacement(contexte);
         }
-        return instance;
+        return INSTANCE;
     }
 
-    private TableEmplacement(Context ctxt){
-        super(ctxt);
-        result = new ArrayList<>();
+    private TableEmplacement(Context contexte){
+        super(contexte, "Emplacement");
 
-        Cursor tmp = super.select("Emplacement");
+        emplacements = new ArrayList<>();
+        Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            result.add(new Emplacement(tmp.getInt(0), tmp.getString(1)));
+            emplacements.add(new Emplacement(tmp.getInt(0), tmp.getString(1)));
+            Log.i("TableEmplacement", "BDD " + tmp.getString(1));
         }
 
-        ajout("SS");
-        ajout("RC");
-        ajout("Ch.Froide");
+        ajouter("SS");
+        ajouter("RC");
+        ajouter("ChFroide");
     }
 
-    public void ajout(String texte){
-        result.add(new Emplacement(result.size(), texte));
-        BDD.execSQL("INSERT INTO Emplacement (texte) VALUES ('"+texte+"')");
+    public void ajouter(String texte){
+        emplacements.add(new Emplacement(emplacements.size(), texte));
+        accesBDD.execSQL("INSERT INTO Emplacement (texte) VALUES ('"+texte+"')");
     }
 
     public Emplacement recuperer(int index){
-        return result.get(index);
+        return emplacements.get(index);
     }
 
     public void modifier(int index, String texte){
-        result.get(index).setTexte(texte);
+        emplacements.get(index).setTexte(texte);
     }
 
     public void supprimer(int index){
-        result.remove(index);
+        emplacements.remove(index);
     }
 
-    public String emplacement(int numero){
-        for (int i = 0; i < result.size(); i++) {
-            if (result.get(i).getId() == numero){
-                return result.get(i).getTexte();
-            }
-        }
-        return null;
+    public int tailleListe() {
+        return emplacements.size();
+    }
+
+    public String emplacement(int index){
+        return emplacements.get(index).getTexte();
     }
 
     public String[] emplacements () {
-        String[] etats = new String[result.size()];
-        for (int i=0; i<result.size(); i++) {
+        String[] etats = new String[emplacements.size()];
+        for (int i=0; i<emplacements.size(); i++) {
+            Log.i("TableEmplacement", "Tableau " + emplacement(i));
             etats[i] = emplacement(i);
         }
         return etats;

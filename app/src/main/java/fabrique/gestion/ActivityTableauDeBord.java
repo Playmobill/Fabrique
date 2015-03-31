@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.Objets.Cuve;
-import fabrique.gestion.Objets.Fermenteur;
 import fabrique.gestion.Widget.BoutonFermenteur;
 
 public class ActivityTableauDeBord extends Activity /*implements View.OnClickListener*/ {
@@ -94,9 +93,9 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
         LinearLayout ligne = new LinearLayout(this);
 
         LinearLayout.LayoutParams parametreFermenteur = new LinearLayout.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.heightPixels*9/20);
-
-        for (Fermenteur fermenteur: TableFermenteur.instance(this).fermenteurs()) {
-            BoutonFermenteur boutonFermenteur = new BoutonFermenteur(this, fermenteur);
+        TableFermenteur tableFermenteur = TableFermenteur.instance(this);
+        for (int i=0; i<tableFermenteur.tailleListe(); i=i+1) {
+            BoutonFermenteur boutonFermenteur = new BoutonFermenteur(this, tableFermenteur.recuperer(i));
             //boutons.add(boutonFermenteur);
             //boutonFermenteur.setOnClickListener(this);
             boutonFermenteur.setLayoutParams(parametreFermenteur);

@@ -7,9 +7,8 @@ import java.util.Calendar;
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatCuve;
 
-public class Cuve implements Comparable<Cuve> {
+public class Cuve extends Objet implements Comparable<Cuve> {
 
-    private int id;
     private int numero;
     private int capacite;
     private int emplacement;
@@ -19,23 +18,26 @@ public class Cuve implements Comparable<Cuve> {
     private String commentaireEtat;
     private Brassin brassin;
 
-    public Cuve() {
-        commentaireEtat = "";
-        dateLavageAcide = 0;
+    public Cuve(int id, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, String commentaireEtat, Brassin brassin){
+        super(id);
+        this.numero = numero;
+        this.capacite = capacite;
+        this.emplacement = emplacement;
+        this.dateLavageAcide = dateLavageAcide;
+        this.etat = etat;
+        this.dateEtat = dateEtat;
+        this.commentaireEtat = commentaireEtat;
+        this.brassin = brassin;
     }
-    public int getId() {
-        return id;
-    }
+
     public int getNumero() {
         return numero;
     }
     public int getCapacite() {
         return capacite;
     }
-
-
-    public String getEmplacement(Context ctxt) {
-        return TableEmplacement.instance(ctxt).emplacement(emplacement);
+    public String getEmplacement(Context contexte) {
+        return TableEmplacement.instance(contexte).emplacement(emplacement);
     }
     public long getDateLavageAcide() {
         return dateLavageAcide;
@@ -66,9 +68,6 @@ public class Cuve implements Comparable<Cuve> {
         return brassin;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
     public void setNumero(int numero) {
         this.numero = numero;
     }
@@ -95,9 +94,9 @@ public class Cuve implements Comparable<Cuve> {
     @Override
     public int compareTo(Cuve cuve) {
         if (numero == cuve.numero) {
-            if (id == cuve.id) {
+            if (getId() == cuve.getId()) {
                 return 0;
-            } else if (id > cuve.id) {
+            } else if (getId() > cuve.getId()) {
                 return 1;
             } else {
                 return -1;
@@ -106,17 +105,5 @@ public class Cuve implements Comparable<Cuve> {
             return 1;
         }
         return -1;
-    }
-
-    public Cuve(int id, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, String commentaireEtat, Brassin brassin){
-        this.id = id;
-        this.numero = numero;
-        this.capacite = capacite;
-        this.emplacement = emplacement;
-        this.dateLavageAcide = dateLavageAcide;
-        this.etat = etat;
-        this.dateEtat = dateEtat;
-        this.commentaireEtat = commentaireEtat;
-        this.brassin = brassin;
     }
 }

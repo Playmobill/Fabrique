@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -37,9 +38,11 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
 
         setContentView(R.layout.activity_ajouter_fermenteur);
 
+
         editNumero = (EditText)findViewById(R.id.editNumero);
         TableFermenteur tableFermenteur = TableFermenteur.instance(this);
-        int i = 0;
+
+        int i;
         for (i=0; ((i<tableFermenteur.tailleResult()) && (tableFermenteur.recuperer(i).getNumero() == i+1)); i=i+1) {
         }
         editNumero.setText("" + (i+1));
@@ -62,6 +65,7 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
 
         btnAjouter = (Button)findViewById(R.id.btnAjouter);
         btnAjouter.setOnClickListener(this);
+        Log.i("AjouterFermenteur", "Ligne 68");
     }
 
     @Override

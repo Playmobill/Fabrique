@@ -2,6 +2,7 @@ package fabrique.gestion.BDD;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -9,72 +10,59 @@ import fabrique.gestion.Objets.EtatFermenteur;
 
 public class TableEtatFermenteur extends Controle {
 
-    private ArrayList<EtatFermenteur> result;
+    private ArrayList<EtatFermenteur> etats;
 
-    private static TableEtatFermenteur instance;
+    private static TableEtatFermenteur INSTANCE;
 
     public static TableEtatFermenteur instance(Context ctxt){
-        if(instance == null){
-            instance = new TableEtatFermenteur(ctxt);
+        if(INSTANCE == null){
+            INSTANCE = new TableEtatFermenteur(ctxt);
         }
-        return instance;
+        return INSTANCE;
     }
 
-    private TableEtatFermenteur(Context ctxt){
-        super(ctxt);
+    private TableEtatFermenteur(Context contexte){
+        super(contexte, "EtatFermenteur");
 
-        result = new ArrayList<>();
-
-        Cursor tmp = super.select("EtatFermenteur");
+        etats = new ArrayList<>();
+        Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            result.add(new EtatFermenteur(tmp.getInt(0), tmp.getString(1)));
+            etats.add(new EtatFermenteur(tmp.getInt(0), tmp.getString(1)));
+            Log.i("TableEtatFermenteur", "BDD " + tmp.getString(1));
         }
 
-        ajout("Vide");
-        ajout("Fermentation");
-        ajout("Lavé");
+        ajouter("Vide");
+        ajouter("Fermentation");
+        ajouter("Lavé");
     }
 
-    public void ajout(String texte){
-        BDD.beginTransaction();
-        try {
-            BDD.execSQL("INSERT INTO EtatFermenteur (texte) VALUES ('"+texte+"')");
-            result.add(new EtatFermenteur(result.size(), texte));
-
-            BDD.setTransactionSuccessful();
-        } catch(Exception e) {
-            System.out.println(e);
-        } finally {
-            BDD.endTransaction();
-        }
+    public void ajouter(String texte){
+        accesBDD.execSQL("INSERT INTO EtatFermenteur (texte) VALUES ('"+texte+"')");
+        etats.add(new EtatFermenteur(etats.size(), texte));
     }
 
     public EtatFermenteur recuperer(int index){
-        return result.get(index);
-    }
-
-    public void modifier(int index, String texte){
-        result.get(index).setTexte(texte);
+        return etats.get(index);
     }
 
     public void supprimer(int index){
-        result.remove(index);
+        etats.remove(index);
     }
 
-    public String etat(int numero){
-        for (int i = 0; i < result.size(); i++) {
-            if (result.get(i).getId() == numero){
-                return result.get(i).getTexte();
-            }
-        }
-        return null;
+    public int tailleListe() {
+        return etats.size();
+    }
+
+    public String etat(int index){
+        return etats.get(index).getTexte();
     }
 
     public String[] etats () {
-        String[] etats = new String[result.size()];
-        for (int i=0; i<result.size(); i++) {
-            etats[i] = etat(i);
+        String[] etats2 = new String[etats.size()];
+        for (int i=0; i<etats.size(); i++) {
+            Log.i("TableEtatFermenteur", "Tableau " + etat(i));
+            etats2[i] = etat(i);
         }
-        return etats;
+        return etats2;
     }
 }

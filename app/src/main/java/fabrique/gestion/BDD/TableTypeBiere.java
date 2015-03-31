@@ -7,46 +7,43 @@ import java.util.ArrayList;
 
 import fabrique.gestion.Objets.TypeBiere;
 
-/**
- * Created by thibaut on 26/03/15.
- */
 public class TableTypeBiere extends Controle {
 
-    private ArrayList<TypeBiere> result;
+    private ArrayList<TypeBiere> types;
 
-    private static TableTypeBiere instance;
+    private static TableTypeBiere INSTANCE;
 
-    public static TableTypeBiere instance(Context ctxt){
-        if(instance == null){
-            instance = new TableTypeBiere(ctxt);
+    public static TableTypeBiere instance(Context contexte){
+        if(INSTANCE == null){
+            INSTANCE = new TableTypeBiere(contexte);
         }
-        return instance;
+        return INSTANCE;
     }
 
-    private TableTypeBiere(Context ctxt){
-        super(ctxt);
-        result = new ArrayList<>();
+    private TableTypeBiere(Context contexte){
+        super(contexte, "TypeBiere");
+        types = new ArrayList<>();
 
-        Cursor tmp = super.select("TypeBiere");
+        Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            result.add(new TypeBiere(tmp.getInt(0), tmp.getString(1)));
+            types.add(new TypeBiere(tmp.getInt(0), tmp.getString(1)));
         }
     }
 
     public void ajout(String texte){
-        result.add(new TypeBiere(result.size(), texte));
-        BDD.execSQL("INSERT INTO TypeBiere (texte) VALUES ('"+texte+"')");
+        types.add(new TypeBiere(types.size(), texte));
+        accesBDD.execSQL("INSERT INTO TypeBiere (texte) VALUES ('" + texte + "')");
     }
 
     public TypeBiere recuperer(int index){
-        return result.get(index);
-    }
-
-    public void modifier(int index, String texte){
-        result.get(index).setTexte(texte);
+        return types.get(index);
     }
 
     public void supprimer(int index){
-        result.remove(index);
+        types.remove(index);
+    }
+
+    public int tailleListe() {
+        return types.size();
     }
 }
