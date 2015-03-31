@@ -27,7 +27,7 @@ public class BDD extends SQLiteOpenHelper {
                                                 "numero INTEGER," +
                                                 "commentaire TEXT," +
                                                 "acronyme TEXT," +
-                                                "dateCreation INTEGER," +
+                                                "dateCreation INTEGER NOT NULL," +
                                                 "quantite INTEGER," +
                                                 "id_typeBiere INTEGER NOT NULL," +
                                                 "couleur TEXT," +
@@ -37,23 +37,23 @@ public class BDD extends SQLiteOpenHelper {
 
     private static String createurTableFermenteur = "CREATE TABLE IF NOT EXISTS Fermenteur (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "numero INTEGER," +
-                                                "capacite INTEGER," +
+                                                "numero INTEGER NOT NULL," +
+                                                "capacite INTEGER NOT NULL," +
                                                 "id_emplacement INTEGER NOT NULL," +
-                                                "dateLavageAcide INTEGER," +
+                                                "dateLavageAcide INTEGER NOT NULL," +
                                                 "id_etatFermenteur INTEGER NOT NULL," +
-                                                "dateEtat INTEGER," +
+                                                "dateEtat INTEGER NOT NULL," +
                                                 "id_brassin INTEGER)";
 
-    private static String createurTableCuve = "CREATE TABLE Cuve (" +
+    private static String createurTableCuve = "CREATE TABLE IF NOT EXISTS Cuve (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "numero INTEGER," +
-                                                "capacite INTEGER," +
+                                                "numero INTEGER NOT NULL," +
+                                                "capacite INTEGER NOT NULL," +
                                                 "id_emplacement INTEGER NOT NULL," +
-                                                "dateLavageAcide INTEGER," +
+                                                "dateLavageAcide INTEGER NOT NULL," +
                                                 "id_etatCuve INTEGER NOT NULL," +
-                                                "dateEtat INTEGER," +
-                                                "commentaireEtat TEXT," +
+                                                "dateEtat INTEGER NOT NULL," +
+                                                "commentaireEtat TEXT NOT NULL," +
                                                 "id_brassin INTEGER)";
 
     public BDD(Context context, String name, SQLiteDatabase.CursorFactory factory) {
@@ -68,6 +68,7 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL(createurTableEtatFermenteur);
         db.execSQL(createurTableFermenteur);
         db.execSQL(createurTableEtatCuve);
+        db.execSQL(createurTableCuve);
     }
 
     @Override

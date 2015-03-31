@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import fabrique.gestion.Objets.TypeBiere;
 
@@ -30,9 +31,10 @@ public class TableTypeBiere extends Controle {
         }
     }
 
-    public void ajout(String texte){
+    public void ajouter(String texte){
         types.add(new TypeBiere(types.size(), texte));
         accesBDD.execSQL("INSERT INTO TypeBiere (texte) VALUES ('" + texte + "')");
+        Collections.sort(types);
     }
 
     public TypeBiere recuperer(int index){

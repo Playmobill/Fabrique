@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import fabrique.gestion.Objets.Cuve;
 
@@ -27,10 +28,14 @@ public class TableCuve extends Controle{
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            for (int i = 0; i < TableBrassin.instance(contexte).tailleListe(); i++) {
-                if(tmp.getInt(8) == TableBrassin.instance(contexte).recuperer(i).getId()){
-                    cuves.add(new Cuve(tmp.getInt(0), tmp.getInt(1), tmp.getInt(2),tmp.getInt(3), tmp.getInt(4), tmp.getInt(5), tmp.getInt(6),tmp.getString(7), TableBrassin.instance(contexte).recuperer(i)));
+            if (tmp.getInt(8) != -1) {
+                for (int i = 0; i < TableBrassin.instance(contexte).tailleListe(); i++) {
+                    if (tmp.getInt(8) == TableBrassin.instance(contexte).recuperer(i).getId()) {
+                        cuves.add(new Cuve(tmp.getInt(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getLong(4), tmp.getInt(5), tmp.getLong(6), tmp.getString(7), TableBrassin.instance(contexte).recuperer(i)));
+                    }
                 }
+            } else {
+                cuves.add(new Cuve(tmp.getInt(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getLong(4), tmp.getInt(5), tmp.getLong(6), tmp.getString(7), null));
             }
         }
     }
@@ -46,6 +51,7 @@ public class TableCuve extends Controle{
             cuves.add(new Cuve(cuves.size(), numero, capacite, emplacement, dateLavageAcide, etat, dateEtat, commentaireEtat, null));
         }
         accesBDD.execSQL("INSERT INTO Cuve (numero, capacite, id_emplacement, dateLavageAcide, id_etatCuve, dateEtat, commentaireEtat, id_brassin) VALUES (" + numero + ", " + capacite + ", " + emplacement + ", " + dateLavageAcide + ", " + etat + ", " + dateEtat + ", '" + commentaireEtat + "', " + id_brassin + ")");
+        Collections.sort(cuves);
     }
 
     public Cuve recuperer(int index){

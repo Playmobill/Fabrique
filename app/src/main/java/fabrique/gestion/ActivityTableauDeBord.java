@@ -13,8 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.Objets.Cuve;
+import fabrique.gestion.Widget.BoutonCuve;
 import fabrique.gestion.Widget.BoutonFermenteur;
 
 public class ActivityTableauDeBord extends Activity /*implements View.OnClickListener*/ {
@@ -114,13 +116,14 @@ public class ActivityTableauDeBord extends Activity /*implements View.OnClickLis
 
         LinearLayout.LayoutParams parametreCuve = new LinearLayout.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.heightPixels*9/20);
 
-        /*for (Cuve cuve : cuves) {
-            BoutonCuve boutonCuve = new BoutonCuve(this, cuve);
+        TableCuve tableCuve = TableCuve.instance(this);
+        for (int i=0; i<tableCuve.tailleListe(); i=i+1) {
+            BoutonCuve boutonCuve = new BoutonCuve(this, tableCuve.recuperer(i));
             //boutonCuve.setOnClickListener(this);
             //boutons.add(boutonCuve);
             boutonCuve.setLayoutParams(parametreCuve);
             ligne.addView(boutonCuve);
-        }*/
+        }
 
         //Layout pour le defilement horizontal
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(this);

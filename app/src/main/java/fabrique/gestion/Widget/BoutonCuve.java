@@ -20,14 +20,14 @@ public class BoutonCuve extends Bouton {
 
     public void min() {
         super.min();
-        String texte = "C" + cuve.getNumero() + "\n" + "\n" + cuve.getEtat(null) + "\n";
+        String texte = "C" + cuve.getNumero() + "\n" + "\n" + cuve.getEtat(getContext()) + "\n";
         if (cuve.getBrassin() != null) {
             texte = texte + cuve.getBrassin().getNumero();
         }
         setText(texte);
     }
 
-    public void max(Context ctxt) {
+    public void max() {
         super.max();
         String texte = "C" + cuve.getNumero() + "\n";
 
@@ -35,9 +35,9 @@ public class BoutonCuve extends Bouton {
             texte = texte + cuve.getCapacite() + "L";
         }
 
-        texte = texte + "\n" + cuve.getEmplacement(ctxt) + "\n";
+        texte = texte + "\n" + cuve.getEmplacement(getContext()) + "\n";
 
-        texte = texte + cuve.getEtat(null) + "\n";
+        texte = texte + cuve.getEtat(getContext()) + "\n";
 
         if (cuve.getBrassin() != null) {
             texte = texte + cuve.getBrassin().getNumero();

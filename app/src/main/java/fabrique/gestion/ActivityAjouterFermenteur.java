@@ -44,12 +44,11 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
 
         setContentView(R.layout.activity_ajouter_fermenteur);
 
-
         editNumero = (EditText)findViewById(R.id.editNumero);
         TableFermenteur tableFermenteur = TableFermenteur.instance(this);
 
         int i;
-        for (i=0; ((i<tableFermenteur.tailleResult()) && (tableFermenteur.recuperer(i).getNumero() == i+1)); i=i+1) {
+        for (i=0; ((i<tableFermenteur.tailleListe()) && (tableFermenteur.recuperer(i).getNumero() == i+1)); i=i+1) {
         }
         editNumero.setText("" + (i+1));
 
@@ -98,7 +97,7 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
             Calendar calendar = new GregorianCalendar(annee, mois, jour);
             long dateLavageAcide = calendar.getTimeInMillis();
 
-            TableFermenteur.instance(this).ajout(null, numero, capacite, emplacement, dateLavageAcide, etat, System.currentTimeMillis(), -1);
+            TableFermenteur.instance(this).ajouter(null, numero, capacite, emplacement, dateLavageAcide, etat, System.currentTimeMillis(), -1);
 
             Intent intent = new Intent(this, ActivityTableauDeBord.class);
             startActivity(intent);

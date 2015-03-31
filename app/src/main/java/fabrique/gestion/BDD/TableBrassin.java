@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import fabrique.gestion.Objets.Brassin;
 
@@ -33,7 +34,8 @@ public class TableBrassin extends Controle {
 
     public void ajouter(int numero, String commentaire, String acronyme, int dateCreation, int quantite, int id_typeBiere, String couleur, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
         brassins.add(new Brassin(brassins.size(), numero, commentaire, acronyme, dateCreation, quantite, id_typeBiere, couleur, densiteOriginale, densiteFinale, pourcentageAlcool));
-        accesBDD.execSQL("INSERT INTO Brassin (numero, commentaire, acronyme, dateCreation, quantite, id_typeBiere, couleur, densiteOriginale, densiteFinale, pourcentageAlcool) VALUES ("+numero+", '"+commentaire+"', '"+acronyme+"', "+dateCreation+", "+quantite+", "+id_typeBiere+", '"+couleur+"', "+densiteOriginale+", "+densiteFinale+", "+pourcentageAlcool+")");
+        accesBDD.execSQL("INSERT INTO Brassin (numero, commentaire, acronyme, dateCreation, quantite, id_typeBiere, couleur, densiteOriginale, densiteFinale, pourcentageAlcool) VALUES (" + numero + ", '" + commentaire + "', '" + acronyme + "', " + dateCreation + ", " + quantite + ", " + id_typeBiere + ", '" + couleur + "', " + densiteOriginale + ", " + densiteFinale + ", " + pourcentageAlcool + ")");
+        Collections.sort(brassins);
     }
 
     public Brassin recuperer(int index){

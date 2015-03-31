@@ -28,6 +28,10 @@ public class TableEtatCuve extends Controle{
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             etats.add(new EtatCuve(tmp.getInt(0), tmp.getString(1)));
         }
+
+        ajouter("Vide");
+        ajouter("En service");
+        ajouter("Lavé");
     }
 
     public void ajouter(String texte){
@@ -47,12 +51,15 @@ public class TableEtatCuve extends Controle{
         return etats.size();
     }
 
-    public String etat(int numero){
-        for (int i = 0; i < etats.size(); i++) {
-            if (etats.get(i).getId() == numero){
-                return etats.get(i).getTexte();
-            }
+    public String etat(int index){
+        return etats.get(index).getTexte();
+    }
+
+    public String[] etats () {
+        String[] etats2 = new String[etats.size()];
+        for (int i=0; i<etats.size(); i++) {
+            etats2[i] = etat(i);
         }
-        return null;
+        return etats2;
     }
 }
