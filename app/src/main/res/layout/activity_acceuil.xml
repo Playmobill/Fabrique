@@ -14,7 +14,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Tableau de bord"
-            android:id="@+id/BtnApplication"
+            android:id="@+id/btnApplication"
             android:gravity="center"
             android:layout_margin="25dp"
             android:clickable="true"
@@ -28,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Gestion"
-            android:id="@+id/BtnConfiguration"
+            android:id="@+id/btnConfiguration"
             android:gravity="center"
             android:layout_margin="25dp"
             android:clickable="true"
@@ -38,4 +38,33 @@
             android:background="@color/blanc"
             android:layout_weight="1" />
     </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Liste"
+            android:id="@+id/btnListe"
+            android:gravity="center"
+            android:layout_margin="25dp"
+            android:clickable="true"
+            android:textSize="40sp"
+            android:textAllCaps="false"
+            android:textColor="@color/noir"
+            android:background="@color/blanc"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="New Button"
+            android:id="@+id/button2"
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:layout_margin="25dp" />
+    </TableRow>
+
 </TableLayout>
