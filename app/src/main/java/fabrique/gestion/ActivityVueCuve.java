@@ -10,10 +10,10 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import fabrique.gestion.BDD.TableFermenteur;
-import fabrique.gestion.Objets.Fermenteur;
+import fabrique.gestion.BDD.TableCuve;
+import fabrique.gestion.Objets.Cuve;
 
-public class ActivityVueFermenteur extends Activity {
+public class ActivityVueCuve extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +26,17 @@ public class ActivityVueFermenteur extends Activity {
         int index = intent.getIntExtra("index", -1);
 
         LinearLayout layout = new LinearLayout(this);
-        layout.addView(descriptionFermenteur(this, index));
+        layout.addView(descriptionCuve(this, index));
         setContentView(layout);
     }
 
-    public LinearLayout descriptionFermenteur(Context contexte, int index) {
-        Fermenteur fermenteur = TableFermenteur.instance(this).recuperer(index);
+    public LinearLayout descriptionCuve(Context contexte, int index) {
+        Cuve cuve = TableCuve.instance(this).recuperer(index);
 
         LinearLayout layout = new LinearLayout(contexte);
 
         TextView titre = new TextView(contexte);
-        titre.setText("Fermenteur " + fermenteur.getNumero());
+        titre.setText(" " + cuve.getNumero());
         titre.setTextSize(40);
         titre.setTypeface(null, Typeface.BOLD);
 

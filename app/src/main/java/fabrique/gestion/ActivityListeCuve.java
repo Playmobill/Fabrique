@@ -46,7 +46,7 @@ public class ActivityListeCuve extends Activity implements OnItemSelectedListene
         liste.setSelection(position);
         TableRow ligne = (TableRow) findViewById(R.id.ligne);
         ligne.removeAllViews();
-        ligne.addView(new ActivityVueCuve().creerInterface(this, liste.getSelectedItemPosition()));
+        ligne.addView(new ActivityVueCuve().descriptionCuve(this, liste.getSelectedItemPosition()));
     }
 
     @Override
