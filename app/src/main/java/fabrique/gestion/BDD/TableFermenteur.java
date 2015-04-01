@@ -80,4 +80,12 @@ public class TableFermenteur extends Controle {
     public int tailleListe() {
         return fermenteurs.size();
     }
+
+    public String[] numeroFermenteurs() {
+        String[] numeroFermenteurs = new String[fermenteurs.size()];
+        for (int i=0; i<fermenteurs.size() ; i++) {
+            numeroFermenteurs[i] = fermenteurs.get(i).getNumero() + "";
+        }
+        return numeroFermenteurs;
+    }
 }

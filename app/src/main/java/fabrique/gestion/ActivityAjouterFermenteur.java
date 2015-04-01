@@ -63,7 +63,7 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
         editEtat = (Spinner)this.findViewById(R.id.editEtat);
         TableEtatFermenteur tableEtatFermenteur = TableEtatFermenteur.instance(this);
         ArrayAdapter<String> adapteurEtat = new ArrayAdapter<>(this, R.layout.spinner_style, tableEtatFermenteur.etats());
-        adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapteurEtat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editEtat.setAdapter(adapteurEtat);
 
         dateLavageAcide = (ImageButton) findViewById(R.id.imageButton1);

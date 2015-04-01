@@ -1,11 +1,11 @@
 package fabrique.gestion;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,24 +24,24 @@ public class ActivityVueFermenteur extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        //Taille ecran
-        DisplayMetrics tailleEcran = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(tailleEcran);
-
         Intent intent = getIntent();
         int index = intent.getIntExtra("index", -1);
+
+        setContentView(creerInterface(this, index));
+    }
+
+    public LinearLayout creerInterface(Context contexte, int index) {
         Fermenteur fermenteur = TableFermenteur.instance(this).recuperer(index);
 
-        LinearLayout layout = new LinearLayout(this);
+        LinearLayout layout = new LinearLayout(contexte);
 
-        titre = new TextView(this);
+        titre = new TextView(contexte);
         titre.setText("Fermenteur " + fermenteur.getNumero());
         titre.setTextSize(40);
         titre.setTypeface(null, Typeface.BOLD);
 
         layout.addView(titre);
-
-        setContentView(layout);
+        return layout;
     }
 
     @Override

@@ -50,7 +50,7 @@ public class ActivityAccueil extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, ActivityGestion.class);
             startActivity(intent);
         }  else if (view.equals(btnListe)) {
-            Intent intent = new Intent(this, ActivityGestion.class);
+            Intent intent = new Intent(this, ActivityListe.class);
             startActivity(intent);
         }
     }
