@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="false">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--Numéro et date-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Numéro de brassin : "
+                android:id="@+id/texteNumero"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date du brassin : "
+                android:id="@+id/texteDate"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <!--Titre commentaire-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Commentaire : "
+                android:id="@+id/texteCommentaire"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_span="2" />
+        </TableRow>
+
+        <!--Commentaire-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/texteCommentaireBrassin"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_span="2" />
+        </TableRow>
+
+        <!--Acronyme et type de bière-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Acronyme : "
+                android:id="@+id/texteAcronyme"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type de bière : "
+                android:id="@+id/texteTypeBiere"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+        <!--Couleur et quantité-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Couleur : "
+                android:id="@+id/texteCouleur"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quantité : "
+                android:id="@+id/texteQuantite"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <!--Densité original et final-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Densité originale : "
+                android:id="@+id/texteDensiteOriginale"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Densité finale : "
+                android:id="@+id/texteDensiteFinale"
+                android:textSize="30sp"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <!--Pourcentage Alcool-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="%Alc/vol : "
+                android:id="@+id/textePoucentageAlcool"
+                android:textSize="30sp"
+                android:textColor="@color/noir" />
+
+        </TableRow>
+
+    </TableLayout>
+</ScrollView>

@@ -11,7 +11,7 @@ import android.widget.Button;
 
 public class ActivityAccueil extends Activity implements View.OnClickListener {
 
-    Button btnApplication, btnConfiguration;
+    Button btnApplication, btnConfiguration, btnListe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +25,20 @@ public class ActivityAccueil extends Activity implements View.OnClickListener {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        btnApplication = (Button) findViewById(R.id.BtnApplication);
+        btnApplication = (Button) findViewById(R.id.btnApplication);
         btnApplication.setWidth(metrics.widthPixels/3);
         btnApplication.setHeight(metrics.heightPixels/3);
         btnApplication.setOnClickListener(this);
 
-        btnConfiguration = (Button) findViewById(R.id.BtnConfiguration);
+        btnConfiguration = (Button) findViewById(R.id.btnConfiguration);
         btnConfiguration.setWidth(metrics.widthPixels/3);
         btnConfiguration.setHeight(metrics.heightPixels/3);
         btnConfiguration.setOnClickListener(this);
+
+        btnListe = (Button) findViewById(R.id.btnListe);
+        btnListe.setWidth(metrics.widthPixels/3);
+        btnListe.setHeight(metrics.heightPixels/3);
+        btnListe.setOnClickListener(this);
     }
 
     @Override
@@ -42,6 +47,9 @@ public class ActivityAccueil extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, ActivityTableauDeBord.class);
             startActivity(intent);
         } else if (view.equals(btnConfiguration)) {
+            Intent intent = new Intent(this, ActivityGestion.class);
+            startActivity(intent);
+        }  else if (view.equals(btnListe)) {
             Intent intent = new Intent(this, ActivityGestion.class);
             startActivity(intent);
         }
