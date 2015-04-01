@@ -201,6 +201,22 @@
 
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:text="Ajouter"
+                android:textSize="30sp"
+                android:id="@+id/btnAjouter"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textColor="@color/noir"
+                android:background="@color/blanc" />
+
+        </TableRow>
+
     </TableLayout>
 
 </ScrollView>
