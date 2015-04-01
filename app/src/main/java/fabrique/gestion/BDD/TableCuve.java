@@ -65,4 +65,12 @@ public class TableCuve extends Controle{
     public int tailleListe() {
         return cuves.size();
     }
+
+    public String[] numeros() {
+        String[] numeroFermenteurs = new String[cuves.size()];
+        for (int i=0; i<cuves.size() ; i++) {
+            numeroFermenteurs[i] = cuves.get(i).getNumero() + "";
+        }
+        return numeroFermenteurs;
+    }
 }

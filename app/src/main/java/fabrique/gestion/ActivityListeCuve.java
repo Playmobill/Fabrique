@@ -12,9 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TableRow;
 
-import fabrique.gestion.BDD.TableFermenteur;
+import fabrique.gestion.BDD.TableCuve;
 
-public class ActivityListeFermenteur extends Activity implements OnItemSelectedListener {
+public class ActivityListeCuve extends Activity implements OnItemSelectedListener {
 
     private Spinner liste;
 
@@ -25,13 +25,13 @@ public class ActivityListeFermenteur extends Activity implements OnItemSelectedL
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        setContentView(R.layout.activity_liste_fermenteur);
+        setContentView(R.layout.activity_liste_cuve);
 
         liste = (Spinner)findViewById(R.id.liste);
-        TableFermenteur tableFermenteur = TableFermenteur.instance(this);
-        ArrayAdapter<String> adapteurFermenteur = new ArrayAdapter<>(this, R.layout.spinner_style, tableFermenteur.numeros());
-        adapteurFermenteur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        liste.setAdapter(adapteurFermenteur);
+        TableCuve tableCuve = TableCuve.instance(this);
+        ArrayAdapter<String> adapteurCuve = new ArrayAdapter<>(this, R.layout.spinner_style, tableCuve.numeros());
+        adapteurCuve.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        liste.setAdapter(adapteurCuve);
         liste.setOnItemSelectedListener(this);
     }
 
@@ -46,7 +46,7 @@ public class ActivityListeFermenteur extends Activity implements OnItemSelectedL
         liste.setSelection(position);
         TableRow ligne = (TableRow) findViewById(R.id.ligne);
         ligne.removeAllViews();
-        ligne.addView(new ActivityVueFermenteur().creerInterface(this, liste.getSelectedItemPosition()));
+        ligne.addView(new ActivityVueCuve().creerInterface(this, liste.getSelectedItemPosition()));
     }
 
     @Override

@@ -15,8 +15,6 @@ import fabrique.gestion.Objets.Fermenteur;
 
 public class ActivityVueFermenteur extends Activity {
 
-    private TextView titre;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +33,7 @@ public class ActivityVueFermenteur extends Activity {
 
         LinearLayout layout = new LinearLayout(contexte);
 
-        titre = new TextView(contexte);
+        TextView titre = new TextView(contexte);
         titre.setText("Fermenteur " + fermenteur.getNumero());
         titre.setTextSize(40);
         titre.setTypeface(null, Typeface.BOLD);

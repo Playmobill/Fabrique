@@ -62,8 +62,8 @@ public class ActivityListe extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, ActivityListeFermenteur.class);
             startActivity(intent);
         } else if (view.equals(cuve)) {
-            /*Intent intent = new Intent(this, ActivityListeCuve.class);
-            startActivity(intent);*/
+            Intent intent = new Intent(this, ActivityListeCuve.class);
+            startActivity(intent);
         } else if (view.equals(fut)) {
 
         } else if (view.equals(brassin)) {
