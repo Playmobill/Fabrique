@@ -3,49 +3,30 @@ package fabrique.gestion.Widget;
 import android.content.Context;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
+import android.widget.Button;
 
 import fabrique.gestion.Objets.Cuve;
 import fabrique.gestion.R;
 
-public class BoutonCuve extends Bouton {
+public class BoutonCuve extends Button {
 
     private Cuve cuve;
 
-    public BoutonCuve(Context context, Cuve cuve) {
-        super(new ContextThemeWrapper(context, R.style.bouton));
+    public BoutonCuve(Context contexte, Cuve cuve) {
+        super(new ContextThemeWrapper(contexte, R.style.bouton));
         this.cuve = cuve;
         setGravity(Gravity.CENTER);
-        min();
-    }
 
-    public void min() {
-        super.min();
-        String texte = "C" + cuve.getNumero() + "\n" + "\n" + cuve.getEtat(getContext()) + "\n";
-        if (cuve.getBrassin() != null) {
-            texte = texte + cuve.getBrassin().getNumero();
-        }
-        setText(texte);
-    }
-
-    public void max() {
-        super.max();
         String texte = "C" + cuve.getNumero() + "\n";
-
-        if (cuve.getCapacite() != 0) {
-            texte = texte + cuve.getCapacite() + "L";
-        }
-
-        texte = texte + "\n" + cuve.getEmplacement(getContext()) + "\n";
-
+        texte = texte + cuve.getCapacite() + "L \n";
+        texte = texte + cuve.getEmplacement(getContext()) + "\n";
         texte = texte + cuve.getEtat(getContext()) + "\n";
-
         if (cuve.getBrassin() != null) {
             texte = texte + cuve.getBrassin().getNumero();
         }
-
         texte = texte + "\n" + cuve.getCommentaireEtat() + "\n";
-
-        texte = texte + cuve.getDateEtat();
+        texte = texte + "depuis le " + cuve.getDureeEtat() + "\n";
+        texte = texte + cuve.getDateEtat() + "\n";
         setText(texte);
     }
 }
