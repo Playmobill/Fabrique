@@ -38,6 +38,7 @@ public class TableCuve extends Controle{
                 cuves.add(new Cuve(tmp.getInt(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getLong(4), tmp.getInt(5), tmp.getLong(6), tmp.getString(7), null));
             }
         }
+        Collections.sort(cuves);
     }
 
     public void ajouter(Context contexte, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, String commentaireEtat, int id_brassin) {

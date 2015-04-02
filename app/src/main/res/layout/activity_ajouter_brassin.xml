@@ -15,7 +15,6 @@
             <TextView
                 android:text="Nouveau brassin"
                 android:id="@+id/txtTitre"
-                android:textSize="40sp"
                 android:textStyle="bold"
                 android:textColor="@color/noir"
                 android:layout_weight="1" />
@@ -29,13 +28,11 @@
             <TextView
                 android:id="@+id/txtNumero"
                 android:text="Numéro"
-                android:textSize="30sp"
                 android:textColor="@color/noir"
                 android:layout_weight="1" />
 
             <EditText
                 android:inputType="number"
-                android:textSize="30sp"
                 android:id="@+id/editNumero"
                 android:layout_weight="1" />
 
@@ -49,13 +46,11 @@
             <TextView
                 android:id="@+id/txtCommentaire"
                 android:text="Commentaire"
-                android:textSize="30sp"
                 android:textColor="@color/noir"
                 android:layout_weight="1" />
 
             <EditText
                 android:inputType="text"
-                android:textSize="30sp"
                 android:id="@+id/editCommentaire"
                 android:layout_weight="1" />
 
@@ -69,13 +64,11 @@
             <TextView
                 android:id="@+id/txtAcronyme"
                 android:text="Acronyme"
-                android:textSize="30sp"
                 android:textColor="@color/noir"
                 android:layout_weight="1" />
 
             <EditText
                 android:inputType="text"
-                android:textSize="30sp"
                 android:id="@+id/editAcronyme"
                 android:layout_weight="1" />
 
@@ -88,14 +81,12 @@
 
             <TextView
                 android:id="@+id/txtQuantite"
-                android:text="Numéro voulu"
-                android:textSize="30sp"
+                android:text="Quantité (litre)"
                 android:textColor="@color/noir"
                 android:layout_weight="1" />
 
             <EditText
                 android:inputType="number"
-                android:textSize="30sp"
                 android:id="@+id/editQuantite"
                 android:layout_weight="1" />
 
@@ -109,13 +100,11 @@
             <TextView
                 android:id="@+id/txtEmplacement"
                 android:text="Emplacement"
-                android:textSize="30sp"
                 android:textColor="@color/noir"
                 android:layout_weight="1" />
 
             <Spinner
                 android:id="@+id/editEmplacement"
-                android:textSize="30sp"
                 style="@style/Widget.AppCompat.Spinner"
                 android:layout_weight="1" />
 
@@ -129,13 +118,11 @@
             <TextView
                 android:id="@+id/txtCouleur"
                 android:text="Couleur"
-                android:textSize="30sp"
                 android:textColor="@color/noir"
                 android:layout_weight="1" />
 
             <EditText
                 android:inputType="text"
-                android:textSize="30sp"
                 android:id="@+id/editCouleur"
                 android:layout_weight="1" />
 
@@ -149,13 +136,11 @@
             <TextView
                 android:id="@+id/txtDensiteOriginale"
                 android:text="Densité originale"
-                android:textSize="30sp"
                 android:textColor="@color/noir"
                 android:layout_weight="1" />
 
             <EditText
                 android:inputType="number"
-                android:textSize="30sp"
                 android:id="@+id/editDensiteOriginale"
                 android:layout_weight="1" />
 
@@ -169,13 +154,11 @@
             <TextView
                 android:id="@+id/txtDensiteFinale"
                 android:text="Densité finale"
-                android:textSize="30sp"
                 android:textColor="@color/noir"
                 android:layout_weight="1" />
 
             <EditText
                 android:inputType="number"
-                android:textSize="30sp"
                 android:id="@+id/editDensiteFinale"
                 android:layout_weight="1" />
 
@@ -189,13 +172,11 @@
             <TextView
                 android:id="@+id/txtPourcentageAlcool"
                 android:text="Pourcentage d'alcool"
-                android:textSize="30sp"
                 android:textColor="@color/noir"
                 android:layout_weight="1" />
 
             <EditText
                 android:inputType="number"
-                android:textSize="30sp"
                 android:id="@+id/editPourcentageAlcool"
                 android:layout_weight="1" />
 
@@ -208,7 +189,6 @@
 
             <Button
                 android:text="Ajouter"
-                android:textSize="30sp"
                 android:id="@+id/btnAjouter"
                 android:layout_weight="1"
                 android:textAllCaps="false"

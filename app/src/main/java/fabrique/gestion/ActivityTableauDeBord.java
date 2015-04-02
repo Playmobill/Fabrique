@@ -3,18 +3,15 @@ package fabrique.gestion;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -31,8 +28,6 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
     private ArrayList<BoutonFermenteur> boutonsFermenteur = new ArrayList<>();
 
     private ArrayList<BoutonCuve> boutonsCuve = new ArrayList<>();
-
-    private Button btnFermenteur, btnCuve;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,21 +53,6 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
         layout.addView(nouvelleLigneTexte("Garde"));
 
         layout.addView(intialiserLigneGarde());
-
-        TableRow ligne = new TableRow(this);
-
-        btnFermenteur = new Button(this);
-        btnFermenteur.setText("Fermenteur");
-        btnFermenteur.setOnClickListener(this);
-
-        btnCuve = new Button(this);
-        btnCuve.setText("Cuve");
-        btnCuve.setOnClickListener(this);
-
-        ligne.addView(btnFermenteur);
-        ligne.addView(btnCuve);
-
-        layout.addView(ligne);
 
         ScrollView layoutVerticalScroll = new ScrollView(this);
         layoutVerticalScroll.addView(layout);
@@ -110,9 +90,7 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
     public TextView nouvelleLigneTexte(String texte) {
         TextView txt = new TextView(this);
         txt.setText(texte);
-        txt.setTextColor(Color.BLACK);
         txt.setTypeface(null, Typeface.BOLD);
-        txt.setTextSize(30);
         return txt;
     }
 

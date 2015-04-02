@@ -13,9 +13,7 @@
             android:layout_height="wrap_content"
             android:text="Cuve : "
             android:id="@+id/texteBrassin"
-            android:textSize="30sp"
             android:textStyle="bold"
-            android:textColor="@color/noir"
             android:layout_weight="1"
             android:layout_margin="25dp" />
 
@@ -28,8 +26,8 @@
     </TableRow>
 
     <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/ligne">
 
     </TableRow>

@@ -26,18 +26,18 @@ public class ActivityAccueil extends Activity implements View.OnClickListener {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         btnApplication = (Button) findViewById(R.id.btnApplication);
-        btnApplication.setWidth(metrics.widthPixels/3);
-        btnApplication.setHeight(metrics.heightPixels/3);
+        //btnApplication.setWidth(metrics.widthPixels/3);
+        //btnApplication.setHeight(metrics.heightPixels/3);
         btnApplication.setOnClickListener(this);
 
         btnConfiguration = (Button) findViewById(R.id.btnConfiguration);
-        btnConfiguration.setWidth(metrics.widthPixels/3);
-        btnConfiguration.setHeight(metrics.heightPixels/3);
+        //btnConfiguration.setWidth(metrics.widthPixels/3);
+        //btnConfiguration.setHeight(metrics.heightPixels/3);
         btnConfiguration.setOnClickListener(this);
 
         btnListe = (Button) findViewById(R.id.btnListe);
-        btnListe.setWidth(metrics.widthPixels/3);
-        btnListe.setHeight(metrics.heightPixels/3);
+        //btnListe.setWidth(metrics.widthPixels/3);
+        //btnListe.setHeight(metrics.heightPixels/3);
         btnListe.setOnClickListener(this);
     }
 

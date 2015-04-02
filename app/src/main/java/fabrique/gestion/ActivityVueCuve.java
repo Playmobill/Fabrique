@@ -39,7 +39,6 @@ public class ActivityVueCuve extends Activity {
 
         TextView titre = new TextView(contexte);
         titre.setText("Cuve " + cuve.getNumero());
-        titre.setTextSize(40);
         titre.setTypeface(null, Typeface.BOLD);
 
         TableRow ligne1 = new TableRow(contexte);
@@ -50,27 +49,21 @@ public class ActivityVueCuve extends Activity {
 
         TextView capacite = new TextView(contexte);
         capacite.setText("Capacité : " + cuve.getCapacite());
-        capacite.setTextSize(30);
 
         TextView emplacement = new TextView(contexte);
         emplacement.setText("Emplacement : " + cuve.getEmplacement(contexte));
-        emplacement.setTextSize(30);
 
         TextView etat = new TextView(contexte);
         etat.setText("État : " + cuve.getEtat(contexte));
-        etat.setTextSize(30);
 
         TextView dateEtat = new TextView(contexte);
         dateEtat.setText("Depuis le : " + cuve.getDateEtat());
-        dateEtat.setTextSize(30);
 
         TextView commentaire = new TextView(contexte);
         commentaire.setText("Commentaire de l'état : " + cuve.getCommentaireEtat());
-        commentaire.setTextSize(30);
 
         TextView dateLavageAcide = new TextView(contexte);
         dateLavageAcide.setText("Date du dernier lavage acide : " + cuve.getDateLavageAcide());
-        dateLavageAcide.setTextSize(30);
 
         ligne1.addView(titre);
 

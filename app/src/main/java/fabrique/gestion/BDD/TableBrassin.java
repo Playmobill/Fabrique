@@ -30,6 +30,7 @@ public class TableBrassin extends Controle {
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             brassins.add(new Brassin(tmp.getInt(0), tmp.getInt(1), tmp.getString(2), tmp.getString(3), tmp.getInt(4), tmp.getInt(5), tmp.getInt(6), tmp.getString(7), tmp.getFloat(8), tmp.getFloat(9), tmp.getFloat(10)));
         }
+        Collections.sort(brassins);
     }
 
     public void ajouter(int numero, String commentaire, String acronyme, int dateCreation, int quantite, int id_typeBiere, String couleur, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
