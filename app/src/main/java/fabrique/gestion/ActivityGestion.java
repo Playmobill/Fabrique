@@ -11,7 +11,7 @@ import android.widget.Button;
 
 public class ActivityGestion extends Activity implements View.OnClickListener {
 
-    private Button fermenteur, cuve, fut, brassin, configuration, autre;
+    private Button fermenteur, cuve, fut, brassin, configuration, etat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +60,10 @@ public class ActivityGestion extends Activity implements View.OnClickListener {
         //configuration.setHeight(metrics.heightPixels/4);
         configuration.setOnClickListener(this);
 
-        autre = (Button)findViewById(R.id.btnAutre);
+        etat = (Button)findViewById(R.id.btnEtat);
         //autre.setWidth(metrics.widthPixels/3);
         //autre.setHeight(metrics.heightPixels/4);
-        autre.setOnClickListener(this);
+        etat.setOnClickListener(this);
     }
 
     @Override
@@ -81,8 +81,9 @@ public class ActivityGestion extends Activity implements View.OnClickListener {
             startActivity(intent);
         } else if (view.equals(configuration)) {
 
-        } else if (view.equals(autre)) {
-
+        } else if (view.equals(etat)) {
+            Intent intent = new Intent(this, ActivityEtatFermenteur.class);
+            startActivity(intent);
         }
     }
 }

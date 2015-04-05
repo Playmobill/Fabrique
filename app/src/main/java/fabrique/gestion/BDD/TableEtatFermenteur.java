@@ -2,6 +2,7 @@ package fabrique.gestion.BDD;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 
 import java.util.ArrayList;
 
@@ -26,17 +27,21 @@ public class TableEtatFermenteur extends Controle {
         etats = new ArrayList<>();
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            etats.add(new EtatFermenteur(tmp.getInt(0), tmp.getString(1)));
+            etats.add(new EtatFermenteur(tmp.getInt(0), tmp.getString(1), tmp.getInt(2), tmp.getInt(3), tmp.getInt(4) == 1));
         }
 
-        ajouter("Vide");
-        ajouter("Fermentation");
-        ajouter("Lavé");
+        ajouter("Vide", Color.RED, Color.GREEN, false);
+        ajouter("Fermentation", Color.WHITE, Color.BLACK, false);
+        ajouter("Lavé", Color.BLACK, Color.WHITE, false);
     }
 
-    public void ajouter(String texte){
-        accesBDD.execSQL("INSERT INTO EtatFermenteur (texte) VALUES ('"+texte+"')");
-        etats.add(new EtatFermenteur(etats.size(), texte));
+    public void ajouter(String texte, int couleurTexte, int couleurFond, boolean actif) {
+        int intActif = 0;
+        if (actif) {
+            intActif = 1;
+        }
+        accesBDD.execSQL("INSERT INTO EtatFermenteur (texte, couleurTexte, couleurFond, actif) VALUES ('" + texte + "', " + couleurTexte + ", " + couleurFond +", " + intActif + ")");
+        etats.add(new EtatFermenteur(etats.size(), texte, couleurTexte, couleurFond, actif));
     }
 
     public EtatFermenteur recuperer(int index){

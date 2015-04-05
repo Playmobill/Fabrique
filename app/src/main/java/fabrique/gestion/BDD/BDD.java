@@ -16,11 +16,18 @@ public class BDD extends SQLiteOpenHelper {
 
     private static String createurTableEtatFermenteur = "CREATE TABLE IF NOT EXISTS EtatFermenteur (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "texte TEXT)";
+                                                "texte TEXT, " +
+                                                "couleurTexte INTEGER NOT NULL," +
+                                                "couleurFond INTEGER NOT NULL," +
+                                                "actif INTEGER NOT NULL)";
+
 
     private static String createurTableEtatCuve = "CREATE TABLE IF NOT EXISTS EtatCuve (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "texte TEXT)";
+                                                "texte TEXT, " +
+                                                "couleurTexte INTEGER NOT NULL," +
+                                                "couleurFond INTEGER NOT NULL," +
+                                                "actif INTEGER NOT NULL)";
 
     private static String createurTableBrassin = "CREATE TABLE IF NOT EXISTS Brassin (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +

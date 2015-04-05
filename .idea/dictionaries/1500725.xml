@@ -13,6 +13,7 @@
       <w>ajouter</w>
       <w>alcool</w>
       <w>annee</w>
+      <w>aperçu</w>
       <w>autre</w>
       <w>biere</w>
       <w>bière</w>
@@ -22,6 +23,8 @@
       <w>brassins</w>
       <w>calendrier</w>
       <w>capacite</w>
+      <w>choisi</w>
+      <w>choisissez</w>
       <w>cliquer</w>
       <w>commentaire</w>
       <w>configuraton</w>
@@ -34,12 +37,16 @@
       <w>cuve</w>
       <w>cuves</w>
       <w>d'alcool</w>
+      <w>defaut</w>
       <w>densite</w>
       <w>densité</w>
       <w>depuis</w>
       <w>donnees</w>
       <w>duree</w>
+      <w>défaut</w>
       <w>ecran</w>
+      <w>entete</w>
+      <w>entetes</w>
       <w>etat</w>
       <w>etats</w>
       <w>fabrique</w>
@@ -60,6 +67,7 @@
       <w>jour</w>
       <w>lavé</w>
       <w>ligne</w>
+      <w>lignes</w>
       <w>liste</w>
       <w>marron</w>
       <w>mois</w>
@@ -78,6 +86,7 @@
       <w>quantite</w>
       <w>quantité</w>
       <w>recuperer</w>
+      <w>remettre</w>
       <w>retour</w>
       <w>simplifie</w>
       <w>supprimer</w>
@@ -85,6 +94,7 @@
       <w>textview</w>
       <w>timepicker</w>
       <w>tous</w>
+      <w>valider</w>
       <w>vide</w>
       <w>voulu</w>
     </words>
