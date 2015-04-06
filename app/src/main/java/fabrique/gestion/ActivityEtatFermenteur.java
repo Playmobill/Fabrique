@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -18,21 +19,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import fabrique.gestion.BDD.TableEtatFermenteur;
-import fabrique.gestion.ColorPicker.ColorPickerDialog;
-import fabrique.gestion.ColorPicker.OnColorChangedListener;
+import fabrique.gestion.ColorPicker.ColorPickerDialogEtatFermenteur;
 import fabrique.gestion.Objets.EtatFermenteur;
 
-public class ActivityEtatFermenteur extends Activity implements View.OnClickListener, OnColorChangedListener {
+public class ActivityEtatFermenteur extends Activity implements View.OnClickListener {
 
     private TableRow.LayoutParams parametre;
-
     private ArrayList<TableRow> lignes;
-
     private ArrayList<EtatFermenteur> etats;
-
     private ArrayList<Button> boutonModifier;
 
     private Button couleurTexte, couleurFond, valider;
+    private CheckBox cbActif;
+    private EditText txtEtat;
 
     private int indexActif;
 
@@ -85,6 +84,7 @@ public class ActivityEtatFermenteur extends Activity implements View.OnClickList
             TextView txtEtat = new TextView(this);
             txtEtat.setText(etat.getTexte());
             txtEtat.setTextColor(etat.getCouleurTexte());
+            txtEtat.setDrawingCacheBackgroundColor(etat.getCouleurFond());
             txtEtat.setBackgroundColor(etat.getCouleurFond());
             txtEtat.setLayoutParams(parametre);
 
@@ -118,6 +118,7 @@ public class ActivityEtatFermenteur extends Activity implements View.OnClickList
         txtEtat.setText(etat.getTexte());
         txtEtat.setTextColor(etat.getCouleurTexte());
         txtEtat.setBackgroundColor(etat.getCouleurFond());
+        txtEtat.setDrawingCacheBackgroundColor(etat.getCouleurFond());
         txtEtat.setLayoutParams(parametre);
 
         CheckBox cbActif = new CheckBox(this);
@@ -139,16 +140,19 @@ public class ActivityEtatFermenteur extends Activity implements View.OnClickList
 
         EtatFermenteur etat = etats.get(index);
 
-        TextView txtEtat = new TextView(this);
+        EditText txtEtat = new EditText(this);
         txtEtat.setText(etat.getTexte());
         txtEtat.setTextColor(etat.getCouleurTexte());
+        txtEtat.setDrawingCacheBackgroundColor(etat.getCouleurFond());
         txtEtat.setBackgroundColor(etat.getCouleurFond());
         txtEtat.setLayoutParams(parametre);
+        this.txtEtat = txtEtat;
 
         CheckBox cbActif = new CheckBox(this);
         cbActif.setChecked(etat.getActif());
         cbActif.setEnabled(true);
         cbActif.setLayoutParams(parametre);
+        this.cbActif = cbActif;
 
         Button couleurTexte = new Button(this);
         couleurTexte.setText("Couleur de texte");
@@ -162,8 +166,8 @@ public class ActivityEtatFermenteur extends Activity implements View.OnClickList
 
         Button valider = new Button(this);
         valider.setText("Valider");
-        this.valider = valider;
         valider.setOnClickListener(this);
+        this.valider = valider;
 
         ligne.addView(txtEtat);
         ligne.addView(cbActif);
@@ -177,12 +181,17 @@ public class ActivityEtatFermenteur extends Activity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v.equals(couleurTexte)) {
-            ColorPickerDialog dialog = new ColorPickerDialog(this, this);
+            ColorPickerDialogEtatFermenteur dialog = new ColorPickerDialogEtatFermenteur(this, "Texte", txtEtat);
             dialog.show();
         } else if (v.equals(couleurFond)) {
-            ColorPickerDialog dialog = new ColorPickerDialog(this, this);
+            ColorPickerDialogEtatFermenteur dialog = new ColorPickerDialogEtatFermenteur(this, "Fond", txtEtat);
             dialog.show();
         } else if (v.equals(valider)) {
+            etats.get(indexActif).setTexte(txtEtat.getText().toString());
+            etats.get(indexActif).setCouleurTexte(txtEtat.getCurrentTextColor());
+            etats.get(indexActif).setCouleurFond(txtEtat.getDrawingCacheBackgroundColor());
+            etats.get(indexActif).setActif(cbActif.isChecked());
+            TableEtatFermenteur.instance(this).modifier(etats.get(indexActif));
             for (int i=0; i<boutonModifier.size() ; i++) {
                 boutonModifier.get(i).setEnabled(true);
             }
@@ -203,10 +212,5 @@ public class ActivityEtatFermenteur extends Activity implements View.OnClickList
     public void onBackPressed() {
         Intent intent = new Intent(this, ActivityGestion.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void colorChanged(int color) {
-
     }
 }

@@ -8,31 +8,39 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 
-public class ColorPickerView extends View {
+public class ColorPickerViewEtatFermenteur extends View {
 
     private Paint mPaint;
     private float mCurrentHue = 0;
     private int mCurrentX = 0, mCurrentY = 0;
-    private int mCurrentColor, mDefaultColor;
+    private int couleurActuelleTexte, couleurActuelleFond, couleurAvantTexte, couleurAvantFond;
     private final int[] mHueBarColors = new int[258];
     private int[] mMainColors = new int[65536];
-    private OnColorChangedListener mListener;
 
-    public ColorPickerView(Context c, OnColorChangedListener l) {
-        super(c);
-        mListener = l;
+    private final String elementModifier;
+    private final EditText txtEtat;
 
-        int color = Color.WHITE;
-        mDefaultColor = color;
+    public ColorPickerViewEtatFermenteur(Context contexte, String elementModifier, EditText txtEtat) {
+        super(contexte);
+        this.elementModifier = elementModifier;
+        this.txtEtat = txtEtat;
+
+        couleurAvantTexte = txtEtat.getCurrentTextColor();
+        couleurAvantFond = txtEtat.getDrawingCacheBackgroundColor();
+        couleurActuelleTexte = couleurAvantTexte;
+        couleurActuelleFond = couleurAvantFond;
 
         // Get the current hue from the current color and update the main color field
         float[] hsv = new float[3];
-        Color.colorToHSV(color, hsv);
+        if (elementModifier.equals("Texte")) {
+            Color.colorToHSV(couleurActuelleTexte, hsv);
+        } else {
+            Color.colorToHSV(couleurActuelleFond, hsv);
+        }
         mCurrentHue = hsv[0];
         updateMainColors();
-
-        mCurrentColor = color;
 
         // Initialize the colors of the hue slider bar
         int index = 0;
@@ -170,29 +178,18 @@ public class ColorPickerView extends View {
 
         // Draw a 'button' with the currently selected color
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(mCurrentColor);
+        mPaint.setColor(couleurActuelleFond);
         canvas.drawRect(10, 316, 138, 356, mPaint);
+        mPaint.setColor(couleurActuelleTexte);
+        canvas.drawText(txtEtat.getText().toString(), 74, 340, mPaint);
 
-        // Set the text color according to the brightness of the color
-        if (Color.red(mCurrentColor)+Color.green(mCurrentColor)+Color.blue(mCurrentColor) < 384) {
-            mPaint.setColor(Color.WHITE);
-        } else {
-            mPaint.setColor(Color.BLACK);
-        }
-        canvas.drawText("Aperçu", 74, 340, mPaint);
 
         // Draw a 'button' with the default color
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(mDefaultColor);
+        mPaint.setColor(couleurAvantFond);
         canvas.drawRect(138, 316, 266, 356, mPaint);
-
-        // Set the text color according to the brightness of the color
-        if (Color.red(mDefaultColor)+Color.green(mDefaultColor)+Color.blue(mDefaultColor) < 384) {
-            mPaint.setColor(Color.WHITE);
-        } else {
-            mPaint.setColor(Color.BLACK);
-        }
-        canvas.drawText("Défaut", 202, 340, mPaint);
+        mPaint.setColor(couleurAvantTexte);
+        canvas.drawText(txtEtat.getText().toString(), 202, 340, mPaint);
     }
 
     @Override
@@ -218,9 +215,13 @@ public class ColorPickerView extends View {
             int transX = mCurrentX-10;
             int transY = mCurrentY-60;
             int index = 256*(transY-1)+transX;
-            if (index > 0 && index < mMainColors.length)
-                mCurrentColor = mMainColors[256*(transY-1)+transX];
-
+            if (index > 0 && index < mMainColors.length) {
+                if (elementModifier.equals("Texte")) {
+                    couleurActuelleTexte = mMainColors[256 * (transY - 1) + transX];
+                } else {
+                    couleurActuelleFond = mMainColors[256 * (transY - 1) + transX];
+                }
+            }
             // Force the redraw of the dialog
             invalidate();
         }
@@ -234,7 +235,11 @@ public class ColorPickerView extends View {
             int index = 256*(transY-1)+transX;
             if (index > 0 && index < mMainColors.length) {
                 // Update the current color
-                mCurrentColor = mMainColors[index];
+                if (elementModifier.equals("Texte")) {
+                    couleurActuelleTexte = mMainColors[index];
+                } else {
+                    couleurActuelleFond = mMainColors[index];
+                }
                 // Force the redraw of the dialog
                 invalidate();
             }
@@ -242,12 +247,16 @@ public class ColorPickerView extends View {
 
         // If the touch event is located in the left button, notify the listener with the current color
         if (x > 10 && x < 138 && y > 316 && y < 356) {
-            mListener.colorChanged(mCurrentColor);
+            txtEtat.setTextColor(couleurActuelleTexte);
+            txtEtat.setDrawingCacheBackgroundColor(couleurActuelleFond);
+            txtEtat.setBackgroundColor(couleurActuelleFond);
         }
 
         // If the touch event is located in the right button, notify the listener with the default color
         if (x > 138 && x < 266 && y > 316 && y < 356) {
-            mListener.colorChanged(mDefaultColor);
+            txtEtat.setTextColor(couleurAvantTexte);
+            txtEtat.setDrawingCacheBackgroundColor(couleurAvantFond);
+            txtEtat.setBackgroundColor(couleurAvantFond);
         }
         return true;
     }

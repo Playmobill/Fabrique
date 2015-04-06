@@ -28,5 +28,7 @@ public class BoutonCuve extends Button {
         texte = texte + "depuis " + cuve.getDureeEtat() + "\n";
         texte = texte + cuve.getDateEtat() + "\n";
         setText(texte);
+
+
     }
 }

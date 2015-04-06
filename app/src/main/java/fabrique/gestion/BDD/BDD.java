@@ -3,6 +3,7 @@ package fabrique.gestion.BDD;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 
 public class BDD extends SQLiteOpenHelper {
 
@@ -74,7 +75,9 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL(createurTableEmplacement);
         db.execSQL(createurTableEtatFermenteur);
         db.execSQL(createurTableFermenteur);
+        db.execSQL("INSERT INTO EtatFermenteur (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
         db.execSQL(createurTableEtatCuve);
+        db.execSQL("INSERT INTO EtatCuve (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
         db.execSQL(createurTableCuve);
     }
 
