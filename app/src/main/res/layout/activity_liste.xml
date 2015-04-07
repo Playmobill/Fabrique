@@ -21,7 +21,6 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textSize="35sp"
             android:textStyle="bold" />
 
         <Button
@@ -36,7 +35,6 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textSize="35sp"
             android:textStyle="bold" />
     </TableRow>
 
@@ -57,7 +55,6 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textSize="35sp"
             android:textStyle="bold" />
 
         <Button
@@ -71,7 +68,6 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textSize="35sp"
             android:textStyle="bold" />
     </TableRow>
 </TableLayout>

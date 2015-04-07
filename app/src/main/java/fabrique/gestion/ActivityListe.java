@@ -36,23 +36,23 @@ public class ActivityListe extends Activity implements View.OnClickListener {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         fermenteur = (Button)findViewById(R.id.btnFermenteur);
-        fermenteur.setWidth(metrics.widthPixels/3);
-        fermenteur.setHeight(metrics.heightPixels/4);
+        //fermenteur.setWidth(metrics.widthPixels/3);
+        //fermenteur.setHeight(metrics.heightPixels/4);
         fermenteur.setOnClickListener(this);
 
         cuve = (Button)findViewById(R.id.btnCuve);
-        cuve.setWidth(metrics.widthPixels/3);
-        cuve.setHeight(metrics.heightPixels/4);
+        //cuve.setWidth(metrics.widthPixels/3);
+        //cuve.setHeight(metrics.heightPixels/4);
         cuve.setOnClickListener(this);
 
         fut = (Button)findViewById(R.id.btnFut);
-        fut.setWidth(metrics.widthPixels/3);
-        fut.setHeight(metrics.heightPixels/4);
+        //fut.setWidth(metrics.widthPixels/3);
+        //fut.setHeight(metrics.heightPixels/4);
         fut.setOnClickListener(this);
 
         brassin = (Button)findViewById(R.id.btnBrassin);
-        brassin.setWidth(metrics.widthPixels/3);
-        brassin.setHeight(metrics.heightPixels/4);
+        //brassin.setWidth(metrics.widthPixels/3);
+        //brassin.setHeight(metrics.heightPixels/4);
         brassin.setOnClickListener(this);
     }
 

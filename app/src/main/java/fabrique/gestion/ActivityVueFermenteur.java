@@ -37,7 +37,6 @@ public class ActivityVueFermenteur extends Activity {
 
         TextView titre = new TextView(contexte);
         titre.setText("Fermenteur " + fermenteur.getNumero());
-        titre.setTextSize(40);
         titre.setTypeface(null, Typeface.BOLD);
 
         layout.addView(titre);

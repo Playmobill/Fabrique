@@ -3,25 +3,21 @@ package fabrique.gestion;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableFermenteur;
-import fabrique.gestion.Widget.Bouton;
 import fabrique.gestion.Widget.BoutonCuve;
 import fabrique.gestion.Widget.BoutonFermenteur;
 
@@ -29,15 +25,9 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
 
     private DisplayMetrics tailleEcran;
 
-    private Bouton boutonActif;
+    private ArrayList<BoutonFermenteur> boutonsFermenteur = new ArrayList<>();
 
-    private ArrayList<Bouton> boutons = new ArrayList<Bouton>();
-
-    private int indexFermenteur = -1;
-
-    private int indexCuve = -1;
-
-    private Button btnFermenteur, btnCuve;
+    private ArrayList<BoutonCuve> boutonsCuve = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,21 +54,6 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
 
         layout.addView(intialiserLigneGarde());
 
-        TableRow ligne = new TableRow(this);
-
-        btnFermenteur = new Button(this);
-        btnFermenteur.setText("Fermenteur");
-        btnFermenteur.setOnClickListener(this);
-
-        btnCuve = new Button(this);
-        btnCuve.setText("Cuve");
-        btnCuve.setOnClickListener(this);
-
-        ligne.addView(btnFermenteur);
-        ligne.addView(btnCuve);
-
-        layout.addView(ligne);
-
         ScrollView layoutVerticalScroll = new ScrollView(this);
         layoutVerticalScroll.addView(layout);
 
@@ -87,33 +62,22 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if ((v.equals(btnFermenteur)) && (indexFermenteur != -1)) {
-            Intent intent = new Intent(this, ActivityVueFermenteur.class);
-            intent.putExtra("index", indexFermenteur);
-            startActivity(intent);
-        } else if ((v.equals(btnCuve)) && (indexCuve != -1)) {
-            /*Intent intent = new Intent(this, ActivityVueCuve.class);
-            intent.putExtra("index", index);
-            startActivity(intent);*/
-        } else {
-            //Bouton boutonClique = null;
-            for (int i = 0; i < boutons.size(); i++) {
-                if (v.equals(boutons.get(i))) {
-                    //boutonClique = boutons.get(i);
-                    if (boutons.get(i) instanceof BoutonFermenteur) {
-                        indexFermenteur = i;
-                    }
-                    if (boutons.get(i) instanceof BoutonCuve) {
-                        indexCuve = i;
-                    }
-                    boutons.get(i).changerEtat();
+        if (v instanceof BoutonFermenteur) {
+            for (int i = 0; i < boutonsFermenteur.size(); i++) {
+                if (v.equals(boutonsFermenteur.get(i))) {
+                    Intent intent = new Intent(this, ActivityVueFermenteur.class);
+                    intent.putExtra("index", i);
+                    startActivity(intent);
                 }
             }
-            /*if (boutonActif != null) {
-                boutonActif.min();
+        } else if (v instanceof BoutonCuve) {
+            for (int i = 0; i < boutonsCuve.size(); i++) {
+                if (v.equals(boutonsCuve.get(i))) {
+                    Intent intent = new Intent(this, ActivityVueCuve.class);
+                    intent.putExtra("index", i);
+                    startActivity(intent);
+                }
             }
-            boutonActif = boutonClique;
-            boutonActif.max();*/
         }
     }
 
@@ -126,9 +90,7 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
     public TextView nouvelleLigneTexte(String texte) {
         TextView txt = new TextView(this);
         txt.setText(texte);
-        txt.setTextColor(Color.BLACK);
         txt.setTypeface(null, Typeface.BOLD);
-        txt.setTextSize(30);
         return txt;
     }
 
@@ -139,7 +101,7 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
         TableFermenteur tableFermenteur = TableFermenteur.instance(this);
         for (int i=0; i<tableFermenteur.tailleListe(); i=i+1) {
             BoutonFermenteur boutonFermenteur = new BoutonFermenteur(this, tableFermenteur.recuperer(i));
-            boutons.add(boutonFermenteur);
+            boutonsFermenteur.add(boutonFermenteur);
             boutonFermenteur.setOnClickListener(this);
             boutonFermenteur.setLayoutParams(parametreFermenteur);
             ligne.addView(boutonFermenteur);
@@ -161,7 +123,7 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
         for (int i=0; i<tableCuve.tailleListe(); i=i+1) {
             BoutonCuve boutonCuve = new BoutonCuve(this, tableCuve.recuperer(i));
             boutonCuve.setOnClickListener(this);
-            boutons.add(boutonCuve);
+            boutonsCuve.add(boutonCuve);
             boutonCuve.setLayoutParams(parametreCuve);
             ligne.addView(boutonCuve);
         }

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="État"
+            android:id="@+id/textView2"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Actif"
+            android:id="@+id/textView4"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vide"
+            android:id="@+id/textView"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/checkBox"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Modifier"
+            android:id="@+id/button"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lavé"
+            android:id="@+id/txtEtat"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/cbActif"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Couleur de texte"
+            android:id="@+id/btnCouleurTexte"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Couleur de fond"
+            android:id="@+id/btnCouleurFond"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valider"
+            android:id="@+id/btnValider"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical" />
+    </TableRow>
+
+</TableLayout>

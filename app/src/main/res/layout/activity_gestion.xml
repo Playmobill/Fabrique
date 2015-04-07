@@ -21,7 +21,6 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textSize="35sp"
             android:textStyle="bold" />
 
         <Button
@@ -36,7 +35,6 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textSize="35sp"
             android:textStyle="bold" />
     </TableRow>
 
@@ -57,7 +55,6 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textSize="35sp"
             android:textStyle="bold" />
 
         <Button
@@ -71,7 +68,6 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textSize="35sp"
             android:textStyle="bold" />
     </TableRow>
 
@@ -91,22 +87,19 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textSize="35sp"
             android:textStyle="bold" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="autre"
-            android:id="@+id/btnAutre"
+            android:text="Ajout / Modification EtatFermenteur"
+            android:id="@+id/btnEtat"
             android:layout_weight="1"
             android:gravity="center"
             android:layout_margin="10dp"
-            android:visibility="invisible"
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textSize="35sp"
             android:textStyle="bold" />
     </TableRow>
 </TableLayout>

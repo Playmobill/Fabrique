@@ -38,6 +38,7 @@ public class TableFermenteur extends Controle {
                 fermenteurs.add(new Fermenteur(tmp.getInt(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getLong(4), tmp.getInt(5), tmp.getLong(6), null));
             }
         }
+        Collections.sort(fermenteurs);
     }
 
     public void ajouter(Context contexte, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, int id_brassin) {

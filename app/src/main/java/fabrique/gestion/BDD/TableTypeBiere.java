@@ -29,6 +29,7 @@ public class TableTypeBiere extends Controle {
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             types.add(new TypeBiere(tmp.getInt(0), tmp.getString(1)));
         }
+        Collections.sort(types);
 
         ajouter("Blanche");
         ajouter("Blonde");

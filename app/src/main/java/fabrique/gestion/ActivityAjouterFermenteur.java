@@ -1,8 +1,6 @@
 package fabrique.gestion;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -10,16 +8,10 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import fabrique.gestion.BDD.TableEmplacement;
-import fabrique.gestion.BDD.TableEtatFermenteur;
 import fabrique.gestion.BDD.TableFermenteur;
 
 public class ActivityAjouterFermenteur extends Activity implements View.OnClickListener {
@@ -28,13 +20,7 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
 
     private EditText editNumero, editQuantite;
 
-    private Spinner editEmplacement, editEtat;
-
-    private ImageButton dateLavageAcide;
-    protected int jour;
-    protected int mois;
-    protected int annee;
-    private EditText editDateLavageAcide;
+    private Spinner editEmplacement;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,22 +46,6 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
         adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editEmplacement.setAdapter(adapteurEmplacement);
 
-        editEtat = (Spinner)this.findViewById(R.id.editEtat);
-        TableEtatFermenteur tableEtatFermenteur = TableEtatFermenteur.instance(this);
-        ArrayAdapter<String> adapteurEtat = new ArrayAdapter<>(this, R.layout.spinner_style, tableEtatFermenteur.etats());
-        adapteurEtat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        editEtat.setAdapter(adapteurEtat);
-
-        dateLavageAcide = (ImageButton) findViewById(R.id.imageButton1);
-        dateLavageAcide.setOnClickListener(this);
-
-        Calendar calendrier = Calendar.getInstance();
-        jour = calendrier.get(Calendar.DAY_OF_MONTH);
-        mois = calendrier.get(Calendar.MONTH);
-        annee = calendrier.get(Calendar.YEAR);
-        editDateLavageAcide = (EditText) findViewById(R.id.editText);
-        editDateLavageAcide.setText(jour + " / " + (mois + 1) + " / " + annee);
-
         btnAjouter = (Button)findViewById(R.id.btnAjouter);
         btnAjouter.setOnClickListener(this);
     }
@@ -92,34 +62,12 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
 
             int emplacement = editEmplacement.getSelectedItemPosition();
 
-            int etat = editEtat.getSelectedItemPosition();
-
-            Calendar calendar = new GregorianCalendar(annee, mois, jour);
-            long dateLavageAcide = calendar.getTimeInMillis();
-
-            TableFermenteur.instance(this).ajouter(null, numero, capacite, emplacement, dateLavageAcide, etat, System.currentTimeMillis(), -1);
+            TableFermenteur.instance(this).ajouter(null, numero, capacite, emplacement, System.currentTimeMillis(), 0, System.currentTimeMillis(), -1);
 
             Intent intent = new Intent(this, ActivityTableauDeBord.class);
             startActivity(intent);
-        } else if (v.equals(dateLavageAcide)){
-            showDialog(0);
         }
     }
-
-    @Override
-    @Deprecated
-    protected Dialog onCreateDialog(int id) {
-        return new DatePickerDialog(this, datePickerListener, annee, mois, jour);
-    }
-
-    private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
-        public void onDateSet(DatePicker view, int annee2, int mois2, int jour2) {
-            jour = jour2;
-            mois = mois2;
-            annee = annee2;
-            editDateLavageAcide.setText(jour + " / " + (mois + 1) + " / " + annee);
-        }
-    };
 
     @Override
     public void onBackPressed() {
