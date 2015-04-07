@@ -44,7 +44,7 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
         editDensiteFinale = (EditText)findViewById(R.id.editDensiteFinale);
         editPourcentageAlcool = (EditText)findViewById(R.id.editPourcentageAlcool);
 
-        editTypeBiere = (Spinner)this.findViewById(R.id.editEmplacement);
+        editTypeBiere = (Spinner)this.findViewById(R.id.editTypeBiere);
         TableTypeBiere tableTypeBiere = TableTypeBiere.instance(this);
         ArrayAdapter<String> adapteurTypeBiere = new ArrayAdapter<>(this, R.layout.spinner_style, tableTypeBiere.types());
         adapteurTypeBiere.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

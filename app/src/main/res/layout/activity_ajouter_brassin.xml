@@ -88,7 +88,7 @@
 
             <TextView
                 android:id="@+id/txtQuantite"
-                android:text="Numéro voulu"
+                android:text="Quantité"
                 android:textSize="30sp"
                 android:textColor="@color/noir"
                 android:layout_weight="1" />
@@ -107,14 +107,14 @@
             android:layout_marginBottom="10dp">
 
             <TextView
-                android:id="@+id/txtEmplacement"
-                android:text="Emplacement"
+                android:id="@+id/txtTypeBiere"
+                android:text="Biere"
                 android:textSize="30sp"
                 android:textColor="@color/noir"
                 android:layout_weight="1" />
 
             <Spinner
-                android:id="@+id/editEmplacement"
+                android:id="@+id/editTypeBiere"
                 android:textSize="30sp"
                 style="@style/Widget.AppCompat.Spinner"
                 android:layout_weight="1" />
