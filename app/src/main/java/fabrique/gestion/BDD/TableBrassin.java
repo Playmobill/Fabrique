@@ -33,7 +33,7 @@ public class TableBrassin extends Controle {
         Collections.sort(brassins);
     }
 
-    public void ajouter(int numero, String commentaire, int dateCreation, int quantite, int id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
+    public void ajouter(int numero, String commentaire, long dateCreation, int quantite, int id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
         brassins.add(new Brassin(brassins.size(), numero, commentaire, dateCreation, quantite, id_recette, densiteOriginale, densiteFinale, pourcentageAlcool));
         accesBDD.execSQL("INSERT INTO Brassin (numero, commentaire, dateCreation, quantite, id_recette, densiteOriginale, densiteFinale, pourcentageAlcool) VALUES (" + numero + ", '" + commentaire + "', " + dateCreation + ", " + quantite + ", " + id_recette + ", " + densiteOriginale + ", " + densiteFinale + ", " + pourcentageAlcool + ")");
         Collections.sort(brassins);

@@ -4,14 +4,14 @@ public class Brassin extends Objet implements Comparable<Brassin> {
 
     private int numero;
     private String commentaire;
-    private int dateCreation;
+    private long dateCreation;
     private int quantite;
     private int id_recette;
     private float densiteOriginale;
     private float densiteFinale;
     private float pourcentageAlcool;
 
-    public Brassin(int id, int numero, String commentaire, int dateCreation, int quantite, int id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
+    public Brassin(int id, int numero, String commentaire, long dateCreation, int quantite, int id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
         super(id);
         this.numero = numero;
         this.commentaire = commentaire;
@@ -25,7 +25,7 @@ public class Brassin extends Objet implements Comparable<Brassin> {
 
     public int getNumero() { return numero; }
     public String getCommentaire() { return commentaire; }
-    public int getDateCreation() { return dateCreation; }
+    public long getDateCreation() { return dateCreation; }
     public int getQuantite() { return quantite; }
     public int getId_recette() { return id_recette; }
     public float getDensiteOriginale() { return densiteOriginale; }
@@ -34,7 +34,7 @@ public class Brassin extends Objet implements Comparable<Brassin> {
 
     public void setNumero(int numero) { this.numero = numero; }
     public void setCommentaire(String commentaire) { this.commentaire = commentaire; }
-    public void setDateCreation(int dateCreation) { this.dateCreation = dateCreation; }
+    public void setDateCreation(long dateCreation) { this.dateCreation = dateCreation; }
     public void setQuantite(int quantite) { this.quantite = quantite; }
     public void setId_recette(int id_recette) { this.id_recette = id_recette; }
     public void setDensiteOriginale(float densiteOriginale) { this.densiteOriginale = densiteOriginale; }

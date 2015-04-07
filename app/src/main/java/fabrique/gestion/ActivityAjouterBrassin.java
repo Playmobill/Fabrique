@@ -54,8 +54,35 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        if(v.equals(btnAjouter)){
+        if ((v.equals(btnAjouter)) && (editNumero.getText() != null) && (Integer.parseInt(editNumero.getText().toString())>0)) {
 
+            int numero = Integer.parseInt(editNumero.getText().toString());
+            int capacite = 0;
+            if ((editQuantite.getText()!= null) && (!editQuantite.getText().toString().equals(""))) {
+                capacite = Integer.parseInt(editQuantite.getText().toString());
+            }
+
+            float densiteOriginale = 0;
+            if ((editDensiteOriginale.getText()!= null) && (!editDensiteOriginale.getText().toString().equals(""))) {
+                densiteOriginale = Float.parseFloat(editDensiteOriginale.getText().toString());
+            }
+
+            float densiteFinale = 0;
+            if ((editDensiteFinale.getText()!= null) && (!editDensiteFinale.getText().toString().equals(""))) {
+                densiteFinale = Float.parseFloat(editDensiteFinale.getText().toString());
+            }
+
+            float pourcentageAlcool = 0;
+            if ((editPourcentageAlcool.getText()!= null) && (!editPourcentageAlcool.getText().toString().equals(""))) {
+                pourcentageAlcool = Float.parseFloat(editPourcentageAlcool.getText().toString());
+            }
+
+            int recette = editRecette.getSelectedItemPosition();
+
+            TableBrassin.instance(this).ajouter(numero, editCommentaire.getText().toString(), System.currentTimeMillis(), capacite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
+
+            Intent intent = new Intent(this, ActivityTableauDeBord.class);
+            startActivity(intent);
         }
     }
 
