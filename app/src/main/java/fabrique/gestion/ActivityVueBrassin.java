@@ -30,28 +30,31 @@ public class ActivityVueBrassin extends Activity {
         int index = intent.getIntExtra("index", -1);
         Brassin brassin = TableBrassin.instance(this).recuperer(index);
 
-        TextView texteNumero = (TextView)findViewById(R.id.texteNumero);
-        texteNumero.setText(texteNumero.getText().toString() + brassin.getNumero());
+        if (brassin != null) {
 
-        TextView texteDate = (TextView)findViewById(R.id.texteDate);
-        texteDate.setText(texteDate.getText().toString() + brassin.getDateCreation());
+            TextView texteNumero = (TextView) findViewById(R.id.texteNumero);
+            texteNumero.setText(texteNumero.getText().toString() + brassin.getNumero());
 
-        TextView texteCommentaireBrassin = (TextView)findViewById(R.id.texteCommentaireBrassin);
-        texteCommentaireBrassin.setText(brassin.getCommentaire());
+            TextView texteDate = (TextView) findViewById(R.id.texteDate);
+            texteDate.setText(texteDate.getText().toString() + brassin.getDateCreation());
 
-        TextView texteRecette = (TextView)findViewById(R.id.texteRecette);
-        texteRecette.setText(texteRecette.getText().toString() + brassin.getId_recette());
+            TextView texteCommentaireBrassin = (TextView) findViewById(R.id.texteCommentaireBrassin);
+            texteCommentaireBrassin.setText(brassin.getCommentaire());
 
-        TextView texteQuantite = (TextView)findViewById(R.id.texteQuantite);
-        texteQuantite.setText(texteQuantite.getText().toString() + brassin.getQuantite());
+            TextView texteRecette = (TextView) findViewById(R.id.texteRecette);
+            texteRecette.setText(texteRecette.getText().toString() + brassin.getId_recette());
 
-        TextView texteDensiteOriginale = (TextView)findViewById(R.id.texteDensiteOriginale);
-        texteDensiteOriginale.setText(texteDensiteOriginale.getText().toString() + brassin.getDensiteOriginale());
+            TextView texteQuantite = (TextView) findViewById(R.id.texteQuantite);
+            texteQuantite.setText(texteQuantite.getText().toString() + brassin.getQuantite());
 
-        TextView texteDensiteFinale = (TextView)findViewById(R.id.texteDensiteFinale);
-        texteDensiteFinale.setText(texteDensiteFinale.getText().toString() + brassin.getDensiteFinale());
+            TextView texteDensiteOriginale = (TextView) findViewById(R.id.texteDensiteOriginale);
+            texteDensiteOriginale.setText(texteDensiteOriginale.getText().toString() + brassin.getDensiteOriginale());
 
-        TextView textePoucentageAlcool = (TextView)findViewById(R.id.textePoucentageAlcool);
-        textePoucentageAlcool.setText(textePoucentageAlcool.getText().toString() + brassin.getPourcentageAlcool());
+            TextView texteDensiteFinale = (TextView) findViewById(R.id.texteDensiteFinale);
+            texteDensiteFinale.setText(texteDensiteFinale.getText().toString() + brassin.getDensiteFinale());
+
+            TextView textePoucentageAlcool = (TextView) findViewById(R.id.textePoucentageAlcool);
+            textePoucentageAlcool.setText(textePoucentageAlcool.getText().toString() + brassin.getPourcentageAlcool());
+        }
     }
 }

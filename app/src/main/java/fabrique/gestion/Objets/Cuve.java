@@ -39,7 +39,10 @@ public class Cuve extends Objet implements Comparable<Cuve> {
     public String getEmplacement(Context contexte) {
         return TableEmplacement.instance(contexte).emplacement(emplacement);
     }
-    public String getDateLavageAcide() {
+    public long getDateLavageAcide() {
+        return dateLavageAcide;
+    }
+    public String getDateLavageAcideToString() {
         Calendar calendrier = Calendar.getInstance();
         calendrier.setTimeInMillis(dateLavageAcide);
         return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);

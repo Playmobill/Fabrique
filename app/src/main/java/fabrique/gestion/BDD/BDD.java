@@ -71,6 +71,10 @@ public class BDD extends SQLiteOpenHelper {
                                                 "commentaireEtat TEXT NOT NULL," +
                                                 "id_brassin INTEGER)";
 
+    private static String gestion = "CREATE TABLE IF NOT EXISTS Gestion (" +
+                                                "delaiLavageAcide INTEGER DEFAULT 604800000," +
+                                                "delaiInspectionBaril INTEGER DEFAULT 604800000)";
+
     public BDD(Context context, String name, SQLiteDatabase.CursorFactory factory) {
         super(context, name, factory, 1);
     }
@@ -85,6 +89,7 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL(createurTableEtatCuve);
         db.execSQL(createurTableEtatFut);
         db.execSQL(createurTableCuve);
+        db.execSQL(gestion);
 
         db.execSQL("INSERT INTO EtatFermenteur (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
         db.execSQL("INSERT INTO EtatCuve (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
@@ -93,6 +98,8 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Recette (nom, couleur, acronyme) VALUES ('Riv. Blanche', 'Blanche', 'Rvb')");
         db.execSQL("INSERT INTO Recette (nom, couleur, acronyme) VALUES ('République', 'Blonde', 'Rpb')");
         db.execSQL("INSERT INTO Recette (nom, couleur, acronyme) VALUES ('Goupil', 'Rousse', 'Gpl')");
+
+        db.execSQL("INSERT INTO Gestion (delaiLavageAcide, delaiInspectionBaril) VALUES(604800000, 604800000)");
     }
 
     @Override

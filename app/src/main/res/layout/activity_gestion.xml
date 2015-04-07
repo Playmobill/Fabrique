@@ -92,7 +92,7 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Ajout / Modification EtatFermenteur"
+            android:text="États"
             android:id="@+id/btnEtat"
             android:layout_weight="1"
             android:gravity="center"

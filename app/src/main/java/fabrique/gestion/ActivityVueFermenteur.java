@@ -1,13 +1,10 @@
 package fabrique.gestion;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import fabrique.gestion.BDD.TableFermenteur;
@@ -19,28 +16,26 @@ public class ActivityVueFermenteur extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        LinearLayout layout = new LinearLayout(this);
 
         Intent intent = getIntent();
         int index = intent.getIntExtra("index", -1);
 
-        LinearLayout layout = new LinearLayout(this);
-        layout.addView(descriptionFermenteur(this, index));
-        setContentView(layout);
-    }
-
-    public LinearLayout descriptionFermenteur(Context contexte, int index) {
         Fermenteur fermenteur = TableFermenteur.instance(this).recuperer(index);
+        if (fermenteur != null) {
+            if (fermenteur.getBrassin() != null) {
+                //layout.addView(new VueBrassin(this, fermenteur.getBrassin()));
+            }
+            layout.addView(new VueFermenteur(this, fermenteur));
+        } else {
+            TextView txtErreur = new TextView(this);
+            txtErreur.setText("Aucun fermenteur sélectionné");
+        }
 
-        LinearLayout layout = new LinearLayout(contexte);
+        ScrollView layoutVerticalScroll = new ScrollView(this);
+        layoutVerticalScroll.addView(layout);
 
-        TextView titre = new TextView(contexte);
-        titre.setText("Fermenteur " + fermenteur.getNumero());
-        titre.setTypeface(null, Typeface.BOLD);
-
-        layout.addView(titre);
-        return layout;
+        setContentView(layoutVerticalScroll);
     }
 
     @Override

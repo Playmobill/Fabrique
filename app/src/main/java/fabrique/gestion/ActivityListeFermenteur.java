@@ -46,7 +46,7 @@ public class ActivityListeFermenteur extends Activity implements OnItemSelectedL
         liste.setSelection(position);
         TableRow ligne = (TableRow) findViewById(R.id.ligne);
         ligne.removeAllViews();
-        ligne.addView(new ActivityVueFermenteur().descriptionFermenteur(this, liste.getSelectedItemPosition()));
+        ligne.addView(new VueFermenteur(this, TableFermenteur.instance(this).recuperer(liste.getSelectedItemPosition())));
     }
 
     @Override
