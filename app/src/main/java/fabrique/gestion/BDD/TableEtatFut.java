@@ -5,43 +5,43 @@ import android.database.Cursor;
 
 import java.util.ArrayList;
 
-import fabrique.gestion.Objets.EtatCuve;
+import fabrique.gestion.Objets.EtatFut;
 
-public class TableEtatCuve extends Controle{
+public class TableEtatFut extends Controle{
 
-    private ArrayList<EtatCuve> etats;
+    private ArrayList<EtatFut> etats;
 
-    private static TableEtatCuve INSTANCE;
+    private static TableEtatFut INSTANCE;
 
-    public static TableEtatCuve instance(Context contexte){
+    public static TableEtatFut instance(Context contexte){
         if(INSTANCE == null){
-            INSTANCE = new TableEtatCuve(contexte);
+            INSTANCE = new TableEtatFut(contexte);
         }
         return INSTANCE;
     }
 
-    private TableEtatCuve(Context contexte){
-        super(contexte, "EtatCuve");
+    private TableEtatFut(Context contexte){
+        super(contexte, "EtatFut");
         etats = new ArrayList<>();
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            etats.add(new EtatCuve(tmp.getInt(0), tmp.getString(1), tmp.getInt(2), tmp.getInt(3), tmp.getInt(4) == 1));
+            etats.add(new EtatFut(tmp.getInt(0), tmp.getString(1), tmp.getInt(2), tmp.getInt(3), tmp.getInt(4) == 1));
         }
     }
 
-    public EtatCuve ajouter(String texte, int couleurTexte, int couleurFond, boolean actif) {
+    public EtatFut ajouter(String texte, int couleurTexte, int couleurFond, boolean actif) {
         int intActif = 0;
         if (actif) {
             intActif = 1;
         }
-        accesBDD.execSQL("INSERT INTO EtatCuve (texte, couleurTexte, couleurFond, actif) VALUES ('" + texte + "', " + couleurTexte + ", " + couleurFond +", " + intActif + ")");
-        EtatCuve etat = new EtatCuve(etats.size(), texte, couleurTexte, couleurFond, actif);
+        accesBDD.execSQL("INSERT INTO EtatFut (texte, couleurTexte, couleurFond, actif) VALUES ('" + texte + "', " + couleurTexte + ", " + couleurFond +", " + intActif + ")");
+        EtatFut etat = new EtatFut(etats.size(), texte, couleurTexte, couleurFond, actif);
         etats.add(etat);
         return etat;
     }
 
-    public EtatCuve recuperer(int index){
+    public EtatFut recuperer(int index){
         return etats.get(index);
     }
 
@@ -90,12 +90,12 @@ public class TableEtatCuve extends Controle{
         return listeEtatActif;
     }
 
-    public void modifier(EtatCuve etat) {
+    public void modifier(EtatFut etat) {
         int actif = 0;
         if (etat.getActif()) {
             actif = 1;
         }
-        accesBDD.execSQL("UPDATE EtatCuve SET " +
+        accesBDD.execSQL("UPDATE EtatFut SET " +
                             "texte = '"+ etat.getTexte() +"', " +
                             "couleurTexte = " + etat.getCouleurTexte() + ", " +
                             "couleurFond = " + etat.getCouleurFond() + ", " +

@@ -19,8 +19,8 @@ public class ColorPickerDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(new ColorPickerView(getContext(), elementModifier, txtEtat));
+        setContentView(new ColorPickerView(getContext(), this, elementModifier, txtEtat));
         setTitle("Choisissez la couleur");
+        getWindow().setLayout(290, 450);
     }
 }

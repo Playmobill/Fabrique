@@ -12,6 +12,8 @@ import android.widget.EditText;
 
 public class ColorPickerView extends View {
 
+    private ColorPickerDialog dialogue;
+
     private Paint mPaint;
     private float mCurrentHue = 0;
     private int mCurrentX = 0, mCurrentY = 0;
@@ -22,8 +24,9 @@ public class ColorPickerView extends View {
     private final String elementModifier;
     private final EditText txtEtat;
 
-    public ColorPickerView(Context contexte, String elementModifier, EditText txtEtat) {
+    public ColorPickerView(Context contexte, ColorPickerDialog dialogue, String elementModifier, EditText txtEtat) {
         super(contexte);
+        this.dialogue = dialogue;
         this.elementModifier = elementModifier;
         this.txtEtat = txtEtat;
 
@@ -224,10 +227,14 @@ public class ColorPickerView extends View {
             }
             // Force the redraw of the dialog
             invalidate();
+            txtEtat.setTextColor(couleurActuelleTexte);
+            txtEtat.setDrawingCacheBackgroundColor(couleurActuelleFond);
+            txtEtat.setBackgroundColor(couleurActuelleFond);
+            return true;
         }
 
         // If the touch event is located in the main field
-        if (x > 10 && x < 266 && y > 50 && y < 306) {
+         if (x > 10 && x < 266 && y > 50 && y < 306) {
             mCurrentX = (int) x;
             mCurrentY = (int) y;
             int transX = mCurrentX-10;
@@ -242,22 +249,29 @@ public class ColorPickerView extends View {
                 }
                 // Force the redraw of the dialog
                 invalidate();
+                txtEtat.setTextColor(couleurActuelleTexte);
+                txtEtat.setDrawingCacheBackgroundColor(couleurActuelleFond);
+                txtEtat.setBackgroundColor(couleurActuelleFond);
             }
+            return true;
         }
 
         // If the touch event is located in the left button, notify the listener with the current color
-        if (x > 10 && x < 138 && y > 316 && y < 356) {
+        /*if (x > 10 && x < 138 && y > 316 && y < 356) {
             txtEtat.setTextColor(couleurActuelleTexte);
             txtEtat.setDrawingCacheBackgroundColor(couleurActuelleFond);
             txtEtat.setBackgroundColor(couleurActuelleFond);
-        }
+        }*/
 
         // If the touch event is located in the right button, notify the listener with the default color
         if (x > 138 && x < 266 && y > 316 && y < 356) {
             txtEtat.setTextColor(couleurAvantTexte);
             txtEtat.setDrawingCacheBackgroundColor(couleurAvantFond);
             txtEtat.setBackgroundColor(couleurAvantFond);
+            return true;
         }
+
+        dialogue.dismiss();
         return true;
     }
 }

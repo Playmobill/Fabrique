@@ -29,6 +29,7 @@ public class BoutonCuve extends Button {
         texte = texte + cuve.getDateEtat() + "\n";
         setText(texte);
 
-
+        setTextColor(cuve.getCouleurTexte(contexte));
+        setBackgroundColor(cuve.getCouleurFond(contexte));
     }
 }

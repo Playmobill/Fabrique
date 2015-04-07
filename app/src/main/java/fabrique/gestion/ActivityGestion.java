@@ -82,7 +82,7 @@ public class ActivityGestion extends Activity implements View.OnClickListener {
         } else if (view.equals(configuration)) {
 
         } else if (view.equals(etat)) {
-            Intent intent = new Intent(this, ActivityEtatFermenteur.class);
+            Intent intent = new Intent(this, ActivityEtat.class);
             startActivity(intent);
         }
     }

@@ -47,6 +47,12 @@ public class Cuve extends Objet implements Comparable<Cuve> {
     public String getEtat(Context contexte) {
         return TableEtatCuve.instance(contexte).etat(etat);
     }
+    public int getCouleurTexte(Context contexte) {
+        return TableEtatCuve.instance(contexte).couleurTexteEtat(etat);
+    }
+    public int getCouleurFond(Context contexte) {
+        return TableEtatCuve.instance(contexte).couleurFondEtat(etat);
+    }
     public String getDateEtat() {
         Calendar calendrier = Calendar.getInstance();
         calendrier.setTimeInMillis(dateEtat);

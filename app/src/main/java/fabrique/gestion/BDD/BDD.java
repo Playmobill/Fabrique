@@ -32,6 +32,13 @@ public class BDD extends SQLiteOpenHelper {
                                                 "couleurFond INTEGER NOT NULL," +
                                                 "actif INTEGER NOT NULL)";
 
+    private static String createurTableEtatFut = "CREATE TABLE IF NOT EXISTS EtatFut (" +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                                "texte TEXT, " +
+                                                "couleurTexte INTEGER NOT NULL," +
+                                                "couleurFond INTEGER NOT NULL," +
+                                                "actif INTEGER NOT NULL)";
+
     private static String createurTableBrassin = "CREATE TABLE IF NOT EXISTS Brassin (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                                 "numero INTEGER," +
@@ -76,11 +83,12 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL(createurTableEtatFermenteur);
         db.execSQL(createurTableFermenteur);
         db.execSQL(createurTableEtatCuve);
+        db.execSQL(createurTableEtatFut);
         db.execSQL(createurTableCuve);
 
         db.execSQL("INSERT INTO EtatFermenteur (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
         db.execSQL("INSERT INTO EtatCuve (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
-
+        db.execSQL("INSERT INTO EtatFut (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
 
         db.execSQL("INSERT INTO Recette (nom, couleur, acronyme) VALUES ('Riv. Blanche', 'Blanche', 'Rvb')");
         db.execSQL("INSERT INTO Recette (nom, couleur, acronyme) VALUES ('République', 'Blonde', 'Rpb')");
