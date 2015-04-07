@@ -100,6 +100,10 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Recette (nom, couleur, acronyme) VALUES ('Goupil', 'Rousse', 'Gpl')");
 
         db.execSQL("INSERT INTO Gestion (delaiLavageAcide, delaiInspectionBaril) VALUES(604800000, 604800000)");
+
+        db.execSQL("INSERT INTO Emplacement (texte) VALUES ('SS')");
+        db.execSQL("INSERT INTO Emplacement (texte) VALUES ('Ch.Froide')");
+        db.execSQL("INSERT INTO Emplacement (texte) VALUES ('RC')");
     }
 
     @Override

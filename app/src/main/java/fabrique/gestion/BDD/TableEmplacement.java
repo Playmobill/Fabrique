@@ -28,10 +28,6 @@ public class TableEmplacement extends Controle {
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             emplacements.add(new Emplacement(tmp.getInt(0), tmp.getString(1)));
         }
-
-        ajouter("SS");
-        ajouter("RC");
-        ajouter("ChFroide");
     }
 
     public void ajouter(String texte){
@@ -55,15 +51,38 @@ public class TableEmplacement extends Controle {
         return emplacements.size();
     }
 
-    public String emplacement(int index){
-        return emplacements.get(index).getTexte();
+    public String emplacement(int id){
+        for (int i=0; i<emplacements.size() ; i++) {
+            if (id == emplacements.get(i).getId()) {
+                return emplacements.get(i).getTexte();
+            }
+        }
+        return emplacements.get(0).getTexte();
     }
 
     public String[] emplacements () {
         String[] etats = new String[emplacements.size()];
         for (int i=0; i<emplacements.size(); i++) {
-            etats[i] = emplacement(i);
+            etats[i] = emplacements.get(i).getTexte();
         }
         return etats;
+    }
+
+    public Emplacement rechercher(String texte) {
+        for (int i=0; i<emplacements.size() ; i++) {
+            if(emplacements.get(i).getTexte().equals(texte)) {
+                return emplacements.get(i);
+            }
+        }
+        return emplacements.get(0);
+    }
+
+    public int indexOf(int id) {
+        for (int i=0; i<emplacements.size() ; i++) {
+            if(id == emplacements.get(i).getId()) {
+                return i;
+            }
+        }
+        return 0;
     }
 }

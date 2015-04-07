@@ -115,31 +115,25 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
 
     private TableRow ligneAjouterNouveau() {
         TableRow ligne = new TableRow(getContext());
-            EditText txtEtatAjouter = new EditText(getContext());
+            txtEtatAjouter = new EditText(getContext());
             txtEtatAjouter.setLayoutParams(parametre);
-            this.txtEtatAjouter = txtEtatAjouter;
 
-            CheckBox cbActifAjouter = new CheckBox(getContext());
+            cbActifAjouter = new CheckBox(getContext());
             cbActifAjouter.setChecked(true);
             cbActifAjouter.setEnabled(true);
             cbActifAjouter.setLayoutParams(parametre);
-            this.cbActifAjouter = cbActifAjouter;
 
-            Button btnCouleurTexteAjouter = new Button(getContext());
+            btnCouleurTexteAjouter = new Button(getContext());
             btnCouleurTexteAjouter.setText("Couleur de texte");
             btnCouleurTexteAjouter.setOnClickListener(this);
-            this.btnCouleurTexteAjouter = btnCouleurTexteAjouter;
 
-            Button btnCouleurFondAjouter = new Button(getContext());
+            btnCouleurFondAjouter = new Button(getContext());
             btnCouleurFondAjouter.setText("Couleur de fond");
             btnCouleurFondAjouter.setOnClickListener(this);
-            this.btnCouleurFondAjouter = btnCouleurFondAjouter;
 
-
-            Button btnAjouter = new Button(getContext());
+            btnAjouter = new Button(getContext());
             btnAjouter.setText("Ajouter");
             btnAjouter.setOnClickListener(this);
-            this.btnAjouter = btnAjouter;
 
             ligne.addView(txtEtatAjouter);
             ligne.addView(cbActifAjouter);
@@ -183,39 +177,33 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
 
         EtatFut etat = etats.get(index);
 
-        EditText txtEtat = new EditText(getContext());
+        txtEtat = new EditText(getContext());
         txtEtat.setText(etat.getTexte());
         txtEtat.setTextColor(etat.getCouleurTexte());
         txtEtat.setDrawingCacheBackgroundColor(etat.getCouleurFond());
         txtEtat.setBackgroundColor(etat.getCouleurFond());
         txtEtat.setLayoutParams(parametre);
-        this.txtEtat = txtEtat;
 
-        CheckBox cbActif = new CheckBox(getContext());
+        cbActif = new CheckBox(getContext());
         cbActif.setChecked(etat.getActif());
         cbActif.setEnabled(true);
         cbActif.setLayoutParams(parametre);
-        this.cbActif = cbActif;
 
-        Button btnCouleurTexte = new Button(getContext());
+        btnCouleurTexte = new Button(getContext());
         btnCouleurTexte.setText("Couleur de texte");
         btnCouleurTexte.setOnClickListener(this);
-        this.btnCouleurTexte = btnCouleurTexte;
 
-        Button btnCouleurFond = new Button(getContext());
+        btnCouleurFond = new Button(getContext());
         btnCouleurFond.setText("Couleur de fond");
         btnCouleurFond.setOnClickListener(this);
-        this.btnCouleurFond = btnCouleurFond;
 
-        Button btnValider = new Button(getContext());
+        btnValider = new Button(getContext());
         btnValider.setText("Valider");
         btnValider.setOnClickListener(this);
-        this.btnValider = btnValider;
 
-        Button btnAnnuler = new Button(getContext());
+        btnAnnuler = new Button(getContext());
         btnAnnuler.setText("Annuler");
         btnAnnuler.setOnClickListener(this);
-        this.btnAnnuler = btnAnnuler;
 
         ligne.addView(txtEtat);
         ligne.addView(cbActif);

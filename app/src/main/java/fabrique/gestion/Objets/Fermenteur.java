@@ -37,6 +37,9 @@ public class Fermenteur extends Objet implements Comparable<Fermenteur> {
     public String getEmplacement(Context contexte) {
         return TableEmplacement.instance(contexte).emplacement(emplacement);
     }
+    public int getEmplacementId() {
+        return emplacement;
+    }
     public long getDateLavageAcide() {
         return dateLavageAcide;
     }
