@@ -6,43 +6,39 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import fabrique.gestion.Objets.TypeBiere;
+import fabrique.gestion.Objets.Recette;
 
-public class TableTypeBiere extends Controle {
+public class TableRecette extends Controle {
 
-    private ArrayList<TypeBiere> types;
+    private ArrayList<Recette> types;
 
-    private static TableTypeBiere INSTANCE;
+    private static TableRecette INSTANCE;
 
-    public static TableTypeBiere instance(Context contexte){
+    public static TableRecette instance(Context contexte){
         if(INSTANCE == null){
-            INSTANCE = new TableTypeBiere(contexte);
+            INSTANCE = new TableRecette(contexte);
         }
         return INSTANCE;
     }
 
-    private TableTypeBiere(Context contexte){
-        super(contexte, "TypeBiere");
+    private TableRecette(Context contexte){
+        super(contexte, "Recette");
         types = new ArrayList<>();
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            types.add(new TypeBiere(tmp.getInt(0), tmp.getString(1)));
+            types.add(new Recette(tmp.getInt(0), tmp.getString(1), tmp.getString(2), tmp.getString(3)));
         }
         Collections.sort(types);
-
-        ajouter("Blanche");
-        ajouter("Blonde");
-        ajouter("Brune");
     }
 
-    public void ajouter(String texte){
-        types.add(new TypeBiere(types.size(), texte));
-        accesBDD.execSQL("INSERT INTO TypeBiere (texte) VALUES ('" + texte + "')");
+    public void ajouter(String nom, String couleur, String acronyme){
+        types.add(new Recette(types.size(), nom, couleur, acronyme));
+        accesBDD.execSQL("INSERT INTO Recette (nom, couleur, acronyme) VALUES ('" + nom + "', '"+couleur+"', '"+acronyme+"')");
         Collections.sort(types);
     }
 
-    public TypeBiere recuperer(int index){
+    public Recette recuperer(int index){
         return types.get(index);
     }
 
@@ -57,7 +53,7 @@ public class TableTypeBiere extends Controle {
     public String[] types () {
         String[] types2 = new String[types.size()];
         for (int i=0; i<types.size(); i++) {
-            types2[i] = types.get(i).getTexte();
+            types2[i] = types.get(i).getNom();
         }
         return types2;
     }

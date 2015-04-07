@@ -7,9 +7,11 @@ import android.graphics.Color;
 
 public class BDD extends SQLiteOpenHelper {
 
-    private static String createurTableTypeBiere = "CREATE TABLE IF NOT EXISTS TypeBiere (" +
+    private static String createurTableRecette = "CREATE TABLE Recette(" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "texte TEXT)";
+                                                "nom TEXT," +
+                                                "couleur TEXT," +
+                                                "acronyme TEXT);";
 
     private static String createurTableEmplacement = "CREATE TABLE IF NOT EXISTS Emplacement (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -34,11 +36,9 @@ public class BDD extends SQLiteOpenHelper {
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                                 "numero INTEGER," +
                                                 "commentaire TEXT," +
-                                                "acronyme TEXT," +
                                                 "dateCreation INTEGER NOT NULL," +
                                                 "quantite INTEGER," +
-                                                "id_typeBiere INTEGER NOT NULL," +
-                                                "couleur TEXT," +
+                                                "id_recette INTEGER NOT NULL," +
                                                 "densiteOriginale REAL," +
                                                 "densiteFinale REAL," +
                                                 "pourcentageAlcool REAL)";
@@ -70,15 +70,21 @@ public class BDD extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(createurTableTypeBiere);
+        db.execSQL(createurTableRecette);
         db.execSQL(createurTableBrassin);
         db.execSQL(createurTableEmplacement);
         db.execSQL(createurTableEtatFermenteur);
         db.execSQL(createurTableFermenteur);
-        db.execSQL("INSERT INTO EtatFermenteur (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
         db.execSQL(createurTableEtatCuve);
-        db.execSQL("INSERT INTO EtatCuve (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
         db.execSQL(createurTableCuve);
+
+        db.execSQL("INSERT INTO EtatFermenteur (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
+        db.execSQL("INSERT INTO EtatCuve (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
+
+
+        db.execSQL("INSERT INTO Recette (nom, couleur, acronyme) VALUES ('Riv. Blanche', 'Blanche', 'Rvb')");
+        db.execSQL("INSERT INTO Recette (nom, couleur, acronyme) VALUES ('République', 'Blonde', 'Rpb')");
+        db.execSQL("INSERT INTO Recette (nom, couleur, acronyme) VALUES ('Goupil', 'Rousse', 'Gpl')");
     }
 
     @Override

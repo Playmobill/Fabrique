@@ -62,24 +62,6 @@
             android:layout_marginBottom="10dp">
 
             <TextView
-                android:id="@+id/txtAcronyme"
-                android:text="Acronyme"
-                android:textColor="@color/noir"
-                android:layout_weight="1" />
-
-            <EditText
-                android:inputType="text"
-                android:id="@+id/editAcronyme"
-                android:layout_weight="1" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
-
-            <TextView
                 android:id="@+id/txtQuantite"
                 android:text="Quantité (litre)"
                 android:textColor="@color/noir"
@@ -98,32 +80,14 @@
             android:layout_marginBottom="10dp">
 
             <TextView
-                android:id="@+id/txtTypeBiere"
-                android:text="Biere"
+                android:id="@+id/txtRecette"
+                android:text="Recette"
                 android:textColor="@color/noir"
                 android:layout_weight="1" />
 
             <Spinner
-                android:id="@+id/editTypeBiere"
+                android:id="@+id/editRecette"
                 style="@style/Widget.AppCompat.Spinner"
-                android:layout_weight="1" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
-
-            <TextView
-                android:id="@+id/txtCouleur"
-                android:text="Couleur"
-                android:textColor="@color/noir"
-                android:layout_weight="1" />
-
-            <EditText
-                android:inputType="text"
-                android:id="@+id/editCouleur"
                 android:layout_weight="1" />
 
         </TableRow>

@@ -39,14 +39,8 @@ public class ActivityVueBrassin extends Activity {
         TextView texteCommentaireBrassin = (TextView)findViewById(R.id.texteCommentaireBrassin);
         texteCommentaireBrassin.setText(brassin.getCommentaire());
 
-        TextView texteAcronyme = (TextView)findViewById(R.id.texteAcronyme);
-        texteAcronyme.setText(texteAcronyme.getText().toString() + brassin.getAcronyme());
-
-        TextView texteTypeBiere = (TextView)findViewById(R.id.texteTypeBiere);
-        texteTypeBiere.setText(texteTypeBiere.getText().toString() + brassin.getId_typeBiere());
-
-        TextView texteCouleur = (TextView)findViewById(R.id.texteCouleur);
-        texteCouleur.setText(texteCouleur.getText().toString() + brassin.getCouleur());
+        TextView texteRecette = (TextView)findViewById(R.id.texteRecette);
+        texteRecette.setText(texteRecette.getText().toString() + brassin.getId_recette());
 
         TextView texteQuantite = (TextView)findViewById(R.id.texteQuantite);
         texteQuantite.setText(texteQuantite.getText().toString() + brassin.getQuantite());

@@ -57,7 +57,7 @@
                 android:layout_span="2" />
         </TableRow>
 
-        <!--Acronyme et type de bière-->
+        <!--Recette de bière-->
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,31 +66,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Acronyme : "
-                android:id="@+id/texteAcronyme"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Type de bière : "
-                android:id="@+id/texteTypeBiere"
+                android:text="Recette : "
+                android:id="@+id/texteRecette"
                 android:layout_weight="1" />
 
         </TableRow>
 
-        <!--Couleur et quantité-->
+        <!--quantité-->
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Couleur : "
-                android:id="@+id/texteCouleur"
-                android:layout_weight="1" />
 
             <TextView
                 android:layout_width="wrap_content"

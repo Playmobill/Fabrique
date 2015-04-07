@@ -12,16 +12,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import fabrique.gestion.BDD.TableBrassin;
-import fabrique.gestion.BDD.TableTypeBiere;
+import fabrique.gestion.BDD.TableRecette;
 
 public class ActivityAjouterBrassin extends Activity implements View.OnClickListener {
 
     private Button btnAjouter;
 
-    private EditText editNumero, editCommentaire, editAcronyme, editQuantite,
-            editCouleur, editDensiteOriginale, editDensiteFinale, editPourcentageAlcool;
+    private EditText editNumero, editCommentaire, editQuantite,
+            editDensiteOriginale, editDensiteFinale, editPourcentageAlcool;
 
-    private Spinner editTypeBiere;
+    private Spinner editRecette;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,18 +37,16 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
         editNumero.setText("" + (i+1));
 
         editCommentaire = (EditText)findViewById(R.id.editCommentaire);
-        editAcronyme = (EditText)findViewById(R.id.editNumero);
-        editQuantite = (EditText)findViewById(R.id.editNumero);
-        editCouleur = (EditText)findViewById(R.id.editCouleur);
+        editQuantite = (EditText)findViewById(R.id.editQuantite);
         editDensiteOriginale = (EditText)findViewById(R.id.editDensiteOriginale);
         editDensiteFinale = (EditText)findViewById(R.id.editDensiteFinale);
         editPourcentageAlcool = (EditText)findViewById(R.id.editPourcentageAlcool);
 
-        editTypeBiere = (Spinner)this.findViewById(R.id.editTypeBiere);
-        TableTypeBiere tableTypeBiere = TableTypeBiere.instance(this);
-        ArrayAdapter<String> adapteurTypeBiere = new ArrayAdapter<>(this, R.layout.spinner_style, tableTypeBiere.types());
-        adapteurTypeBiere.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        editTypeBiere.setAdapter(adapteurTypeBiere);
+        editRecette = (Spinner)this.findViewById(R.id.editRecette);
+        TableRecette tableRecette = TableRecette.instance(this);
+        ArrayAdapter<String> adapteurRecette = new ArrayAdapter<>(this, R.layout.spinner_style, tableRecette.types());
+        adapteurRecette.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        editRecette.setAdapter(adapteurRecette);
 
         btnAjouter = (Button)findViewById(R.id.btnAjouter);
         btnAjouter.setOnClickListener(this);
