@@ -13,9 +13,9 @@ public class TableEtatFermenteur extends Controle {
 
     private static TableEtatFermenteur INSTANCE;
 
-    public static TableEtatFermenteur instance(Context ctxt){
+    public static TableEtatFermenteur instance(Context contexte){
         if(INSTANCE == null){
-            INSTANCE = new TableEtatFermenteur(ctxt);
+            INSTANCE = new TableEtatFermenteur(contexte);
         }
         return INSTANCE;
     }
@@ -30,13 +30,15 @@ public class TableEtatFermenteur extends Controle {
         }
     }
 
-    public void ajouter(String texte, int couleurTexte, int couleurFond, boolean actif) {
+    public EtatFermenteur ajouter(String texte, int couleurTexte, int couleurFond, boolean actif) {
         int intActif = 0;
         if (actif) {
             intActif = 1;
         }
         accesBDD.execSQL("INSERT INTO EtatFermenteur (texte, couleurTexte, couleurFond, actif) VALUES ('" + texte + "', " + couleurTexte + ", " + couleurFond +", " + intActif + ")");
-        etats.add(new EtatFermenteur(etats.size(), texte, couleurTexte, couleurFond, actif));
+        EtatFermenteur etat = new EtatFermenteur(etats.size(), texte, couleurTexte, couleurFond, actif);
+        etats.add(etat);
+        return etat;
     }
 
     public EtatFermenteur recuperer(int index){
@@ -51,8 +53,31 @@ public class TableEtatFermenteur extends Controle {
         return etats.size();
     }
 
-    public String etat(int index){
-        return etats.get(index).getTexte();
+    public String etat(int id) {
+        for (int i=0; i<etats.size() ; i++) {
+            if (etats.get(i).getId() == id) {
+                return etats.get(i).getTexte();
+            }
+        }
+        return etats.get(0).getTexte();
+    }
+
+    public int couleurTexteEtat(int id){
+        for (int i=0; i<etats.size() ; i++) {
+            if (etats.get(i).getId() == id) {
+                return etats.get(i).getCouleurTexte();
+            }
+        }
+        return etats.get(0).getCouleurTexte();
+    }
+
+    public int couleurFondEtat(int id){
+        for (int i=0; i<etats.size() ; i++) {
+            if (etats.get(i).getId() == id) {
+                return etats.get(i).getCouleurFond();
+            }
+        }
+        return etats.get(0).getCouleurFond();
     }
 
     public ArrayList<String> etatsActifs() {

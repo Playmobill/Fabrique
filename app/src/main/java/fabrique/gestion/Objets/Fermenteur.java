@@ -45,6 +45,12 @@ public class Fermenteur extends Objet implements Comparable<Fermenteur> {
     public String getEtat(Context contexte) {
         return TableEtatFermenteur.instance(contexte).etat(etat);
     }
+    public int getCouleurTexte(Context contexte) {
+        return TableEtatFermenteur.instance(contexte).couleurTexteEtat(etat);
+    }
+    public int getCouleurFond(Context contexte) {
+        return TableEtatFermenteur.instance(contexte).couleurFondEtat(etat);
+    }
     public String getDateEtat() {
         Calendar calendrier = Calendar.getInstance();
         calendrier.setTimeInMillis(dateEtat);

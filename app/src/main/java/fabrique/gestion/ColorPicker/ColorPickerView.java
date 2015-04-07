@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 
-public class ColorPickerViewEtatFermenteur extends View {
+public class ColorPickerView extends View {
 
     private Paint mPaint;
     private float mCurrentHue = 0;
@@ -22,7 +22,7 @@ public class ColorPickerViewEtatFermenteur extends View {
     private final String elementModifier;
     private final EditText txtEtat;
 
-    public ColorPickerViewEtatFermenteur(Context contexte, String elementModifier, EditText txtEtat) {
+    public ColorPickerView(Context contexte, String elementModifier, EditText txtEtat) {
         super(contexte);
         this.elementModifier = elementModifier;
         this.txtEtat = txtEtat;

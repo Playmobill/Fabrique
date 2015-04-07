@@ -5,12 +5,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.EditText;
 
-public class ColorPickerDialogEtatFermenteur extends Dialog {
+public class ColorPickerDialog extends Dialog {
 
     private String elementModifier;
     private EditText txtEtat;
 
-    public ColorPickerDialogEtatFermenteur(Context context, String elementModifier, EditText txtEtat) {
+    public ColorPickerDialog(Context context, String elementModifier, EditText txtEtat) {
         super(context);
         this.elementModifier = elementModifier;
         this.txtEtat = txtEtat;
@@ -20,7 +20,7 @@ public class ColorPickerDialogEtatFermenteur extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(new ColorPickerViewEtatFermenteur(getContext(), elementModifier, txtEtat));
+        setContentView(new ColorPickerView(getContext(), elementModifier, txtEtat));
         setTitle("Choisissez la couleur");
     }
 }

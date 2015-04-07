@@ -18,9 +18,7 @@ public class BoutonFermenteur extends Button {
         setGravity(Gravity.CENTER);
 
         String texte = "F" + fermenteur.getNumero() + "\n";
-        if (fermenteur.getCapacite() != 0) {
-            texte = texte + fermenteur.getCapacite() + "L";
-        }
+        texte = texte + fermenteur.getCapacite() + "L";
         texte = texte + "\n" + fermenteur.getEmplacement(contexte) + "\n";
         texte = texte + fermenteur.getEtat(contexte) + "\n";
         if (fermenteur.getBrassin() != null) {
@@ -28,5 +26,8 @@ public class BoutonFermenteur extends Button {
         }
         texte = texte + "\n" + fermenteur.getDateEtat();
         setText(texte);
+
+        setTextColor(fermenteur.getCouleurTexte(contexte));
+        setBackgroundColor(fermenteur.getCouleurFond(contexte));
     }
 }
