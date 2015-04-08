@@ -1,7 +1,5 @@
 package fabrique.gestion.Objets;
 
-import android.util.Log;
-
 public class EtatCuve extends Objet implements Comparable<EtatCuve> {
 
     private String texte;
@@ -43,7 +41,6 @@ public class EtatCuve extends Objet implements Comparable<EtatCuve> {
     public int compareTo(EtatCuve etat) {
         if (actif == etat.getActif()) {
             for (int i=0; i<Math.min(texte.length(), etat.getTexte().length()) ; i++) {
-                Log.i("EtatCuve", texte.charAt(i) + " / " + etat.getTexte().charAt(i));
                 if (texte.charAt(i) < etat.getTexte().charAt(i)) {
                     return -1;
                 } else if (texte.charAt(i) > etat.getTexte().charAt(i)) {

@@ -1,9 +1,11 @@
 package fabrique.gestion.BDD;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import fabrique.gestion.Objets.EtatFermenteur;
 
@@ -26,61 +28,43 @@ public class TableEtatFermenteur extends Controle {
         etats = new ArrayList<>();
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            etats.add(new EtatFermenteur(tmp.getInt(0), tmp.getString(1), tmp.getInt(2), tmp.getInt(3), tmp.getInt(4) == 1));
+            etats.add(new EtatFermenteur(tmp.getLong(0), tmp.getString(1), tmp.getInt(2), tmp.getInt(3), tmp.getInt(4) == 1));
         }
+        Collections.sort(etats);
     }
 
-    public EtatFermenteur ajouter(String texte, int couleurTexte, int couleurFond, boolean actif) {
-        int intActif = 0;
-        if (actif) {
-            intActif = 1;
+    public long ajouter(String texte, int couleurTexte, int couleurFond, boolean actif) {
+        ContentValues valeur = new ContentValues();
+        valeur.put("texte", texte);
+        valeur.put("couleurTexte", couleurTexte);
+        valeur.put("couleurFond", couleurFond);
+        valeur.put("actif", actif);
+        long id = accesBDD.insert(nomTable, null, valeur);
+        if (id != -1) {
+            etats.add(new EtatFermenteur(id, texte, couleurTexte, couleurFond, actif));
+            Collections.sort(etats);
         }
-        accesBDD.execSQL("INSERT INTO EtatFermenteur (texte, couleurTexte, couleurFond, actif) VALUES ('" + texte + "', " + couleurTexte + ", " + couleurFond +", " + intActif + ")");
-        EtatFermenteur etat = new EtatFermenteur(etats.size(), texte, couleurTexte, couleurFond, actif);
-        etats.add(etat);
-        return etat;
-    }
-
-    public EtatFermenteur recuperer(int index){
-        return etats.get(index);
-    }
-
-    public void supprimer(int index){
-        etats.remove(index);
+        return id;
     }
 
     public int tailleListe() {
         return etats.size();
     }
 
-    public String etat(int id) {
-        for (int i=0; i<etats.size() ; i++) {
-            if (etats.get(i).getId() == id) {
-                return etats.get(i).getTexte();
-            }
-        }
-        return etats.get(0).getTexte();
+    public EtatFermenteur recupererIndex(int index){
+        return etats.get(index);
     }
 
-    public int couleurTexteEtat(int id){
+    public EtatFermenteur recupererId(long id){
         for (int i=0; i<etats.size() ; i++) {
             if (etats.get(i).getId() == id) {
-                return etats.get(i).getCouleurTexte();
+                return etats.get(i);
             }
         }
-        return etats.get(0).getCouleurTexte();
+        return null;
     }
 
-    public int couleurFondEtat(int id){
-        for (int i=0; i<etats.size() ; i++) {
-            if (etats.get(i).getId() == id) {
-                return etats.get(i).getCouleurFond();
-            }
-        }
-        return etats.get(0).getCouleurFond();
-    }
-
-    public ArrayList<String> etatsActifs() {
+    public ArrayList<String> recupererEtatsActifs() {
         ArrayList<String> listeEtatActif = new ArrayList<>();
         for (int i=0; i<etats.size(); i++) {
             if (etats.get(i).getActif()) {
@@ -90,16 +74,19 @@ public class TableEtatFermenteur extends Controle {
         return listeEtatActif;
     }
 
-    public void modifier(EtatFermenteur etat) {
-        int actif = 0;
-        if (etat.getActif()) {
-            actif = 1;
+    public void modifier(long id, String texte, int couleurTexte, int couleurFond, boolean actif) {
+        ContentValues valeur = new ContentValues();
+        valeur.put("texte", texte);
+        valeur.put("couleurTexte", couleurTexte);
+        valeur.put("couleurFond", couleurFond);
+        valeur.put("actif", actif);
+        if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
+            EtatFermenteur etat = recupererId(id);
+            etat.setTexte(texte);
+            etat.setCouleurTexte(couleurTexte);
+            etat.setCouleurFond(couleurFond);
+            etat.setActif(actif);
+            Collections.sort(etats);
         }
-        accesBDD.execSQL("UPDATE EtatFermenteur SET " +
-                            "texte = '"+ etat.getTexte() +"', " +
-                            "couleurTexte = " + etat.getCouleurTexte() + ", " +
-                            "couleurFond = " + etat.getCouleurFond() + ", " +
-                            "actif = "+ actif + " " +
-                            "WHERE id = " + etat.getId());
     }
 }

@@ -25,6 +25,4 @@ public abstract class Controle {
     public Cursor select(){
         return accesBDD.query(nomTable, null, null, null, null, null, null);
     }
-
-    public abstract int tailleListe();
 }

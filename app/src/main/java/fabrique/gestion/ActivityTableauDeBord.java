@@ -100,7 +100,7 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
         LinearLayout.LayoutParams parametreFermenteur = new LinearLayout.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.heightPixels*9/20);
         TableFermenteur tableFermenteur = TableFermenteur.instance(this);
         for (int i=0; i<tableFermenteur.tailleListe(); i=i+1) {
-            BoutonFermenteur boutonFermenteur = new BoutonFermenteur(this, tableFermenteur.recuperer(i));
+            BoutonFermenteur boutonFermenteur = new BoutonFermenteur(this, tableFermenteur.recupererIndex(i));
             boutonsFermenteur.add(boutonFermenteur);
             boutonFermenteur.setOnClickListener(this);
             boutonFermenteur.setLayoutParams(parametreFermenteur);
@@ -121,7 +121,7 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
 
         TableCuve tableCuve = TableCuve.instance(this);
         for (int i=0; i<tableCuve.tailleListe(); i=i+1) {
-            BoutonCuve boutonCuve = new BoutonCuve(this, tableCuve.recuperer(i));
+            BoutonCuve boutonCuve = new BoutonCuve(this, tableCuve.recupererIndex(i));
             boutonCuve.setOnClickListener(this);
             boutonsCuve.add(boutonCuve);
             boutonCuve.setLayoutParams(parametreCuve);

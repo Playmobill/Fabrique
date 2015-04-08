@@ -1,5 +1,6 @@
 package fabrique.gestion.BDD;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
@@ -28,37 +29,75 @@ public class TableBrassin extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            brassins.add(new Brassin(tmp.getInt(0), tmp.getInt(1), tmp.getString(2), tmp.getInt(3), tmp.getInt(4), tmp.getInt(5), tmp.getFloat(6), tmp.getFloat(7), tmp.getFloat(8)));
+            brassins.add(new Brassin(tmp.getInt(0), tmp.getInt(1), tmp.getString(2), tmp.getInt(3), tmp.getInt(4), tmp.getLong(5), tmp.getFloat(6), tmp.getFloat(7), tmp.getFloat(8)));
         }
         Collections.sort(brassins);
     }
 
-    public void ajouter(int numero, String commentaire, long dateCreation, int quantite, int id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
-        brassins.add(new Brassin(brassins.size(), numero, commentaire, dateCreation, quantite, id_recette, densiteOriginale, densiteFinale, pourcentageAlcool));
-        accesBDD.execSQL("INSERT INTO Brassin (numero, commentaire, dateCreation, quantite, id_recette, densiteOriginale, densiteFinale, pourcentageAlcool) VALUES (" + numero + ", '" + commentaire + "', " + dateCreation + ", " + quantite + ", " + id_recette + ", " + densiteOriginale + ", " + densiteFinale + ", " + pourcentageAlcool + ")");
-        Collections.sort(brassins);
+    public long ajouter(int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
+        ContentValues valeur = new ContentValues();
+        valeur.put("numero", numero);
+        valeur.put("commentaire", commentaire);
+        valeur.put("dateCreation", dateCreation);
+        valeur.put("quantite", quantite);
+        valeur.put("id_recette", id_recette);
+        valeur.put("densiteOriginale", densiteOriginale);
+        valeur.put("densiteFinale", densiteFinale);
+        valeur.put("pourcentageAlcool", pourcentageAlcool);
+        long id = accesBDD.insert(nomTable, null, valeur);
+        if (id != -1) {
+            brassins.add(new Brassin(id, numero, commentaire, dateCreation, quantite, id_recette, densiteOriginale, densiteFinale, pourcentageAlcool));
+            Collections.sort(brassins);
+        }
+        return id;
     }
 
-    public Brassin recuperer(int index){
+    public int tailleListe() {
+        return brassins.size();
+    }
+
+    public Brassin recupererIndex(int index){
         return brassins.get(index);
     }
 
-    public void modifier(int index, int numero, String commentaire, int dateCreation, int quantite, int id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
-        brassins.get(index).setNumero(numero);
-        brassins.get(index).setCommentaire(commentaire);
-        brassins.get(index).setDateCreation(dateCreation);
-        brassins.get(index).setQuantite(quantite);
-        brassins.get(index).setId_recette(id_recette);
-        brassins.get(index).setDensiteOriginale(densiteOriginale);
-        brassins.get(index).setDensiteFinale(densiteFinale);
-        brassins.get(index).setPourcentageAlcool(pourcentageAlcool);
+    public Brassin recupererId(long id) {
+        for (int i=0; i<brassins.size() ; i++) {
+            if (brassins.get(i).getId() == id) {
+                return brassins.get(i);
+            }
+        }
+        return null;
     }
 
-    public void supprimer(int index){
-        brassins.remove(index);
+    public void modifier(long id, int numero, String commentaire, int dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
+        ContentValues valeur = new ContentValues();
+        valeur.put("numero", numero);
+        valeur.put("commentaire", commentaire);
+        valeur.put("dateCreation", dateCreation);
+        valeur.put("quantite", quantite);
+        valeur.put("id_recette", id_recette);
+        valeur.put("densiteOriginale", densiteOriginale);
+        valeur.put("densiteFinale", densiteFinale);
+        valeur.put("pourcentageAlcool", pourcentageAlcool);
+        if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
+            Brassin brassin = recupererId(id);
+            brassin.setNumero(numero);
+            brassin.setCommentaire(commentaire);
+            brassin.setDateCreation(dateCreation);
+            brassin.setQuantite(quantite);
+            brassin.setId_recette(id_recette);
+            brassin.setDensiteOriginale(densiteOriginale);
+            brassin.setDensiteFinale(densiteFinale);
+            brassin.setPourcentageAlcool(pourcentageAlcool);
+            Collections.sort(brassins);
+        }
     }
 
-    public int tailleListe(){
-        return brassins.size();
+    public String[] numeros() {
+        String[] numeroFermenteurs = new String[brassins.size()];
+        for (int i=0; i<brassins.size() ; i++) {
+            numeroFermenteurs[i] = brassins.get(i).getNumero() + "";
+        }
+        return numeroFermenteurs;
     }
 }

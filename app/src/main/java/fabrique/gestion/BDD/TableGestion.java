@@ -25,11 +25,6 @@ public class TableGestion extends Controle {
         delaiInspectionBaril = tmp.getLong(1);
     }
 
-    @Override
-    public int tailleListe() {
-        return 0;
-    }
-
     public long delaiLavageAcide() {
         return delaiLavageAcide;
     }

@@ -18,7 +18,7 @@ public class BoutonCuve extends Button {
         texte = texte + cuve.getCapacite() + "L \n";
         texte = texte + cuve.getEmplacement(getContext()) + "\n";
         texte = texte + cuve.getEtat(getContext()) + "\n";
-        if (cuve.getBrassin() != null) {
+        /*if (cuve.getBrassin() != null) {
             texte = texte + cuve.getBrassin().getNumero();
         }
         texte = texte + "\n" + cuve.getCommentaireEtat() + "\n";
@@ -27,6 +27,6 @@ public class BoutonCuve extends Button {
         setText(texte);
 
         setTextColor(cuve.getCouleurTexte(contexte));
-        setBackgroundColor(cuve.getCouleurFond(contexte));
+        setBackgroundColor(cuve.getCouleurFond(contexte));*/
     }
 }

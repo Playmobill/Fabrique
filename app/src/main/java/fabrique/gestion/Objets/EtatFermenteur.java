@@ -1,6 +1,8 @@
 package fabrique.gestion.Objets;
 
-public class EtatFermenteur extends Objet {
+import android.util.Log;
+
+public class EtatFermenteur extends Objet implements Comparable<EtatFermenteur> {
 
     private String texte;
     private int couleurTexte;
@@ -29,11 +31,33 @@ public class EtatFermenteur extends Objet {
         this.actif = actif;
     }
 
-    public EtatFermenteur(int id, String texte, int couleurTexte, int couleurFond, boolean actif){
+    public EtatFermenteur(long id, String texte, int couleurTexte, int couleurFond, boolean actif){
         super(id);
         this.texte = texte;
         this.couleurTexte = couleurTexte;
         this.couleurFond = couleurFond;
         this.actif = actif;
+    }
+
+    @Override
+    public int compareTo(EtatFermenteur etat) {
+        if (actif == etat.getActif()) {
+            for (int i=0; i<Math.min(texte.length(), etat.getTexte().length()) ; i++) {
+                Log.i("EtatCuve", texte.charAt(i) + " / " + etat.getTexte().charAt(i));
+                if (texte.charAt(i) < etat.getTexte().charAt(i)) {
+                    return -1;
+                } else if (texte.charAt(i) > etat.getTexte().charAt(i)) {
+                    return 1;
+                }
+            }
+            if (texte.length() == etat.getTexte().length()) {
+                return 0;
+            } else if (texte.length() < etat.getTexte().length()) {
+                return -1;
+            }
+        } else if (actif && !etat.getActif()) {
+            return -1;
+        }
+        return 1;
     }
 }

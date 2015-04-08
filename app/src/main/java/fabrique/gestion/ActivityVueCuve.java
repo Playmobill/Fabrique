@@ -21,11 +21,11 @@ public class ActivityVueCuve extends Activity {
         Intent intent = getIntent();
         int index = intent.getIntExtra("index", -1);
 
-        Cuve cuve = TableCuve.instance(this).recuperer(index);
+        Cuve cuve = TableCuve.instance(this).recupererIndex(index);
         if (cuve != null) {
-            if (cuve.getBrassin() != null) {
+            /*if (cuve.getBrassin() != null) {
                 //layout.addView(new VueBrassin(this, cuve.getBrassin()));
-            }
+            }*/
             layout.addView(new VueCuve(this, cuve));
         } else {
             TextView txtErreur = new TextView(this);

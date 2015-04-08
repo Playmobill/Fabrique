@@ -28,7 +28,7 @@ public class ActivityVueBrassin extends Activity {
 
         Intent intent = getIntent();
         int index = intent.getIntExtra("index", -1);
-        Brassin brassin = TableBrassin.instance(this).recuperer(index);
+        Brassin brassin = TableBrassin.instance(this).recupererIndex(index);
 
         if (brassin != null) {
 

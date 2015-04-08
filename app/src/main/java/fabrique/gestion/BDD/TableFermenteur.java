@@ -1,5 +1,6 @@
 package fabrique.gestion.BDD;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
@@ -28,58 +29,64 @@ public class TableFermenteur extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            if (tmp.getInt(7) != -1) {
-                for (int i = 0; i < TableBrassin.instance(contexte).tailleListe(); i++) {
-                    if (tmp.getInt(7) == TableBrassin.instance(contexte).recuperer(i).getId()) {
-                        fermenteurs.add(new Fermenteur(tmp.getInt(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getLong(4), tmp.getInt(5), tmp.getLong(6), TableBrassin.instance(contexte).recuperer(i)));
-                    }
-                }
-            } else {
-                fermenteurs.add(new Fermenteur(tmp.getInt(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getLong(4), tmp.getInt(5), tmp.getLong(6), null));
-            }
+            fermenteurs.add(new Fermenteur(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getLong(4), tmp.getInt(5), tmp.getLong(6), tmp.getLong(7)));
         }
         Collections.sort(fermenteurs);
     }
 
-    public void ajouter(Context contexte, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, int id_brassin) {
-        if (id_brassin != -1) {
-            for (int i = 0; i < TableBrassin.instance(contexte).tailleListe(); i++) {
-                if (id_brassin == TableBrassin.instance(contexte).recuperer(i).getId()) {
-                    fermenteurs.add(new Fermenteur(fermenteurs.size(), numero, capacite, emplacement, dateLavageAcide, etat, dateEtat, TableBrassin.instance(contexte).recuperer(i)));
-                }
-            }
-        } else {
-            fermenteurs.add(new Fermenteur(fermenteurs.size(), numero, capacite, emplacement, dateLavageAcide, etat, dateEtat, null));
+    public long ajouter(int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, long id_brassin) {
+        ContentValues valeur = new ContentValues();
+        valeur.put("numero", numero);
+        valeur.put("capacite", capacite);
+        valeur.put("id_emplacement", id_emplacement);
+        valeur.put("dateLavageAcide", dateLavageAcide);
+        valeur.put("id_etatFermenteur", id_etat);
+        valeur.put("dateEtat", dateEtat);
+        valeur.put("id_brassin", id_brassin);
+        long id = accesBDD.insert(nomTable, null, valeur);
+        if (id != -1) {
+            fermenteurs.add(new Fermenteur(id, numero, capacite, id_emplacement, dateLavageAcide, id_etat, dateEtat, id_brassin));
+            Collections.sort(fermenteurs);
         }
-        accesBDD.execSQL("INSERT INTO Fermenteur (numero, capacite, id_emplacement, dateLavageAcide, id_etatFermenteur, dateEtat, id_brassin) VALUES ("+numero+", "+capacite+","+emplacement+", "+dateLavageAcide+", "+etat+","+dateEtat+","+id_brassin+")");
-        Collections.sort(fermenteurs);
-    }
-
-    public Fermenteur recuperer(int index){
-        return fermenteurs.get(index);
-    }
-
-    public void modifier(Context contexte, int index, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat,int id_brassin){
-        fermenteurs.get(index).setNumero(numero);
-        fermenteurs.get(index).setCapacite(capacite);
-        fermenteurs.get(index).setEmplacement(emplacement);
-        fermenteurs.get(index).setDateLavageAcide(dateLavageAcide);
-        fermenteurs.get(index).setEtat(etat);
-        fermenteurs.get(index).setDateEtat(dateEtat);
-
-        for (int i = 0; i < TableBrassin.instance(contexte).tailleListe(); i++) {
-            if(id_brassin == TableBrassin.instance(contexte).recuperer(i).getId()){
-                fermenteurs.get(index).setBrassin(TableBrassin.instance(contexte).recuperer(i));
-            }
-        }
-    }
-
-    public void supprimer(int index){
-        fermenteurs.remove(index);
+        return id;
     }
 
     public int tailleListe() {
         return fermenteurs.size();
+    }
+
+    public Fermenteur recupererIndex(int index){
+        return fermenteurs.get(index);
+    }
+
+    public Fermenteur recupererId(long id){
+        for (int i=0; i<fermenteurs.size() ; i++) {
+            if (fermenteurs.get(i).getId() == id) {
+                return fermenteurs.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void modifier(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, long id_brassin){
+        ContentValues valeur = new ContentValues();
+        valeur.put("numero", numero);
+        valeur.put("capacite", capacite);
+        valeur.put("id_emplacement", id_emplacement);
+        valeur.put("dateLavageAcide", dateLavageAcide);
+        valeur.put("id_etatFermenteur", id_etat);
+        valeur.put("dateEtat", dateEtat);
+        valeur.put("id_brassin", id_brassin);
+        if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
+            Fermenteur fermenteur = recupererId(id);
+            fermenteur.setNumero(numero);
+            fermenteur.setCapacite(capacite);
+            fermenteur.setEmplacement(id_emplacement);
+            fermenteur.setDateLavageAcide(dateLavageAcide);
+            fermenteur.setEtat(id_etat);
+            fermenteur.setBrassin(id_brassin);
+            Collections.sort(fermenteurs);
+        }
     }
 
     public String[] numeros() {

@@ -32,19 +32,24 @@ public class TableEmplacement extends Controle {
 
     public void ajouter(String texte){
         emplacements.add(new Emplacement(emplacements.size(), texte));
-        accesBDD.execSQL("INSERT INTO Emplacement (texte) VALUES ('"+texte+"')");
+        accesBDD.execSQL("INSERT INTO Emplacement (texte) VALUES ('"+ texte +"')");
     }
 
-    public Emplacement recuperer(int index){
+    public Emplacement recupererIndex(int index){
         return emplacements.get(index);
+    }
+
+    public Emplacement recupererId(long id){
+        for (int i=0; i<emplacements.size() ; i++) {
+            if (emplacements.get(i).getId() == id) {
+                return emplacements.get(i);
+            }
+        }
+        return null;
     }
 
     public void modifier(int index, String texte){
         emplacements.get(index).setTexte(texte);
-    }
-
-    public void supprimer(int index){
-        emplacements.remove(index);
     }
 
     public int tailleListe() {
@@ -66,23 +71,5 @@ public class TableEmplacement extends Controle {
             etats[i] = emplacements.get(i).getTexte();
         }
         return etats;
-    }
-
-    public Emplacement rechercher(String texte) {
-        for (int i=0; i<emplacements.size() ; i++) {
-            if(emplacements.get(i).getTexte().equals(texte)) {
-                return emplacements.get(i);
-            }
-        }
-        return emplacements.get(0);
-    }
-
-    public int indexOf(int id) {
-        for (int i=0; i<emplacements.size() ; i++) {
-            if(id == emplacements.get(i).getId()) {
-                return i;
-            }
-        }
-        return 0;
     }
 }
