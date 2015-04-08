@@ -1,9 +1,12 @@
 package fabrique.gestion.BDD;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import fabrique.gestion.Objets.Emplacement;
 
@@ -26,13 +29,26 @@ public class TableEmplacement extends Controle {
         emplacements = new ArrayList<>();
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            emplacements.add(new Emplacement(tmp.getInt(0), tmp.getString(1)));
+            emplacements.add(new Emplacement(tmp.getLong(0), tmp.getString(1), tmp.getInt(2) == 1));
+            Log.i("TableEmplacement", "" + emplacements.size());
         }
+        Collections.sort(emplacements);
     }
 
-    public void ajouter(String texte){
-        emplacements.add(new Emplacement(emplacements.size(), texte));
-        accesBDD.execSQL("INSERT INTO Emplacement (texte) VALUES ('"+ texte +"')");
+    public long ajouter(String texte, boolean actif){
+        ContentValues valeur = new ContentValues();
+        valeur.put("texte", texte);
+        valeur.put("actif", actif);
+        long id = accesBDD.insert(nomTable, null, valeur);
+        if (id != -1) {
+            emplacements.add(new Emplacement(id, texte, actif));
+            Collections.sort(emplacements);
+        }
+        return id;
+    }
+
+    public int tailleListe() {
+        return emplacements.size();
     }
 
     public Emplacement recupererIndex(int index){
@@ -48,28 +64,26 @@ public class TableEmplacement extends Controle {
         return null;
     }
 
-    public void modifier(int index, String texte){
-        emplacements.get(index).setTexte(texte);
+    public void modifier(int id, String texte, boolean actif){
+        ContentValues valeur = new ContentValues();
+        valeur.put("texte", texte);
+        valeur.put("actif", actif);
+        if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
+            Emplacement emplacement = recupererId(id);
+            emplacement.setTexte(texte);
+            emplacement.setActif(actif);
+            Collections.sort(emplacements);
+        }
     }
 
-    public int tailleListe() {
-        return emplacements.size();
-    }
-
-    public String emplacement(int id){
-        for (int i=0; i<emplacements.size() ; i++) {
-            if (id == emplacements.get(i).getId()) {
-                return emplacements.get(i).getTexte();
+    public ArrayList<Emplacement> recupererActifs() {
+        ArrayList<Emplacement> emplacementsActif = new ArrayList<>();
+        for (int i=0; i<emplacements.size(); i++) {
+            Log.i("TableEmplacement", "" + emplacements.get(i).getActif());
+            if (emplacements.get(i).getActif()) {
+                emplacementsActif.add(emplacements.get(i));
             }
         }
-        return emplacements.get(0).getTexte();
-    }
-
-    public String[] emplacements () {
-        String[] etats = new String[emplacements.size()];
-        for (int i=0; i<emplacements.size(); i++) {
-            etats[i] = emplacements.get(i).getTexte();
-        }
-        return etats;
+        return emplacementsActif;
     }
 }
