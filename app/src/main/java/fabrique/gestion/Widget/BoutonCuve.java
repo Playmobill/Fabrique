@@ -27,13 +27,13 @@ public class BoutonCuve extends Button {
         }
         String texte = "C" + cuve.getNumero() + "\n";
         texte = texte + cuve.getCapacite() + "L \n";
-        texte = texte + cuve.getEmplacement(contexte) + "\n";
+        texte = texte + cuve.getEmplacement(contexte).getTexte() + "\n";
         texte = texte + texteEtat + "\n";
         if (cuve.getBrassin(contexte) != null) {
             texte = texte + cuve.getBrassin(contexte).getNumero();
         }
         texte = texte + "\n" + cuve.getCommentaireEtat() + "\n";
-        texte = texte + "depuis " + cuve.getDureeEtat() + "\n";
+        texte = texte + /*"depuis " + cuve.getDureeEtat() + */"\n";
         texte = texte + cuve.getDateEtat() + "\n";
         setText(texte);
 

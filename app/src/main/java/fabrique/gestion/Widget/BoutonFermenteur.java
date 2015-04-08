@@ -2,7 +2,6 @@ package fabrique.gestion.Widget;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.widget.Button;
@@ -26,7 +25,6 @@ public class BoutonFermenteur extends Button {
             couleurTexte = etat.getCouleurTexte();
             couleurFond = etat.getCouleurFond();
         }
-        Log.i("BoutonFermenteur", "" + (etat == null));
         String texte = "F" + fermenteur.getNumero() + "\n";
         texte = texte + fermenteur.getCapacite() + "L";
         texte = texte + "\n" + fermenteur.getEmplacement(contexte).getTexte() + "\n";

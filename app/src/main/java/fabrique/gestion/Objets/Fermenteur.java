@@ -35,6 +35,9 @@ public class Fermenteur extends Objet implements Comparable<Fermenteur> {
     public int getCapacite() {
         return capacite;
     }
+    public long getIdEmplacement() {
+        return id_emplacement;
+    }
     public Emplacement getEmplacement(Context contexte) {
         return TableEmplacement.instance(contexte).recupererId(id_emplacement);
     }
@@ -46,13 +49,22 @@ public class Fermenteur extends Objet implements Comparable<Fermenteur> {
         calendrier.setTimeInMillis(dateLavageAcide);
         return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
     }
+    public long getIdEtat() {
+        return id_etat;
+    }
     public EtatFermenteur getEtat(Context contexte) {
         return TableEtatFermenteur.instance(contexte).recupererId(id_etat);
+    }
+    public long getLongDateEtat() {
+        return dateEtat;
     }
     public String getDateEtat() {
         Calendar calendrier = Calendar.getInstance();
         calendrier.setTimeInMillis(dateEtat);
         return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
+    }
+    public long getIdBrassin() {
+        return id_brassin;
     }
     public Brassin getBrassin(Context contexte) {
         return TableBrassin.instance(contexte).recupererId(id_brassin);

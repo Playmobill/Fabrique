@@ -3,7 +3,6 @@ package fabrique.gestion.BDD;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +29,6 @@ public class TableEmplacement extends Controle {
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             emplacements.add(new Emplacement(tmp.getLong(0), tmp.getString(1), tmp.getInt(2) == 1));
-            Log.i("TableEmplacement", "" + emplacements.size());
         }
         Collections.sort(emplacements);
     }
@@ -79,7 +77,6 @@ public class TableEmplacement extends Controle {
     public ArrayList<Emplacement> recupererActifs() {
         ArrayList<Emplacement> emplacementsActif = new ArrayList<>();
         for (int i=0; i<emplacements.size(); i++) {
-            Log.i("TableEmplacement", "" + emplacements.get(i).getActif());
             if (emplacements.get(i).getActif()) {
                 emplacementsActif.add(emplacements.get(i));
             }

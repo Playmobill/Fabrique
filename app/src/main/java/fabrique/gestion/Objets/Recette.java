@@ -6,7 +6,7 @@ public class Recette extends Objet implements Comparable<Recette> {
     private String couleur;
     private String acronyme;
 
-    public Recette(int id, String nom, String couleur, String acronyme){
+    public Recette(long id, String nom, String couleur, String acronyme){
         super(id);
         this.nom = nom;
         this.couleur = couleur;
