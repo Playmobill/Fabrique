@@ -1,6 +1,5 @@
 package fabrique.gestion;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -16,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -64,6 +62,11 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         axe.addView(header);
         axe.addView(bodyScrollView);
         setContentView(axe);
+
+        Log.i("ListeBrassin", ((TextView)
+                                ((LinearLayout)(
+                                    ((RelativeLayout)(
+                                        (LinearLayout)bodyScrollView.getChildAt(0)).getChildAt(0)).getChildAt(0))).getChildAt(0)).getText().toString());
     }
 
     @Override
@@ -84,7 +87,7 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
 
     public RelativeLayout initialiserLigne(int index){
         TableBrassin tableBrassin = TableBrassin.instance(this);
-        Brassin brassin = tableBrassin.recuperer(index);
+        Brassin brassin = tableBrassin.recupererIndex(index);
 
         RelativeLayout ligneBrassin = new RelativeLayout(this);
 

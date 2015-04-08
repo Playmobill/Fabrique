@@ -33,7 +33,7 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
         editNumero = (EditText)findViewById(R.id.editNumero);
         TableBrassin tableBrassin = TableBrassin.instance(this);
         int i;
-        for (i=0; ((i<tableBrassin.tailleListe()) && (tableBrassin.recuperer(i).getNumero() == i+1)); i=i+1) {}
+        for (i=0; ((i<tableBrassin.tailleListe()) && (tableBrassin.recupererIndex(i).getNumero() == i+1)); i=i+1) {}
         editNumero.setText("" + (i+1));
 
         editCommentaire = (EditText)findViewById(R.id.editCommentaire);

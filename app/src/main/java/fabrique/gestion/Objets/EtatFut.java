@@ -1,6 +1,6 @@
 package fabrique.gestion.Objets;
 
-public class EtatFut extends Objet {
+public class EtatFut extends Objet implements Comparable<EtatFut> {
 
     private String texte;
     private int couleurTexte;
@@ -29,11 +29,32 @@ public class EtatFut extends Objet {
         this.actif = actif;
     }
 
-    public EtatFut(int id, String texte, int couleurTexte, int couleurFond, boolean actif){
+    public EtatFut(long id, String texte, int couleurTexte, int couleurFond, boolean actif){
         super(id);
         this.texte = texte;
         this.couleurTexte = couleurTexte;
         this.couleurFond = couleurFond;
         this.actif = actif;
+    }
+
+    @Override
+    public int compareTo(EtatFut etat) {
+        if (actif == etat.getActif()) {
+            for (int i=0; i<Math.min(texte.length(), etat.getTexte().length()) ; i++) {
+                if (texte.charAt(i) < etat.getTexte().charAt(i)) {
+                    return -1;
+                } else if (texte.charAt(i) > etat.getTexte().charAt(i)) {
+                    return 1;
+                }
+            }
+            if (texte.length() == etat.getTexte().length()) {
+                return 0;
+            } else if (texte.length() < etat.getTexte().length()) {
+                return -1;
+            }
+        } else if (actif && !etat.getActif()) {
+            return -1;
+        }
+        return 1;
     }
 }

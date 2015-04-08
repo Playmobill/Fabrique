@@ -33,7 +33,7 @@ public class ActivityAjouterCuve extends Activity implements View.OnClickListene
         editNumero = (EditText)findViewById(R.id.editNumero);
         TableCuve tableCuve = TableCuve.instance(this);
         int i;
-        for (i=0; ((i<tableCuve.tailleListe()) && (tableCuve.recuperer(i).getNumero() == i+1)); i=i+1) {
+        for (i=0; ((i<tableCuve.tailleListe()) && (tableCuve.recupererIndex(i).getNumero() == i+1)); i=i+1) {
         }
         editNumero.setText("" + (i+1));
 
@@ -61,7 +61,7 @@ public class ActivityAjouterCuve extends Activity implements View.OnClickListene
 
             int emplacement = editEmplacement.getSelectedItemPosition();
 
-            TableCuve.instance(this).ajouter(this, numero, capacite, emplacement, System.currentTimeMillis(), 0, System.currentTimeMillis(), "", -1);
+            //TableCuve.instance(this).ajouter(this, numero, capacite, emplacement, System.currentTimeMillis(), 0, System.currentTimeMillis(), "", -1);
 
             Intent intent = new Intent(this, ActivityTableauDeBord.class);
             startActivity(intent);

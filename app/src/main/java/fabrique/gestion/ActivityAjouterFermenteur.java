@@ -34,7 +34,7 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
         TableFermenteur tableFermenteur = TableFermenteur.instance(this);
 
         int i;
-        for (i=0; ((i<tableFermenteur.tailleListe()) && (tableFermenteur.recuperer(i).getNumero() == i+1)); i=i+1) {
+        for (i=0; ((i<tableFermenteur.tailleListe()) && (tableFermenteur.recupererIndex(i).getNumero() == i+1)); i=i+1) {
         }
         editNumero.setText("" + (i+1));
 
@@ -62,7 +62,7 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
 
             int emplacement = editEmplacement.getSelectedItemPosition();
 
-            TableFermenteur.instance(this).ajouter(null, numero, capacite, emplacement, System.currentTimeMillis(), 0, System.currentTimeMillis(), -1);
+            //TableFermenteur.instance(this).ajouter(null, numero, capacite, emplacement, System.currentTimeMillis(), 0, System.currentTimeMillis(), -1);
 
             Intent intent = new Intent(this, ActivityTableauDeBord.class);
             startActivity(intent);

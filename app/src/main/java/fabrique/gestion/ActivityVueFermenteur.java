@@ -21,11 +21,11 @@ public class ActivityVueFermenteur extends Activity {
         Intent intent = getIntent();
         int index = intent.getIntExtra("index", -1);
 
-        Fermenteur fermenteur = TableFermenteur.instance(this).recuperer(index);
+        Fermenteur fermenteur = TableFermenteur.instance(this).recupererIndex(index);
         if (fermenteur != null) {
-            if (fermenteur.getBrassin() != null) {
+            /*if (fermenteur.getBrassin() != null) {
                 //layout.addView(new VueBrassin(this, fermenteur.getBrassin()));
-            }
+            }*/
             layout.addView(new VueFermenteur(this, fermenteur));
         } else {
             TextView txtErreur = new TextView(this);

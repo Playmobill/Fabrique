@@ -14,7 +14,7 @@ public class BoutonFermenteur extends Button {
         super(new ContextThemeWrapper(contexte, R.style.bouton));
         setGravity(Gravity.CENTER);
 
-        String texte = "F" + fermenteur.getNumero() + "\n";
+        /*String texte = "F" + fermenteur.getNumero() + "\n";
         texte = texte + fermenteur.getCapacite() + "L";
         texte = texte + "\n" + fermenteur.getEmplacement(contexte) + "\n";
         texte = texte + fermenteur.getEtat(contexte) + "\n";
@@ -25,6 +25,6 @@ public class BoutonFermenteur extends Button {
         setText(texte);
 
         setTextColor(fermenteur.getCouleurTexte(contexte));
-        setBackgroundColor(fermenteur.getCouleurFond(contexte));
+        setBackgroundColor(fermenteur.getCouleurFond(contexte));*/
     }
 }

@@ -53,7 +53,7 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
 
         TableEtatFut tableEtatFut = TableEtatFut.instance(contexte);
         for (int i=0; i< tableEtatFut.tailleListe() ; i++) {
-            addView(affichageEtatFut(tableEtatFut.recuperer(i)));
+            addView(affichageEtatFut(tableEtatFut.recupererIndex(i)));
         }
 
         addView(ligneAjouterNouveau());
@@ -236,7 +236,7 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
         } else if (v.equals(btnCouleurFondAjouter)) {
             ColorPickerDialog dialog = new ColorPickerDialog(getContext(), "Fond", txtEtatAjouter);
             dialog.show();
-        } else if (v.equals(btnValider)) {
+        }/* else if (v.equals(btnValider)) {
             etats.get(indexActif).setTexte(txtEtat.getText().toString());
             etats.get(indexActif).setCouleurTexte(txtEtat.getCurrentTextColor());
             etats.get(indexActif).setCouleurFond(txtEtat.getDrawingCacheBackgroundColor());
@@ -258,7 +258,7 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
                                                   txtEtatAjouter.getDrawingCacheBackgroundColor(),
                                                   cbActifAjouter.isChecked());
             affichageNouvelEtatFut(etat);
-        } else {
+        } */else {
             for (int i=0; i< btnsModifier.size() ; i++) {
                 if (v.equals(btnsModifier.get(i))) {
                     modifierEtatFut(i);

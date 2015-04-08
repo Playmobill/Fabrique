@@ -4,30 +4,31 @@ import android.content.Context;
 
 import java.util.Calendar;
 
+import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableEmplacement;
-import fabrique.gestion.BDD.TableEtatCuve;
+import fabrique.gestion.BDD.TableEtatFermenteur;
 
 public class Cuve extends Objet implements Comparable<Cuve> {
 
     private int numero;
     private int capacite;
-    private int emplacement;
+    private long id_emplacement;
     private long dateLavageAcide;
-    private int etat;
+    private long id_etat;
     private long dateEtat;
     private String commentaireEtat;
-    private Brassin brassin;
+    private long id_brassin;
 
-    public Cuve(int id, int numero, int capacite, int emplacement, long dateLavageAcide, int etat, long dateEtat, String commentaireEtat, Brassin brassin){
+    public Cuve(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, String commentaireEtat, long id_brassin){
         super(id);
         this.numero = numero;
         this.capacite = capacite;
-        this.emplacement = emplacement;
+        this.id_emplacement = id_emplacement;
         this.dateLavageAcide = dateLavageAcide;
-        this.etat = etat;
+        this.id_etat = id_etat;
         this.dateEtat = dateEtat;
         this.commentaireEtat = commentaireEtat;
-        this.brassin = brassin;
+        this.id_brassin = id_brassin;
     }
 
     public int getNumero() {
@@ -36,8 +37,8 @@ public class Cuve extends Objet implements Comparable<Cuve> {
     public int getCapacite() {
         return capacite;
     }
-    public String getEmplacement(Context contexte) {
-        return TableEmplacement.instance(contexte).emplacement(emplacement);
+    public Emplacement getEmplacement(Context contexte) {
+        return TableEmplacement.instance(contexte).recupererId(id_emplacement);
     }
     public long getDateLavageAcide() {
         return dateLavageAcide;
@@ -47,25 +48,13 @@ public class Cuve extends Objet implements Comparable<Cuve> {
         calendrier.setTimeInMillis(dateLavageAcide);
         return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
     }
-    public String getEtat(Context contexte) {
-        return TableEtatCuve.instance(contexte).recupererId(etat).getTexte();
-    }
-    public int getCouleurTexte(Context contexte) {
-        return TableEtatCuve.instance(contexte).recupererId(etat).getCouleurTexte();
-    }
-    public int getCouleurFond(Context contexte) {
-        return TableEtatCuve.instance(contexte).recupererId(etat).getCouleurFond();
+    public EtatFermenteur getEtat(Context contexte) {
+        return TableEtatFermenteur.instance(contexte).recupererId(id_etat);
     }
     public String getDateEtat() {
         Calendar calendrier = Calendar.getInstance();
         calendrier.setTimeInMillis(dateEtat);
         return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
-    }
-    public String getDureeEtat() {
-        long temps = System.currentTimeMillis() - dateEtat;
-        int jour = (int)(temps / 1000 / 60 / 60 / 24);
-        int heure = (((int)(temps / 1000 / 60 / 60 / 24))-jour) * 24;
-        return jour + "j" + heure + "h";
     }
     public String getCommentaireEtat() {
         String texte = "";
@@ -74,8 +63,8 @@ public class Cuve extends Objet implements Comparable<Cuve> {
         }
         return texte;
     }
-    public Brassin getBrassin() {
-        return brassin;
+    public Brassin getBrassin(Context contexte) {
+        return TableBrassin.instance(contexte).recupererId(id_brassin);
     }
 
     public void setNumero(int numero) {
@@ -84,21 +73,21 @@ public class Cuve extends Objet implements Comparable<Cuve> {
     public void setCapacite(int capacite) {
         this.capacite = capacite;
     }
+    public void setEmplacement(long id_emplacement) {
+        this.id_emplacement = id_emplacement;
+    }
     public void setDateLavageAcide(long dateLavageAcide) {
         this.dateLavageAcide = dateLavageAcide;
     }
-    public void setEtat(int etat) {
-        this.etat = etat;
+    public void setEtat(long id_etat) {
+        this.id_etat = id_etat;
         dateEtat = System.currentTimeMillis();
-    }
-    public void setDateEtat(long dateEtat) {
-        this.dateEtat = dateEtat;
     }
     public void setCommentaireEtat(String commentaireEtat) {
         this.commentaireEtat = commentaireEtat;
     }
-    public void setBrassin(Brassin brassin) {
-        this.brassin = brassin;
+    public void setBrassin(long id_brassin) {
+        this.id_brassin = id_brassin;
     }
 
     @Override

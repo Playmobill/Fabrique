@@ -24,11 +24,12 @@ public class TableEtatCuve extends Controle {
 
     private TableEtatCuve(Context contexte){
         super(contexte, "EtatCuve");
+
         etats = new ArrayList<>();
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            etats.add(new EtatCuve(tmp.getInt(0), tmp.getString(1), tmp.getInt(2), tmp.getInt(3), tmp.getInt(4) == 1));
+            etats.add(new EtatCuve(tmp.getLong(0), tmp.getString(1), tmp.getInt(2), tmp.getInt(3), tmp.getInt(4) == 1));
         }
         Collections.sort(etats);
     }
