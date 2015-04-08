@@ -59,9 +59,9 @@ public class ActivityAjouterCuve extends Activity implements View.OnClickListene
                 capacite = Integer.parseInt(editQuantite.getText().toString());
             }
 
-            int emplacement = editEmplacement.getSelectedItemPosition();
+            long emplacement = editEmplacement.getSelectedItemPosition();
 
-            //TableCuve.instance(this).ajouter(this, numero, capacite, emplacement, System.currentTimeMillis(), 0, System.currentTimeMillis(), "", -1);
+            TableCuve.instance(this).ajouter(numero, capacite, emplacement, System.currentTimeMillis(), 1, System.currentTimeMillis(), "", -1);
 
             Intent intent = new Intent(this, ActivityTableauDeBord.class);
             startActivity(intent);

@@ -23,7 +23,6 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
     private TableRow.LayoutParams parametre;
 
     private ArrayList<TableRow> lignes;
-    private ArrayList<EtatFut> etats;
     private ArrayList<Button> btnsModifier;
 
     //Modifier
@@ -42,140 +41,118 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
         super(contexte);
 
         lignes = new ArrayList<>();
-        etats = new ArrayList<>();
         btnsModifier = new ArrayList<>();
 
         parametre = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parametre.setMargins(10, 10, 10, 10);
         parametre.gravity = Gravity.CENTER_VERTICAL;
 
-        addView(entete());
-
-        TableEtatFut tableEtatFut = TableEtatFut.instance(contexte);
-        for (int i=0; i< tableEtatFut.tailleListe() ; i++) {
-            addView(affichageEtatFut(tableEtatFut.recupererIndex(i)));
-        }
-
-        addView(ligneAjouterNouveau());
+        remplir();
     }
 
-    private TableRow entete() {
+    private void remplir() {
+        removeAllViews();
+        lignes.clear();
+        btnsModifier.clear();
+        ligneEntete();
+        TableEtatFut tableEtatFut = TableEtatFut.instance(getContext());
+        for (int i=0; i<tableEtatFut.tailleListe(); i++) {
+            addView(affichageEtatFut(tableEtatFut.recupererIndex(i)));
+        }
+        ligneAjouterNouveau();
+        invalidate();
+    }
+
+    private void ligneEntete() {
         TableRow ligneTitre = new TableRow(getContext());
-            TextView txtTitre = new TextView(getContext());
-            txtTitre.setText("État pour un fût");
-            txtTitre.setTypeface(null, Typeface.BOLD);
-            txtTitre.setLayoutParams(parametre);
-            ligneTitre.addView(txtTitre);
+        TextView txtTitre = new TextView(getContext());
+        txtTitre.setText("État pour une Fut");
+        txtTitre.setTypeface(null, Typeface.BOLD);
+        txtTitre.setLayoutParams(parametre);
+
+        TableRow ligneEntete = new TableRow(getContext());
+        TextView txtEtat = new TextView(getContext());
+        txtEtat.setText("État");
+        txtEtat.setTypeface(null, Typeface.BOLD);
+        txtEtat.setLayoutParams(parametre);
+
+        TextView txtActif = new TextView(getContext());
+        txtActif.setText("Actif");
+        txtActif.setTypeface(null, Typeface.BOLD);
+        txtActif.setLayoutParams(parametre);
+
+        ligneTitre.addView(txtTitre);
         addView(ligneTitre);
-
-        TableRow ligne = new TableRow(getContext());
-            TextView txtEtat = new TextView(getContext());
-            txtEtat.setText("État");
-            txtEtat.setTypeface(null, Typeface.BOLD);
-            txtEtat.setLayoutParams(parametre);
-
-            TextView txtActif = new TextView(getContext());
-            txtActif.setText("Actif");
-            txtActif.setTypeface(null, Typeface.BOLD);
-            txtActif.setLayoutParams(parametre);
-
-        ligne.addView(txtEtat);
-        ligne.addView(txtActif);
-        return ligne;
+        ligneEntete.addView(txtEtat);
+        ligneEntete.addView(txtActif);
+        addView(ligneEntete);
     }
 
     private TableRow affichageEtatFut(EtatFut etat) {
         TableRow ligne = new TableRow(getContext());
-            EditText txtEtat = new EditText(getContext());
-            txtEtat.setEnabled(false);
-            txtEtat.setText(etat.getTexte());
-            txtEtat.setTextColor(etat.getCouleurTexte());
-            txtEtat.setDrawingCacheBackgroundColor(etat.getCouleurFond());
-            txtEtat.setBackgroundColor(etat.getCouleurFond());
-            txtEtat.setLayoutParams(parametre);
+        EditText txtEtat = new EditText(getContext());
+        txtEtat.setEnabled(false);
+        txtEtat.setText(etat.getTexte());
+        txtEtat.setTextColor(etat.getCouleurTexte());
+        txtEtat.setDrawingCacheBackgroundColor(etat.getCouleurFond());
+        txtEtat.setBackgroundColor(etat.getCouleurFond());
+        txtEtat.setLayoutParams(parametre);
 
-            CheckBox cbActif = new CheckBox(getContext());
-            cbActif.setChecked(etat.getActif());
-            cbActif.setEnabled(false);
-            cbActif.setLayoutParams(parametre);
+        CheckBox cbActif = new CheckBox(getContext());
+        cbActif.setChecked(etat.getActif());
+        cbActif.setEnabled(false);
+        cbActif.setLayoutParams(parametre);
 
-            Button modifier = new Button(getContext());
-            modifier.setText("Modifier");
-            modifier.setOnClickListener(this);
-            btnsModifier.add(modifier);
+        Button modifier = new Button(getContext());
+        modifier.setText("Modifier");
+        modifier.setOnClickListener(this);
+        btnsModifier.add(modifier);
 
-            ligne.addView(txtEtat);
-            ligne.addView(cbActif);
-            ligne.addView(modifier);
+        ligne.addView(txtEtat);
+        ligne.addView(cbActif);
+        ligne.addView(modifier);
 
-        etats.add(etat);
         lignes.add(ligne);
         return ligne;
     }
 
-    private TableRow ligneAjouterNouveau() {
+    private void ligneAjouterNouveau() {
         TableRow ligne = new TableRow(getContext());
-            txtEtatAjouter = new EditText(getContext());
-            txtEtatAjouter.setLayoutParams(parametre);
+        txtEtatAjouter = new EditText(getContext());
+        txtEtatAjouter.setLayoutParams(parametre);
 
-            cbActifAjouter = new CheckBox(getContext());
-            cbActifAjouter.setChecked(true);
-            cbActifAjouter.setEnabled(true);
-            cbActifAjouter.setLayoutParams(parametre);
+        cbActifAjouter = new CheckBox(getContext());
+        cbActifAjouter.setChecked(true);
+        cbActifAjouter.setEnabled(true);
+        cbActifAjouter.setLayoutParams(parametre);
 
-            btnCouleurTexteAjouter = new Button(getContext());
-            btnCouleurTexteAjouter.setText("Couleur de texte");
-            btnCouleurTexteAjouter.setOnClickListener(this);
+        btnCouleurTexteAjouter = new Button(getContext());
+        btnCouleurTexteAjouter.setText("Couleur de texte");
+        btnCouleurTexteAjouter.setOnClickListener(this);
 
-            btnCouleurFondAjouter = new Button(getContext());
-            btnCouleurFondAjouter.setText("Couleur de fond");
-            btnCouleurFondAjouter.setOnClickListener(this);
+        btnCouleurFondAjouter = new Button(getContext());
+        btnCouleurFondAjouter.setText("Couleur de fond");
+        btnCouleurFondAjouter.setOnClickListener(this);
 
-            btnAjouter = new Button(getContext());
-            btnAjouter.setText("Ajouter");
-            btnAjouter.setOnClickListener(this);
+        btnAjouter = new Button(getContext());
+        btnAjouter.setText("Ajouter");
+        btnAjouter.setOnClickListener(this);
 
-            ligne.addView(txtEtatAjouter);
-            ligne.addView(cbActifAjouter);
-            ligne.addView(btnCouleurTexteAjouter);
-            ligne.addView(btnCouleurFondAjouter);
-            ligne.addView(btnAjouter);
+        ligne.addView(txtEtatAjouter);
+        ligne.addView(cbActifAjouter);
+        ligne.addView(btnCouleurTexteAjouter);
+        ligne.addView(btnCouleurFondAjouter);
+        ligne.addView(btnAjouter);
 
         ligneAjouter = ligne;
-        return ligne;
+        addView(ligneAjouter);
     }
 
-    private void remettreAffichageEtatFut(int index) {
-        TableRow ligne = lignes.get(index);
+    private void modifierEtatFut() {
+        TableRow ligne = lignes.get(indexActif);
         ligne.removeAllViews();
 
-        EtatFut etat = etats.get(index);
-
-            EditText txtEtat = new EditText(getContext());
-            txtEtat.setText(etat.getTexte());
-            txtEtat.setEnabled(false);
-            txtEtat.setTextColor(etat.getCouleurTexte());
-            txtEtat.setBackgroundColor(etat.getCouleurFond());
-            txtEtat.setDrawingCacheBackgroundColor(etat.getCouleurFond());
-            txtEtat.setLayoutParams(parametre);
-
-            CheckBox cbActif = new CheckBox(getContext());
-            cbActif.setChecked(etat.getActif());
-            cbActif.setEnabled(false);
-            cbActif.setLayoutParams(parametre);
-
-            Button btnModifier = btnsModifier.get(index);
-
-        ligne.addView(txtEtat);
-        ligne.addView(cbActif);
-        ligne.addView(btnModifier);
-    }
-
-    private void modifierEtatFut(int index) {
-        TableRow ligne = lignes.get(index);
-        ligne.removeAllViews();
-
-        EtatFut etat = etats.get(index);
+        EtatFut etat = TableEtatFut.instance(getContext()).recupererIndex(indexActif);
 
         txtEtat = new EditText(getContext());
         txtEtat.setText(etat.getTexte());
@@ -215,54 +192,62 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
         ligne.invalidate();
     }
 
-    private void affichageNouvelEtatFut(EtatFut etat) {
-        removeView(ligneAjouter);
-        addView(affichageEtatFut(etat));
-        addView(ligneAjouterNouveau());
-        invalidate();
-    }
-
     @Override
     public void onClick(View v) {
         if (v.equals(btnCouleurTexte)) {
             ColorPickerDialog dialog = new ColorPickerDialog(getContext(), "Texte", txtEtat);
             dialog.show();
-        } else if (v.equals(btnCouleurFond)) {
+        }
+
+        else if (v.equals(btnCouleurFond)) {
             ColorPickerDialog dialog = new ColorPickerDialog(getContext(), "Fond", txtEtat);
             dialog.show();
-        } else if (v.equals(btnCouleurTexteAjouter)) {
+        }
+
+        else if (v.equals(btnCouleurTexteAjouter)) {
             ColorPickerDialog dialog = new ColorPickerDialog(getContext(), "Texte", txtEtatAjouter);
             dialog.show();
-        } else if (v.equals(btnCouleurFondAjouter)) {
+        }
+
+        else if (v.equals(btnCouleurFondAjouter)) {
             ColorPickerDialog dialog = new ColorPickerDialog(getContext(), "Fond", txtEtatAjouter);
             dialog.show();
-        }/* else if (v.equals(btnValider)) {
-            etats.get(indexActif).setTexte(txtEtat.getText().toString());
-            etats.get(indexActif).setCouleurTexte(txtEtat.getCurrentTextColor());
-            etats.get(indexActif).setCouleurFond(txtEtat.getDrawingCacheBackgroundColor());
-            etats.get(indexActif).setActif(cbActif.isChecked());
-            TableEtatFut.instance(getContext()).modifier(etats.get(indexActif));
+        }
+
+        else if (v.equals(btnValider)) {
+            EtatFut etat = TableEtatFut.instance(getContext()).recupererIndex(indexActif);
+            TableEtatFut.instance(getContext()).modifier(etat.getId(),
+                    txtEtat.getText().toString(),
+                    txtEtat.getCurrentTextColor(),
+                    txtEtat.getDrawingCacheBackgroundColor(),
+                    cbActif.isChecked());
             for (int i = 0; i < btnsModifier.size(); i++) {
                 btnsModifier.get(i).setEnabled(true);
             }
-            remettreAffichageEtatFut(indexActif);
-        } else if (v.equals(btnAnnuler)) {
+            remplir();
+        }
+
+        else if (v.equals(btnAnnuler)) {
             for (int i = 0; i < btnsModifier.size(); i++) {
                 btnsModifier.get(i).setEnabled(true);
             }
-            remettreAffichageEtatFut(indexActif);
-        } else if (v.equals(btnAjouter)) {
+            remplir();
+        }
+
+        else if (v.equals(btnAjouter)) {
             TableEtatFut tableEtatFut = TableEtatFut.instance(getContext());
-            EtatFut etat = tableEtatFut.ajouter(txtEtatAjouter.getText().toString(),
-                                                  txtEtatAjouter.getCurrentTextColor(),
-                                                  txtEtatAjouter.getDrawingCacheBackgroundColor(),
-                                                  cbActifAjouter.isChecked());
-            affichageNouvelEtatFut(etat);
-        } */else {
+            tableEtatFut.ajouter(txtEtatAjouter.getText().toString(),
+                    txtEtatAjouter.getCurrentTextColor(),
+                    txtEtatAjouter.getDrawingCacheBackgroundColor(),
+                    cbActifAjouter.isChecked());
+            remplir();
+        }
+
+        else {
             for (int i=0; i< btnsModifier.size() ; i++) {
                 if (v.equals(btnsModifier.get(i))) {
-                    modifierEtatFut(i);
                     indexActif = i;
+                    modifierEtatFut();
                 }
                 btnsModifier.get(i).setEnabled(false);
             }

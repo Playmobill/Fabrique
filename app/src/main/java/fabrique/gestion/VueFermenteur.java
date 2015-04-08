@@ -141,7 +141,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     private void validerDescription() {
         fermenteur.setCapacite(Integer.parseInt(editCapacite.getText().toString()));
         index = editEmplacement.getSelectedItemPosition();
-        //fermenteur.setEmplacement(TableEmplacement.instance(getContext()).rechercher((String)editEmplacement.getSelectedItem()).getId());
+        fermenteur.setEmplacement(editEmplacement.getSelectedItemId());
         reafficherDescription();
     }
 

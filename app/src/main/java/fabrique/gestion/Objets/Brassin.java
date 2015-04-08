@@ -13,7 +13,7 @@ public class Brassin extends Objet implements Comparable<Brassin> {
     private float densiteFinale;
     private float pourcentageAlcool;
 
-    public Brassin(long id, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
+    public Brassin(long id, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool) {
         super(id);
         this.numero = numero;
         this.commentaire = commentaire;

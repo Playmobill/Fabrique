@@ -23,9 +23,9 @@ public class ActivityVueFermenteur extends Activity {
 
         Fermenteur fermenteur = TableFermenteur.instance(this).recupererIndex(index);
         if (fermenteur != null) {
-            /*if (fermenteur.getBrassin() != null) {
+            if (fermenteur.getBrassin(this) != null) {
                 //layout.addView(new VueBrassin(this, fermenteur.getBrassin()));
-            }*/
+            }
             layout.addView(new VueFermenteur(this, fermenteur));
         } else {
             TextView txtErreur = new TextView(this);

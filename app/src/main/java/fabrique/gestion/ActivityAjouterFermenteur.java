@@ -60,9 +60,9 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
                 capacite = Integer.parseInt(editQuantite.getText().toString());
             }
 
-            int emplacement = editEmplacement.getSelectedItemPosition();
+            long emplacement = editEmplacement.getSelectedItemPosition();
 
-            //TableFermenteur.instance(this).ajouter(null, numero, capacite, emplacement, System.currentTimeMillis(), 0, System.currentTimeMillis(), -1);
+            TableFermenteur.instance(this).ajouter(numero, capacite, emplacement, System.currentTimeMillis(), 1, System.currentTimeMillis(), -1);
 
             Intent intent = new Intent(this, ActivityTableauDeBord.class);
             startActivity(intent);

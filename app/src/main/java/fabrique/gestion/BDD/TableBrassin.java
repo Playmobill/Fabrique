@@ -29,7 +29,7 @@ public class TableBrassin extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            brassins.add(new Brassin(tmp.getInt(0), tmp.getInt(1), tmp.getString(2), tmp.getInt(3), tmp.getInt(4), tmp.getLong(5), tmp.getFloat(6), tmp.getFloat(7), tmp.getFloat(8)));
+            brassins.add(new Brassin(tmp.getLong(0), tmp.getInt(1), tmp.getString(2), tmp.getLong(3), tmp.getInt(4), tmp.getLong(5), tmp.getFloat(6), tmp.getFloat(7), tmp.getFloat(8)));
         }
         Collections.sort(brassins);
     }

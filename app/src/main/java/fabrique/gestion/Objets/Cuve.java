@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableEmplacement;
-import fabrique.gestion.BDD.TableEtatFermenteur;
+import fabrique.gestion.BDD.TableEtatCuve;
 
 public class Cuve extends Objet implements Comparable<Cuve> {
 
@@ -48,8 +48,14 @@ public class Cuve extends Objet implements Comparable<Cuve> {
         calendrier.setTimeInMillis(dateLavageAcide);
         return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
     }
-    public EtatFermenteur getEtat(Context contexte) {
-        return TableEtatFermenteur.instance(contexte).recupererId(id_etat);
+    public EtatCuve getEtat(Context contexte) {
+        return TableEtatCuve.instance(contexte).recupererId(id_etat);
+    }
+    public String getDureeEtat() {
+        long temps = System.currentTimeMillis() - dateEtat;
+        int jour = (int)(temps / 1000 / 60 / 60 / 24);
+        int heure = (((int)(temps / 1000 / 60 / 60 / 24))-jour) * 24;
+        return jour + "j" + heure + "h";
     }
     public String getDateEtat() {
         Calendar calendrier = Calendar.getInstance();
