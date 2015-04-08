@@ -1,5 +1,7 @@
 package fabrique.gestion.Objets;
 
+import java.util.Calendar;
+
 public class Brassin extends Objet implements Comparable<Brassin> {
 
     private int numero;
@@ -25,7 +27,11 @@ public class Brassin extends Objet implements Comparable<Brassin> {
 
     public int getNumero() { return numero; }
     public String getCommentaire() { return commentaire; }
-    public long getDateCreation() { return dateCreation; }
+    public String getDateCreation() {
+        Calendar calendrier = Calendar.getInstance();
+        calendrier.setTimeInMillis(dateCreation);
+        return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
+    }
     public int getQuantite() { return quantite; }
     public int getId_recette() { return id_recette; }
     public float getDensiteOriginale() { return densiteOriginale; }

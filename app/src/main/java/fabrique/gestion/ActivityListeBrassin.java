@@ -4,14 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import fabrique.gestion.Objets.Brassin;
 
 /**
  * Created by thibaut on 07/04/15.
@@ -39,6 +45,7 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         tri.setAdapter(triAdapter);
 
 
+
     }
 
     @Override
@@ -55,5 +62,47 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public RelativeLayout initialiserLigne(Brassin brassin){
+        RelativeLayout ligneBrassin = new RelativeLayout(this);
+
+        RelativeLayout.LayoutParams paramsLigne = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ligneBrassin.setLayoutParams(paramsLigne);
+
+        RelativeLayout.LayoutParams[] paramsTexte = new RelativeLayout.LayoutParams[3];
+        paramsTexte[0]= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        paramsTexte[0].setMargins(15,0,0,0);
+        paramsTexte[0].addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        paramsTexte[0].addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+
+        paramsTexte[1]= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        paramsTexte[1].addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+
+        paramsTexte[2]= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        paramsTexte[2].setMargins(0,0,15,0);
+        paramsTexte[2].addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+        paramsTexte[2].addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+
+        TextView numero = new TextView(this);
+        numero.setText("#"+brassin.getNumero());
+        numero.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
+        numero.setLayoutParams(paramsTexte[0]);
+
+        TextView typeBiere = new TextView(this);
+        typeBiere.setText("Recette n°"+brassin.getId_recette()+"");
+        typeBiere.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
+        typeBiere.setLayoutParams(paramsTexte[1]);
+
+        TextView dateCreation = new TextView(this);
+        dateCreation.setText(brassin.getDateCreation());
+        dateCreation.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
+        dateCreation.setLayoutParams(paramsTexte[2]);
+
+        ligneBrassin.addView(numero);
+        ligneBrassin.addView(typeBiere);
+        ligneBrassin.addView(dateCreation);
+
+        return ligneBrassin;
     }
 }
