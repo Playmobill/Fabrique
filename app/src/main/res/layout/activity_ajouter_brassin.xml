@@ -104,7 +104,7 @@
                 android:layout_weight="1" />
 
             <EditText
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:id="@+id/editDensiteOriginale"
                 android:layout_weight="1" />
 
@@ -122,7 +122,7 @@
                 android:layout_weight="1" />
 
             <EditText
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:id="@+id/editDensiteFinale"
                 android:layout_weight="1" />
 
@@ -140,7 +140,7 @@
                 android:layout_weight="1" />
 
             <EditText
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:id="@+id/editPourcentageAlcool"
                 android:layout_weight="1" />
 

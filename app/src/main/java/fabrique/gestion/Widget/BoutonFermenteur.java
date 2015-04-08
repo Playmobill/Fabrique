@@ -40,4 +40,7 @@ public class BoutonFermenteur extends Button {
         setTextColor(couleurTexte);
         setBackgroundColor(couleurFond);
     }
+
+    public boolean isBoutonCuve(){ return false;}
+    public boolean isBoutonFermenteur(){ return true;}
 }

@@ -21,16 +21,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.Objets.Brassin;
+import fabrique.gestion.Widget.BoutonBrassin;
 
 /**
  * Created by thibaut on 07/04/15.
  */
-public class ActivityListeBrassin extends Activity implements AdapterView.OnItemSelectedListener{
+public class ActivityListeBrassin extends Activity implements AdapterView.OnItemSelectedListener, View.OnClickListener{
 
     private LinearLayout axe, header, body;
     private ScrollView bodyScrollView;
     private Spinner tri;
+    private ArrayList<BoutonBrassin> listeBoutonBrassin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         //setContentView(R.layout.activity_liste_brassin);
+
+        listeBoutonBrassin = new ArrayList<>();
 
         axe = new LinearLayout(this);
         axe.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -65,6 +70,10 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         axe.addView(header);
         axe.addView(bodyScrollView);
         setContentView(axe);
+
+        for (int i = 0; i < listeBoutonBrassin.size(); i++) {
+            listeBoutonBrassin.get(i).setOnClickListener(this);
+        }
 
     }
 
@@ -105,7 +114,8 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         paramsTexte[2].addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         paramsTexte[2].addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
 
-        Button bouton = new Button(this);
+        BoutonBrassin bouton = new BoutonBrassin(this, brassin);
+        listeBoutonBrassin.add(bouton);
         bouton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         TextView numero = new TextView(this);
@@ -114,7 +124,8 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         numero.setLayoutParams(paramsTexte[0]);
 
         TextView typeBiere = new TextView(this);
-        typeBiere.setText("Recette n°"+brassin.getId_recette()+"");
+        String[] recettes = TableRecette.instance(this).types();
+        typeBiere.setText(""+recettes[(int)(brassin.getId_recette())]+"");
         typeBiere.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
         typeBiere.setLayoutParams(paramsTexte[1]);
 
@@ -178,5 +189,15 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         r.addView(part2);
 
         return r;
+    }
+
+    public void onClick(View v){
+        for (int i = 0; i < listeBoutonBrassin.size(); i++) {
+            if(v.equals(listeBoutonBrassin.get(i))){
+                Intent intent = new Intent(this, ActivityVueBrassin.class);
+                intent.putExtra("index", i);
+                startActivity(intent);
+            }
+        }
     }
 }

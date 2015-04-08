@@ -97,6 +97,12 @@
             android:label="@string/app_name"
             android:screenOrientation="landscape" >
         </activity>
+        <activity
+            android:name=".ActivityVueBrassin"
+            android:configChanges="keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape" >
+        </activity>
 
     </application>
 

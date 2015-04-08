@@ -9,6 +9,7 @@ import android.view.Window;
 import android.widget.TextView;
 
 import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.Objets.Brassin;
 
 public class ActivityVueBrassin extends Activity {
@@ -41,8 +42,9 @@ public class ActivityVueBrassin extends Activity {
             TextView texteCommentaireBrassin = (TextView) findViewById(R.id.texteCommentaireBrassin);
             texteCommentaireBrassin.setText(brassin.getCommentaire());
 
+            String[] listeRecettes = TableRecette.instance(this).types();
             TextView texteRecette = (TextView) findViewById(R.id.texteRecette);
-            texteRecette.setText(texteRecette.getText().toString() + brassin.getId_recette());
+            texteRecette.setText(texteRecette.getText().toString() + listeRecettes[(int)brassin.getId_recette()]);
 
             TextView texteQuantite = (TextView) findViewById(R.id.texteQuantite);
             texteQuantite.setText(texteQuantite.getText().toString() + brassin.getQuantite());
