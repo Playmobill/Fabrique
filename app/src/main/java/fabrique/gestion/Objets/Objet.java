@@ -2,11 +2,13 @@ package fabrique.gestion.Objets;
 
 public class Objet {
 
-    private int id;
+    private long id;
 
-    public Objet(int id) {
+    public Objet(long id) {
         this.id = id;
     }
 
-    public int getId() { return id; }
+    public long getId() {
+        return id;
+    }
 }

@@ -10,11 +10,8 @@ import fabrique.gestion.R;
 
 public class BoutonFermenteur extends Button {
 
-    Fermenteur fermenteur;
-
     public BoutonFermenteur(Context contexte, Fermenteur fermenteur) {
         super(new ContextThemeWrapper(contexte, R.style.bouton));
-        this.fermenteur = fermenteur;
         setGravity(Gravity.CENTER);
 
         String texte = "F" + fermenteur.getNumero() + "\n";
