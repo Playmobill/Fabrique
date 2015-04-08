@@ -29,7 +29,7 @@ public class BoutonFermenteur extends Button {
         Log.i("BoutonFermenteur", "" + (etat == null));
         String texte = "F" + fermenteur.getNumero() + "\n";
         texte = texte + fermenteur.getCapacite() + "L";
-        texte = texte + "\n" + fermenteur.getEmplacement(contexte) + "\n";
+        texte = texte + "\n" + fermenteur.getEmplacement(contexte).getTexte() + "\n";
         texte = texte + texteEtat + "\n";
         if (fermenteur.getBrassin(contexte) != null) {
             texte = texte + fermenteur.getBrassin(contexte).getNumero();

@@ -14,8 +14,11 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableGestion;
+import fabrique.gestion.Objets.Emplacement;
 import fabrique.gestion.Objets.Fermenteur;
 
 public class VueFermenteur extends TableLayout implements View.OnClickListener {
@@ -32,6 +35,8 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     private TableRow ligneBouton;
 
     private int index;
+
+    private ArrayList<Emplacement> emplacements;
 
     protected VueFermenteur(Context contexte, Fermenteur fermenteur) {
         super(contexte);
@@ -80,23 +85,33 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 emplacement.setText("Emplacement : ");
 
                 editEmplacement = new Spinner(getContext());
-                TableEmplacement tableEmplacement = TableEmplacement.instance(getContext());
-                ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tableEmplacement.emplacements());
+                emplacements = TableEmplacement.instance(getContext()).recupererActifs();
+                ArrayList<String> texteEmplacements = new ArrayList<>();
+                for (int i=0; i<emplacements.size() ; i++) {
+                    texteEmplacements.add(emplacements.get(i).getTexte());
+                }
+                ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(getContext(), R.layout.spinner_style, texteEmplacements);
                 adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 editEmplacement.setAdapter(adapteurEmplacement);
                 editEmplacement.setEnabled(false);
-                index = 0;
-                for (int i=0; i<tableEmplacement.emplacements().length ; i++) {
-                    if (fermenteur.getEmplacement(getContext()).equals(tableEmplacement.emplacements()[i])) {
+                index = -1;
+                for (int i=0; i<emplacements.size() ; i++) {
+                    if (fermenteur.getEmplacement(getContext()).getTexte().equals(emplacements.get(i))) {
                         index = i;
                     }
                 }
-                editEmplacement.getItemAtPosition(index);
+                if (index != -1) {
+                    editEmplacement.getItemAtPosition(index);
+                } else {
+                    emplacements.add(fermenteur.getEmplacement(getContext()));
+                    adapteurEmplacement.add(TableEmplacement.instance(getContext()).recupererId(fermenteur.getEmplacement(getContext()).getId()).getTexte());
+                    editEmplacement.getItemAtPosition(editEmplacement.getLastVisiblePosition());
+                }
 
 
         TableRow ligneEtatDate = new TableRow(getContext());
                 TextView etat = new TextView(getContext());
-                etat.setText("État : " + fermenteur.getEtat(getContext()));
+                etat.setText("État : " + fermenteur.getEtat(getContext()).getTexte());
 
             TextView dateEtat = new TextView(getContext());
             dateEtat.setText("Depuis le : " + fermenteur.getDateEtat());
@@ -141,7 +156,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     private void validerDescription() {
         fermenteur.setCapacite(Integer.parseInt(editCapacite.getText().toString()));
         index = editEmplacement.getSelectedItemPosition();
-        fermenteur.setEmplacement(editEmplacement.getSelectedItemId());
+        fermenteur.setEmplacement(emplacements.get((int)editEmplacement.getSelectedItemId()).getId());
         reafficherDescription();
     }
 

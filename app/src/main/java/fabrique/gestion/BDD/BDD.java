@@ -15,7 +15,8 @@ public class BDD extends SQLiteOpenHelper {
 
     private static String createurTableEmplacement = "CREATE TABLE IF NOT EXISTS Emplacement (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "texte TEXT)";
+                                                "texte TEXT," +
+                                                "actif INTEGER NOT NULL)";
 
     private static String createurTableEtatFermenteur = "CREATE TABLE IF NOT EXISTS EtatFermenteur (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -101,9 +102,9 @@ public class BDD extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO Gestion (delaiLavageAcide, delaiInspectionBaril) VALUES(604800000, 604800000)");
 
-        db.execSQL("INSERT INTO Emplacement (texte) VALUES ('SS')");
-        db.execSQL("INSERT INTO Emplacement (texte) VALUES ('Ch.Froide')");
-        db.execSQL("INSERT INTO Emplacement (texte) VALUES ('RC')");
+        db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('SS', 1)");
+        db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('Ch.Froide', 1)");
+        db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('RC', 1)");
     }
 
     @Override

@@ -10,11 +10,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableFermenteur;
+import fabrique.gestion.Objets.Emplacement;
 
 public class ActivityAjouterFermenteur extends Activity implements View.OnClickListener {
+
+    private ArrayList<Emplacement> emplacements;
 
     private Button btnAjouter;
 
@@ -24,6 +30,16 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        emplacements = TableEmplacement.instance(this).recupererActifs();
+        if (emplacements.size() == 0) {
+            Toast.makeText(this, "Il faut avoir au moins UN emplacement ACTIF pour pouvoir ajouter un fermenteur", Toast.LENGTH_LONG).show();
+            finish();
+        }
+        ArrayList<String> texteEmplacements = new ArrayList<>();
+        for (int i=0; i<emplacements.size() ; i++) {
+            texteEmplacements.add(emplacements.get(i).getTexte());
+        }
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -41,8 +57,7 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
         editQuantite = (EditText)findViewById(R.id.editQuantite);
 
         editEmplacement = (Spinner)this.findViewById(R.id.editEmplacement);
-        TableEmplacement tableEmplacement = TableEmplacement.instance(this);
-        ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(this, R.layout.spinner_style, tableEmplacement.emplacements());
+        ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(this, R.layout.spinner_style, texteEmplacements);
         adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editEmplacement.setAdapter(adapteurEmplacement);
 
@@ -60,7 +75,7 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
                 capacite = Integer.parseInt(editQuantite.getText().toString());
             }
 
-            long emplacement = editEmplacement.getSelectedItemPosition();
+            long emplacement = emplacements.get(editEmplacement.getSelectedItemPosition()).getId();
 
             TableFermenteur.instance(this).ajouter(numero, capacite, emplacement, System.currentTimeMillis(), 1, System.currentTimeMillis(), -1);
 
