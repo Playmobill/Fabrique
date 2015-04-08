@@ -96,7 +96,9 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
     public HorizontalScrollView intialiserLigneFermenteur() {
         LinearLayout ligne = new LinearLayout(this);
 
-        LinearLayout.LayoutParams parametreFermenteur = new LinearLayout.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.heightPixels*9/20);
+        LinearLayout.LayoutParams parametreFermenteur = new LinearLayout.LayoutParams(tailleEcran.widthPixels/6, tailleEcran.heightPixels*1/5);
+        parametreFermenteur.setMargins(10, 10, 10, 10);
+
         TableFermenteur tableFermenteur = TableFermenteur.instance(this);
         for (int i=0; i<tableFermenteur.tailleListe(); i=i+1) {
             BoutonFermenteur boutonFermenteur = new BoutonFermenteur(this, tableFermenteur.recupererIndex(i));
@@ -116,7 +118,8 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
     public HorizontalScrollView intialiserLigneGarde() {
         LinearLayout ligne = new LinearLayout(this);
 
-        LinearLayout.LayoutParams parametreCuve = new LinearLayout.LayoutParams(tailleEcran.widthPixels/5, tailleEcran.heightPixels*9/20);
+        LinearLayout.LayoutParams parametreCuve = new LinearLayout.LayoutParams(tailleEcran.widthPixels/6, tailleEcran.heightPixels*1/5);
+        parametreCuve.setMargins(10, 10, 10, 10);
 
         TableCuve tableCuve = TableCuve.instance(this);
         for (int i=0; i<tableCuve.tailleListe(); i=i+1) {
