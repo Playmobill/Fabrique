@@ -137,6 +137,7 @@
                 android:id="@+id/txtPourcentageAlcool"
                 android:text="Pourcentage d'alcool"
                 android:textColor="@color/noir"
+                android:inputType="numberDecimal"
                 android:layout_weight="1" />
 
             <EditText

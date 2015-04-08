@@ -37,6 +37,9 @@ public class Cuve extends Objet implements Comparable<Cuve> {
     public int getCapacite() {
         return capacite;
     }
+    public long getIdEmplacement() {
+        return id_emplacement;
+    }
     public Emplacement getEmplacement(Context contexte) {
         return TableEmplacement.instance(contexte).recupererId(id_emplacement);
     }
@@ -48,8 +51,14 @@ public class Cuve extends Objet implements Comparable<Cuve> {
         calendrier.setTimeInMillis(dateLavageAcide);
         return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
     }
+    public long getIdEtat() {
+        return id_etat;
+    }
     public EtatCuve getEtat(Context contexte) {
         return TableEtatCuve.instance(contexte).recupererId(id_etat);
+    }
+    public long getLongDateEtat() {
+        return dateEtat;
     }
     public String getDureeEtat() {
         long temps = System.currentTimeMillis() - dateEtat;
@@ -68,6 +77,9 @@ public class Cuve extends Objet implements Comparable<Cuve> {
             texte = texte + commentaireEtat;
         }
         return texte;
+    }
+    public long getIdBrassin() {
+        return id_brassin;
     }
     public Brassin getBrassin(Context contexte) {
         return TableBrassin.instance(contexte).recupererId(id_brassin);

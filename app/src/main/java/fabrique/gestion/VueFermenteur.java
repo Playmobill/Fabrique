@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import fabrique.gestion.BDD.TableEmplacement;
+import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.Objets.Emplacement;
 import fabrique.gestion.Objets.Fermenteur;
@@ -30,7 +31,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     private TableLayout tableauDescription;
 
     private Spinner editEmplacement;
-    private EditText editCapacite;
+    private EditText editTitre, editCapacite;
 
     private TableRow ligneBouton;
 
@@ -56,9 +57,15 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         parametre.setMargins(10, 10, 10, 10);
 
         TableRow ligneTitreLavageAcide = new TableRow(getContext());
-            TextView titre = new TextView(getContext());
-            titre.setText("Fermenteur " + fermenteur.getNumero());
-            titre.setTypeface(null, Typeface.BOLD);
+            LinearLayout layoutTitre = new LinearLayout(getContext());
+                TextView titre = new TextView(getContext());
+                titre.setText("Fermenteur ");
+                titre.setTypeface(null, Typeface.BOLD);
+
+                editTitre = new EditText(getContext());
+                editTitre.setText("" + fermenteur.getNumero());
+                editTitre.setInputType(InputType.TYPE_CLASS_NUMBER);
+                editTitre.setEnabled(false);
 
             TextView dateLavageAcide = new TextView(getContext());
             dateLavageAcide.setText("" + fermenteur.getDateLavageAcideToString());
@@ -96,22 +103,22 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 editEmplacement.setEnabled(false);
                 index = -1;
                 for (int i=0; i<emplacements.size() ; i++) {
-                    if (fermenteur.getEmplacement(getContext()).getTexte().equals(emplacements.get(i))) {
+                    if (fermenteur.getEmplacement(getContext()).getId() == emplacements.get(i).getId()) {
                         index = i;
                     }
                 }
                 if (index != -1) {
-                    editEmplacement.getItemAtPosition(index);
+                    editEmplacement.setSelection(index);
                 } else {
                     emplacements.add(fermenteur.getEmplacement(getContext()));
                     adapteurEmplacement.add(TableEmplacement.instance(getContext()).recupererId(fermenteur.getEmplacement(getContext()).getId()).getTexte());
-                    editEmplacement.getItemAtPosition(editEmplacement.getLastVisiblePosition());
+                    editEmplacement.setSelection(editEmplacement.getLastVisiblePosition());
                 }
 
 
         TableRow ligneEtatDate = new TableRow(getContext());
-                TextView etat = new TextView(getContext());
-                etat.setText("État : " + fermenteur.getEtat(getContext()).getTexte());
+            TextView etat = new TextView(getContext());
+            etat.setText("État : " + fermenteur.getEtat(getContext()).getTexte());
 
             TextView dateEtat = new TextView(getContext());
             dateEtat.setText("Depuis le : " + fermenteur.getDateEtat());
@@ -121,7 +128,9 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
             btnModifier.setText("Modifier");
             btnModifier.setOnClickListener(this);
 
-            ligneTitreLavageAcide.addView(titre, parametre);
+                layoutTitre.addView(titre);
+                layoutTitre.addView(editTitre);
+            ligneTitreLavageAcide.addView(layoutTitre, parametre);
             ligneTitreLavageAcide.addView(dateLavageAcide, parametre);
         tableauDescription.addView(ligneTitreLavageAcide);
                 layoutCapacite.addView(capacite);
@@ -139,6 +148,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     }
 
     private void modifierDescription() {
+        editTitre.setEnabled(true);
         editEmplacement.setEnabled(true);
         editCapacite.setEnabled(true);
         ligneBouton.removeAllViews();
@@ -154,13 +164,15 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     }
 
     private void validerDescription() {
-        fermenteur.setCapacite(Integer.parseInt(editCapacite.getText().toString()));
+        TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), Integer.parseInt(editTitre.getText().toString()), Integer.parseInt(editCapacite.getText().toString()), emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcide(), fermenteur.getIdEtat(), fermenteur.getLongDateEtat(), fermenteur.getIdBrassin());
         index = editEmplacement.getSelectedItemPosition();
-        fermenteur.setEmplacement(emplacements.get((int)editEmplacement.getSelectedItemId()).getId());
         reafficherDescription();
     }
 
     private void reafficherDescription() {
+        editTitre.setEnabled(false);
+        editTitre.setText("" + fermenteur.getNumero());
+
         editCapacite.setEnabled(false);
         editCapacite.setText("" + fermenteur.getCapacite());
 

@@ -27,23 +27,19 @@ public class TableRecette extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            types.add(new Recette(tmp.getInt(0), tmp.getString(1), tmp.getString(2), tmp.getString(3)));
+            types.add(new Recette(tmp.getLong(0), tmp.getString(1), tmp.getString(2), tmp.getString(3)));
         }
         Collections.sort(types);
     }
 
-    public void ajouter(String nom, String couleur, String acronyme){
+    public void ajouter(String nom, String couleur, String acronyme) {
         types.add(new Recette(types.size(), nom, couleur, acronyme));
-        accesBDD.execSQL("INSERT INTO Recette (nom, couleur, acronyme) VALUES ('" + nom + "', '"+couleur+"', '"+acronyme+"')");
+        accesBDD.execSQL("INSERT INTO Recette (nom, couleur, acronyme) VALUES ('" + nom + "', '"+ couleur +"', '"+ acronyme +"')");
         Collections.sort(types);
     }
 
     public Recette recuperer(int index){
         return types.get(index);
-    }
-
-    public void supprimer(int index){
-        types.remove(index);
     }
 
     public int tailleListe() {

@@ -42,5 +42,6 @@ public class ActivityVueFermenteur extends Activity {
     public void onBackPressed() {
         Intent intent = new Intent(this, ActivityTableauDeBord.class);
         startActivity(intent);
+        finish();
     }
 }

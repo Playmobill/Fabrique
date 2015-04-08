@@ -75,7 +75,7 @@ public class TableCuve extends Controle{
         valeur.put("capacite", capacite);
         valeur.put("id_emplacement", id_emplacement);
         valeur.put("dateLavageAcide", dateLavageAcide);
-        valeur.put("id_etatFermenteur", id_etat);
+        valeur.put("id_etatCuve", id_etat);
         valeur.put("dateEtat", dateEtat);
         valeur.put("commentaireEtat", commentaireEtat);
         valeur.put("id_brassin", id_brassin);
