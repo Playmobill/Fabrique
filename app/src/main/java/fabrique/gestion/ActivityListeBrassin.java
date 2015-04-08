@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -45,28 +46,26 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         axe.setOrientation(LinearLayout.VERTICAL);
 
         header = new LinearLayout(this);
-        header.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        header.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         header.setOrientation(LinearLayout.HORIZONTAL);
 
         bodyScrollView = new ScrollView(this);
-        bodyScrollView.setLayoutParams(new ScrollView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        bodyScrollView.setLayoutParams(new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         body = new LinearLayout(this);
         body.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         body.setOrientation(LinearLayout.VERTICAL);
 
         header.addView(initTexteHeader());
-        body.addView(initialiserLigne(0));
+        for (int i = 0; i < TableBrassin.instance(this).tailleListe(); i++) {
+            body.addView(initialiserLigne(TableBrassin.instance(this).recupererIndex(i)));
+        }
 
         bodyScrollView.addView(body);
         axe.addView(header);
         axe.addView(bodyScrollView);
         setContentView(axe);
 
-        Log.i("ListeBrassin", ((TextView)
-                                ((LinearLayout)(
-                                    ((RelativeLayout)(
-                                        (LinearLayout)bodyScrollView.getChildAt(0)).getChildAt(0)).getChildAt(0))).getChildAt(0)).getText().toString());
     }
 
     @Override
@@ -85,18 +84,16 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
 
     }
 
-    public RelativeLayout initialiserLigne(int index){
-        TableBrassin tableBrassin = TableBrassin.instance(this);
-        Brassin brassin = tableBrassin.recupererIndex(index);
+    public RelativeLayout initialiserLigne(Brassin brassin){
 
         RelativeLayout ligneBrassin = new RelativeLayout(this);
 
-        RelativeLayout.LayoutParams paramsLigne = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams paramsLigne = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ligneBrassin.setLayoutParams(paramsLigne);
 
         RelativeLayout.LayoutParams[] paramsTexte = new RelativeLayout.LayoutParams[3];
         paramsTexte[0]= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        paramsTexte[0].setMargins(15,0,0,0);
+        paramsTexte[0].setMargins(30,15,0,15);
         paramsTexte[0].addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
         paramsTexte[0].addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
 
@@ -104,9 +101,12 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         paramsTexte[1].addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 
         paramsTexte[2]= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        paramsTexte[2].setMargins(0,0,15,0);
+        paramsTexte[2].setMargins(0, 15, 30, 15);
         paramsTexte[2].addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         paramsTexte[2].addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+
+        Button bouton = new Button(this);
+        bouton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         TextView numero = new TextView(this);
         numero.setText("#"+brassin.getNumero());
@@ -123,11 +123,10 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         dateCreation.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
         dateCreation.setLayoutParams(paramsTexte[2]);
 
+        ligneBrassin.addView(bouton);
         ligneBrassin.addView(numero);
         ligneBrassin.addView(typeBiere);
         ligneBrassin.addView(dateCreation);
-
-        Log.i("Coucou maggle", "Posey avec une n°"+brassin.getId_recette());
 
         return ligneBrassin;
     }
@@ -139,12 +138,12 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
 
         RelativeLayout.LayoutParams[] paramsTexte = new RelativeLayout.LayoutParams[2];
         paramsTexte[0]= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        paramsTexte[0].setMargins(15,0,0,0);
+        paramsTexte[0].setMargins(30,20,0,20);
         paramsTexte[0].addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
         paramsTexte[0].addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
 
         paramsTexte[1]= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        paramsTexte[1].setMargins(0, 0, 15, 0);
+        paramsTexte[1].setMargins(0, 20, 30, 20);
         paramsTexte[1].addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         paramsTexte[1].addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
 
