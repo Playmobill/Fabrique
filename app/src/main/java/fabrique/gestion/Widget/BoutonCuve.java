@@ -10,11 +10,8 @@ import fabrique.gestion.R;
 
 public class BoutonCuve extends Button {
 
-    private Cuve cuve;
-
     public BoutonCuve(Context contexte, Cuve cuve) {
         super(new ContextThemeWrapper(contexte, R.style.bouton));
-        this.cuve = cuve;
         setGravity(Gravity.CENTER);
 
         String texte = "C" + cuve.getNumero() + "\n";

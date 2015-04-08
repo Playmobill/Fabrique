@@ -3,8 +3,6 @@ package fabrique.gestion.BDD;
 import android.content.Context;
 import android.database.Cursor;
 
-import fabrique.gestion.Objets.Objet;
-
 public class TableGestion extends Controle {
 
     private long delaiLavageAcide, delaiInspectionBaril;
@@ -25,16 +23,6 @@ public class TableGestion extends Controle {
         tmp.moveToFirst();
         delaiLavageAcide = tmp.getLong(0);
         delaiInspectionBaril = tmp.getLong(1);
-    }
-
-    @Override
-    public Objet recuperer(int index) {
-        return null;
-    }
-
-    @Override
-    public void supprimer(int index) {
-
     }
 
     @Override

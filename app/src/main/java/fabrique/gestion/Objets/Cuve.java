@@ -48,13 +48,13 @@ public class Cuve extends Objet implements Comparable<Cuve> {
         return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
     }
     public String getEtat(Context contexte) {
-        return TableEtatCuve.instance(contexte).etat(etat);
+        return TableEtatCuve.instance(contexte).recupererId(etat).getTexte();
     }
     public int getCouleurTexte(Context contexte) {
-        return TableEtatCuve.instance(contexte).couleurTexteEtat(etat);
+        return TableEtatCuve.instance(contexte).recupererId(etat).getCouleurTexte();
     }
     public int getCouleurFond(Context contexte) {
-        return TableEtatCuve.instance(contexte).couleurFondEtat(etat);
+        return TableEtatCuve.instance(contexte).recupererId(etat).getCouleurFond();
     }
     public String getDateEtat() {
         Calendar calendrier = Calendar.getInstance();
