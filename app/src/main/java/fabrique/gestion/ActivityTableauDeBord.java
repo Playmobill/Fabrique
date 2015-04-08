@@ -43,7 +43,6 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
         //Tableau pour les elements de la fenetre
         LinearLayout layout = new TableLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setBackgroundColor(getResources().getColor(R.color.gris));
 
         //Ajouter
         layout.addView(nouvelleLigneTexte("Fermenteurs"));
