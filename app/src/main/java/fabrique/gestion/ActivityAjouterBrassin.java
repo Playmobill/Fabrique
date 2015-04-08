@@ -81,7 +81,7 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
 
             TableBrassin.instance(this).ajouter(numero, editCommentaire.getText().toString(), System.currentTimeMillis(), capacite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
 
-            Intent intent = new Intent(this, ActivityTableauDeBord.class);
+            Intent intent = new Intent(this, ActivityAccueil.class);
             startActivity(intent);
         }
     }
