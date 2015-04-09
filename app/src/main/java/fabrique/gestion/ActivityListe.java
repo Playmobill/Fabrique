@@ -11,7 +11,7 @@ import android.widget.Button;
 
 public class ActivityListe extends Activity implements View.OnClickListener {
 
-    private Button fermenteur, cuve, fut, brassin;
+    private Button fermenteur, cuve, fut, brassin, recette;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,9 @@ public class ActivityListe extends Activity implements View.OnClickListener {
         //brassin.setWidth(metrics.widthPixels/3);
         //brassin.setHeight(metrics.heightPixels/4);
         brassin.setOnClickListener(this);
+
+        recette = (Button)findViewById(R.id.btnRecette);
+        recette.setOnClickListener(this);
     }
 
     @Override
@@ -69,6 +72,10 @@ public class ActivityListe extends Activity implements View.OnClickListener {
             startActivity(intent);
         } else if (view.equals(brassin)) {
             Intent intent = new Intent(this, ActivityListeBrassin.class);
+            startActivity(intent);
+        }
+        else if (view.equals(recette)) {
+            Intent intent = new Intent(this, ActivityListeRecette.class);
             startActivity(intent);
         }
     }

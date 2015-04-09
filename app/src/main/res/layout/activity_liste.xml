@@ -69,4 +69,39 @@
             android:background="@color/blanc"
             android:textStyle="bold" />
     </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:baselineAligned="false">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Liste des recettes"
+            android:id="@+id/btnRecette"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textAllCaps="false"
+            android:textColor="@color/noir"
+            android:background="@color/blanc"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Liste des emplacements"
+            android:id="@+id/btnEmplacement"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textAllCaps="false"
+            android:textColor="@color/noir"
+            android:background="@color/blanc"
+            android:textStyle="bold" />
+
+    </TableRow>
+
 </TableLayout>
