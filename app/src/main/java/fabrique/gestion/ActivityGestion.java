@@ -75,7 +75,8 @@ public class ActivityGestion extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, ActivityAjouterCuve.class);
             startActivity(intent);
         } else if (view.equals(fut)) {
-
+            Intent intent = new Intent(this, ActivityAjouterFut.class);
+            startActivity(intent);
         } else if (view.equals(brassin)) {
             Intent intent = new Intent(this, ActivityAjouterBrassin.class);
             startActivity(intent);
