@@ -55,7 +55,10 @@ public class TableFermenteur extends Controle {
         return fermenteurs.size();
     }
 
-    public Fermenteur recupererIndex(int index){
+    public Fermenteur recupererIndex(int index) {
+        if (index == -1) {
+            return null;
+        }
         return fermenteurs.get(index);
     }
 

@@ -51,7 +51,10 @@ public class TableEtatFermenteur extends Controle {
         return etats.size();
     }
 
-    public EtatFermenteur recupererIndex(int index){
+    public EtatFermenteur recupererIndex(int index) {
+        if (index == -1) {
+            return null;
+        }
         return etats.get(index);
     }
 

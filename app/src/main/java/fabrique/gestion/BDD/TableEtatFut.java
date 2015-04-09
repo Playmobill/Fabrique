@@ -51,7 +51,10 @@ public class TableEtatFut extends Controle {
         return etats.size();
     }
 
-    public EtatFut recupererIndex(int index){
+    public EtatFut recupererIndex(int index) {
+        if (index == -1) {
+            return null;
+        }
         return etats.get(index);
     }
 

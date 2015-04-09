@@ -79,7 +79,7 @@ public class ActivityListeFut extends Activity implements View.OnClickListener {
         for (int i=0; i<btnsFut.size() ; i++) {
             if (btnsFut.get(i).equals(v)) {
                 Intent intent = new Intent(this, ActivityVueFut.class);
-                intent.putExtra("Index", futs.get(i).getId());
+                intent.putExtra("id", futs.get(i).getId());
                 startActivity(intent);
             }
         }

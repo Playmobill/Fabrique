@@ -54,11 +54,14 @@ public class TableFut extends Controle {
         return futs.size();
     }
 
-    public Fut recupererIndex(int index){
+    public Fut recupererIndex(int index) {
+        if (index == -1) {
+            return null;
+        }
         return futs.get(index);
     }
 
-    public Fut recupererId(long id){
+    public Fut recupererId(long id) {
         for (int i=0; i<futs.size() ; i++) {
             if (futs.get(i).getId() == id) {
                 return futs.get(i);

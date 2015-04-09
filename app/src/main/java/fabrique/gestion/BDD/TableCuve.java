@@ -57,6 +57,9 @@ public class TableCuve extends Controle{
     }
 
     public Cuve recupererIndex(int index){
+        if (index == -1) {
+            return null;
+        }
         return cuves.get(index);
     }
 

@@ -30,6 +30,7 @@ public class ActivityVueFermenteur extends Activity {
         } else {
             TextView txtErreur = new TextView(this);
             txtErreur.setText("Aucun fermenteur sélectionné");
+            layout.addView(txtErreur);
         }
 
         ScrollView layoutVerticalScroll = new ScrollView(this);
@@ -42,6 +43,5 @@ public class ActivityVueFermenteur extends Activity {
     public void onBackPressed() {
         Intent intent = new Intent(this, ActivityTableauDeBord.class);
         startActivity(intent);
-        finish();
     }
 }

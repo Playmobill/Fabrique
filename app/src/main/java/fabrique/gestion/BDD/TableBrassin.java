@@ -57,6 +57,9 @@ public class TableBrassin extends Controle {
     }
 
     public Brassin recupererIndex(int index){
+        if (index == -1) {
+            return null;
+        }
         return brassins.get(index);
     }
 

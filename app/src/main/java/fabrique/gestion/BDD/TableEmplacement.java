@@ -49,7 +49,10 @@ public class TableEmplacement extends Controle {
         return emplacements.size();
     }
 
-    public Emplacement recupererIndex(int index){
+    public Emplacement recupererIndex(int index) {
+        if (index == -1) {
+            return null;
+        }
         return emplacements.get(index);
     }
 

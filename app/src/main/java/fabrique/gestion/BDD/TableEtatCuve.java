@@ -52,7 +52,10 @@ public class TableEtatCuve extends Controle {
         return etats.size();
     }
 
-    public EtatCuve recupererIndex(int index){
+    public EtatCuve recupererIndex(int index) {
+        if (index == -1) {
+            return null;
+        }
         return etats.get(index);
     }
 

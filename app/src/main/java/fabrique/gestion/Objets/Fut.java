@@ -44,6 +44,9 @@ public class Fut extends Objet implements Comparable<Fut> {
         calendrier.setTimeInMillis(dateEtat);
         return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
     }
+    public long getLongDateEtat() {
+        return dateEtat;
+    }
     public long getId_brassin() {
         return id_brassin;
     }
@@ -52,6 +55,11 @@ public class Fut extends Objet implements Comparable<Fut> {
     }
     public long getDateInspection() {
         return dateInspection;
+    }
+    public String getDateInspectionToString() {
+        Calendar calendrier = Calendar.getInstance();
+        calendrier.setTimeInMillis(dateInspection);
+        return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
     }
 
     public void setNumero(int numero) {
