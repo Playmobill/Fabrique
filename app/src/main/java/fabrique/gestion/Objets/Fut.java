@@ -1,5 +1,12 @@
 package fabrique.gestion.Objets;
 
+import android.content.Context;
+
+import java.util.Calendar;
+
+import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableEtatFut;
+
 public class Fut extends Objet implements Comparable<Fut> {
 
     private int numero;
@@ -29,11 +36,19 @@ public class Fut extends Objet implements Comparable<Fut> {
     public long getId_etat() {
         return id_etat;
     }
-    public long getDateEtat() {
-        return dateEtat;
+    public EtatFut getEtat(Context contexte) {
+        return TableEtatFut.instance(contexte).recupererId(id_etat);
+    }
+    public String getDateEtat() {
+        Calendar calendrier = Calendar.getInstance();
+        calendrier.setTimeInMillis(dateEtat);
+        return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
     }
     public long getId_brassin() {
         return id_brassin;
+    }
+    public Brassin getBrassin(Context contexte) {
+        return TableBrassin.instance(contexte).recupererId(id_brassin);
     }
     public long getDateInspection() {
         return dateInspection;

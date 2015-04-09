@@ -51,7 +51,7 @@ public class ActivityAjouterFut extends Activity implements View.OnClickListener
 
             TableFut.instance(this).ajouter(numero, capacite, 1, System.currentTimeMillis(), -1, System.currentTimeMillis());
 
-            Intent intent = new Intent(this, ActivityTableauDeBord.class);
+            Intent intent = new Intent(this, ActivityListeFut.class);
             startActivity(intent);
         }
     }

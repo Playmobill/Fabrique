@@ -17,6 +17,7 @@ public class BoutonFermenteur extends Button {
         setGravity(Gravity.CENTER);
 
         EtatFermenteur etat = fermenteur.getEtat(contexte);
+
         String texteEtat = "";
         int couleurTexte = Color.BLACK;
         int couleurFond = Color.WHITE;
@@ -33,12 +34,9 @@ public class BoutonFermenteur extends Button {
             texte = texte + fermenteur.getBrassin(contexte).getNumero();
         }
         texte = texte + "\n" + fermenteur.getDateEtat();
-        setText(texte);
 
+        setText(texte);
         setTextColor(couleurTexte);
         setBackgroundColor(couleurFond);
     }
-
-    public boolean isBoutonCuve(){ return false;}
-    public boolean isBoutonFermenteur(){ return true;}
 }

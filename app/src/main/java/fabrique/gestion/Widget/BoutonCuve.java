@@ -17,6 +17,7 @@ public class BoutonCuve extends Button {
         setGravity(Gravity.CENTER);
 
         EtatCuve etat = cuve.getEtat(contexte);
+
         String texteEtat = "";
         int couleurTexte = Color.BLACK;
         int couleurFond = Color.WHITE;
@@ -35,8 +36,8 @@ public class BoutonCuve extends Button {
         texte = texte + "\n" + cuve.getCommentaireEtat() + "\n";
         texte = texte + /*"depuis " + cuve.getDureeEtat() + */"\n";
         texte = texte + cuve.getDateEtat() + "\n";
-        setText(texte);
 
+        setText(texte);
         setTextColor(couleurTexte);
         setBackgroundColor(couleurFond);
     }
