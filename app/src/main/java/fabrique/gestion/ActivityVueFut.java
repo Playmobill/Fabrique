@@ -39,4 +39,9 @@ public class ActivityVueFut extends Activity {
         setContentView(layoutVerticalScroll);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, ActivityListeFut.class);
+        startActivity(intent);
+    }
 }

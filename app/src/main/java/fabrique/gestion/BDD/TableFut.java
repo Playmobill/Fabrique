@@ -30,6 +30,7 @@ public class TableFut extends Controle {
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             futs.add(new Fut(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getLong(3), tmp.getLong(4), tmp.getLong(5), tmp.getLong(6)));
+            modifier(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getLong(3), tmp.getLong(4), (long)((Math.random()*3)+1), tmp.getLong(6));
         }
         Collections.sort(futs);
     }
@@ -96,5 +97,80 @@ public class TableFut extends Controle {
             numeroFuts[i] = futs.get(i).getNumero() + "";
         }
         return numeroFuts;
+    }
+
+    public ArrayList<ArrayList<Fut>> recupererSelonBrassin(Context contexte) {
+        ArrayList<ArrayList<Fut>> listeListeFutSelonBrassin = new ArrayList<>();
+
+        ArrayList<Fut> cloneFuts = (ArrayList<Fut>)futs.clone();
+        while(cloneFuts.size()!=0) {
+            long id = cloneFuts.get(0).getId_brassin();
+            ArrayList<Fut> listeFutDeMemeBrassin = new ArrayList<Fut>();
+            for(int i=0; i<cloneFuts.size() ; i++) {
+                if (cloneFuts.get(i).getId_brassin() == id) {
+                    listeFutDeMemeBrassin.add(cloneFuts.get(i));
+                    cloneFuts.remove(i);
+                    i--;
+                }
+            }
+            listeListeFutSelonBrassin.add(listeFutDeMemeBrassin);
+        }
+        return trierListeBrassinParBrassin(contexte, listeListeFutSelonBrassin, 0, listeListeFutSelonBrassin.size()-1);
+    }
+
+    private ArrayList<ArrayList<Fut>> trierListeBrassinParBrassin(Context contexte, ArrayList<ArrayList<Fut>> listeListe, int petitIndex, int grandIndex) {
+        int i = petitIndex;
+        int j = grandIndex;
+        // calculate pivot number, I am taking pivot as middle index number
+        ArrayList<Fut> pivot = listeListe.get(petitIndex+(grandIndex-petitIndex)/2);
+        // Divide into two arrays
+        while (i <= j) {
+
+            int numeroPivot = -1;
+            if (pivot.get(0).getBrassin(contexte) != null) {
+                numeroPivot = pivot.get(0).getBrassin(contexte).getNumero();
+            }
+
+            int numeroPetitIndex = -1;
+            if (listeListe.get(i).get(0).getBrassin(contexte) != null) {
+                numeroPetitIndex = listeListe.get(i).get(0).getBrassin(contexte).getNumero();
+            }
+
+            int numeroGrandIndex = -1;
+            if (listeListe.get(j).get(0).getBrassin(contexte) != null) {
+                numeroGrandIndex = listeListe.get(j).get(0).getBrassin(contexte).getNumero();
+            }
+
+            while (numeroPetitIndex < numeroPivot) {
+                i++;
+                numeroPetitIndex = -1;
+                if (listeListe.get(i).get(0).getBrassin(contexte) != null) {
+                    numeroPetitIndex = listeListe.get(i).get(0).getBrassin(contexte).getNumero();
+                }
+            }
+            while (numeroGrandIndex > numeroPivot) {
+                j--;
+                numeroGrandIndex = -1;
+                if (listeListe.get(j).get(0).getBrassin(contexte) != null) {
+                    numeroGrandIndex = listeListe.get(j).get(0).getBrassin(contexte).getNumero();
+                }
+            }
+            if (i <= j) {
+                ArrayList<Fut> temp = listeListe.get(i);
+                listeListe.set(i, listeListe.get(j));
+                listeListe.set(j, temp);
+                //move index to next position on both sides
+                i++;
+                j--;
+            }
+        }
+        // call recursively
+        if (petitIndex < j) {
+            listeListe = trierListeBrassinParBrassin(contexte, listeListe, petitIndex, j);
+        }
+        if (i < grandIndex) {
+            listeListe = trierListeBrassinParBrassin(contexte, listeListe, i, grandIndex);
+        }
+        return listeListe;
     }
 }

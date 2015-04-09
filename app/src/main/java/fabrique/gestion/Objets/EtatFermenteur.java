@@ -1,7 +1,5 @@
 package fabrique.gestion.Objets;
 
-import android.util.Log;
-
 public class EtatFermenteur extends Objet implements Comparable<EtatFermenteur> {
 
     private String texte;
@@ -43,7 +41,6 @@ public class EtatFermenteur extends Objet implements Comparable<EtatFermenteur> 
     public int compareTo(EtatFermenteur etat) {
         if (actif == etat.getActif()) {
             for (int i=0; i<Math.min(texte.length(), etat.getTexte().length()) ; i++) {
-                Log.i("EtatCuve", texte.charAt(i) + " / " + etat.getTexte().charAt(i));
                 if (texte.charAt(i) < etat.getTexte().charAt(i)) {
                     return -1;
                 } else if (texte.charAt(i) > etat.getTexte().charAt(i)) {
