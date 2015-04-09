@@ -84,7 +84,9 @@ public class Fermenteur extends Objet implements Comparable<Fermenteur> {
     }
     public void setEtat(long id_etat) {
         this.id_etat = id_etat;
-        dateEtat = System.currentTimeMillis();
+    }
+    public void setDateEtat(long dateEtat) {
+        this.dateEtat = dateEtat;
     }
     public void setBrassin(long id_brassin) {
         this.id_brassin = id_brassin;

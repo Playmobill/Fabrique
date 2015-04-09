@@ -84,6 +84,7 @@ public class TableFermenteur extends Controle {
             fermenteur.setEmplacement(id_emplacement);
             fermenteur.setDateLavageAcide(dateLavageAcide);
             fermenteur.setEtat(id_etat);
+            fermenteur.setDateEtat(dateEtat);
             fermenteur.setBrassin(id_brassin);
             Collections.sort(fermenteurs);
         }

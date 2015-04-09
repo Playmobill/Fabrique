@@ -69,8 +69,17 @@ public class BDD extends SQLiteOpenHelper {
                                                 "dateLavageAcide INTEGER NOT NULL," +
                                                 "id_etatCuve INTEGER NOT NULL," +
                                                 "dateEtat INTEGER NOT NULL," +
-                                                "commentaireEtat TEXT NOT NULL," +
+                                                "commentaireEtat TEXT," +
                                                 "id_brassin INTEGER)";
+
+    private static String createurTableFut = "CREATE TABLE IF NOT EXISTS Fut (" +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                                "numero INTEGER NOT NULL," +
+                                                "capacite INTEGER NOT NULL," +
+                                                "id_etatFut INTEGER NOT NULL," +
+                                                "dateEtat INTEGER NOT NULL," +
+                                                "id_brassin INTEGER," +
+                                                "dateInspection INTEGER NOT NULL)";
 
     private static String gestion = "CREATE TABLE IF NOT EXISTS Gestion (" +
                                                 "delaiLavageAcide INTEGER DEFAULT 604800000," +
@@ -90,6 +99,7 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL(createurTableEtatCuve);
         db.execSQL(createurTableEtatFut);
         db.execSQL(createurTableCuve);
+        db.execSQL(createurTableFut);
         db.execSQL(gestion);
 
         db.execSQL("INSERT INTO EtatFermenteur (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");

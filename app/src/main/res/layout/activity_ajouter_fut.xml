@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:text="Nouveau fût"
+                android:id="@+id/txtTitre"
+                android:textStyle="bold"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/txtNumero"
+                android:text="Numéro voulu"
+                android:layout_weight="1" />
+
+            <EditText
+                android:inputType="number"
+                android:id="@+id/editNumero"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/txtQuantite"
+                android:text="Quantité (Litre)"
+                android:layout_weight="1" />
+
+            <EditText
+                android:inputType="number"
+                android:id="@+id/editQuantite"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:text="Ajouter"
+                android:id="@+id/btnAjouter"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textColor="@color/noir"
+                android:background="@color/blanc" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</ScrollView>

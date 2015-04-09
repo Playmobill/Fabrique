@@ -66,7 +66,7 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
     private void ligneEntete() {
         TableRow ligneTitre = new TableRow(getContext());
         TextView txtTitre = new TextView(getContext());
-        txtTitre.setText("État pour une Fut");
+        txtTitre.setText("État pour un Fut");
         txtTitre.setTypeface(null, Typeface.BOLD);
         txtTitre.setLayoutParams(parametre);
 
