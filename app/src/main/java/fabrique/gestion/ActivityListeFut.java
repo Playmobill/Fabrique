@@ -5,17 +5,25 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.Window;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import java.util.ArrayList;
+
 import fabrique.gestion.BDD.TableFut;
+import fabrique.gestion.Objets.Fut;
 import fabrique.gestion.Widget.BoutonFut;
 
-public class ActivityListeFut extends Activity {
+public class ActivityListeFut extends Activity implements View.OnClickListener {
 
     private final static int largeurElement = 125;
+
+    private ArrayList<BoutonFut> btnsFut;
+
+    private ArrayList<Fut> futs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +42,9 @@ public class ActivityListeFut extends Activity {
 
         TableFut tableFut = TableFut.instance(this);
 
+        btnsFut = new ArrayList<>();
+        futs = new ArrayList<>();
+
         TableRow ligne = new TableRow(this);
 
         TableRow.LayoutParams parametreFut = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
@@ -41,7 +52,11 @@ public class ActivityListeFut extends Activity {
 
         int j = 0;
         for (int i=0; i<tableFut.tailleListe(); i++) {
-            ligne.addView(new BoutonFut(this, tableFut.recupererIndex(i)), parametreFut);
+            BoutonFut btnFut = new BoutonFut(this, tableFut.recupererIndex(i));
+            btnFut.setOnClickListener(this);
+            ligne.addView(btnFut, parametreFut);
+            btnsFut.add(btnFut);
+            futs.add(tableFut.recupererIndex(i));
             j = j + 1;
             if (j>=nombreElementParLigne) {
                 tableau.addView(ligne);
@@ -57,6 +72,17 @@ public class ActivityListeFut extends Activity {
         layoutVerticalScroll.addView(tableau);
 
         setContentView(layoutVerticalScroll);
+    }
+
+    @Override
+    public void onClick(View v) {
+        for (int i=0; i<btnsFut.size() ; i++) {
+            if (btnsFut.get(i).equals(v)) {
+                Intent intent = new Intent(this, ActivityVueFut.class);
+                intent.putExtra("Index", futs.get(i).getId());
+                startActivity(intent);
+            }
+        }
     }
 
     @Override
