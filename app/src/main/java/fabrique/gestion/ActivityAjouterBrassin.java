@@ -44,7 +44,7 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
 
         editRecette = (Spinner)this.findViewById(R.id.editRecette);
         TableRecette tableRecette = TableRecette.instance(this);
-        ArrayAdapter<String> adapteurRecette = new ArrayAdapter<>(this, R.layout.spinner_style, tableRecette.types());
+        ArrayAdapter<String> adapteurRecette = new ArrayAdapter<>(this, R.layout.spinner_style, tableRecette.recupererRecettesActifs());
         adapteurRecette.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editRecette.setAdapter(adapteurRecette);
 
@@ -77,7 +77,7 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
                 pourcentageAlcool = Float.parseFloat(editPourcentageAlcool.getText().toString());
             }
 
-            int recette = editRecette.getSelectedItemPosition();
+            long recette = TableRecette.instance(this).recupererIndex(editRecette.getSelectedItemPosition()).getId();
 
             TableBrassin.instance(this).ajouter(numero, editCommentaire.getText().toString(), System.currentTimeMillis(), capacite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
 

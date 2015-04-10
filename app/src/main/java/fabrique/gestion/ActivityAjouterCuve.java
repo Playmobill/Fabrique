@@ -33,7 +33,7 @@ public class ActivityAjouterCuve extends Activity implements View.OnClickListene
 
         emplacements = TableEmplacement.instance(this).recupererActifs();
         if (emplacements.size() == 0) {
-            Toast.makeText(this, "Il faut avoir au moins UN emplacement ACTIF pour pouvoir ajouter une cuve", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Il faut avoir au moins UN emplacement ACTIF pour pouvoir ajouter une cuve.", Toast.LENGTH_LONG).show();
             finish();
         }
         ArrayList<String> texteEmplacements = new ArrayList<>();
@@ -66,20 +66,24 @@ public class ActivityAjouterCuve extends Activity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if ((v.equals(btnAjouter)) && (editNumero.getText() != null) && (Integer.parseInt(editNumero.getText().toString())>0)) {
-            int numero = Integer.parseInt(editNumero.getText().toString());
+        if (v.equals(btnAjouter)) {
+            if (!(editNumero.getText().toString().equals("")) && (Integer.parseInt(editNumero.getText().toString()) > 0)) {
+                int numero = Integer.parseInt(editNumero.getText().toString());
 
-            int capacite = 0;
-            if ((editQuantite.getText() != null) && (!editQuantite.getText().toString().equals(""))) {
-                capacite = Integer.parseInt(editQuantite.getText().toString());
+                int capacite = 0;
+                if ((editQuantite.getText() != null) && (!editQuantite.getText().toString().equals(""))) {
+                    capacite = Integer.parseInt(editQuantite.getText().toString());
+                }
+
+                long emplacement = emplacements.get(editEmplacement.getSelectedItemPosition()).getId();
+
+                TableCuve.instance(this).ajouter(numero, capacite, emplacement, System.currentTimeMillis(), 1, System.currentTimeMillis(), "", -1);
+
+                Intent intent = new Intent(this, ActivityTableauDeBord.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "La cuve doit avoir un numéro.", Toast.LENGTH_LONG).show();
             }
-
-            long emplacement = emplacements.get(editEmplacement.getSelectedItemPosition()).getId();
-
-            TableCuve.instance(this).ajouter(numero, capacite, emplacement, System.currentTimeMillis(), 1, System.currentTimeMillis(), "", -1);
-
-            Intent intent = new Intent(this, ActivityTableauDeBord.class);
-            startActivity(intent);
         }
     }
 

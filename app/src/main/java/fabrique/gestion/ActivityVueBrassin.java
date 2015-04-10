@@ -42,9 +42,8 @@ public class ActivityVueBrassin extends Activity {
             TextView texteCommentaireBrassin = (TextView) findViewById(R.id.texteCommentaireBrassin);
             texteCommentaireBrassin.setText(brassin.getCommentaire());
 
-            String[] listeRecettes = TableRecette.instance(this).types();
             TextView texteRecette = (TextView) findViewById(R.id.texteRecette);
-            texteRecette.setText(texteRecette.getText().toString() + listeRecettes[(int)brassin.getId_recette()]);
+            texteRecette.setText(texteRecette.getText().toString() + TableRecette.instance(this).recupererId(brassin.getId_recette()).getNom());
 
             TextView texteQuantite = (TextView) findViewById(R.id.texteQuantite);
             texteQuantite.setText(texteQuantite.getText().toString() + brassin.getQuantite());

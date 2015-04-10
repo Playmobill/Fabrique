@@ -7,6 +7,7 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.Fut;
 
 public class TableFut extends Controle {
@@ -30,7 +31,11 @@ public class TableFut extends Controle {
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             futs.add(new Fut(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getLong(3), tmp.getLong(4), tmp.getLong(5), tmp.getLong(6)));
-            modifier(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getLong(3), tmp.getLong(4), (long)((Math.random()*3)+1), tmp.getLong(6));
+            long id_brassin = (long)(Math.random()*4);
+            if (id_brassin == 0) {
+                id_brassin = -1;
+            }
+            modifier(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getLong(3), tmp.getLong(4), id_brassin, tmp.getLong(6));
         }
         Collections.sort(futs);
     }
@@ -153,6 +158,90 @@ public class TableFut extends Controle {
                 numeroGrandIndex = -1;
                 if (listeListe.get(j).get(0).getBrassin(contexte) != null) {
                     numeroGrandIndex = listeListe.get(j).get(0).getBrassin(contexte).getNumero();
+                }
+            }
+            if (i <= j) {
+                ArrayList<Fut> temp = listeListe.get(i);
+                listeListe.set(i, listeListe.get(j));
+                listeListe.set(j, temp);
+                //move index to next position on both sides
+                i++;
+                j--;
+            }
+        }
+        // call recursively
+        if (petitIndex < j) {
+            listeListe = trierListeBrassinParBrassin(contexte, listeListe, petitIndex, j);
+        }
+        if (i < grandIndex) {
+            listeListe = trierListeBrassinParBrassin(contexte, listeListe, i, grandIndex);
+        }
+        return listeListe;
+    }
+
+    public ArrayList<ArrayList<Fut>> recupererSelonRecette(Context contexte) {
+        ArrayList<ArrayList<Fut>> listeListeFutSelonRecette = new ArrayList<>();
+
+        ArrayList<Fut> cloneFuts = (ArrayList<Fut>)futs.clone();
+        while(cloneFuts.size() != 0) {
+            Brassin brassin = cloneFuts.get(0).getBrassin(contexte);
+            long id_recette = -1;
+            if (brassin != null) {
+                id_recette = brassin.getId_recette();
+            }
+            ArrayList<Fut> listeFutDeMemeRecette = new ArrayList<Fut>();
+            for(int i=0; i<cloneFuts.size() ; i++) {
+                brassin = cloneFuts.get(i).getBrassin(contexte);
+                long id_recette_temp = -1;
+                if (brassin != null) {
+                    id_recette_temp = brassin.getId_recette();
+                }
+                if (id_recette_temp == id_recette) {
+                    listeFutDeMemeRecette.add(cloneFuts.get(i));
+                    cloneFuts.remove(i);
+                    i--;
+                }
+            }
+            listeListeFutSelonRecette.add(listeFutDeMemeRecette);
+        }
+        return trierListeBrassinParRecette(contexte, listeListeFutSelonRecette, 0, listeListeFutSelonRecette.size()-1);
+    }
+
+    private ArrayList<ArrayList<Fut>> trierListeBrassinParRecette(Context contexte, ArrayList<ArrayList<Fut>> listeListe, int petitIndex, int grandIndex) {
+        int i = petitIndex;
+        int j = grandIndex;
+        // calculate pivot number, I am taking pivot as middle index number
+        ArrayList<Fut> pivot = listeListe.get(petitIndex+(grandIndex-petitIndex)/2);
+        // Divide into two arrays
+        while (i <= j) {
+
+            long idRecettePivot = -1;
+            if (pivot.get(0).getBrassin(contexte) != null) {
+                idRecettePivot = pivot.get(0).getBrassin(contexte).getId_recette();
+            }
+
+            long idRecettePetitIndex = -1;
+            if (listeListe.get(i).get(0).getBrassin(contexte) != null) {
+                idRecettePetitIndex = listeListe.get(i).get(0).getBrassin(contexte).getId_recette();
+            }
+
+            long idRecetteGrandIndex = -1;
+            if (listeListe.get(j).get(0).getBrassin(contexte) != null) {
+                idRecetteGrandIndex = listeListe.get(j).get(0).getBrassin(contexte).getId_recette();
+            }
+
+            while (idRecettePetitIndex < idRecettePivot) {
+                i++;
+                idRecettePetitIndex = -1;
+                if (listeListe.get(i).get(0).getBrassin(contexte) != null) {
+                    idRecettePetitIndex = listeListe.get(i).get(0).getBrassin(contexte).getId_recette();
+                }
+            }
+            while (idRecetteGrandIndex > idRecettePivot) {
+                j--;
+                idRecetteGrandIndex = -1;
+                if (listeListe.get(j).get(0).getBrassin(contexte) != null) {
+                    idRecetteGrandIndex = listeListe.get(j).get(0).getBrassin(contexte).getId_recette();
                 }
             }
             if (i <= j) {

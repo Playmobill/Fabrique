@@ -31,7 +31,7 @@ public class BoutonFut extends Button {
         if (fut.getBrassin(contexte) != null) {
             texte = texte + fut.getBrassin(contexte).getNumero();
         }
-        texte = texte + "\n" + fut.getDateEtat() + "\n";
+        texte = texte + "\n" + fut.getDateEtat();
 
         setText(texte);
         setTextColor(couleurTexte);
