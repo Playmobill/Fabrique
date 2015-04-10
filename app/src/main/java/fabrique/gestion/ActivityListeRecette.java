@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import fabrique.gestion.BDD.TableRecette;
 
@@ -49,7 +48,7 @@ public class ActivityListeRecette extends Activity implements AdapterView.OnItem
         liste.setSelection(position);
         TableRow ligne = (TableRow) findViewById(R.id.ligne);
         ligne.removeAllViews();
-        ligne.addView(new VueRecette(this, TableRecette.instance(this).recuperer(liste.getSelectedItemPosition())));
+        ligne.addView(new VueRecette(this, TableRecette.instance(this).recupererIndex(liste.getSelectedItemPosition())));
     }
 
     @Override

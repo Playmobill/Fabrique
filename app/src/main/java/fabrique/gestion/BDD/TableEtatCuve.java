@@ -53,10 +53,11 @@ public class TableEtatCuve extends Controle {
     }
 
     public EtatCuve recupererIndex(int index) {
-        if (index == -1) {
+        try {
+            return etats.get(index);
+        } catch (Exception e) {
             return null;
         }
-        return etats.get(index);
     }
 
     public EtatCuve recupererId(long id){

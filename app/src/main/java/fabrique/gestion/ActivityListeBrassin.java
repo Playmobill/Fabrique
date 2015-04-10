@@ -122,7 +122,7 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         numero.setLayoutParams(paramsTexte[0]);
 
         TextView typeBiere = new TextView(this);
-        typeBiere.setText("" + TableRecette.instance(this).recupererId(brassin.getId_recette()));
+        typeBiere.setText("" + TableRecette.instance(this).recupererId(brassin.getId_recette()).getNom());
         typeBiere.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
         typeBiere.setLayoutParams(paramsTexte[1]);
 

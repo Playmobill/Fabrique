@@ -57,10 +57,11 @@ public class TableBrassin extends Controle {
     }
 
     public Brassin recupererIndex(int index){
-        if (index == -1) {
+        try {
+            return brassins.get(index);
+        } catch (Exception e) {
             return null;
         }
-        return brassins.get(index);
     }
 
     public Brassin recupererId(long id) {
@@ -97,10 +98,10 @@ public class TableBrassin extends Controle {
     }
 
     public String[] numeros() {
-        String[] numeroFermenteurs = new String[brassins.size()];
+        String[] numero = new String[brassins.size()];
         for (int i=0; i<brassins.size() ; i++) {
-            numeroFermenteurs[i] = brassins.get(i).getNumero() + "";
+            numero[i] = brassins.get(i).getNumero() + "";
         }
-        return numeroFermenteurs;
+        return numero;
     }
 }

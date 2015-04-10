@@ -82,7 +82,7 @@ public class ActivityAjouterCuve extends Activity implements View.OnClickListene
 
                         Intent intent = new Intent(this, ActivityTableauDeBord.class);
                         startActivity(intent);
-                    } catch(NumberFormatException e){
+                    } catch(NumberFormatException e) {
                         Toast.makeText(this, "La quantité est trop grande.", Toast.LENGTH_LONG).show();
                     }
                 } catch(NumberFormatException ex) {

@@ -57,10 +57,11 @@ public class TableCuve extends Controle{
     }
 
     public Cuve recupererIndex(int index){
-        if (index == -1) {
+        try {
+            return cuves.get(index);
+        } catch (Exception e) {
             return null;
         }
-        return cuves.get(index);
     }
 
     public Cuve recupererId(long id){

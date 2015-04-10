@@ -91,7 +91,7 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="États"
+            android:text="Gérer les états"
             android:id="@+id/btnEtat"
             android:layout_weight="1"
             android:gravity="center"

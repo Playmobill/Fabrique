@@ -52,10 +52,11 @@ public class TableEtatFut extends Controle {
     }
 
     public EtatFut recupererIndex(int index) {
-        if (index == -1) {
+        try {
+            return etats.get(index);
+        } catch (Exception e) {
             return null;
         }
-        return etats.get(index);
     }
 
     public EtatFut recupererId(long id){

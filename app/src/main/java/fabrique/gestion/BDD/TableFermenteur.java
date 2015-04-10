@@ -56,10 +56,11 @@ public class TableFermenteur extends Controle {
     }
 
     public Fermenteur recupererIndex(int index) {
-        if (index == -1) {
+        try {
+            return fermenteurs.get(index);
+        } catch (Exception e) {
             return null;
         }
-        return fermenteurs.get(index);
     }
 
     public Fermenteur recupererId(long id){

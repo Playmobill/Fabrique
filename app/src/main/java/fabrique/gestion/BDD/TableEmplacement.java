@@ -50,10 +50,11 @@ public class TableEmplacement extends Controle {
     }
 
     public Emplacement recupererIndex(int index) {
-        if (index == -1) {
+        try {
+            return emplacements.get(index);
+        } catch (Exception e) {
             return null;
         }
-        return emplacements.get(index);
     }
 
     public Emplacement recupererId(long id){

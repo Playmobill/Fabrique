@@ -65,7 +65,11 @@ public class TableRecette extends Controle {
     }
 
     public Recette recupererIndex(int index){
-        return types.get(index);
+        try {
+            return types.get(index);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public Recette recupererId(long id) {

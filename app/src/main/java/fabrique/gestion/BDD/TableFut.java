@@ -61,10 +61,11 @@ public class TableFut extends Controle {
     }
 
     public Fut recupererIndex(int index) {
-        if (index == -1) {
+        try {
+            return futs.get(index);
+        } catch (Exception e) {
             return null;
         }
-        return futs.get(index);
     }
 
     public Fut recupererId(long id) {
@@ -120,10 +121,10 @@ public class TableFut extends Controle {
             }
             listeListeFutSelonBrassin.add(listeFutDeMemeBrassin);
         }
-        return trierListeBrassinParBrassin(contexte, listeListeFutSelonBrassin, 0, listeListeFutSelonBrassin.size()-1);
+        return trierListeParBrassin(contexte, listeListeFutSelonBrassin, 0, listeListeFutSelonBrassin.size() - 1);
     }
 
-    private ArrayList<ArrayList<Fut>> trierListeBrassinParBrassin(Context contexte, ArrayList<ArrayList<Fut>> listeListe, int petitIndex, int grandIndex) {
+    private ArrayList<ArrayList<Fut>> trierListeParBrassin(Context contexte, ArrayList<ArrayList<Fut>> listeListe, int petitIndex, int grandIndex) {
         int i = petitIndex;
         int j = grandIndex;
         // calculate pivot number, I am taking pivot as middle index number
@@ -171,10 +172,10 @@ public class TableFut extends Controle {
         }
         // call recursively
         if (petitIndex < j) {
-            listeListe = trierListeBrassinParBrassin(contexte, listeListe, petitIndex, j);
+            listeListe = trierListeParBrassin(contexte, listeListe, petitIndex, j);
         }
         if (i < grandIndex) {
-            listeListe = trierListeBrassinParBrassin(contexte, listeListe, i, grandIndex);
+            listeListe = trierListeParBrassin(contexte, listeListe, i, grandIndex);
         }
         return listeListe;
     }
@@ -204,10 +205,10 @@ public class TableFut extends Controle {
             }
             listeListeFutSelonRecette.add(listeFutDeMemeRecette);
         }
-        return trierListeBrassinParRecette(contexte, listeListeFutSelonRecette, 0, listeListeFutSelonRecette.size()-1);
+        return trierListeParRecette(contexte, listeListeFutSelonRecette, 0, listeListeFutSelonRecette.size() - 1);
     }
 
-    private ArrayList<ArrayList<Fut>> trierListeBrassinParRecette(Context contexte, ArrayList<ArrayList<Fut>> listeListe, int petitIndex, int grandIndex) {
+    private ArrayList<ArrayList<Fut>> trierListeParRecette(Context contexte, ArrayList<ArrayList<Fut>> listeListe, int petitIndex, int grandIndex) {
         int i = petitIndex;
         int j = grandIndex;
         // calculate pivot number, I am taking pivot as middle index number
@@ -255,10 +256,61 @@ public class TableFut extends Controle {
         }
         // call recursively
         if (petitIndex < j) {
-            listeListe = trierListeBrassinParBrassin(contexte, listeListe, petitIndex, j);
+            listeListe = trierListeParRecette(contexte, listeListe, petitIndex, j);
         }
         if (i < grandIndex) {
-            listeListe = trierListeBrassinParBrassin(contexte, listeListe, i, grandIndex);
+            listeListe = trierListeParRecette(contexte, listeListe, i, grandIndex);
+        }
+        return listeListe;
+    }
+
+    public ArrayList<ArrayList<Fut>> recupererSelonEtat(Context contexte) {
+        ArrayList<ArrayList<Fut>> listeListeFutSelonEtat = new ArrayList<>();
+
+        ArrayList<Fut> cloneFuts = (ArrayList<Fut>)futs.clone();
+        while(cloneFuts.size()!=0) {
+            long id = cloneFuts.get(0).getId_etat();
+            ArrayList<Fut> listeFutDeMemeEtat = new ArrayList<Fut>();
+            for(int i=0; i<cloneFuts.size() ; i++) {
+                if (cloneFuts.get(i).getId_etat() == id) {
+                    listeFutDeMemeEtat.add(cloneFuts.get(i));
+                    cloneFuts.remove(i);
+                    i--;
+                }
+            }
+            listeListeFutSelonEtat.add(listeFutDeMemeEtat);
+        }
+        return trierListeParEtat(contexte, listeListeFutSelonEtat, 0, listeListeFutSelonEtat.size() - 1);
+    }
+
+    private ArrayList<ArrayList<Fut>> trierListeParEtat(Context contexte, ArrayList<ArrayList<Fut>> listeListe, int petitIndex, int grandIndex) {
+        int i = petitIndex;
+        int j = grandIndex;
+        // calculate pivot number, I am taking pivot as middle index number
+        ArrayList<Fut> pivot = listeListe.get(petitIndex+(grandIndex-petitIndex)/2);
+        // Divide into two arrays
+        while (i <= j) {
+            while (listeListe.get(i).get(0).getId_etat() < pivot.get(0).getId_etat()) {
+                i++;
+            }
+            while (listeListe.get(j).get(0).getId_etat() > pivot.get(0).getId_etat()) {
+                j--;
+            }
+            if (i <= j) {
+                ArrayList<Fut> temp = listeListe.get(i);
+                listeListe.set(i, listeListe.get(j));
+                listeListe.set(j, temp);
+                //move index to next position on both sides
+                i++;
+                j--;
+            }
+        }
+        // call recursively
+        if (petitIndex < j) {
+            listeListe = trierListeParEtat(contexte, listeListe, petitIndex, j);
+        }
+        if (i < grandIndex) {
+            listeListe = trierListeParEtat(contexte, listeListe, i, grandIndex);
         }
         return listeListe;
     }

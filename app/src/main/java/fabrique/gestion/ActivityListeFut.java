@@ -19,6 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import fabrique.gestion.BDD.TableEtatFut;
 import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.Fut;
@@ -59,12 +60,12 @@ public class ActivityListeFut extends Activity implements View.OnClickListener, 
 
         tableau = new TableLayout(this);
 
-        nombreElementParLigne = tailleEcran.widthPixels/150;
+        nombreElementParLigne = tailleEcran.widthPixels/145;
 
         btnsFut = new ArrayList<>();
         futs = new ArrayList<>();
 
-        margeBouton = new TableRow.LayoutParams(150, 150);
+        margeBouton = new TableRow.LayoutParams(125, 125);
         margeBouton.setMargins(10, 10, 10, 10);
 
         margeAutre = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
@@ -172,8 +173,47 @@ public class ActivityListeFut extends Activity implements View.OnClickListener, 
             if (brassin == null) {
                 titre.setText("Sans brassin");
             } else {
-                titre.setText("Recette : " + brassin.getRecette(this).getNom());
+                titre.setText("" + brassin.getRecette(this).getNom());
             }
+            ligneTitre.addView(titre, margeAutre);
+            tableau.addView(ligneTitre);
+            TableRow ligneElement = new TableRow(this);
+            int j = 0;
+            for (int k=0; k<listeFut.size(); k++) {
+                BoutonFut btnFut = new BoutonFut(this, listeFut.get(k));
+                btnFut.setOnClickListener(this);
+                ligneElement.addView(btnFut, margeBouton);
+                btnsFut.add(btnFut);
+                futs.add(listeFut.get(k));
+                j = j + 1;
+                if (j>=nombreElementParLigne) {
+                    tableau.addView(ligneElement);
+                    ligneElement = new TableRow(this);
+                    j = 0;
+                }
+            }
+            if (j != 0) {
+                tableau.addView(ligneElement);
+            }
+        }
+        tableau.invalidate();
+    }
+
+    private void affichageSelonEtat() {
+        tableau.removeAllViews();
+
+        btnsFut.clear();
+        futs.clear();
+
+        ArrayList<ArrayList<Fut>> listeListeFut = TableFut.instance(this).recupererSelonEtat(this);
+        Collections.reverse(listeListeFut);
+        for (int i=0; i<listeListeFut.size(); i++) {
+            ArrayList<Fut> listeFut = listeListeFut.get(i);
+            TableRow ligneTitre = new TableRow(this);
+            TextView titre = new TextView(this);
+
+            titre.setText("" + TableEtatFut.instance(this).recupererId(listeFut.get(0).getId_etat()).getTexte());
+
             ligneTitre.addView(titre, margeAutre);
             tableau.addView(ligneTitre);
             TableRow ligneElement = new TableRow(this);
@@ -224,7 +264,7 @@ public class ActivityListeFut extends Activity implements View.OnClickListener, 
                 break;
             case 2 : affichageSelonRecette();
                 break;
-            case 3 :
+            case 3 : affichageSelonEtat();
                 break;
         }
     }
