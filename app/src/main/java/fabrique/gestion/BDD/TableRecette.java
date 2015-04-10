@@ -1,5 +1,6 @@
 package fabrique.gestion.BDD;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
@@ -38,8 +39,31 @@ public class TableRecette extends Controle {
         Collections.sort(types);
     }
 
+    public void modifier(Context contexte, int id, String nom, String couleur, String acronyme) {
+        ContentValues valeur = new ContentValues();
+        valeur.put("nom", nom);
+        valeur.put("couleur", couleur);
+        valeur.put("acronyme", acronyme);
+        if(accesBDD.update("Recette", valeur, "id = ?", new String[] {""+id}) == 1){
+            TableRecette.instance(contexte).recupererParId(id).setAcronyme(acronyme);
+            TableRecette.instance(contexte).recupererParId(id).setNom(nom);
+            TableRecette.instance(contexte).recupererParId(id).setCouleur(couleur);
+            Collections.sort(types);
+        }
+    }
+
     public Recette recuperer(int index){
         return types.get(index);
+    }
+
+    public Recette recupererParId(int index){
+        Recette recette = null;
+        for (int i = 0; i < types.size() && recette == null; i++) {
+            if(types.get(i).getId() == index){
+                recette = types.get(i);
+            }
+        }
+        return recette;
     }
 
     public int tailleListe() {

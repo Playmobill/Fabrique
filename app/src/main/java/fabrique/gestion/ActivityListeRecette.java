@@ -49,10 +49,7 @@ public class ActivityListeRecette extends Activity implements AdapterView.OnItem
         liste.setSelection(position);
         TableRow ligne = (TableRow) findViewById(R.id.ligne);
         ligne.removeAllViews();
-        TextView t = new TextView(this);
-        t.setText("#Yolo #Position n°"+position);
-        ligne.addView(t);
-        //ligne.addView(new VueFermenteur(this, TableFermenteur.instance(this).recupererIndex(liste.getSelectedItemPosition())));*/
+        ligne.addView(new VueRecette(this, TableRecette.instance(this).recuperer(liste.getSelectedItemPosition())));
     }
 
     @Override
