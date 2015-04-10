@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.BDD.TableGestion;
@@ -121,8 +122,33 @@ public class VueFut extends TableLayout implements View.OnClickListener {
     }
 
     private void validerDescription() {
-        TableFut.instance(getContext()).modifier(fut.getId(), Integer.parseInt(editTitre.getText().toString()), Integer.parseInt(editCapacite.getText().toString()),fut.getId_etat(), fut.getLongDateEtat(), fut.getId_brassin(), fut.getDateInspection());
-        reafficherDescription();
+        String erreur = "";
+        int numero = 0;
+        if (!(editTitre.getText().toString().equals(""))) {
+            erreur = erreur + "Le fût doit avoir un numéro.";
+        } else {
+            try {
+                numero = Integer.parseInt(editTitre.getText().toString());
+            } catch (NumberFormatException e) {
+                erreur = erreur + "Le numéro est trop grand.";
+            }
+        }
+
+        int capacite = 0;
+        try {
+            capacite = Integer.parseInt(editCapacite.getText().toString());
+        } catch (NumberFormatException e) {
+            if (!erreur.equals("")) {
+                erreur = erreur + "\n";
+            }
+            erreur = erreur + "La quantité est trop grande.";
+        }
+        if (erreur.equals("")) {
+            TableFut.instance(getContext()).modifier(fut.getId(), Integer.parseInt(editTitre.getText().toString()), Integer.parseInt(editCapacite.getText().toString()),fut.getId_etat(), fut.getLongDateEtat(), fut.getId_brassin(), fut.getDateInspection());
+            reafficherDescription();
+        } else {
+            Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void reafficherDescription() {

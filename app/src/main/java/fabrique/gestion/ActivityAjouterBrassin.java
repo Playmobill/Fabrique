@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -61,64 +60,77 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v.equals(btnAjouter)) {
+
+            String erreur = "";
+
+            int numero = 0;
             if (!(editNumero.getText().toString().equals(""))) {
-                String erreur = "";
-                int numero = 0;
+                erreur = erreur + "La cuve doit avoir un numéro.";
+            } else {
                 try {
                     numero = Integer.parseInt(editNumero.getText().toString());
                 } catch (NumberFormatException e) {
-                    erreur = erreur + "Le numéro est trop grand.\n";
+                    erreur = erreur + "Le numéro est trop grand.";
                 }
+            }
 
-                int capacite = 0;
-                try {
-                    if ((!editQuantite.getText().toString().equals(""))) {
-                        capacite = Integer.parseInt(editQuantite.getText().toString());
-                    }
-                } catch (NumberFormatException e) {
-                    erreur = erreur + "La quantité est trop grande.\n";
+            int capacite = 0;
+            try {
+                if (!editQuantite.getText().toString().equals("")) {
+                    capacite = Integer.parseInt(editQuantite.getText().toString());
                 }
-
-                float densiteOriginale = 0;
-                try {
-                    if ((!editDensiteOriginale.getText().toString().equals(""))) {
-                        densiteOriginale = Float.parseFloat(editDensiteOriginale.getText().toString());
-                    }
-                } catch (NumberFormatException e) {
-                    erreur = erreur + "La densité originale est trop grande.\n";
+            } catch(NumberFormatException e) {
+                if (!erreur.equals("")) {
+                    erreur = erreur + "\n";
                 }
+                erreur = erreur + "La quantité est trop grande.";
+            }
 
-                float densiteFinale = 0;
-                try {
-                    if ((editDensiteFinale.getText() != null) && (!editDensiteFinale.getText().toString().equals(""))) {
-                        densiteFinale = Float.parseFloat(editDensiteFinale.getText().toString());
-                    }
-                } catch (NumberFormatException e) {
-                    Log.i("AjouterBrassin", "erreur densite final");
-                    erreur = erreur + "La densité final est trop grande.\n";
+            float densiteOriginale = 0;
+            try {
+                if ((!editDensiteOriginale.getText().toString().equals(""))) {
+                    densiteOriginale = Float.parseFloat(editDensiteOriginale.getText().toString());
                 }
-
-                float pourcentageAlcool = 0;
-                try {
-                    if ((editPourcentageAlcool.getText() != null) && (!editPourcentageAlcool.getText().toString().equals(""))) {
-                        pourcentageAlcool = Float.parseFloat(editPourcentageAlcool.getText().toString());
-                    }
-                } catch (NumberFormatException e) {
-                    erreur = erreur + "Le pourcentage d'alcool est trop grand.\n";
+            } catch (NumberFormatException e) {
+                if (!erreur.equals("")) {
+                    erreur = erreur + "\n";
                 }
+                erreur = erreur + "La densité originale est trop grande.";
+            }
 
-                if (erreur.equals("")) {
-                    long recette = TableRecette.instance(this).recupererIndex(editRecette.getSelectedItemPosition()).getId();
-
-                    TableBrassin.instance(this).ajouter(numero, editCommentaire.getText().toString(), System.currentTimeMillis(), capacite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
-
-                    Intent intent = new Intent(this, ActivityListeBrassin.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(this, erreur, Toast.LENGTH_LONG).show();
+            float densiteFinale = 0;
+            try {
+                if ((editDensiteFinale.getText() != null) && (!editDensiteFinale.getText().toString().equals(""))) {
+                    densiteFinale = Float.parseFloat(editDensiteFinale.getText().toString());
                 }
+            } catch (NumberFormatException e) {
+                if (!erreur.equals("")) {
+                    erreur = erreur + "\n";
+                }
+                erreur = erreur + "La densité final est trop grande.";
+            }
+
+            float pourcentageAlcool = 0;
+            try {
+                if ((editPourcentageAlcool.getText() != null) && (!editPourcentageAlcool.getText().toString().equals(""))) {
+                    pourcentageAlcool = Float.parseFloat(editPourcentageAlcool.getText().toString());
+                }
+            } catch (NumberFormatException e) {
+                if (!erreur.equals("")) {
+                    erreur = erreur + "\n";
+                }
+                erreur = erreur + "Le pourcentage d'alcool est trop grand.";
+            }
+
+            if (erreur.equals("")) {
+                long recette = TableRecette.instance(this).recupererIndex(editRecette.getSelectedItemPosition()).getId();
+
+                TableBrassin.instance(this).ajouter(numero, editCommentaire.getText().toString(), System.currentTimeMillis(), capacite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
+
+                Intent intent = new Intent(this, ActivityListeBrassin.class);
+                startActivity(intent);
             } else {
-                Toast.makeText(this, "Le brassin doit avoir un numéro.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, erreur, Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -67,42 +67,41 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-
         if (v.equals(btnAjouter)) {
-            if (!(editNumero.getText().toString().equals(""))) {
-                String erreur = "";
+            String erreur = "";
 
-                int numero = 0;
+            int numero = 0;
+            if (!(editNumero.getText().toString().equals(""))) {
+                erreur = erreur + "Le fermenteur doit avoir un numéro.";
+            } else {
                 try {
                     numero = Integer.parseInt(editNumero.getText().toString());
                 } catch (NumberFormatException e) {
                     erreur = erreur + "Le numéro est trop grand.";
                 }
+            }
 
-                int capacite = 0;
-                try {
-                    if (!editQuantite.getText().toString().equals("")) {
-                        capacite = Integer.parseInt(editQuantite.getText().toString());
-                    }
-                } catch (NumberFormatException e) {
-                    if (!erreur.equals("")) {
-                        erreur = erreur + "\n";
-                    }
-                    erreur = erreur + "La quantité est trop grande.";
+            int capacite = 0;
+            try {
+                if (!editQuantite.getText().toString().equals("")) {
+                    capacite = Integer.parseInt(editQuantite.getText().toString());
                 }
-
-                if (erreur.equals("")) {
-                    long emplacement = emplacements.get(editEmplacement.getSelectedItemPosition()).getId();
-
-                    TableFermenteur.instance(this).ajouter(numero, capacite, emplacement, System.currentTimeMillis(), 1, System.currentTimeMillis(), -1);
-
-                    Intent intent = new Intent(this, ActivityTableauDeBord.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(this, erreur, Toast.LENGTH_LONG).show();
+            } catch(NumberFormatException e) {
+                if (!erreur.equals("")) {
+                    erreur = erreur + "\n";
                 }
+                erreur = erreur + "La quantité est trop grande.";
+            }
+
+            if (erreur.equals("")) {
+                long emplacement = emplacements.get(editEmplacement.getSelectedItemPosition()).getId();
+
+                TableFermenteur.instance(this).ajouter(numero, capacite, emplacement, System.currentTimeMillis(), 1, System.currentTimeMillis(), -1);
+
+                Intent intent = new Intent(this, ActivityTableauDeBord.class);
+                startActivity(intent);
             } else {
-                Toast.makeText(this, "Le fermenteur doit avoir un numéro.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, erreur, Toast.LENGTH_LONG).show();
             }
         }
     }

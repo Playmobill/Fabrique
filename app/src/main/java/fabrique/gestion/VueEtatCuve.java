@@ -192,6 +192,18 @@ public class VueEtatCuve extends TableLayout implements View.OnClickListener {
         ligne.invalidate();
     }
 
+    private void validerModification() {
+        EtatCuve etat = TableEtatCuve.instance(getContext()).recupererIndex(indexActif);
+        TableEtatCuve.instance(getContext()).modifier(etat.getId(),
+                                                      txtEtat.getText().toString(),
+                                                      txtEtat.getCurrentTextColor(),
+                                                      txtEtat.getDrawingCacheBackgroundColor(),
+                                                      cbActif.isChecked());
+        for (int i = 0; i < btnsModifier.size(); i++) {
+            btnsModifier.get(i).setEnabled(true);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         if (v.equals(btnCouleurTexte)) {
@@ -215,15 +227,7 @@ public class VueEtatCuve extends TableLayout implements View.OnClickListener {
         }
 
         else if (v.equals(btnValider)) {
-            EtatCuve etat = TableEtatCuve.instance(getContext()).recupererIndex(indexActif);
-            TableEtatCuve.instance(getContext()).modifier(etat.getId(),
-                                                          txtEtat.getText().toString(),
-                                                          txtEtat.getCurrentTextColor(),
-                                                          txtEtat.getDrawingCacheBackgroundColor(),
-                                                          cbActif.isChecked());
-            for (int i = 0; i < btnsModifier.size(); i++) {
-                btnsModifier.get(i).setEnabled(true);
-            }
+            validerModification();
             remplir();
         }
 

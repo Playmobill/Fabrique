@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import fabrique.gestion.BDD.TableFut;
 
@@ -41,18 +42,40 @@ public class ActivityAjouterFut extends Activity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if ((v.equals(btnAjouter)) && (editNumero.getText() != null) && (Integer.parseInt(editNumero.getText().toString())>0)) {
-            int numero = Integer.parseInt(editNumero.getText().toString());
+        if (v.equals(btnAjouter)) {
+            String erreur = "";
 
-            int capacite = 0;
-            if ((editQuantite.getText() != null) && (!editQuantite.getText().toString().equals(""))) {
-                capacite = Integer.parseInt(editQuantite.getText().toString());
+            int numero = 0;
+            if (!(editNumero.getText().toString().equals(""))) {
+                erreur = erreur + "La cuve doit avoir un numéro.";
+            } else {
+                try {
+                    numero = Integer.parseInt(editNumero.getText().toString());
+                } catch (NumberFormatException e) {
+                    erreur = erreur + "Le numéro est trop grand.";
+                }
             }
 
-            TableFut.instance(this).ajouter(numero, capacite, 1, System.currentTimeMillis(), -1, System.currentTimeMillis());
+            int capacite = 0;
+            try {
+                if (!editQuantite.getText().toString().equals("")) {
+                    capacite = Integer.parseInt(editQuantite.getText().toString());
+                }
+            } catch(NumberFormatException e) {
+                if (!erreur.equals("")) {
+                    erreur = erreur + "\n";
+                }
+                erreur = erreur + "La quantité est trop grande.";
+            }
 
-            Intent intent = new Intent(this, ActivityListeFut.class);
-            startActivity(intent);
+            if(!erreur.equals("")) {
+                TableFut.instance(this).ajouter(numero, capacite, 1, System.currentTimeMillis(), -1, System.currentTimeMillis());
+
+                Intent intent = new Intent(this, ActivityListeFut.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, erreur, Toast.LENGTH_LONG).show();
+            }
         }
     }
 

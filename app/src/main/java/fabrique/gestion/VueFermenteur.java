@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -165,9 +166,34 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     }
 
     private void validerDescription() {
-        TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), Integer.parseInt(editTitre.getText().toString()), Integer.parseInt(editCapacite.getText().toString()), emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcide(), fermenteur.getIdEtat(), fermenteur.getLongDateEtat(), fermenteur.getIdBrassin());
-        index = editEmplacement.getSelectedItemPosition();
-        reafficherDescription();
+        String erreur = "";
+        int numero = 0;
+        if (!(editTitre.getText().toString().equals(""))) {
+            erreur = erreur + "Le fermenteur doit avoir un numéro.";
+        } else {
+            try {
+                numero = Integer.parseInt(editTitre.getText().toString());
+            } catch (NumberFormatException e) {
+                erreur = erreur + "Le numéro est trop grand.";
+            }
+        }
+
+        int capacite = 0;
+        try {
+            capacite = Integer.parseInt(editCapacite.getText().toString());
+        } catch (NumberFormatException e) {
+            if (!erreur.equals("")) {
+                erreur = erreur + "\n";
+            }
+            erreur = erreur + "La quantité est trop grande.";
+        }
+        if (erreur.equals("")) {
+            TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcide(), fermenteur.getIdEtat(), fermenteur.getLongDateEtat(), fermenteur.getIdBrassin());
+            index = editEmplacement.getSelectedItemPosition();
+            reafficherDescription();
+        } else {
+            Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void reafficherDescription() {

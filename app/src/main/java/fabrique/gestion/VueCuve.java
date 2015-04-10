@@ -166,15 +166,19 @@ public class VueCuve extends LinearLayout implements View.OnClickListener {
     private void validerDescription() {
         String erreur = "";
         int numero = 0;
-        try {
-            numero = Integer.parseInt(editTitre.getText().toString());
-        } catch (NumberFormatException e) {
-            erreur = erreur + "Le numéro est trop grand.";
+        if (!(editTitre.getText().toString().equals(""))) {
+            erreur = erreur + "La cuve doit avoir un numéro.";
+        } else {
+            try {
+                numero = Integer.parseInt(editTitre.getText().toString());
+            } catch (NumberFormatException e) {
+                erreur = erreur + "Le numéro est trop grand.";
+            }
         }
 
-        int quantite = 0;
+        int capacite = 0;
         try {
-            quantite = Integer.parseInt(editCapacite.getText().toString());
+            capacite = Integer.parseInt(editCapacite.getText().toString());
         } catch (NumberFormatException e) {
             if (!erreur.equals("")) {
                 erreur = erreur + "\n";
@@ -182,7 +186,7 @@ public class VueCuve extends LinearLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableCuve.instance(getContext()).modifier(cuve.getId(), numero, quantite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin());
+            TableCuve.instance(getContext()).modifier(cuve.getId(), numero, capacite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin());
             index = editEmplacement.getSelectedItemPosition();
             reafficherDescription();
         } else {
