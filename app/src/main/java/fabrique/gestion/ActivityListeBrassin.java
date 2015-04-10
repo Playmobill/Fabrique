@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -124,8 +122,7 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         numero.setLayoutParams(paramsTexte[0]);
 
         TextView typeBiere = new TextView(this);
-        String[] recettes = TableRecette.instance(this).types();
-        typeBiere.setText(""+recettes[(int)(brassin.getId_recette())]+"");
+        typeBiere.setText("" + TableRecette.instance(this).recupererId(brassin.getId_recette()));
         typeBiere.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
         typeBiere.setLayoutParams(paramsTexte[1]);
 

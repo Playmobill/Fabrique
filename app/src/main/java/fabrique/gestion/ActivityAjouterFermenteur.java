@@ -33,7 +33,7 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
 
         emplacements = TableEmplacement.instance(this).recupererActifs();
         if (emplacements.size() == 0) {
-            Toast.makeText(this, "Il faut avoir au moins UN emplacement ACTIF pour pouvoir ajouter un fermenteur", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Il faut avoir au moins UN emplacement ACTIF pour pouvoir ajouter un fermenteur.", Toast.LENGTH_LONG).show();
             finish();
         }
         ArrayList<String> texteEmplacements = new ArrayList<>();
@@ -67,20 +67,32 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if ((v.equals(btnAjouter)) && (editNumero.getText() != null) && (Integer.parseInt(editNumero.getText().toString())>0)) {
-            int numero = Integer.parseInt(editNumero.getText().toString());
 
-            int capacite = 0;
-            if ((editQuantite.getText()!= null) && (!editQuantite.getText().toString().equals(""))) {
-                capacite = Integer.parseInt(editQuantite.getText().toString());
+        if (v.equals(btnAjouter)) {
+            if (!(editNumero.getText().toString().equals(""))) {
+                try {
+                    int numero = Integer.parseInt(editNumero.getText().toString());
+                    try {
+                        int capacite = 0;
+                        if ((editQuantite.getText() != null) && (!editQuantite.getText().toString().equals(""))) {
+                            capacite = Integer.parseInt(editQuantite.getText().toString());
+                        }
+
+                        long emplacement = emplacements.get(editEmplacement.getSelectedItemPosition()).getId();
+
+                        TableFermenteur.instance(this).ajouter(numero, capacite, emplacement, System.currentTimeMillis(), 1, System.currentTimeMillis(), -1);
+
+                        Intent intent = new Intent(this, ActivityTableauDeBord.class);
+                        startActivity(intent);
+                    } catch(NumberFormatException e){
+                        Toast.makeText(this, "La quantité est trop grande.", Toast.LENGTH_LONG).show();
+                    }
+                } catch (NumberFormatException e) {
+                    Toast.makeText(this, "Le numéro est trop grand.", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(this, "Le fermenteur doit avoir un numéro.", Toast.LENGTH_LONG).show();
             }
-
-            long emplacement = emplacements.get(editEmplacement.getSelectedItemPosition()).getId();
-
-            TableFermenteur.instance(this).ajouter(numero, capacite, emplacement, System.currentTimeMillis(), 1, System.currentTimeMillis(), -1);
-
-            Intent intent = new Intent(this, ActivityTableauDeBord.class);
-            startActivity(intent);
         }
     }
 

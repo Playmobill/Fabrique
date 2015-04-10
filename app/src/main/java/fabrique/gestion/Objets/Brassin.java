@@ -1,6 +1,10 @@
 package fabrique.gestion.Objets;
 
+import android.content.Context;
+
 import java.util.Calendar;
+
+import fabrique.gestion.BDD.TableRecette;
 
 public class Brassin extends Objet implements Comparable<Brassin> {
 
@@ -34,6 +38,9 @@ public class Brassin extends Objet implements Comparable<Brassin> {
     }
     public int getQuantite() { return quantite; }
     public long getId_recette() { return id_recette; }
+    public Recette getRecette(Context contexte) {
+        return TableRecette.instance(contexte).recupererId(id_recette);
+    }
     public float getDensiteOriginale() { return densiteOriginale; }
     public float getDensiteFinale() { return densiteFinale; }
     public float getPourcentageAlcool() { return pourcentageAlcool; }

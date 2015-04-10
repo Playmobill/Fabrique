@@ -47,6 +47,7 @@
       <w>densite</w>
       <w>densité</w>
       <w>depuis</w>
+      <w>doit</w>
       <w>donnees</w>
       <w>duree</w>
       <w>défaut</w>
@@ -69,6 +70,7 @@
       <w>gazeification</w>
       <w>gazéification</w>
       <w>gestion</w>
+      <w>grande</w>
       <w>heure</w>
       <w>historique</w>
       <w>initialiser</w>
@@ -84,6 +86,7 @@
       <w>mois</w>
       <w>noir</w>
       <w>nombre</w>
+      <w>nombres</w>
       <w>nouveau</w>
       <w>nouvel</w>
       <w>nouvelle</w>
@@ -95,11 +98,13 @@
       <w>parametre</w>
       <w>parametres</w>
       <w>petit</w>
+      <w>positif</w>
       <w>poucentage</w>
       <w>pourcentage</w>
       <w>pouvoir</w>
       <w>quantite</w>
       <w>quantité</w>
+      <w>recettes</w>
       <w>recuperer</w>
       <w>regrouper</w>
       <w>remettre</w>
@@ -112,6 +117,7 @@
       <w>textview</w>
       <w>timepicker</w>
       <w>tous</w>
+      <w>trop</w>
       <w>valeur</w>
       <w>valider</w>
       <w>vide</w>

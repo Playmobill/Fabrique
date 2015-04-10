@@ -123,7 +123,7 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
 
     private void validerDescription() {
         TableRecette.instance(getContext()).modifier(getContext(), (int)recette.getId(), editNom.getText().toString(), editCouleur.getText().toString(), editAcronyme.getText().toString());
-        recette = TableRecette.instance(getContext()).recupererParId((int)recette.getId());
+        recette = TableRecette.instance(getContext()).recupererId((int)recette.getId());
         reafficherDescription();
     }
 

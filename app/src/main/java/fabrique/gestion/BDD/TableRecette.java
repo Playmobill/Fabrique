@@ -28,15 +28,27 @@ public class TableRecette extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            types.add(new Recette(tmp.getLong(0), tmp.getString(1), tmp.getString(2), tmp.getString(3)));
+            types.add(new Recette(tmp.getLong(0), tmp.getString(1), tmp.getString(2), tmp.getString(3), tmp.getInt(4) == 1));
         }
         Collections.sort(types);
     }
 
-    public void ajouter(String nom, String couleur, String acronyme) {
-        types.add(new Recette(types.size(), nom, couleur, acronyme));
-        accesBDD.execSQL("INSERT INTO Recette (nom, couleur, acronyme) VALUES ('" + nom + "', '"+ couleur +"', '"+ acronyme +"')");
-        Collections.sort(types);
+    public long ajouter(String nom, String couleur, String acronyme, boolean actif) {
+        ContentValues valeur = new ContentValues();
+        valeur.put("nom", nom);
+        valeur.put("couleur", couleur);
+        valeur.put("acronyme", acronyme);
+        valeur.put("actif", actif);
+        long id = accesBDD.insert(nomTable, null, valeur);
+        if (id != -1) {
+            types.add(new Recette(id, nom, couleur, acronyme, actif));
+            Collections.sort(types);
+        }
+        return id;
+    }
+
+    public int tailleListe() {
+        return types.size();
     }
 
     public void modifier(Context contexte, int id, String nom, String couleur, String acronyme) {
@@ -45,36 +57,41 @@ public class TableRecette extends Controle {
         valeur.put("couleur", couleur);
         valeur.put("acronyme", acronyme);
         if(accesBDD.update("Recette", valeur, "id = ?", new String[] {""+id}) == 1){
-            TableRecette.instance(contexte).recupererParId(id).setAcronyme(acronyme);
-            TableRecette.instance(contexte).recupererParId(id).setNom(nom);
-            TableRecette.instance(contexte).recupererParId(id).setCouleur(couleur);
+            TableRecette.instance(contexte).recupererId(id).setAcronyme(acronyme);
+            TableRecette.instance(contexte).recupererId(id).setNom(nom);
+            TableRecette.instance(contexte).recupererId(id).setCouleur(couleur);
             Collections.sort(types);
         }
     }
 
-    public Recette recuperer(int index){
+    public Recette recupererIndex(int index){
         return types.get(index);
     }
 
-    public Recette recupererParId(int index){
-        Recette recette = null;
-        for (int i = 0; i < types.size() && recette == null; i++) {
-            if(types.get(i).getId() == index){
-                recette = types.get(i);
+    public Recette recupererId(long id) {
+        for (int i=0; i<types.size() ; i++) {
+            if (types.get(i).getId() == id) {
+                return types.get(i);
             }
         }
-        return recette;
+        return null;
     }
 
-    public int tailleListe() {
-        return types.size();
-    }
-
-    public String[] types () {
-        String[] types2 = new String[types.size()];
+    public ArrayList<String> recupererRecettesActifs() {
+        ArrayList<String> listeEtatActif = new ArrayList<>();
         for (int i=0; i<types.size(); i++) {
-            types2[i] = types.get(i).getNom();
+            //if (types.get(i).getActif()) {
+                listeEtatActif.add(types.get(i).getNom());
+            //}
         }
-        return types2;
+        return listeEtatActif;
+    }
+
+    public String[] numeros() {
+        String[] numeroFermenteurs = new String[types.size()];
+        for (int i=0; i<types.size() ; i++) {
+            numeroFermenteurs[i] = types.get(i).getNom() + "";
+        }
+        return numeroFermenteurs;
     }
 }

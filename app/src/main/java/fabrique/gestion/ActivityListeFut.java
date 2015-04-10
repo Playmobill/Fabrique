@@ -17,24 +17,24 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import fabrique.gestion.BDD.TableFut;
+import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.Fut;
 import fabrique.gestion.Widget.BoutonFut;
 
 public class ActivityListeFut extends Activity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-    private int largeurElement, nombreElementParLigne;
+    private int nombreElementParLigne;
 
     private ArrayList<BoutonFut> btnsFut;
 
     private ArrayList<Fut> futs;
 
-    private ArrayAdapter<String> adapteurTri;
-
     private TableLayout tableau;
 
-    private TableRow.LayoutParams parametreFut;
+    private TableRow.LayoutParams margeBouton, margeAutre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,32 +47,34 @@ public class ActivityListeFut extends Activity implements View.OnClickListener, 
         DisplayMetrics tailleEcran = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(tailleEcran);
 
-        largeurElement = 125;
-        nombreElementParLigne = tailleEcran.widthPixels/largeurElement;
-
         LinearLayout layoutTri = new LinearLayout(this);
             TextView texte = new TextView(this);
             texte.setText("Trier / Regrouper par : ");
 
             Spinner tri = new Spinner(this);
-            adapteurTri = new ArrayAdapter<>(this, R.layout.spinner_style, new String[] {"Numéro", "Brassin", "Recette", "État"});
+            ArrayAdapter adapteurTri = new ArrayAdapter<>(this, R.layout.spinner_style, new String[] {"Numéro", "Brassin", "Recette", "État"});
             adapteurTri.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             tri.setAdapter(adapteurTri);
             tri.setOnItemSelectedListener(this);
 
         tableau = new TableLayout(this);
 
+        nombreElementParLigne = tailleEcran.widthPixels/150;
+
         btnsFut = new ArrayList<>();
         futs = new ArrayList<>();
 
-        parametreFut = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        parametreFut.setMargins(10, 10, 10, 10);
+        margeBouton = new TableRow.LayoutParams(150, 150);
+        margeBouton.setMargins(10, 10, 10, 10);
+
+        margeAutre = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        margeAutre.setMargins(10, 10, 10, 10);
 
             layoutTri.addView(texte);
             layoutTri.addView(tri);
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.addView(layoutTri, parametreFut);
+        linearLayout.addView(layoutTri, margeAutre);
         ScrollView layoutVerticalScroll = new ScrollView(this);
         layoutVerticalScroll.addView(tableau);
         linearLayout.addView(layoutVerticalScroll);
@@ -96,7 +98,7 @@ public class ActivityListeFut extends Activity implements View.OnClickListener, 
         for (int i=0; i<tableFut.tailleListe(); i++) {
             BoutonFut btnFut = new BoutonFut(this, tableFut.recupererIndex(i));
             btnFut.setOnClickListener(this);
-            ligne.addView(btnFut, parametreFut);
+            ligne.addView(btnFut, margeBouton);
             btnsFut.add(btnFut);
             futs.add(tableFut.recupererIndex(i));
             j = j + 1;
@@ -119,25 +121,78 @@ public class ActivityListeFut extends Activity implements View.OnClickListener, 
         futs.clear();
 
         ArrayList<ArrayList<Fut>> listeListeFut = TableFut.instance(this).recupererSelonBrassin(this);
+        Collections.reverse(listeListeFut);
         for (int i=0; i<listeListeFut.size(); i++) {
             ArrayList<Fut> listeFut = listeListeFut.get(i);
-            TableRow ligne = new TableRow(this);
+            TableRow ligneTitre = new TableRow(this);
+                TextView titre = new TextView(this);
+                long id_brassin = listeFut.get(0).getId_brassin();
+                if (id_brassin == -1) {
+                    titre.setText("Sans brassin");
+                } else {
+                    titre.setText("Brassin #" + id_brassin);
+                }
+            ligneTitre.addView(titre, margeAutre);
+            tableau.addView(ligneTitre);
+            TableRow ligneElement = new TableRow(this);
             int j = 0;
             for (int k=0; k<listeFut.size(); k++) {
                 BoutonFut btnFut = new BoutonFut(this, listeFut.get(k));
                 btnFut.setOnClickListener(this);
-                ligne.addView(btnFut, parametreFut);
+                ligneElement.addView(btnFut, margeBouton);
                 btnsFut.add(btnFut);
                 futs.add(listeFut.get(k));
                 j = j + 1;
                 if (j>=nombreElementParLigne) {
-                    tableau.addView(ligne);
-                    ligne = new TableRow(this);
+                    tableau.addView(ligneElement);
+                    ligneElement = new TableRow(this);
                     j = 0;
                 }
             }
             if (j != 0) {
-                tableau.addView(ligne);
+                tableau.addView(ligneElement);
+            }
+        }
+        tableau.invalidate();
+    }
+
+    private void affichageSelonRecette() {
+        tableau.removeAllViews();
+
+        btnsFut.clear();
+        futs.clear();
+
+        ArrayList<ArrayList<Fut>> listeListeFut = TableFut.instance(this).recupererSelonRecette(this);
+        Collections.reverse(listeListeFut);
+        for (int i=0; i<listeListeFut.size(); i++) {
+            ArrayList<Fut> listeFut = listeListeFut.get(i);
+            TableRow ligneTitre = new TableRow(this);
+            TextView titre = new TextView(this);
+            Brassin brassin = listeFut.get(0).getBrassin(this);
+            if (brassin == null) {
+                titre.setText("Sans brassin");
+            } else {
+                titre.setText("Recette : " + brassin.getRecette(this).getNom());
+            }
+            ligneTitre.addView(titre, margeAutre);
+            tableau.addView(ligneTitre);
+            TableRow ligneElement = new TableRow(this);
+            int j = 0;
+            for (int k=0; k<listeFut.size(); k++) {
+                BoutonFut btnFut = new BoutonFut(this, listeFut.get(k));
+                btnFut.setOnClickListener(this);
+                ligneElement.addView(btnFut, margeBouton);
+                btnsFut.add(btnFut);
+                futs.add(listeFut.get(k));
+                j = j + 1;
+                if (j>=nombreElementParLigne) {
+                    tableau.addView(ligneElement);
+                    ligneElement = new TableRow(this);
+                    j = 0;
+                }
+            }
+            if (j != 0) {
+                tableau.addView(ligneElement);
             }
         }
         tableau.invalidate();
@@ -167,7 +222,7 @@ public class ActivityListeFut extends Activity implements View.OnClickListener, 
                 break;
             case 1 : affichageSelonBrassin();
                 break;
-            case 2 :
+            case 2 : affichageSelonRecette();
                 break;
             case 3 :
                 break;
@@ -175,7 +230,5 @@ public class ActivityListeFut extends Activity implements View.OnClickListener, 
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 }
