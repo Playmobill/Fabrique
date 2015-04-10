@@ -22,7 +22,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
 
     private Fut fut;
 
-    private TableLayout tableauDescription;
+    private LinearLayout tableauDescription;
 
     private EditText editTitre, editCapacite;
 
@@ -34,6 +34,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         this.fut = fut;
 
         tableauDescription = new TableLayout(contexte);
+        tableauDescription.setOrientation(LinearLayout.VERTICAL);
         addView(tableauDescription);
 
         afficherDescription();

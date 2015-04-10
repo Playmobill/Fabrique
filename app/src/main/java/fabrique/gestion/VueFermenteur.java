@@ -28,7 +28,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
 
     private Fermenteur fermenteur;
 
-    private TableLayout tableauDescription;
+    private LinearLayout tableauDescription;
 
     private Spinner editEmplacement;
     private EditText editTitre, editCapacite;
@@ -45,6 +45,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         this.fermenteur = fermenteur;
 
         tableauDescription = new TableLayout(contexte);
+        tableauDescription.setOrientation(LinearLayout.VERTICAL);
         addView(tableauDescription);
 
         afficherDescription();

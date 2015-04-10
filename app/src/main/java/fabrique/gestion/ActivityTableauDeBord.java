@@ -11,7 +11,6 @@ import android.view.Window;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -41,15 +40,18 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
         getWindowManager().getDefaultDisplay().getMetrics(tailleEcran);
 
         //Tableau pour les elements de la fenetre
-        LinearLayout layout = new TableLayout(this);
+        LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
 
+        LinearLayout.LayoutParams marge = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        marge.setMargins(10, 10, 10, 10);
+
         //Ajouter
-        layout.addView(nouvelleLigneTexte("Fermenteurs"));
+        layout.addView(nouvelleLigneTexte("Fermenteurs"), marge);
 
         layout.addView(intialiserLigneFermenteur());
 
-        layout.addView(nouvelleLigneTexte("Garde"));
+        layout.addView(nouvelleLigneTexte("Garde"), marge);
 
         layout.addView(intialiserLigneGarde());
 

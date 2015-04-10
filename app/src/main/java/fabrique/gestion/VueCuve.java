@@ -10,30 +10,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableCuve;
+import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableGestion;
-import fabrique.gestion.Objets.Emplacement;
 import fabrique.gestion.Objets.Cuve;
+import fabrique.gestion.Objets.Emplacement;
 
-public class VueCuve extends TableLayout implements View.OnClickListener {
+public class VueCuve extends LinearLayout implements View.OnClickListener {
 
     private Button btnModifier, btnValider, btnAnnuler;
 
     private Cuve cuve;
 
-    private TableLayout tableauDescription;
+    private LinearLayout tableauDescription;
 
     private Spinner editEmplacement;
     private EditText editTitre, editCapacite;
 
-    private TableRow ligneBouton;
+    private LinearLayout ligneBouton;
 
     private int index;
 
@@ -44,7 +43,8 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
 
         this.cuve = cuve;
 
-        tableauDescription = new TableLayout(contexte);
+        tableauDescription = new LinearLayout(contexte);
+        tableauDescription.setOrientation(LinearLayout.VERTICAL);
         addView(tableauDescription);
 
         afficherDescription();
@@ -53,10 +53,10 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
     private void afficherDescription() {
         tableauDescription.removeAllViews();
 
-        TableRow.LayoutParams parametre = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams parametre = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parametre.setMargins(10, 10, 10, 10);
 
-        TableRow ligneTitreLavageAcide = new TableRow(getContext());
+        LinearLayout ligneTitreLavageAcide = new LinearLayout(getContext());
             LinearLayout layoutTitre = new LinearLayout(getContext());
                 TextView titre = new TextView(getContext());
                 titre.setText("Cuve ");
@@ -77,7 +77,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                 dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
             }
 
-        TableRow ligneCapaciteEmplacement = new TableRow(getContext());
+        LinearLayout ligneCapaciteEmplacement = new LinearLayout(getContext());
             LinearLayout layoutCapacite = new LinearLayout(getContext());
                 TextView capacite = new TextView(getContext());
                 capacite.setText("Capacité : ");
@@ -116,14 +116,14 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                 }
 
 
-        TableRow ligneEtatDate = new TableRow(getContext());
+        LinearLayout ligneEtatDate = new LinearLayout(getContext());
             TextView etat = new TextView(getContext());
             etat.setText("État : " + cuve.getEtat(getContext()).getTexte());
 
             TextView dateEtat = new TextView(getContext());
             dateEtat.setText("Depuis le : " + cuve.getDateEtat());
 
-        ligneBouton = new TableRow(getContext());
+        ligneBouton = new LinearLayout(getContext());
             btnModifier = new Button(getContext());
             btnModifier.setText("Modifier");
             btnModifier.setOnClickListener(this);
@@ -164,9 +164,30 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
     }
 
     private void validerDescription() {
-        TableCuve.instance(getContext()).modifier(cuve.getId(), Integer.parseInt(editTitre.getText().toString()), Integer.parseInt(editCapacite.getText().toString()), emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin());
-        index = editEmplacement.getSelectedItemPosition();
-        reafficherDescription();
+        String erreur = "";
+        int numero = 0;
+        try {
+            numero = Integer.parseInt(editTitre.getText().toString());
+        } catch (NumberFormatException e) {
+            erreur = erreur + "Le numéro est trop grand.";
+        }
+
+        int quantite = 0;
+        try {
+            quantite = Integer.parseInt(editCapacite.getText().toString());
+        } catch (NumberFormatException e) {
+            if (!erreur.equals("")) {
+                erreur = erreur + "\n";
+            }
+            erreur = erreur + "La quantité est trop grande.";
+        }
+        if (erreur.equals("")) {
+            TableCuve.instance(getContext()).modifier(cuve.getId(), numero, quantite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin());
+            index = editEmplacement.getSelectedItemPosition();
+            reafficherDescription();
+        } else {
+            Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void reafficherDescription() {
