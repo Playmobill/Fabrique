@@ -33,9 +33,9 @@ public class ActivityListeFut extends Activity implements View.OnClickListener, 
 
     private ArrayList<Fut> futs;
 
-    private TableLayout tableau;
+    private LinearLayout tableau;
 
-    private TableRow.LayoutParams margeBouton, margeAutre;
+    private LinearLayout.LayoutParams margeBouton, margeAutre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +59,14 @@ public class ActivityListeFut extends Activity implements View.OnClickListener, 
             tri.setOnItemSelectedListener(this);
 
         tableau = new TableLayout(this);
+        tableau.setOrientation(LinearLayout.VERTICAL);
 
-        nombreElementParLigne = tailleEcran.widthPixels/145;
+        nombreElementParLigne = tailleEcran.widthPixels/160;
 
         btnsFut = new ArrayList<>();
         futs = new ArrayList<>();
 
-        margeBouton = new TableRow.LayoutParams(125, 125);
+        margeBouton = new TableRow.LayoutParams(140, 150);
         margeBouton.setMargins(10, 10, 10, 10);
 
         margeAutre = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
