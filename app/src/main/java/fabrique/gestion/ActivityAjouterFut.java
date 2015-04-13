@@ -46,8 +46,8 @@ public class ActivityAjouterFut extends Activity implements View.OnClickListener
             String erreur = "";
 
             int numero = 0;
-            if (!(editNumero.getText().toString().equals(""))) {
-                erreur = erreur + "La cuve doit avoir un numéro.";
+            if (editNumero.getText().toString().equals("")) {
+                erreur = erreur + "Le fût doit avoir un numéro.";
             } else {
                 try {
                     numero = Integer.parseInt(editNumero.getText().toString());

@@ -70,7 +70,7 @@ public class ActivityAjouterCuve extends Activity implements View.OnClickListene
             String erreur = "";
 
             int numero = 0;
-            if (!(editNumero.getText().toString().equals(""))) {
+            if (editNumero.getText().toString().equals("")) {
                 erreur = erreur + "La cuve doit avoir un numéro.";
             } else {
                 try {

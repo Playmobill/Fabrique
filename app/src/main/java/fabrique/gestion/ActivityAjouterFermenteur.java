@@ -71,7 +71,7 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
             String erreur = "";
 
             int numero = 0;
-            if (!(editNumero.getText().toString().equals(""))) {
+            if (editNumero.getText().toString().equals("")) {
                 erreur = erreur + "Le fermenteur doit avoir un numéro.";
             } else {
                 try {

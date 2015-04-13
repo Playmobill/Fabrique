@@ -33,7 +33,7 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
 
         editNumero = (EditText)findViewById(R.id.editNumero);
         TableBrassin tableBrassin = TableBrassin.instance(this);
-        int max = -1;
+        int max = 0;
         for (int i=0; i<tableBrassin.tailleListe(); i=i+1) {
             if (max < tableBrassin.recupererIndex(i).getNumero()) {
                 max = tableBrassin.recupererIndex(i).getNumero();
@@ -64,8 +64,8 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
             String erreur = "";
 
             int numero = 0;
-            if (!(editNumero.getText().toString().equals(""))) {
-                erreur = erreur + "La cuve doit avoir un numéro.";
+            if (editNumero.getText().toString().equals("")) {
+                erreur = erreur + "Le brassin doit avoir un numéro.";
             } else {
                 try {
                     numero = Integer.parseInt(editNumero.getText().toString());
