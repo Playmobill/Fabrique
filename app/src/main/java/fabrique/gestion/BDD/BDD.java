@@ -82,9 +82,24 @@ public class BDD extends SQLiteOpenHelper {
                                                 "id_brassin INTEGER," +
                                                 "dateInspection INTEGER NOT NULL)";
 
-    private static String gestion = "CREATE TABLE IF NOT EXISTS Gestion (" +
+    private static String createurTableGestion = "CREATE TABLE IF NOT EXISTS Gestion (" +
                                                 "delaiLavageAcide INTEGER DEFAULT 604800000," +
                                                 "delaiInspectionBaril INTEGER DEFAULT 604800000)";
+
+    private static String createurTableHistorique = "CREATE TABLE IF NOT EXISTS Historique (" +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                                "texte TEXT NOT NULL," +
+                                                "date INTEGER NOT NULL," +
+                                                "id_fermenteur INTEGER NOT NULL," +
+                                                "id_cuve INTEGER NOT NULL," +
+                                                "id_fut INTEGER NOT NULL," +
+                                                "id_brassin INTEGER NOT NULL)";
+
+    private static String createurTableListeHistorique = "CREATE TABLE IF NOT EXISTS ListeHistorique (" +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                                "elementConcerne INTEGER NOT NULL," +
+                                                "texte TEXT NOT NULL)";
+
 
     public BDD(Context context, String name, SQLiteDatabase.CursorFactory factory) {
         super(context, name, factory, 1);
@@ -101,7 +116,9 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL(createurTableEtatFut);
         db.execSQL(createurTableCuve);
         db.execSQL(createurTableFut);
-        db.execSQL(gestion);
+        db.execSQL(createurTableGestion);
+        db.execSQL(createurTableHistorique);
+        db.execSQL(createurTableListeHistorique);
 
         db.execSQL("INSERT INTO EtatFermenteur (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
         db.execSQL("INSERT INTO EtatCuve (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
