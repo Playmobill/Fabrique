@@ -18,9 +18,6 @@ public class ListeHistorique extends Objet implements Comparable<ListeHistorique
         return texte;
     }
 
-    public void setElementConcerne(int elementConcerne) {
-        this.elementConcerne = elementConcerne;
-    }
     public void setTexte(String texte) {
         this.texte = texte;
     }

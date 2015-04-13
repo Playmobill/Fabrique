@@ -15,7 +15,7 @@ public class TableListeHistorique extends Controle {
 
     private static TableListeHistorique INSTANCE;
 
-    public TableListeHistorique instance(Context contexte) {
+    public static TableListeHistorique instance(Context contexte) {
         if (INSTANCE == null) {
             INSTANCE = new TableListeHistorique(contexte);
         }
@@ -67,18 +67,16 @@ public class TableListeHistorique extends Controle {
         return null;
     }
 
-    public void modifier(long id, int elementConcerne, String texte){
+    public void modifier(long id, String texte){
         ContentValues valeur = new ContentValues();
-        valeur.put("elementConcerne", elementConcerne);
         valeur.put("texte", texte);
         if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
             ListeHistorique listeHistorique = recupererId(id);
-            listeHistorique.setElementConcerne(elementConcerne);
             listeHistorique.setTexte(texte);
         }
     }
 
-    public ArrayList<ListeHistorique> listeHistoriqueFermenteur(long id_fermenteur) {
+    public ArrayList<ListeHistorique> listeHistoriqueFermenteur() {
         ArrayList<ListeHistorique> listeHistoriqueFermenteur = new ArrayList<>();
         for (int i=0; i<listeHistoriques.size() ; i++) {
             if (listeHistoriques.get(i).getElementConcerne() == 0) {
@@ -88,7 +86,7 @@ public class TableListeHistorique extends Controle {
         return listeHistoriqueFermenteur;
     }
 
-    public ArrayList<ListeHistorique> listeHistoriqueCuve(long id_cuve) {
+    public ArrayList<ListeHistorique> listeHistoriqueCuve() {
         ArrayList<ListeHistorique> listeHistoriqueCuve = new ArrayList<>();
         for (int i=0; i<listeHistoriques.size() ; i++) {
             if (listeHistoriques.get(i).getElementConcerne() == 1) {
@@ -98,7 +96,7 @@ public class TableListeHistorique extends Controle {
         return listeHistoriqueCuve;
     }
 
-    public ArrayList<ListeHistorique> listeHistoriqueFut(long id_cuve) {
+    public ArrayList<ListeHistorique> listeHistoriqueFut() {
         ArrayList<ListeHistorique> listeHistoriqueFut = new ArrayList<>();
         for (int i=0; i<listeHistoriques.size() ; i++) {
             if (listeHistoriques.get(i).getElementConcerne() == 2) {
@@ -108,7 +106,7 @@ public class TableListeHistorique extends Controle {
         return listeHistoriqueFut;
     }
 
-    public ArrayList<ListeHistorique> listeHistoriqueBrassin(long id_cuve) {
+    public ArrayList<ListeHistorique> listeHistoriqueBrassin() {
         ArrayList<ListeHistorique> listeHistoriqueBrassin = new ArrayList<>();
         for (int i=0; i<listeHistoriques.size() ; i++) {
             if (listeHistoriques.get(i).getElementConcerne() == 3) {

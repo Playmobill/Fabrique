@@ -72,12 +72,14 @@
       <w>gazéification</w>
       <w>gestion</w>
       <w>grande</w>
+      <w>gérer</w>
       <w>heure</w>
       <w>historique</w>
       <w>historiques</w>
       <w>initialiser</w>
       <w>intialiser</w>
       <w>jour</w>
+      <w>l'historique</w>
       <w>largeur</w>
       <w>lavé</w>
       <w>ligne</w>
@@ -113,9 +115,12 @@
       <w>remplir</w>
       <w>retour</w>
       <w>selon</w>
+      <w>separateur</w>
+      <w>seperateur</w>
       <w>simplifie</w>
       <w>supprimer</w>
       <w>taille</w>
+      <w>textes</w>
       <w>textview</w>
       <w>timepicker</w>
       <w>tous</w>
@@ -124,6 +129,7 @@
       <w>valider</w>
       <w>vide</w>
       <w>voulu</w>
+      <w>états</w>
     </words>
   </dictionary>
 </component>

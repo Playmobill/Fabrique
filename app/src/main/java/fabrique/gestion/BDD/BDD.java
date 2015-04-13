@@ -133,6 +133,15 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('SS', 1)");
         db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('Ch.Froide', 1)");
         db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('RC', 1)");
+
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (0, 'test 1 fermenteur')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (1, 'test 1 cuve')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (2, 'test 1 fut')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3, 'test 1 brassin')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (0, 'test 2 fermenteur')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (1, 'test 2 cuve')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (2, 'test 2 fut')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3, 'test 2 brassin')");
     }
 
     @Override
