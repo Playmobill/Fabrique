@@ -124,7 +124,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
     private void validerDescription() {
         String erreur = "";
         int numero = 0;
-        if (!(editTitre.getText().toString().equals(""))) {
+        if (editTitre.getText().toString().equals("")) {
             erreur = erreur + "Le fût doit avoir un numéro.";
         } else {
             try {

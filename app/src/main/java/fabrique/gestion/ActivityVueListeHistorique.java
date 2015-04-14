@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -19,6 +21,8 @@ import fabrique.gestion.Objets.ListeHistorique;
 
 public class ActivityVueListeHistorique extends Activity implements View.OnClickListener {
 
+    private TableLayout tableau;
+
     private TableRow.LayoutParams marge;
 
     private ArrayList<Button> btnModifiers;
@@ -27,9 +31,15 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
 
     private ArrayList<TableRow> lignes;
 
+    //Modifier
     private Button btnValider, btnAnnuler;
-
     private EditText editText;
+
+    //Ajouter
+    private TableRow ligneAjouter;
+    private Button btnAjouter;
+    private Spinner elementConcerne;
+    private EditText texteAjouter;
 
     private int indexActif;
 
@@ -54,18 +64,32 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
 
         editText = new EditText(this);
 
+        ligneAjouter = new TableRow(this);
+            texteAjouter = new EditText(this);
+        ligneAjouter.addView(texteAjouter);
+            elementConcerne = new Spinner(this);
+            ArrayAdapter adapteurTri = new ArrayAdapter<>(this, R.layout.spinner_style, new String[] {"Fermenteur", "Cuve", "Fût", "Brassin"});
+            adapteurTri.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            elementConcerne.setAdapter(adapteurTri);
+        ligneAjouter.addView(elementConcerne);
+            btnAjouter = new Button(this);
+            btnAjouter.setText("Ajouter");
+            btnAjouter.setOnClickListener(this);
+        ligneAjouter.addView(btnAjouter);
+
+        tableau = new TableLayout(this);
+        tableauListeHistorique();
         ScrollView verticalScroll = new ScrollView(this);
-        verticalScroll.addView(tableauListeHistorique());
+        verticalScroll.addView(tableau);
 
         setContentView(verticalScroll);
     }
 
-    private TableLayout tableauListeHistorique() {
-        TableLayout tableau = new TableLayout(this);
-
+    private void tableauListeHistorique() {
+        tableau.removeAllViews();
             TableRow ligneTitreFermenteur = new TableRow(this);
                 TextView titreFermenteur = new TextView(this);
-                titreFermenteur.setText("Texte pour l'historique des fermenteurs");
+                titreFermenteur.setText("Texte pour l'historique des fermenteurs :");
                 titreFermenteur.setTypeface(null, Typeface.BOLD);
             ligneTitreFermenteur.addView(titreFermenteur, marge);
             tableau.addView(ligneTitreFermenteur);
@@ -78,7 +102,7 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
 
             TableRow ligneTitreCuve = new TableRow(this);
                 TextView titreCuve = new TextView(this);
-                titreCuve.setText("Texte pour l'historique des cuves");
+                titreCuve.setText("Texte pour l'historique des cuves :");
                 titreCuve.setTypeface(null, Typeface.BOLD);
             ligneTitreCuve.addView(titreCuve, marge);
             tableau.addView(ligneTitreCuve);
@@ -91,7 +115,7 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
 
             TableRow ligneTitreFut = new TableRow(this);
                 TextView titreFut = new TextView(this);
-                titreFut.setText("Texte pour l'historique des fûts");
+                titreFut.setText("Texte pour l'historique des fûts :");
                 titreFut.setTypeface(null, Typeface.BOLD);
             ligneTitreFut.addView(titreFut, marge);
             tableau.addView(ligneTitreFut);
@@ -104,7 +128,7 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
 
             TableRow ligneTitreBrassin = new TableRow(this);
                 TextView titreBrassin = new TextView(this);
-                titreBrassin.setText("Texte pour l'historique des Brassins");
+                titreBrassin.setText("Texte pour l'historique des Brassins :");
                 titreBrassin.setTypeface(null, Typeface.BOLD);
             ligneTitreBrassin.addView(titreBrassin, marge);
             tableau.addView(ligneTitreBrassin);
@@ -115,7 +139,17 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
                 tableau.addView(ligneAffichageElement(listeHistoriqueBrassin.get(i).getTexte()));
             }
 
-        return tableau;
+            TableRow ligneTitreAjouter = new TableRow(this);
+                TextView titreAjouter = new TextView(this);
+                titreAjouter.setText("Ajouter un texte :");
+                titreAjouter.setTypeface(null, Typeface.BOLD);
+            ligneTitreAjouter.addView(titreAjouter, marge);
+            tableau.addView(ligneTitreAjouter);
+
+            texteAjouter.setText("");
+            tableau.addView(ligneAjouter);
+
+        tableau.invalidate();
     }
 
     private TableRow ligneAffichageElement(String texte) {
@@ -161,6 +195,10 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
         ligne.addView(btnModifiers.get(indexActif), marge);
     }
 
+    private void ajouter() {
+        TableListeHistorique.instance(this).ajouter(elementConcerne.getSelectedItemPosition(), texteAjouter.getText().toString());
+    }
+
     @Override
     public void onClick(View v) {
         if (v.equals(btnValider)) {
@@ -168,6 +206,9 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
             ligneReafficherElement();
         } else if (v.equals(btnAnnuler)) {
             ligneReafficherElement();
+        } else if (v.equals(btnAjouter)) {
+            ajouter();
+            tableauListeHistorique();
         } else {
             for (int i = 0; i < btnModifiers.size(); i++) {
                 if (v.equals(btnModifiers.get(i))) {
@@ -181,7 +222,7 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, ActivityAccueil.class);
+        Intent intent = new Intent(this, ActivityGestion.class);
         startActivity(intent);
     }
 
