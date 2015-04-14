@@ -46,6 +46,12 @@ public class TableListeHistorique extends Controle {
         return id;
     }
 
+    public void supprimer(long id) {
+        if (accesBDD.delete(nomTable, "id = ?", new String[] {"" + id}) == 1) {
+            listeHistoriques.remove(recupererId(id));
+        }
+    }
+
     public int tailleListe() {
         return listeHistoriques.size();
     }

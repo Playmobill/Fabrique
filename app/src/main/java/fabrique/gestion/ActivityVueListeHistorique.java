@@ -25,7 +25,8 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
 
     private TableRow.LayoutParams marge;
 
-    private ArrayList<Button> btnModifiers;
+    private ArrayList<Button> btnsModifier;
+    private ArrayList<Button> btnsSupprimer;
 
     private ArrayList<ListeHistorique> listeHistoriques;
 
@@ -50,7 +51,8 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
         marge = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
         marge.setMargins(10, 10, 10, 10);
 
-        btnModifiers = new ArrayList<>();
+        btnsModifier = new ArrayList<>();
+        btnsSupprimer = new ArrayList<>();
         listeHistoriques = new ArrayList<>();
         lignes = new ArrayList<>();
 
@@ -160,8 +162,13 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
             Button btnModifier = new Button(this);
             btnModifier.setText("Modifier");
             btnModifier.setOnClickListener(this);
-            btnModifiers.add(btnModifier);
+            btnsModifier.add(btnModifier);
         ligne.addView(btnModifier, marge);
+            Button btnSupprimer = new Button(this);
+            btnSupprimer.setText("Supprimer");
+            btnSupprimer.setOnClickListener(this);
+            btnsSupprimer.add(btnSupprimer);
+        ligne.addView(btnSupprimer, marge);
         lignes.add(ligne);
         return ligne;
     }
@@ -182,8 +189,8 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
     }
 
     private void ligneReafficherElement() {
-        for (int i = 0; i < btnModifiers.size(); i++) {
-            btnModifiers.get(i).setEnabled(true);
+        for (int i = 0; i < btnsModifier.size(); i++) {
+            btnsModifier.get(i).setEnabled(true);
         }
 
         TableRow ligne = lignes.get(indexActif);
@@ -192,11 +199,15 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
             TextView texte = new TextView(this);
             texte.setText(listeHistoriques.get(indexActif).getTexte());
         ligne.addView(texte, marge);
-        ligne.addView(btnModifiers.get(indexActif), marge);
+        ligne.addView(btnsModifier.get(indexActif), marge);
     }
 
     private void ajouter() {
         TableListeHistorique.instance(this).ajouter(elementConcerne.getSelectedItemPosition(), texteAjouter.getText().toString());
+    }
+
+    private void supprimer(int index) {
+        TableListeHistorique.instance(this).supprimer(listeHistoriques.get(index).getId());
     }
 
     @Override
@@ -210,11 +221,19 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
             ajouter();
             tableauListeHistorique();
         } else {
-            for (int i = 0; i < btnModifiers.size(); i++) {
-                if (v.equals(btnModifiers.get(i))) {
+            boolean supprimer = false;
+            for (int i=0; i<btnsSupprimer.size() ; i++) {
+                if (v.equals(btnsSupprimer.get(i))) {
+                    supprimer(i);
+                    tableauListeHistorique();
+                    supprimer = true;
+                }
+            }
+            for (int i = 0; (i<btnsModifier.size()) && (!supprimer); i++) {
+                if (v.equals(btnsModifier.get(i))) {
                     ligneModifierElement(i);
                 } else {
-                    btnModifiers.get(i).setEnabled(false);
+                    btnsModifier.get(i).setEnabled(false);
                 }
             }
         }
@@ -225,11 +244,4 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
         Intent intent = new Intent(this, ActivityGestion.class);
         startActivity(intent);
     }
-
-
-
-
-
-
-
 }
