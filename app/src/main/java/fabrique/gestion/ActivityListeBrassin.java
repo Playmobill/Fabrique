@@ -1,9 +1,11 @@
 package fabrique.gestion;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableRecette;
@@ -39,8 +42,6 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        //setContentView(R.layout.activity_liste_brassin);
 
         listeBoutonBrassin = new ArrayList<>();
 
@@ -79,16 +80,6 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
     public void onBackPressed() {
         Intent intent = new Intent(this, ActivityListe.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     public RelativeLayout initialiserLigne(Brassin brassin){
@@ -171,6 +162,7 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         ArrayAdapter<String> triAdapter = new ArrayAdapter<>(this, R.layout.spinner_style, options);
         triAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tri.setAdapter(triAdapter);
+        tri.setOnItemSelectedListener(this);
 
         part1 = new LinearLayout(this);
         part1.setLayoutParams(paramsTexte[0]);
@@ -196,5 +188,145 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
                 startActivity(intent);
             }
         }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        tri.setSelection(position);
+        ArrayList<Brassin> listeBrassin;
+        switch(position) {
+            case 0 :
+                listeBrassin = trierParNumero(this, TableBrassin.instance(this).cloner(), 0 ,TableBrassin.instance(this).tailleListe()-1);
+                listeBoutonBrassin.clear();
+                body.removeAllViews();
+                for (int i = 0; i < listeBrassin.size(); i++) {
+                    body.addView(initialiserLigne(listeBrassin.get(i)));
+                }
+                break;
+            case 1 :
+                listeBrassin = trierParRecette(this, TableBrassin.instance(this).cloner());
+                listeBoutonBrassin.clear();
+                body.removeAllViews();
+                for (int i = 0; i < listeBrassin.size(); i++) {
+                    body.addView(initialiserLigne(listeBrassin.get(i)));
+                }
+                break;
+            case 2 :
+                listeBrassin = trierParDateCreation(this, TableBrassin.instance(this).cloner(), 0 ,TableBrassin.instance(this).tailleListe()-1);
+                Collections.reverse(listeBrassin);
+                listeBoutonBrassin.clear();
+                body.removeAllViews();
+                for (int i = 0; i < listeBrassin.size(); i++) {
+                    body.addView(initialiserLigne(listeBrassin.get(i)));
+                }
+                break;
+        }
+
+    }
+
+    public ArrayList trierParNumero(Context contexte, ArrayList<Brassin> listeBrassin, int petitIndex, int grandIndex){
+        int i = petitIndex;
+        int j = grandIndex;
+        // calculate pivot number, I am taking pivot as middle index number
+        Brassin pivot = listeBrassin.get(petitIndex+(grandIndex-petitIndex)/2);
+        // Divide into two arrays
+        while (i <= j) {
+            while (listeBrassin.get(i).getNumero() < pivot.getNumero()) {
+                i++;
+            }
+            while (listeBrassin.get(j).getNumero() > pivot.getNumero()) {
+                j--;
+            }
+            if (i <= j) {
+                Brassin temp = listeBrassin.get(i);
+                listeBrassin.set(i, listeBrassin.get(j));
+                listeBrassin.set(j, temp);
+                //move index to next position on both sides
+                i++;
+                j--;
+            }
+        }
+        // call recursively
+        if (petitIndex < j) {
+            listeBrassin = trierParDateCreation(contexte, listeBrassin, petitIndex, j);
+        }
+        if (i < grandIndex) {
+            listeBrassin = trierParDateCreation(contexte, listeBrassin, i, grandIndex);
+        }
+        return listeBrassin;
+
+    }
+
+    public ArrayList trierParRecette(Context contexte, ArrayList<Brassin> listeBrassin){
+        ArrayList<Brassin> result = new ArrayList<>();
+        int index;
+        long[] values = new long[2];
+        boolean possible = true;
+        for (int i = 0; i < listeBrassin.size(); i++) {
+            index = -1;
+            values[0] = -1;
+            values[1] = -1;
+            possible = true;
+            for (int j = 0; j < listeBrassin.size(); j++) {
+                possible=true;
+                for (int k = 0; k < result.size() && possible == true; k++) {
+                    if(result.get(k).getNumero() == listeBrassin.get(j).getNumero()){
+                        possible = false;
+                    }
+                }
+                if((possible) && ((index<0) || (listeBrassin.get(j).getId_recette() < values[0]))){
+                    index = j;
+                    values[0] = listeBrassin.get(index).getId_recette();
+                    values[1] = listeBrassin.get(index).getNumero();
+                }
+                else if((possible) && ((index<0) || (listeBrassin.get(j).getId_recette() == values[0] && listeBrassin.get(j).getNumero() < values[1]))){
+                    index = j;
+                    values[0] = listeBrassin.get(index).getId_recette();
+                    values[1] = listeBrassin.get(index).getNumero();
+                }
+            }
+            if(index>=0 && index<listeBrassin.size()) {
+                result.add(listeBrassin.get(index));
+            }
+        }
+        return result;
+    }
+
+    public ArrayList trierParDateCreation(Context contexte, ArrayList<Brassin> listeBrassin, int petitIndex, int grandIndex){
+        int i = petitIndex;
+        int j = grandIndex;
+        // calculate pivot number, I am taking pivot as middle index number
+        Brassin pivot = listeBrassin.get(petitIndex+(grandIndex-petitIndex)/2);
+        // Divide into two arrays
+        while (i <= j) {
+            while (listeBrassin.get(i).getDateLong() < pivot.getDateLong()) {
+                i++;
+            }
+            while (listeBrassin.get(j).getDateLong() > pivot.getDateLong()) {
+                j--;
+            }
+            if (i <= j) {
+                Brassin temp = listeBrassin.get(i);
+                listeBrassin.set(i, listeBrassin.get(j));
+                listeBrassin.set(j, temp);
+                //move index to next position on both sides
+                i++;
+                j--;
+            }
+        }
+        // call recursively
+        if (petitIndex < j) {
+            listeBrassin = trierParDateCreation(contexte, listeBrassin, petitIndex, j);
+        }
+        if (i < grandIndex) {
+            listeBrassin = trierParDateCreation(contexte, listeBrassin, i, grandIndex);
+        }
+        return listeBrassin;
+
     }
 }

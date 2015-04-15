@@ -44,6 +44,7 @@ public class Brassin extends Objet implements Comparable<Brassin> {
     public float getDensiteOriginale() { return densiteOriginale; }
     public float getDensiteFinale() { return densiteFinale; }
     public float getPourcentageAlcool() { return pourcentageAlcool; }
+    public long getDateLong() { return dateCreation; }
 
     public void setNumero(int numero) { this.numero = numero; }
     public void setCommentaire(String commentaire) { this.commentaire = commentaire; }

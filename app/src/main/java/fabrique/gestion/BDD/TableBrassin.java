@@ -104,4 +104,8 @@ public class TableBrassin extends Controle {
         }
         return numero;
     }
+
+    public ArrayList cloner(){
+        return new ArrayList(brassins);
+    }
 }
