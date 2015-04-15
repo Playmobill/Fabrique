@@ -17,6 +17,7 @@ public class ActivityVueFermenteur extends Activity {
         super.onCreate(savedInstanceState);
 
         LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
 
         Intent intent = getIntent();
         int index = intent.getIntExtra("index", -1);
@@ -24,7 +25,7 @@ public class ActivityVueFermenteur extends Activity {
         Fermenteur fermenteur = TableFermenteur.instance(this).recupererIndex(index);
         if (fermenteur != null) {
             if (fermenteur.getBrassin(this) != null) {
-                //layout.addView(new VueBrassin(this, fermenteur.getBrassin()));
+                layout.addView(new VueBrassin(this, fermenteur.getBrassin(this)));
             }
             layout.addView(new VueFermenteur(this, fermenteur));
         } else {

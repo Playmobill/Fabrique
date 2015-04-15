@@ -29,10 +29,13 @@ public class ActivityAjouterFut extends Activity implements View.OnClickListener
 
         editNumero = (EditText)findViewById(R.id.editNumero);
         TableFut tableFut = TableFut.instance(this);
-        int i;
-        for (i=0; ((i<tableFut.tailleListe()) && (tableFut.recupererIndex(i).getNumero() == i+1)); i=i+1) {
+        int numero = 1;
+        for (int i=0; i<tableFut.tailleListe(); i++) {
+            if (tableFut.recupererIndex(i).getNumero() == numero) {
+                numero = numero + 1;
+            }
         }
-        editNumero.setText("" + (i+1));
+        editNumero.setText("" + numero);
 
         editQuantite = (EditText)findViewById(R.id.editQuantite);
 
@@ -68,7 +71,7 @@ public class ActivityAjouterFut extends Activity implements View.OnClickListener
                 erreur = erreur + "La quantité est trop grande.";
             }
 
-            if(!erreur.equals("")) {
+            if(erreur.equals("")) {
                 TableFut.instance(this).ajouter(numero, capacite, 1, System.currentTimeMillis(), -1, System.currentTimeMillis());
 
                 Intent intent = new Intent(this, ActivityListeFut.class);

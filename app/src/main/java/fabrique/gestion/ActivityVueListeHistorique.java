@@ -200,6 +200,7 @@ public class ActivityVueListeHistorique extends Activity implements View.OnClick
             texte.setText(listeHistoriques.get(indexActif).getTexte());
         ligne.addView(texte, marge);
         ligne.addView(btnsModifier.get(indexActif), marge);
+        ligne.addView(btnsSupprimer.get(indexActif), marge);
     }
 
     private void ajouter() {

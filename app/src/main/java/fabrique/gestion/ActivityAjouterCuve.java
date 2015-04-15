@@ -48,10 +48,13 @@ public class ActivityAjouterCuve extends Activity implements View.OnClickListene
 
         editNumero = (EditText)findViewById(R.id.editNumero);
         TableCuve tableCuve = TableCuve.instance(this);
-        int i;
-        for (i=0; ((i<tableCuve.tailleListe()) && (tableCuve.recupererIndex(i).getNumero() == i+1)); i=i+1) {
+        int numero = 1;
+        for (int i=0; i<tableCuve.tailleListe(); i++) {
+            if (tableCuve.recupererIndex(i).getNumero() == numero) {
+                numero = numero + 1;
+            }
         }
-        editNumero.setText("" + (i+1));
+        editNumero.setText("" + numero);
 
         editQuantite = (EditText)findViewById(R.id.editQuantite);
 

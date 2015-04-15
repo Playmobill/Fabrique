@@ -92,6 +92,16 @@ public class TableListeHistorique extends Controle {
         return listeHistoriqueFermenteur;
     }
 
+    public ArrayList<String> stringHistoriqueFermenteur() {
+        ArrayList<String> stringHistoriqueFermenteur = new ArrayList<>();
+        for (int i=0; i<listeHistoriques.size() ; i++) {
+            if (listeHistoriques.get(i).getElementConcerne() == 0) {
+                stringHistoriqueFermenteur.add(listeHistoriques.get(i).getTexte());
+            }
+        }
+        return stringHistoriqueFermenteur;
+    }
+
     public ArrayList<ListeHistorique> listeHistoriqueCuve() {
         ArrayList<ListeHistorique> listeHistoriqueCuve = new ArrayList<>();
         for (int i=0; i<listeHistoriques.size() ; i++) {

@@ -48,11 +48,13 @@ public class ActivityAjouterFermenteur extends Activity implements View.OnClickL
 
         editNumero = (EditText)findViewById(R.id.editNumero);
         TableFermenteur tableFermenteur = TableFermenteur.instance(this);
-
-        int i;
-        for (i=0; ((i<tableFermenteur.tailleListe()) && (tableFermenteur.recupererIndex(i).getNumero() == i+1)); i=i+1) {
+        int numero = 1;
+        for (int i=0; i<tableFermenteur.tailleListe(); i++) {
+            if (tableFermenteur.recupererIndex(i).getNumero() == numero) {
+                numero = numero + 1;
+            }
         }
-        editNumero.setText("" + (i+1));
+        editNumero.setText("" + numero);
 
         editQuantite = (EditText)findViewById(R.id.editQuantite);
 
