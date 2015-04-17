@@ -1,5 +1,7 @@
 package fabrique.gestion.Objets;
 
+import java.util.Calendar;
+
 public class Historique extends Objet implements Comparable<Historique> {
 
     private String texte;
@@ -24,6 +26,11 @@ public class Historique extends Objet implements Comparable<Historique> {
     }
     public long getDate() {
         return date;
+    }
+    public String getDateToString() {
+        Calendar calendrier = Calendar.getInstance();
+        calendrier.setTimeInMillis(date);
+        return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
     }
     public long getId_fermenteur() {
         return id_fermenteur;

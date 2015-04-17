@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -19,24 +20,54 @@ import fabrique.gestion.Objets.Fut;
 
 public class VueFut extends TableLayout implements View.OnClickListener {
 
-    private Button btnModifier, btnValider, btnAnnuler;
-
     private Fut fut;
 
     private LinearLayout tableauDescription;
-
     private EditText editTitre, editCapacite;
-
     private TableRow ligneBouton;
+    private Button btnModifier, btnValider, btnAnnuler;
 
     protected VueFut(Context contexte, Fut fut) {
         super(contexte);
 
         this.fut = fut;
 
+        RelativeLayout contenantDescription = new RelativeLayout(contexte);
+        RelativeLayout.LayoutParams parametreContenantDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        addView(contenantDescription, parametreContenantDescription);
+
+        LinearLayout contenantTitreDescription = new LinearLayout(contexte);
+        contenantTitreDescription.setBackgroundColor(Color.BLACK);
+        contenantTitreDescription.setPadding(1, 1, 1, 1);
+        RelativeLayout.LayoutParams parametreContenantTitreDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreContenantTitreDescription.setMargins(10, 1, 0, 0);
+        TextView titreDescription2 = new TextView(contexte);
+        titreDescription2.setText(" Description du fût ");
+        titreDescription2.setTypeface(null, Typeface.BOLD);
+        titreDescription2.setBackgroundColor(Color.WHITE);
+        contenantTitreDescription.addView(titreDescription2);
+        contenantDescription.addView(contenantTitreDescription, parametreContenantTitreDescription);
+
+        RelativeLayout contourDescription = new RelativeLayout(contexte);
+        contourDescription.setBackgroundColor(Color.BLACK);
+        contourDescription.setPadding(1, 1, 1, 1);
+        RelativeLayout.LayoutParams parametreContourDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreContourDescription.topMargin=15;
+        parametreContourDescription.leftMargin=5;
+        contenantDescription.addView(contourDescription, parametreContourDescription);
+
+        TextView titreDescription = new TextView(contexte);
+        titreDescription.setText(" Description du fût ");
+        titreDescription.setTypeface(null, Typeface.BOLD);
+        titreDescription.setBackgroundColor(Color.WHITE);
+        RelativeLayout.LayoutParams parametreTitreDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreTitreDescription.setMargins(11, 2, 0, 0);
+        contenantDescription.addView(titreDescription, parametreTitreDescription);
+
         tableauDescription = new TableLayout(contexte);
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
-        addView(tableauDescription);
+        tableauDescription.setBackgroundColor(Color.WHITE);
+        contourDescription.addView(tableauDescription);
 
         afficherDescription();
     }
@@ -89,6 +120,12 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         btnModifier = new Button(getContext());
         btnModifier.setText("Modifier");
         btnModifier.setOnClickListener(this);
+        btnValider = new Button(getContext());
+        btnValider.setText("Valider");
+        btnValider.setOnClickListener(this);
+        btnAnnuler = new Button(getContext());
+        btnAnnuler.setText("Annuler");
+        btnAnnuler.setOnClickListener(this);
 
                 layoutTitre.addView(titre);
                 layoutTitre.addView(editTitre);
@@ -106,22 +143,15 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         tableauDescription.addView(ligneBouton);
     }
 
-    private void modifierDescription() {
+    private void afficherModifier() {
         editTitre.setEnabled(true);
         editCapacite.setEnabled(true);
         ligneBouton.removeAllViews();
-        btnValider = new Button(getContext());
-        btnValider.setText("Valider");
-        btnValider.setOnClickListener(this);
-
-        btnAnnuler = new Button(getContext());
-        btnAnnuler.setText("Annuler");
-        btnAnnuler.setOnClickListener(this);
         ligneBouton.addView(btnValider);
         ligneBouton.addView(btnAnnuler);
     }
 
-    private void validerDescription() {
+    private void modifier() {
         String erreur = "";
         int numero = 0;
         if (editTitre.getText().toString().equals("")) {
@@ -144,7 +174,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableFut.instance(getContext()).modifier(fut.getId(), Integer.parseInt(editTitre.getText().toString()), Integer.parseInt(editCapacite.getText().toString()),fut.getId_etat(), fut.getLongDateEtat(), fut.getId_brassin(), fut.getDateInspection());
+            TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite,fut.getId_etat(), fut.getLongDateEtat(), fut.getId_brassin(), fut.getDateInspection());
             reafficherDescription();
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
@@ -153,24 +183,17 @@ public class VueFut extends TableLayout implements View.OnClickListener {
 
     private void reafficherDescription() {
         editTitre.setEnabled(false);
-        editTitre.setText("" + fut.getNumero());
-
         editCapacite.setEnabled(false);
-        editCapacite.setText("" + fut.getCapacite());
-
         ligneBouton.removeAllViews();
-        btnModifier = new Button(getContext());
-        btnModifier.setText("Modifier");
-        btnModifier.setOnClickListener(this);
         ligneBouton.addView(btnModifier);
     }
 
     @Override
     public void onClick(View v) {
         if (v.equals(btnModifier)) {
-            modifierDescription();
+            afficherModifier();
         } else if (v.equals(btnValider)) {
-            validerDescription();
+            modifier();
         } else if (v.equals(btnAnnuler)) {
             reafficherDescription();
         }
