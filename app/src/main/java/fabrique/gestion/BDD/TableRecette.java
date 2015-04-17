@@ -84,12 +84,23 @@ public class TableRecette extends Controle {
     public ArrayList<String> recupererRecettesActifs() {
         ArrayList<String> listeEtatActif = new ArrayList<>();
         for (int i=0; i<types.size(); i++) {
-            //if (types.get(i).getActif()) {
+            if (types.get(i).getActif()) {
                 listeEtatActif.add(types.get(i).getNom());
-            //}
+            }
         }
         return listeEtatActif;
     }
+
+    public ArrayList<Recette> recupererRecetteActif() {
+        ArrayList<Recette> listeRecetteActifs = new ArrayList<>();
+        for (int i=0; i<types.size(); i++) {
+            if (types.get(i).getActif()) {
+                listeRecetteActifs.add(types.get(i));
+            }
+        }
+        return listeRecetteActifs;
+    }
+
 
     public String[] numeros() {
         String[] numeroFermenteurs = new String[types.size()];

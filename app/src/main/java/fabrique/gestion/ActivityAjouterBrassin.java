@@ -74,10 +74,10 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
                 }
             }
 
-            int capacite = 0;
+            int quantite = 0;
             try {
                 if (!editQuantite.getText().toString().equals("")) {
-                    capacite = Integer.parseInt(editQuantite.getText().toString());
+                    quantite = Integer.parseInt(editQuantite.getText().toString());
                 }
             } catch(NumberFormatException e) {
                 if (!erreur.equals("")) {
@@ -125,7 +125,7 @@ public class ActivityAjouterBrassin extends Activity implements View.OnClickList
             if (erreur.equals("")) {
                 long recette = TableRecette.instance(this).recupererIndex(editRecette.getSelectedItemPosition()).getId();
 
-                TableBrassin.instance(this).ajouter(numero, editCommentaire.getText().toString(), System.currentTimeMillis(), capacite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
+                TableBrassin.instance(this).ajouter(numero, editCommentaire.getText().toString() + "", System.currentTimeMillis(), quantite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
 
                 Intent intent = new Intent(this, ActivityListeBrassin.class);
                 startActivity(intent);

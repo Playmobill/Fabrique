@@ -237,9 +237,9 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
         for (int i=0; i<tableBrassin.tailleListe() ; i++) {
             brassins.add("" + tableBrassin.recupererIndex(i).getNumero());
         }
-        ArrayAdapter<String> adapteurFermenteur = new ArrayAdapter<>(getContext(), R.layout.spinner_style, brassins);
-        adapteurFermenteur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        listeBrassin.setAdapter(adapteurFermenteur);
+        ArrayAdapter<String> adapteurBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style, brassins);
+        adapteurBrassin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        listeBrassin.setAdapter(adapteurBrassin);
         listeBrassin.setOnItemSelectedListener(this);
 
         tableauBrassin.addView(listeBrassin);
@@ -273,7 +273,5 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 }
