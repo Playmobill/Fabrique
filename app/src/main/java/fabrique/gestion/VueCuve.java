@@ -9,7 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,29 +25,58 @@ import fabrique.gestion.Objets.Emplacement;
 
 public class VueCuve extends LinearLayout implements View.OnClickListener {
 
-    private Button btnModifier, btnValider, btnAnnuler;
-
     private Cuve cuve;
 
+    //Description
     private LinearLayout tableauDescription;
-
     private Spinner editEmplacement;
-    private EditText editTitre, editCapacite;
-
-    private LinearLayout ligneBouton;
-
-    private int index;
-
     private ArrayList<Emplacement> emplacements;
+    private int indexEmplacement;
+    private EditText editTitre, editCapacite;
+    private LinearLayout ligneBouton;
+    private Button btnModifier, btnValider, btnAnnuler;
 
     protected VueCuve(Context contexte, Cuve cuve) {
         super(contexte);
 
         this.cuve = cuve;
 
-        tableauDescription = new LinearLayout(contexte);
+        RelativeLayout contenantDescription = new RelativeLayout(contexte);
+        RelativeLayout.LayoutParams parametreContenantDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        addView(contenantDescription, parametreContenantDescription);
+
+        LinearLayout contenantTitreDescription = new LinearLayout(contexte);
+        contenantTitreDescription.setBackgroundColor(Color.BLACK);
+        contenantTitreDescription.setPadding(1, 1, 1, 1);
+        RelativeLayout.LayoutParams parametreContenantTitreDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreContenantTitreDescription.setMargins(10, 1, 0, 0);
+        TextView titreDescription2 = new TextView(contexte);
+        titreDescription2.setText(" Description de la cuve ");
+        titreDescription2.setTypeface(null, Typeface.BOLD);
+        titreDescription2.setBackgroundColor(Color.WHITE);
+        contenantTitreDescription.addView(titreDescription2);
+        contenantDescription.addView(contenantTitreDescription, parametreContenantTitreDescription);
+
+        RelativeLayout contourDescription = new RelativeLayout(contexte);
+        contourDescription.setBackgroundColor(Color.BLACK);
+        contourDescription.setPadding(1, 1, 1, 1);
+        RelativeLayout.LayoutParams parametreContourDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreContourDescription.topMargin=15;
+        parametreContourDescription.leftMargin=5;
+        contenantDescription.addView(contourDescription, parametreContourDescription);
+
+        TextView titreDescription = new TextView(contexte);
+        titreDescription.setText(" Description de la cuve ");
+        titreDescription.setTypeface(null, Typeface.BOLD);
+        titreDescription.setBackgroundColor(Color.WHITE);
+        RelativeLayout.LayoutParams parametreTitreDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreTitreDescription.setMargins(11, 2, 0, 0);
+        contenantDescription.addView(titreDescription, parametreTitreDescription);
+
+        tableauDescription = new TableLayout(contexte);
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
-        addView(tableauDescription);
+        tableauDescription.setBackgroundColor(Color.WHITE);
+        contourDescription.addView(tableauDescription);
 
         afficherDescription();
     }
@@ -101,14 +132,14 @@ public class VueCuve extends LinearLayout implements View.OnClickListener {
                 adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 editEmplacement.setAdapter(adapteurEmplacement);
                 editEmplacement.setEnabled(false);
-                index = -1;
+                indexEmplacement = -1;
                 for (int i=0; i<emplacements.size() ; i++) {
                     if (cuve.getEmplacement(getContext()).getId() == emplacements.get(i).getId()) {
-                        index = i;
+                        indexEmplacement = i;
                     }
                 }
-                if (index != -1) {
-                    editEmplacement.setSelection(index);
+                if (indexEmplacement != -1) {
+                    editEmplacement.setSelection(indexEmplacement);
                 } else {
                     emplacements.add(cuve.getEmplacement(getContext()));
                     adapteurEmplacement.add(TableEmplacement.instance(getContext()).recupererId(cuve.getEmplacement(getContext()).getId()).getTexte());
@@ -187,7 +218,7 @@ public class VueCuve extends LinearLayout implements View.OnClickListener {
         }
         if (erreur.equals("")) {
             TableCuve.instance(getContext()).modifier(cuve.getId(), numero, capacite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin());
-            index = editEmplacement.getSelectedItemPosition();
+            indexEmplacement = editEmplacement.getSelectedItemPosition();
             reafficherDescription();
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
@@ -202,7 +233,7 @@ public class VueCuve extends LinearLayout implements View.OnClickListener {
         editCapacite.setText("" + cuve.getCapacite());
 
         editEmplacement.setEnabled(false);
-        editEmplacement.setSelection(index);
+        editEmplacement.setSelection(indexEmplacement);
 
         ligneBouton.removeAllViews();
         btnModifier = new Button(getContext());

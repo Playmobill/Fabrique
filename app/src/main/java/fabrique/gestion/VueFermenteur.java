@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -31,13 +32,12 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
 
     //Description
     private LinearLayout tableauDescription;
-
     private Spinner editEmplacement;
     private ArrayList<Emplacement> emplacements;
+    private int indexEmplacement;
     private EditText editTitre, editCapacite;
     private TableRow ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler;
-    private int indexEmplacement;
 
     //Ajouter brassin
     private LinearLayout tableauBrassin;
@@ -50,22 +50,44 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
 
         this.fermenteur = fermenteur;
 
+        RelativeLayout contenantDescription = new RelativeLayout(contexte);
+        RelativeLayout.LayoutParams parametreContenantDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        addView(contenantDescription, parametreContenantDescription);
+
+        LinearLayout contenantTitreDescription = new LinearLayout(contexte);
+        contenantTitreDescription.setBackgroundColor(Color.BLACK);
+        contenantTitreDescription.setPadding(1, 1, 1, 1);
+        RelativeLayout.LayoutParams parametreContenantTitreDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreContenantTitreDescription.setMargins(10, 1, 0, 0);
+        TextView titreDescription2 = new TextView(contexte);
+        titreDescription2.setText(" Description du fermenteur ");
+        titreDescription2.setTypeface(null, Typeface.BOLD);
+        titreDescription2.setBackgroundColor(Color.WHITE);
+        contenantTitreDescription.addView(titreDescription2);
+        contenantDescription.addView(contenantTitreDescription, parametreContenantTitreDescription);
+
+        RelativeLayout contourDescription = new RelativeLayout(contexte);
+        contourDescription.setBackgroundColor(Color.BLACK);
+        contourDescription.setPadding(1, 1, 1, 1);
+        RelativeLayout.LayoutParams parametreContourDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreContourDescription.topMargin=15;
+        parametreContourDescription.leftMargin=5;
+        contenantDescription.addView(contourDescription, parametreContourDescription);
+
+        TextView titreDescription = new TextView(contexte);
+        titreDescription.setText(" Description du fermenteur ");
+        titreDescription.setTypeface(null, Typeface.BOLD);
+        titreDescription.setBackgroundColor(Color.WHITE);
+        RelativeLayout.LayoutParams parametreTitreDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreTitreDescription.setMargins(11, 2, 0, 0);
+        contenantDescription.addView(titreDescription, parametreTitreDescription);
+
         tableauDescription = new TableLayout(contexte);
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
-        TableRow ligne = new TableRow(contexte);
-        ligne.addView(tableauDescription);
+        tableauDescription.setBackgroundColor(Color.WHITE);
+        contourDescription.addView(tableauDescription);
+
         afficherDescription();
-
-        tableauBrassin = new LinearLayout(contexte);
-        ligne.addView(tableauBrassin);
-        ajouterBrassin();
-
-        addView(ligne);
-
-        tableauHistorique = new LinearLayout(contexte);
-        tableauDescription.setOrientation(LinearLayout.VERTICAL);
-        addView(tableauHistorique);
-        afficherHistorique();
     }
 
     private void afficherDescription() {

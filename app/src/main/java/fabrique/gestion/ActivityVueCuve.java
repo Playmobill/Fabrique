@@ -24,7 +24,7 @@ public class ActivityVueCuve extends Activity {
         Cuve cuve = TableCuve.instance(this).recupererIndex(index);
         if (cuve != null) {
             if (cuve.getBrassin(this) != null) {
-                //layout.addView(new VueBrassin(this, cuve.getBrassin()));
+                layout.addView(new VueBrassin(this, cuve.getBrassin(this)));
             }
             layout.addView(new VueCuve(this, cuve));
         } else {
