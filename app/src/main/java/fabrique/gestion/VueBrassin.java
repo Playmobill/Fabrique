@@ -25,8 +25,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableHistorique;
+import fabrique.gestion.BDD.TableListeHistorique;
 import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.Objets.Brassin;
+import fabrique.gestion.Objets.Historique;
+import fabrique.gestion.Objets.ListeHistorique;
 import fabrique.gestion.Objets.Recette;
 
 public class VueBrassin extends TableLayout implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
@@ -51,6 +55,12 @@ public class VueBrassin extends TableLayout implements View.OnClickListener, Dat
 
     //Historique
     private LinearLayout tableauHistorique;
+
+    //LigneAjouter
+    private Spinner ajoutListeHistorique;
+    private ArrayList<ListeHistorique> listeHistoriques;
+    private EditText ajoutHistorique;
+    private Button btnAjouter;
 
     protected VueBrassin(Context contexte, Brassin brassin) {
         super(contexte);
@@ -95,6 +105,74 @@ public class VueBrassin extends TableLayout implements View.OnClickListener, Dat
         contourDescription.addView(tableauDescription);
 
         afficherDescription();
+
+        RelativeLayout contenantHistorique = new RelativeLayout(contexte);
+        RelativeLayout.LayoutParams parametreContenantHistorique = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        addView(contenantHistorique, parametreContenantHistorique);
+
+        LinearLayout contenantTitreHistorique = new LinearLayout(contexte);
+        contenantTitreHistorique.setBackgroundColor(Color.BLACK);
+        contenantTitreHistorique.setPadding(1, 1, 1, 1);
+        RelativeLayout.LayoutParams parametreContenantTitreHistorique = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreContenantTitreHistorique.setMargins(10, 1, 0, 0);
+            TextView titreHistorique2 = new TextView(contexte);
+            titreHistorique2.setText(" Historique du brassin ");
+            titreHistorique2.setTypeface(null, Typeface.BOLD);
+            titreHistorique2.setBackgroundColor(Color.WHITE);
+            contenantTitreHistorique.addView(titreHistorique2);
+        contenantHistorique.addView(contenantTitreHistorique, parametreContenantTitreHistorique);
+
+        RelativeLayout contourHistorique = new RelativeLayout(contexte);
+        contourHistorique.setBackgroundColor(Color.BLACK);
+        contourHistorique.setPadding(1, 1, 1, 1);
+        RelativeLayout.LayoutParams parametreContourHistorique = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreContourHistorique.topMargin=15;
+        parametreContourHistorique.leftMargin=5;
+        contenantHistorique.addView(contourHistorique, parametreContourHistorique);
+
+        TextView titreHistorique = new TextView(contexte);
+        titreHistorique.setText(" Historique du brassin ");
+        titreHistorique.setTypeface(null, Typeface.BOLD);
+        titreHistorique.setBackgroundColor(Color.WHITE);
+        RelativeLayout.LayoutParams parametreTitreHistorique = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreTitreHistorique.setMargins(11, 2, 0, 0);
+        contenantHistorique.addView(titreHistorique, parametreTitreHistorique);
+
+        LinearLayout ligneAjouter = new LinearLayout(contexte);
+        ligneAjouter.setOrientation(LinearLayout.HORIZONTAL);
+        ligneAjouter.setBackgroundColor(Color.WHITE);
+
+            listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueBrassin();
+            String[] tabListeHistorique = new String[listeHistoriques.size()];
+            for (int i=0; i<tabListeHistorique.length ; i++) {
+                tabListeHistorique[i] = listeHistoriques.get(i).getTexte();
+            }
+            ajoutListeHistorique = new Spinner(getContext());
+            ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
+            adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
+
+            ajoutHistorique = new EditText(getContext());
+
+            btnAjouter = new Button(getContext());
+            btnAjouter.setText("Ajouter");
+            btnAjouter.setOnClickListener(this);
+
+            ligneAjouter.addView(ajoutListeHistorique);
+            ligneAjouter.addView(ajoutHistorique);
+            ligneAjouter.addView(btnAjouter);
+            ligneAjouter.setId(1);
+        contourHistorique.addView(ligneAjouter);
+
+        tableauHistorique = new TableLayout(contexte);
+        RelativeLayout.LayoutParams parametreTableauHistorique = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreTableauHistorique.setMargins(0, 1, 0, 0);
+        parametreTableauHistorique.addRule(RelativeLayout.BELOW, ligneAjouter.getId());
+        tableauHistorique.setOrientation(LinearLayout.VERTICAL);
+        tableauHistorique.setBackgroundColor(Color.WHITE);
+        contourHistorique.addView(tableauHistorique, parametreTableauHistorique);
+
+        afficherHistorique();
     }
 
     private void afficherDescription() {
@@ -355,18 +433,41 @@ public class VueBrassin extends TableLayout implements View.OnClickListener, Dat
         layoutBouton.addView(btnModifier);
     }
 
+    private void afficherHistorique() {
+        tableauHistorique.removeAllViews();
+        ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdBrassin(brassin.getId());
+        for (int i=0; i<historiques.size() ; i++) {
+            TableRow ligne = new TableRow(getContext());
+            TableRow.LayoutParams parametreLigne = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+                TextView texte = new TextView(getContext());
+                texte.setText(historiques.get(i).getDateToString() + " : " + historiques.get(i).getTexte());
+            ligne.addView(texte);
+            tableauHistorique.addView(ligne, parametreLigne);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         if (v.equals(btnModifier)) {
             afficherModifier();
-        } else if (v.equals(btnValider)) {
+        }
+
+        else if (v.equals(btnValider)) {
             modifier();
             reafficherDescription();
-        } else if (v.equals(btnAnnuler)) {
+        }
+
+        else if (v.equals(btnAnnuler)) {
             reafficherDescription();
         }
-        if (v.equals(btnDateCreation)){
+
+        else if (v.equals(btnDateCreation)){
             new DatePickerDialog(getContext(), this, annee, mois, jour).show();
+        }
+
+        else if (v.equals(btnAjouter)) {
+            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, -1, brassin.getId());
+            afficherHistorique();
         }
     }
 
