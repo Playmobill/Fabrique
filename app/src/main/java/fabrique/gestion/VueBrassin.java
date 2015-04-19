@@ -333,7 +333,7 @@ public class VueBrassin extends TableLayout implements View.OnClickListener, Dat
         }
 
         if (erreur.equals("")) {
-            long recette = listeRecetteActifs.get(editRecette.getSelectedItemPosition()).getId();
+            long recette = listeRecetteActifs.get(editRecette.getSelectedItemPosition()-1).getId();
             TableBrassin.instance(getContext()).modifier(brassin.getId(), numero, editCommentaire.getText().toString() + "", System.currentTimeMillis(), quantite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
             indexRecette = (int)recette;
         } else {

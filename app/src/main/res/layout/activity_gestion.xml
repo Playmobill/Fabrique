@@ -123,15 +123,14 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Autre"
-            android:id="@+id/btnAutre"
+            android:text="Ajouter une recette"
+            android:id="@+id/btnRecette"
             android:layout_weight="1"
             android:gravity="center"
             android:layout_margin="10dp"
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textStyle="bold"
-            android:visibility="invisible" />
+            android:textStyle="bold"/>
     </TableRow>
 </TableLayout>

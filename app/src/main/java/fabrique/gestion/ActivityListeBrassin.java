@@ -184,7 +184,7 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         for (int i = 0; i < listeBoutonBrassin.size(); i++) {
             if(v.equals(listeBoutonBrassin.get(i))){
                 Intent intent = new Intent(this, ActivityVueBrassin.class);
-                intent.putExtra("index", i);
+                intent.putExtra("index", (int)listeBoutonBrassin.get(i).getBrassin().getId());
                 startActivity(intent);
             }
         }
@@ -202,31 +202,24 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
         switch(position) {
             case 0 :
                 listeBrassin = trierParNumero(this, TableBrassin.instance(this).cloner(), 0 ,TableBrassin.instance(this).tailleListe()-1);
-                listeBoutonBrassin.clear();
-                body.removeAllViews();
-                for (int i = 0; i < listeBrassin.size(); i++) {
-                    body.addView(initialiserLigne(listeBrassin.get(i)));
-                }
                 break;
             case 1 :
                 listeBrassin = trierParRecette(this, TableBrassin.instance(this).cloner());
-                listeBoutonBrassin.clear();
-                body.removeAllViews();
-                for (int i = 0; i < listeBrassin.size(); i++) {
-                    body.addView(initialiserLigne(listeBrassin.get(i)));
-                }
                 break;
             case 2 :
                 listeBrassin = trierParDateCreation(this, TableBrassin.instance(this).cloner(), 0 ,TableBrassin.instance(this).tailleListe()-1);
                 Collections.reverse(listeBrassin);
-                listeBoutonBrassin.clear();
-                body.removeAllViews();
-                for (int i = 0; i < listeBrassin.size(); i++) {
-                    body.addView(initialiserLigne(listeBrassin.get(i)));
-                }
                 break;
+            default : listeBrassin = new ArrayList<>();
         }
-
+        listeBoutonBrassin.clear();
+        body.removeAllViews();
+        for (int i = 0; i < listeBrassin.size(); i++) {
+            body.addView(initialiserLigne(listeBrassin.get(i)));
+        }
+        for (int i = 0; i < listeBoutonBrassin.size(); i++) {
+            listeBoutonBrassin.get(i).setOnClickListener(this);
+        }
     }
 
     public ArrayList trierParNumero(Context contexte, ArrayList<Brassin> listeBrassin, int petitIndex, int grandIndex){

@@ -24,9 +24,9 @@ public class ActivityVueBrassin extends Activity {
         LinearLayout layout = new LinearLayout(this);
 
         Intent intent = getIntent();
-        int index = intent.getIntExtra("index", -1);
+        int id = intent.getIntExtra("index", -1);
 
-        Brassin brassin = TableBrassin.instance(this).recupererIndex(index);
+        Brassin brassin = TableBrassin.instance(this).recupererId(id);
         if (brassin != null) {
             layout.addView(new VueBrassin(this, brassin));
         } else {
@@ -42,7 +42,7 @@ public class ActivityVueBrassin extends Activity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, ActivityTableauDeBord.class);
+        Intent intent = new Intent(this, ActivityListeBrassin.class);
         startActivity(intent);
     }
 }

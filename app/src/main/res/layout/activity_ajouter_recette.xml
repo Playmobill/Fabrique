@@ -1,6 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
-</LinearLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:text="Nouvelle recette"
+                android:id="@+id/txtTitre"
+                android:textStyle="bold"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/txtNom"
+                android:text="Nom"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+
+            <EditText
+                android:inputType="text"
+                android:id="@+id/editNom"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/txtAcronyme"
+                android:text="Acronyme"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+
+            <EditText
+                android:inputType="text"
+                android:id="@+id/editAcronyme"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/txtCouleur"
+                android:text="Couleur"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+
+            <EditText
+                android:inputType="text"
+                android:id="@+id/editCouleur"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:text="Ajouter"
+                android:id="@+id/btnAjouter"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textColor="@color/noir"
+                android:background="@color/blanc" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</ScrollView>

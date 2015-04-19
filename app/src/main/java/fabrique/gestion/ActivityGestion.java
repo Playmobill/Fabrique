@@ -11,7 +11,7 @@ import android.widget.Button;
 
 public class ActivityGestion extends Activity implements View.OnClickListener {
 
-    private Button fermenteur, cuve, fut, brassin, configuration, etat, listeHistorique;
+    private Button fermenteur, cuve, fut, brassin, configuration, etat, listeHistorique, recette;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +69,11 @@ public class ActivityGestion extends Activity implements View.OnClickListener {
         //etat.setWidth(metrics.widthPixels/3);
         //etat.setHeight(metrics.heightPixels/5);
         listeHistorique.setOnClickListener(this);
+
+        recette = (Button)findViewById(R.id.btnRecette);
+        //configuration.setWidth(metrics.widthPixels/3);
+        //configuration.setHeight(metrics.heightPixels/5);
+        recette.setOnClickListener(this);
     }
 
     @Override
@@ -92,6 +97,10 @@ public class ActivityGestion extends Activity implements View.OnClickListener {
             startActivity(intent);
         } else if (view.equals(listeHistorique)) {
             Intent intent = new Intent(this, ActivityVueListeHistorique.class);
+            startActivity(intent);
+        }
+        else if (view.equals(recette)) {
+            Intent intent = new Intent(this, ActivityAjouterRecette.class);
             startActivity(intent);
         }
     }
