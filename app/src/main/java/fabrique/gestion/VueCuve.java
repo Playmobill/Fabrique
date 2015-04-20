@@ -24,6 +24,7 @@ import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatCuve;
 import fabrique.gestion.BDD.TableGestion;
+import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.Objets.Cuve;
 import fabrique.gestion.Objets.Emplacement;
 import fabrique.gestion.Objets.EtatCuve;
@@ -362,6 +363,13 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                             System.currentTimeMillis(),
                             cuve.getCommentaireEtat(),
                             cuve.getIdBrassin());
+                    String texte = listeEtat.get(i).getHistorique();
+                    if (texte != null) {
+                        TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, cuve.getId(), -1, cuve.getIdBrassin());
+                        Intent intent = new Intent(getContext(), ActivityVueCuve.class);
+                        intent.putExtra("id", cuve.getId());
+                        getContext().startActivity(intent);
+                    }
                     afficherDescription();
                 }
             }

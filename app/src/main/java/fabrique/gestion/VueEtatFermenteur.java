@@ -30,12 +30,12 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
     private int indexActif;
     private Button btnCouleurTexte, btnCouleurFond, btnValider, btnAnnuler;
     private CheckBox cbActif;
-    private EditText txtEtat;
+    private EditText txtEtat, txtHistorique;
 
     //Ajouter
     private Button btnCouleurTexteAjouter, btnCouleurFondAjouter, btnAjouter;
     private CheckBox cbActifAjouter;
-    private EditText txtEtatAjouter;
+    private EditText txtEtatAjouter, txtHistoriqueAjouter;
     private TableRow ligneAjouter;
 
     protected VueEtatFermenteur(Context contexte) {
@@ -66,26 +66,32 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
 
     private void ligneEntete() {
         TableRow ligneTitre = new TableRow(getContext());
-        TextView txtTitre = new TextView(getContext());
-        txtTitre.setText("État pour un Fermenteur");
-        txtTitre.setTypeface(null, Typeface.BOLD);
-        txtTitre.setLayoutParams(parametre);
+            TextView txtTitre = new TextView(getContext());
+            txtTitre.setText("État pour un Fermenteur");
+            txtTitre.setTypeface(null, Typeface.BOLD);
+            txtTitre.setLayoutParams(parametre);
 
         TableRow ligneEntete = new TableRow(getContext());
-        TextView txtEtat = new TextView(getContext());
-        txtEtat.setText("État");
-        txtEtat.setTypeface(null, Typeface.BOLD);
-        txtEtat.setLayoutParams(parametre);
+            TextView txtEtat = new TextView(getContext());
+            txtEtat.setText("État");
+            txtEtat.setTypeface(null, Typeface.BOLD);
+            txtEtat.setLayoutParams(parametre);
 
-        TextView txtActif = new TextView(getContext());
-        txtActif.setText("Actif");
-        txtActif.setTypeface(null, Typeface.BOLD);
-        txtActif.setLayoutParams(parametre);
+            TextView txtHistorique = new TextView(getContext());
+            txtHistorique.setText("Historique");
+            txtHistorique.setTypeface(null, Typeface.BOLD);
+            txtHistorique.setLayoutParams(parametre);
 
-        ligneTitre.addView(txtTitre);
+            TextView txtActif = new TextView(getContext());
+            txtActif.setText("Actif");
+            txtActif.setTypeface(null, Typeface.BOLD);
+            txtActif.setLayoutParams(parametre);
+
+            ligneTitre.addView(txtTitre);
         addView(ligneTitre);
-        ligneEntete.addView(txtEtat);
-        ligneEntete.addView(txtActif);
+            ligneEntete.addView(txtEtat);
+            ligneEntete.addView(txtHistorique);
+            ligneEntete.addView(txtActif);
         addView(ligneEntete);
     }
 
@@ -99,6 +105,11 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
         txtEtat.setBackgroundColor(etat.getCouleurFond());
         txtEtat.setLayoutParams(parametre);
 
+        EditText txtHistorique = new EditText(getContext());
+        txtHistorique.setEnabled(false);
+        txtHistorique.setText(etat.getHistorique());
+        txtHistorique.setLayoutParams(parametre);
+
         CheckBox cbActif = new CheckBox(getContext());
         cbActif.setChecked(etat.getActif());
         cbActif.setEnabled(false);
@@ -110,6 +121,7 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
         btnsModifier.add(modifier);
 
         ligne.addView(txtEtat);
+        ligne.addView(txtHistorique);
         ligne.addView(cbActif);
         ligne.addView(modifier);
 
@@ -125,6 +137,9 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
         txtEtatAjouter.setDrawingCacheBackgroundColor(Color.WHITE);
         txtEtatAjouter.setBackgroundColor(Color.WHITE);
         txtEtatAjouter.setLayoutParams(parametre);
+
+        txtHistoriqueAjouter = new EditText(getContext());
+        txtHistoriqueAjouter.setLayoutParams(parametre);
 
         cbActifAjouter = new CheckBox(getContext());
         cbActifAjouter.setChecked(true);
@@ -144,6 +159,7 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
         btnAjouter.setOnClickListener(this);
 
         ligne.addView(txtEtatAjouter);
+        ligne.addView(txtHistoriqueAjouter);
         ligne.addView(cbActifAjouter);
         ligne.addView(btnCouleurTexteAjouter);
         ligne.addView(btnCouleurFondAjouter);
@@ -165,6 +181,10 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
         txtEtat.setDrawingCacheBackgroundColor(etat.getCouleurFond());
         txtEtat.setBackgroundColor(etat.getCouleurFond());
         txtEtat.setLayoutParams(parametre);
+
+        txtHistorique = new EditText(getContext());
+        txtHistorique.setText(etat.getHistorique());
+        txtHistorique.setLayoutParams(parametre);
 
         cbActif = new CheckBox(getContext());
         cbActif.setChecked(etat.getActif());
@@ -188,6 +208,7 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
         btnAnnuler.setOnClickListener(this);
 
         ligne.addView(txtEtat);
+        ligne.addView(txtHistorique);
         ligne.addView(cbActif);
         ligne.addView(btnCouleurTexte);
         ligne.addView(btnCouleurFond);
@@ -201,6 +222,7 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
         EtatFermenteur etat = TableEtatFermenteur.instance(getContext()).recupererIndex(indexActif);
         TableEtatFermenteur.instance(getContext()).modifier(etat.getId(),
                                                             txtEtat.getText().toString(),
+                                                            txtHistorique.getText().toString(),
                                                             txtEtat.getCurrentTextColor(),
                                                             txtEtat.getDrawingCacheBackgroundColor(),
                                                             cbActif.isChecked());
@@ -246,9 +268,10 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
         else if (v.equals(btnAjouter)) {
             TableEtatFermenteur tableEtatFermenteur = TableEtatFermenteur.instance(getContext());
             tableEtatFermenteur.ajouter(txtEtatAjouter.getText().toString(),
-                    txtEtatAjouter.getCurrentTextColor(),
-                    txtEtatAjouter.getDrawingCacheBackgroundColor(),
-                    cbActifAjouter.isChecked());
+                                        txtHistoriqueAjouter.getText().toString(),
+                                        txtEtatAjouter.getCurrentTextColor(),
+                                        txtEtatAjouter.getDrawingCacheBackgroundColor(),
+                                        cbActifAjouter.isChecked());
             remplir();
         }
 

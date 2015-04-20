@@ -21,6 +21,6 @@ public class ColorPickerDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(new ColorPickerView(getContext(), this, elementModifier, txtEtat));
         setTitle("Choisissez la couleur");
-        getWindow().setLayout(290, 450);
+        //getWindow().setLayout(290, 450);
     }
 }

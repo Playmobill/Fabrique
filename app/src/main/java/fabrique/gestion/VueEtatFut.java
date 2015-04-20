@@ -30,12 +30,12 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
     private int indexActif;
     private Button btnCouleurTexte, btnCouleurFond, btnValider, btnAnnuler;
     private CheckBox cbActif;
-    private EditText txtEtat;
+    private EditText txtEtat, txtHistorique;
 
     //Ajouter
     private Button btnCouleurTexteAjouter, btnCouleurFondAjouter, btnAjouter;
     private CheckBox cbActifAjouter;
-    private EditText txtEtatAjouter;
+    private EditText txtEtatAjouter, txtHistoriqueAjouter;
     private TableRow ligneAjouter;
 
     protected VueEtatFut(Context contexte) {
@@ -72,20 +72,26 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
         txtTitre.setLayoutParams(parametre);
 
         TableRow ligneEntete = new TableRow(getContext());
-        TextView txtEtat = new TextView(getContext());
-        txtEtat.setText("État");
-        txtEtat.setTypeface(null, Typeface.BOLD);
-        txtEtat.setLayoutParams(parametre);
+            TextView txtEtat = new TextView(getContext());
+            txtEtat.setText("État");
+            txtEtat.setTypeface(null, Typeface.BOLD);
+            txtEtat.setLayoutParams(parametre);
 
-        TextView txtActif = new TextView(getContext());
-        txtActif.setText("Actif");
-        txtActif.setTypeface(null, Typeface.BOLD);
-        txtActif.setLayoutParams(parametre);
+            TextView txtHistorique = new TextView(getContext());
+            txtHistorique.setText("Historique");
+            txtHistorique.setTypeface(null, Typeface.BOLD);
+            txtHistorique.setLayoutParams(parametre);
 
-        ligneTitre.addView(txtTitre);
+            TextView txtActif = new TextView(getContext());
+            txtActif.setText("Actif");
+            txtActif.setTypeface(null, Typeface.BOLD);
+            txtActif.setLayoutParams(parametre);
+
+            ligneTitre.addView(txtTitre);
         addView(ligneTitre);
-        ligneEntete.addView(txtEtat);
-        ligneEntete.addView(txtActif);
+            ligneEntete.addView(txtEtat);
+            ligneEntete.addView(txtHistorique);
+            ligneEntete.addView(txtActif);
         addView(ligneEntete);
     }
 
@@ -99,6 +105,11 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
         txtEtat.setBackgroundColor(etat.getCouleurFond());
         txtEtat.setLayoutParams(parametre);
 
+        EditText txtHistorique = new EditText(getContext());
+        txtHistorique.setEnabled(false);
+        txtHistorique.setText(etat.getHistorique());
+        txtHistorique.setLayoutParams(parametre);
+
         CheckBox cbActif = new CheckBox(getContext());
         cbActif.setChecked(etat.getActif());
         cbActif.setEnabled(false);
@@ -110,6 +121,7 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
         btnsModifier.add(modifier);
 
         ligne.addView(txtEtat);
+        ligne.addView(txtHistorique);
         ligne.addView(cbActif);
         ligne.addView(modifier);
 
@@ -124,6 +136,9 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
         txtEtatAjouter.setDrawingCacheBackgroundColor(Color.WHITE);
         txtEtatAjouter.setBackgroundColor(Color.WHITE);
         txtEtatAjouter.setLayoutParams(parametre);
+
+        txtHistoriqueAjouter = new EditText(getContext());
+        txtHistoriqueAjouter.setLayoutParams(parametre);
 
         cbActifAjouter = new CheckBox(getContext());
         cbActifAjouter.setChecked(true);
@@ -143,6 +158,7 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
         btnAjouter.setOnClickListener(this);
 
         ligne.addView(txtEtatAjouter);
+        ligne.addView(txtHistoriqueAjouter);
         ligne.addView(cbActifAjouter);
         ligne.addView(btnCouleurTexteAjouter);
         ligne.addView(btnCouleurFondAjouter);
@@ -164,6 +180,10 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
         txtEtat.setDrawingCacheBackgroundColor(etat.getCouleurFond());
         txtEtat.setBackgroundColor(etat.getCouleurFond());
         txtEtat.setLayoutParams(parametre);
+
+        txtHistorique = new EditText(getContext());
+        txtHistorique.setText(etat.getHistorique());
+        txtHistorique.setLayoutParams(parametre);
 
         cbActif = new CheckBox(getContext());
         cbActif.setChecked(etat.getActif());
@@ -187,6 +207,7 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
         btnAnnuler.setOnClickListener(this);
 
         ligne.addView(txtEtat);
+        ligne.addView(txtHistorique);
         ligne.addView(cbActif);
         ligne.addView(btnCouleurTexte);
         ligne.addView(btnCouleurFond);
@@ -200,6 +221,7 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
         EtatFut etat = TableEtatFut.instance(getContext()).recupererIndex(indexActif);
         TableEtatFut.instance(getContext()).modifier(etat.getId(),
                                                      txtEtat.getText().toString(),
+                                                     txtHistorique.getText().toString(),
                                                      txtEtat.getCurrentTextColor(),
                                                      txtEtat.getDrawingCacheBackgroundColor(),
                                                      cbActif.isChecked());
@@ -245,9 +267,10 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
         else if (v.equals(btnAjouter)) {
             TableEtatFut tableEtatFut = TableEtatFut.instance(getContext());
             tableEtatFut.ajouter(txtEtatAjouter.getText().toString(),
-                    txtEtatAjouter.getCurrentTextColor(),
-                    txtEtatAjouter.getDrawingCacheBackgroundColor(),
-                    cbActifAjouter.isChecked());
+                                 txtHistoriqueAjouter.getText().toString(),
+                                 txtEtatAjouter.getCurrentTextColor(),
+                                 txtEtatAjouter.getDrawingCacheBackgroundColor(),
+                                 cbActifAjouter.isChecked());
             remplir();
         }
 

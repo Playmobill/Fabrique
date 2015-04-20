@@ -24,24 +24,25 @@ public class TableEtatFut extends Controle {
 
     private TableEtatFut(Context contexte){
         super(contexte, "EtatFut");
-        etats = new ArrayList<>();
 
+        etats = new ArrayList<>();
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            etats.add(new EtatFut(tmp.getLong(0), tmp.getString(1), tmp.getInt(2), tmp.getInt(3), tmp.getInt(4) == 1));
+            etats.add(new EtatFut(tmp.getLong(0), tmp.getString(1), tmp.getString(2), tmp.getInt(3), tmp.getInt(4), tmp.getInt(5) == 1));
         }
         Collections.sort(etats);
     }
 
-    public long ajouter(String texte, int couleurTexte, int couleurFond, boolean actif) {
+    public long ajouter(String texte, String historique, int couleurTexte, int couleurFond, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("texte", texte);
+        valeur.put("historique", historique);
         valeur.put("couleurTexte", couleurTexte);
         valeur.put("couleurFond", couleurFond);
         valeur.put("actif", actif);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            etats.add(new EtatFut(id, texte, couleurTexte, couleurFond, actif));
+            etats.add(new EtatFut(id, texte, historique, couleurTexte, couleurFond, actif));
             Collections.sort(etats);
         }
         return id;
@@ -78,15 +79,17 @@ public class TableEtatFut extends Controle {
         return listeEtatActif;
     }
 
-    public void modifier(long id, String texte, int couleurTexte, int couleurFond, boolean actif) {
+    public void modifier(long id, String texte, String historique, int couleurTexte, int couleurFond, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("texte", texte);
+        valeur.put("historique", historique);
         valeur.put("couleurTexte", couleurTexte);
         valeur.put("couleurFond", couleurFond);
         valeur.put("actif", actif);
         if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
             EtatFut etat = recupererId(id);
             etat.setTexte(texte);
+            etat.setHistorique(historique);
             etat.setCouleurTexte(couleurTexte);
             etat.setCouleurFond(couleurFond);
             etat.setActif(actif);
