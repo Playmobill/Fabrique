@@ -13,6 +13,8 @@ import android.widget.Spinner;
 
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableCuve;
+import fabrique.gestion.BDD.TableFermenteur;
+import fabrique.gestion.BDD.TableFut;
 
 /**
  * Created by thibaut on 19/04/15.
@@ -20,7 +22,7 @@ import fabrique.gestion.BDD.TableCuve;
 public class ActivityTransfert extends Activity implements AdapterView.OnItemSelectedListener, View.OnClickListener{
 
 
-    Spinner listeOrigine, listeDestination;
+    Spinner listeTypeOrigine, listeOrigine, listeTypeDestination, listeDestination;
     LinearLayout vueOrigine, vueDestination;
 
     @Override
@@ -38,21 +40,34 @@ public class ActivityTransfert extends Activity implements AdapterView.OnItemSel
         vueDestination = (LinearLayout)findViewById(R.id.vueDestination);
         vueDestination.addView(new VueCuve(this, TableCuve.instance(this).recupererIndex(0)));
 
+        listeTypeOrigine = (Spinner)findViewById(R.id.listeTypeOrigine);
+        ArrayAdapter<String> adapteurTypeOrigine= new ArrayAdapter<>(this, R.layout.spinner_style);
+        adapteurTypeOrigine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapteurTypeOrigine.add("Fermenteur");
+        adapteurTypeOrigine.add("Cuve");
+        adapteurTypeOrigine.add("Fût");
+        listeTypeOrigine.setAdapter(adapteurTypeOrigine);
+        listeTypeOrigine.setOnItemSelectedListener(this);
+
         listeOrigine = (Spinner)findViewById(R.id.listeOrigine);
-        ArrayAdapter<String> adapteurOrigine= new ArrayAdapter<>(this, R.layout.spinner_style);
+        ArrayAdapter<String> adapteurOrigine= new ArrayAdapter<>(this, R.layout.spinner_style , TableFermenteur.instance(this).numeros());
         adapteurOrigine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapteurOrigine.add("Fermenteur #1");
-        adapteurOrigine.add("Fermenteur #2");
-        adapteurOrigine.add("Fermenteur #3");
         listeOrigine.setAdapter(adapteurOrigine);
         listeOrigine.setOnItemSelectedListener(this);
 
+        listeTypeDestination = (Spinner)findViewById(R.id.listeTypeDestination);
+        ArrayAdapter<String> adapteurTypeDestination= new ArrayAdapter<>(this, R.layout.spinner_style);
+        adapteurTypeDestination.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapteurTypeDestination.add("Fermenteur");
+        adapteurTypeDestination.add("Cuve");
+        adapteurTypeDestination.add("Fût");
+        listeTypeDestination.setAdapter(adapteurTypeOrigine);
+        listeTypeDestination.setOnItemSelectedListener(this);
+        listeTypeDestination.setSelection(1);
+
         listeDestination = (Spinner)findViewById(R.id.listeDestination);
-        ArrayAdapter<String> adapteurDestination= new ArrayAdapter<>(this, R.layout.spinner_style);
+        ArrayAdapter<String> adapteurDestination= new ArrayAdapter<>(this, R.layout.spinner_style , TableCuve.instance(this).numeros());
         adapteurDestination.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapteurDestination.add("Cuve #1");
-        adapteurDestination.add("Cuve #2");
-        adapteurDestination.add("Cuve #3");
         listeDestination.setAdapter(adapteurDestination);
         listeDestination.setOnItemSelectedListener(this);
 
@@ -77,12 +92,56 @@ public class ActivityTransfert extends Activity implements AdapterView.OnItemSel
         }
         if(parent.equals(listeDestination)){
             vueDestination.removeAllViews();
-            vueDestination.addView(new VueCuve(this, TableCuve.instance(this).recupererIndex(position)));
+
+            if(listeTypeDestination.getSelectedItemPosition() == 0){
+                vueDestination.addView(new VueFermenteur(this, TableFermenteur.instance(this).recupererIndex(position)));
+            }
+            else if(listeTypeDestination.getSelectedItemPosition() == 1){
+                vueDestination.addView(new VueCuve(this, TableCuve.instance(this).recupererIndex(position)));
+            }
+            else{
+                vueDestination.addView(new VueFut(this, TableFut.instance(this).recupererIndex(position)));
+            }
+        }
+        if(parent.equals(listeTypeOrigine)){
+            ArrayAdapter<String> adapteurOrigine;
+            if(position==1){
+                adapteurOrigine = new ArrayAdapter<>(this, R.layout.spinner_style, TableCuve.instance(this).numeros());
+            }
+            else if(position==2){
+                adapteurOrigine = new ArrayAdapter<>(this, R.layout.spinner_style, TableFut.instance(this).numeros());
+            }
+            else {
+                adapteurOrigine = new ArrayAdapter<>(this, R.layout.spinner_style, TableFermenteur.instance(this).numeros());
+            }
+            adapteurOrigine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            listeOrigine.setAdapter(adapteurOrigine);
+            listeOrigine.setOnItemSelectedListener(this);
+        }
+        if(parent.equals(listeTypeDestination)){
+            ArrayAdapter<String> adapteurDestination;
+            if(position==1){
+                adapteurDestination = new ArrayAdapter<>(this, R.layout.spinner_style, TableCuve.instance(this).numeros());
+                vueDestination.removeAllViews();
+                vueDestination.addView(new VueCuve(this, TableCuve.instance(this).recupererIndex(0)));
+            }
+            else if(position==2){
+                adapteurDestination = new ArrayAdapter<>(this, R.layout.spinner_style, TableFut.instance(this).numeros());
+                vueDestination.removeAllViews();
+                vueDestination.addView(new VueFut(this, TableFut.instance(this).recupererIndex(0)));
+            }
+            else {
+                adapteurDestination = new ArrayAdapter<>(this, R.layout.spinner_style, TableFermenteur.instance(this).numeros());
+                vueDestination.removeAllViews();
+                vueDestination.addView(new VueFermenteur(this, TableFermenteur.instance(this).recupererIndex(0)));
+            }
+            adapteurDestination.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            listeDestination.setAdapter(adapteurDestination);
+            listeDestination.setOnItemSelectedListener(this);
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }

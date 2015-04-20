@@ -102,7 +102,7 @@ public class TableRecette extends Controle {
     }
 
 
-    public String[] numeros() {
+    public String[] noms() {
         String[] numeroFermenteurs = new String[types.size()];
         for (int i=0; i<types.size() ; i++) {
             numeroFermenteurs[i] = types.get(i).getNom() + "";

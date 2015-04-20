@@ -31,7 +31,7 @@ public class ActivityListeRecette extends Activity implements AdapterView.OnItem
 
         liste = (Spinner)findViewById(R.id.liste);
         TableRecette tableRecette = TableRecette.instance(this);
-        ArrayAdapter<String> adapteurRecette= new ArrayAdapter<>(this, R.layout.spinner_style, tableRecette.numeros());
+        ArrayAdapter<String> adapteurRecette= new ArrayAdapter<>(this, R.layout.spinner_style, tableRecette.noms());
         adapteurRecette.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         liste.setAdapter(adapteurRecette);
         liste.setOnItemSelectedListener(this);
