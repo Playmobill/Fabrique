@@ -24,6 +24,7 @@ import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatFermenteur;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableGestion;
+import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.Objets.Emplacement;
 import fabrique.gestion.Objets.EtatFermenteur;
 import fabrique.gestion.Objets.Fermenteur;
@@ -359,6 +360,13 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                             listeEtat.get(i).getId(),
                             fermenteur.getLongDateEtat(),
                             fermenteur.getIdBrassin());
+                    String texte = listeEtat.get(i).getHistorique();
+                    if (texte != null) {
+                        TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), fermenteur.getId(), -1, -1, fermenteur.getIdBrassin());
+                        Intent intent = new Intent(getContext(), ActivityVueFermenteur.class);
+                        intent.putExtra("id", fermenteur.getId());
+                        getContext().startActivity(intent);
+                    }
                     afficherDescription();
                 }
             }

@@ -3,11 +3,15 @@ package fabrique.gestion.Objets;
 public class EtatFut extends Objet implements Comparable<EtatFut> {
 
     private String texte;
+    private String historique;
     private int couleurTexte;
     private int couleurFond;
     private boolean actif;
 
     public String getTexte() { return texte; }
+    public String getHistorique() {
+        return historique;
+    }
     public int getCouleurTexte() {
         return couleurTexte;
     }
@@ -19,6 +23,9 @@ public class EtatFut extends Objet implements Comparable<EtatFut> {
     }
 
     public void setTexte(String texte) { this.texte = texte; }
+    public void setHistorique(String historique) {
+        this.historique = historique;
+    }
     public void setCouleurTexte(int couleurTexte) {
         this.couleurTexte = couleurTexte;
     }
@@ -29,9 +36,10 @@ public class EtatFut extends Objet implements Comparable<EtatFut> {
         this.actif = actif;
     }
 
-    public EtatFut(long id, String texte, int couleurTexte, int couleurFond, boolean actif){
+    public EtatFut(long id, String texte, String historique, int couleurTexte, int couleurFond, boolean actif){
         super(id);
         this.texte = texte;
+        this.historique = historique;
         this.couleurTexte = couleurTexte;
         this.couleurFond = couleurFond;
         this.actif = actif;

@@ -23,6 +23,7 @@ import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableEtatFut;
 import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.BDD.TableGestion;
+import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.Objets.EtatFut;
 import fabrique.gestion.Objets.Fut;
 
@@ -307,6 +308,13 @@ public class VueFut extends TableLayout implements View.OnClickListener {
                             System.currentTimeMillis(),
                             fut.getId_brassin(),
                             fut.getDateInspection());
+                    String texte = listeEtat.get(i).getHistorique();
+                    if (texte != null) {
+                        TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, -1, fut.getId(), fut.getId_brassin());
+                        Intent intent = new Intent(getContext(), ActivityVueFut.class);
+                        intent.putExtra("id", fut.getId());
+                        getContext().startActivity(intent);
+                    }
                     afficherDescription();
                 }
             }

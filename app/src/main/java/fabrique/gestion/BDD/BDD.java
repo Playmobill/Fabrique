@@ -22,6 +22,7 @@ public class BDD extends SQLiteOpenHelper {
     private static String createurTableEtatFermenteur = "CREATE TABLE IF NOT EXISTS EtatFermenteur (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                                 "texte TEXT NOT NULL, " +
+                                                "historique TEXT, " +
                                                 "couleurTexte INTEGER NOT NULL," +
                                                 "couleurFond INTEGER NOT NULL," +
                                                 "actif INTEGER NOT NULL)";
@@ -30,6 +31,7 @@ public class BDD extends SQLiteOpenHelper {
     private static String createurTableEtatCuve = "CREATE TABLE IF NOT EXISTS EtatCuve (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                                 "texte TEXT NOT NULL, " +
+                                                "historique TEXT, " +
                                                 "couleurTexte INTEGER NOT NULL," +
                                                 "couleurFond INTEGER NOT NULL," +
                                                 "actif INTEGER NOT NULL)";
@@ -37,6 +39,7 @@ public class BDD extends SQLiteOpenHelper {
     private static String createurTableEtatFut = "CREATE TABLE IF NOT EXISTS EtatFut (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                                 "texte TEXT NOT NULL, " +
+                                                "historique TEXT, " +
                                                 "couleurTexte INTEGER NOT NULL," +
                                                 "couleurFond INTEGER NOT NULL," +
                                                 "actif INTEGER NOT NULL)";
@@ -120,9 +123,9 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL(createurTableHistorique);
         db.execSQL(createurTableListeHistorique);
 
-        db.execSQL("INSERT INTO EtatFermenteur (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
-        db.execSQL("INSERT INTO EtatCuve (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
-        db.execSQL("INSERT INTO EtatFut (texte, couleurTexte, couleurFond, actif) VALUES ('Vide', " + Color.BLACK + ", " + Color.WHITE +", 1)");
+        db.execSQL("INSERT INTO EtatFermenteur (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', " + Color.BLACK + ", " + Color.WHITE +", 1)");
+        db.execSQL("INSERT INTO EtatCuve (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', " + Color.BLACK + ", " + Color.WHITE +", 1)");
+        db.execSQL("INSERT INTO EtatFut (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', " + Color.BLACK + ", " + Color.WHITE +", 1)");
 
         db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, actif) VALUES ('Riv. Blanche', 'Blanche', 'Rvb', 1)");
         db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, actif) VALUES ('République', 'Blonde', 'Rpb', 1)");
