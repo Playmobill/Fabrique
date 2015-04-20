@@ -16,15 +16,16 @@ public class ActivityVueFut extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
         Intent intent = getIntent();
         long id = intent.getLongExtra("id", -1);
-
-        LinearLayout layout = new LinearLayout(this);
 
         Fut fut = TableFut.instance(this).recupererId(id);
         if (fut != null) {
             if (fut.getBrassin(this) != null) {
-                //layout.addView(new VueBrassin(this, fermenteur.getBrassin()));
+                layout.addView(new VueBrassin(this, fut.getBrassin(this)));
             }
             layout.addView(new VueFut(this, fut));
         } else {

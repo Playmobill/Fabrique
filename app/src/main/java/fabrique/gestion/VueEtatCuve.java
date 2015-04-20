@@ -1,6 +1,7 @@
 package fabrique.gestion;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
@@ -119,6 +120,10 @@ public class VueEtatCuve extends TableLayout implements View.OnClickListener {
     private void ligneAjouterNouveau() {
         TableRow ligne = new TableRow(getContext());
             txtEtatAjouter = new EditText(getContext());
+            txtEtatAjouter.setLayoutParams(parametre);
+            txtEtatAjouter.setTextColor(Color.BLACK);
+            txtEtatAjouter.setDrawingCacheBackgroundColor(Color.WHITE);
+            txtEtatAjouter.setBackgroundColor(Color.WHITE);
             txtEtatAjouter.setLayoutParams(parametre);
 
             cbActifAjouter = new CheckBox(getContext());

@@ -93,4 +93,14 @@ public class TableEtatFut extends Controle {
             Collections.sort(etats);
         }
     }
+
+    public ArrayList<EtatFut> recupererListeEtatActifs() {
+        ArrayList<EtatFut> listeEtatActif = new ArrayList<>();
+        for (int i=0; i<etats.size(); i++) {
+            if (etats.get(i).getActif()) {
+                listeEtatActif.add(etats.get(i));
+            }
+        }
+        return listeEtatActif;
+    }
 }

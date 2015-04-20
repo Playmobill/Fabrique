@@ -78,6 +78,16 @@ public class TableEtatFermenteur extends Controle {
         return listeEtatActif;
     }
 
+    public ArrayList<EtatFermenteur> recupererListeEtatActifs() {
+        ArrayList<EtatFermenteur> listeEtatActif = new ArrayList<>();
+        for (int i=0; i<etats.size(); i++) {
+            if (etats.get(i).getActif()) {
+                listeEtatActif.add(etats.get(i));
+            }
+        }
+        return listeEtatActif;
+    }
+
     public void modifier(long id, String texte, int couleurTexte, int couleurFond, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("texte", texte);

@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableHistorique;
@@ -33,7 +35,7 @@ import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.Objets.ListeHistorique;
 import fabrique.gestion.Objets.Recette;
 
-public class VueBrassin extends TableLayout implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
+public class VueBrassin extends LinearLayout implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private Brassin brassin;
 
@@ -54,125 +56,73 @@ public class VueBrassin extends TableLayout implements View.OnClickListener, Dat
     private EditText editDateCreation;
 
     //Historique
-    private LinearLayout tableauHistorique;
+    private TableLayout tableauHistorique;
 
     //LigneAjouter
     private Spinner ajoutListeHistorique;
-    private ArrayList<ListeHistorique> listeHistoriques;
     private EditText ajoutHistorique;
     private Button btnAjouter;
 
-    protected VueBrassin(Context contexte, Brassin brassin) {
+    public VueBrassin(Context contexte) {
+        super(contexte);
+    }
+
+    public VueBrassin(Context contexte, Brassin brassin) {
         super(contexte);
 
         this.brassin = brassin;
 
-        RelativeLayout contenantDescription = new RelativeLayout(contexte);
-        RelativeLayout.LayoutParams parametreContenantDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        addView(contenantDescription, parametreContenantDescription);
+        LinearLayout ligne = new LinearLayout(contexte);
 
-        LinearLayout contenantTitreDescription = new LinearLayout(contexte);
-        contenantTitreDescription.setBackgroundColor(Color.BLACK);
-        contenantTitreDescription.setPadding(1, 1, 1, 1);
-        RelativeLayout.LayoutParams parametreContenantTitreDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreContenantTitreDescription.setMargins(10, 1, 0, 0);
-            TextView titreDescription2 = new TextView(contexte);
-            titreDescription2.setText(" Description du brassin ");
-            titreDescription2.setTypeface(null, Typeface.BOLD);
-            titreDescription2.setBackgroundColor(Color.WHITE);
-            contenantTitreDescription.addView(titreDescription2);
-        contenantDescription.addView(contenantTitreDescription, parametreContenantTitreDescription);
-
-        RelativeLayout contourDescription = new RelativeLayout(contexte);
-        contourDescription.setBackgroundColor(Color.BLACK);
-        contourDescription.setPadding(1, 1, 1, 1);
-        RelativeLayout.LayoutParams parametreContourDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreContourDescription.topMargin=15;
-        parametreContourDescription.leftMargin=5;
-        contenantDescription.addView(contourDescription, parametreContourDescription);
-
-        TextView titreDescription = new TextView(contexte);
-        titreDescription.setText(" Description du brassin ");
-        titreDescription.setTypeface(null, Typeface.BOLD);
-        titreDescription.setBackgroundColor(Color.WHITE);
-        RelativeLayout.LayoutParams parametreTitreDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreTitreDescription.setMargins(11, 2, 0, 0);
-        contenantDescription.addView(titreDescription, parametreTitreDescription);
-
-        tableauDescription = new TableLayout(contexte);
+        tableauDescription = new TableLayout(getContext());
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
         tableauDescription.setBackgroundColor(Color.WHITE);
-        contourDescription.addView(tableauDescription);
-
+        ligne.addView(cadre(tableauDescription, " Description "));
         afficherDescription();
 
-        RelativeLayout contenantHistorique = new RelativeLayout(contexte);
-        RelativeLayout.LayoutParams parametreContenantHistorique = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        addView(contenantHistorique, parametreContenantHistorique);
-
-        LinearLayout contenantTitreHistorique = new LinearLayout(contexte);
-        contenantTitreHistorique.setBackgroundColor(Color.BLACK);
-        contenantTitreHistorique.setPadding(1, 1, 1, 1);
-        RelativeLayout.LayoutParams parametreContenantTitreHistorique = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreContenantTitreHistorique.setMargins(10, 1, 0, 0);
-            TextView titreHistorique2 = new TextView(contexte);
-            titreHistorique2.setText(" Historique du brassin ");
-            titreHistorique2.setTypeface(null, Typeface.BOLD);
-            titreHistorique2.setBackgroundColor(Color.WHITE);
-            contenantTitreHistorique.addView(titreHistorique2);
-        contenantHistorique.addView(contenantTitreHistorique, parametreContenantTitreHistorique);
-
-        RelativeLayout contourHistorique = new RelativeLayout(contexte);
-        contourHistorique.setBackgroundColor(Color.BLACK);
-        contourHistorique.setPadding(1, 1, 1, 1);
-        RelativeLayout.LayoutParams parametreContourHistorique = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreContourHistorique.topMargin=15;
-        parametreContourHistorique.leftMargin=5;
-        contenantHistorique.addView(contourHistorique, parametreContourHistorique);
-
-        TextView titreHistorique = new TextView(contexte);
-        titreHistorique.setText(" Historique du brassin ");
-        titreHistorique.setTypeface(null, Typeface.BOLD);
-        titreHistorique.setBackgroundColor(Color.WHITE);
-        RelativeLayout.LayoutParams parametreTitreHistorique = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreTitreHistorique.setMargins(11, 2, 0, 0);
-        contenantHistorique.addView(titreHistorique, parametreTitreHistorique);
-
-        LinearLayout ligneAjouter = new LinearLayout(contexte);
-        ligneAjouter.setOrientation(LinearLayout.HORIZONTAL);
-        ligneAjouter.setBackgroundColor(Color.WHITE);
-
-            listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueBrassin();
-            String[] tabListeHistorique = new String[listeHistoriques.size()];
-            for (int i=0; i<tabListeHistorique.length ; i++) {
-                tabListeHistorique[i] = listeHistoriques.get(i).getTexte();
-            }
-            ajoutListeHistorique = new Spinner(getContext());
-            ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
-            adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
-
-            ajoutHistorique = new EditText(getContext());
-
-            btnAjouter = new Button(getContext());
-            btnAjouter.setText("Ajouter");
-            btnAjouter.setOnClickListener(this);
-
-            ligneAjouter.addView(ajoutListeHistorique);
-            ligneAjouter.addView(ajoutHistorique);
-            ligneAjouter.addView(btnAjouter);
-            ligneAjouter.setId(1);
-        contourHistorique.addView(ligneAjouter);
-
-        tableauHistorique = new TableLayout(contexte);
-        RelativeLayout.LayoutParams parametreTableauHistorique = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreTableauHistorique.setMargins(0, 1, 0, 0);
-        parametreTableauHistorique.addRule(RelativeLayout.BELOW, ligneAjouter.getId());
-        tableauHistorique.setOrientation(LinearLayout.VERTICAL);
+        tableauHistorique = new TableLayout(getContext());
         tableauHistorique.setBackgroundColor(Color.WHITE);
-        contourHistorique.addView(tableauHistorique, parametreTableauHistorique);
-
+        ligne.addView(cadre(tableauHistorique, " Historique "));
         afficherHistorique();
+
+        HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(getContext());
+        layoutHorizontalScroll.addView(ligne);
+        addView(layoutHorizontalScroll);
+    }
+
+    private RelativeLayout cadre(View view, String texteTitre) {
+        RelativeLayout contenant = new RelativeLayout(getContext());
+
+            LinearLayout contourTitre = new LinearLayout(getContext());
+            contourTitre.setBackgroundColor(Color.BLACK);
+            contourTitre.setPadding(1, 1, 1, 1);
+            RelativeLayout.LayoutParams parametreContourTitre = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            parametreContourTitre.setMargins(10, 1, 0, 0);
+                TextView fondTitre = new TextView(getContext());
+                fondTitre.setText(texteTitre);
+                fondTitre.setTypeface(null, Typeface.BOLD);
+                fondTitre.setBackgroundColor(Color.WHITE);
+
+            RelativeLayout contour = new RelativeLayout(getContext());
+            contour.setBackgroundColor(Color.BLACK);
+            contour.setPadding(1, 1, 1, 1);
+            RelativeLayout.LayoutParams parametreContour = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            parametreContour.topMargin=15;
+            parametreContour.leftMargin=5;
+
+            TextView titre = new TextView(getContext());
+            titre.setText(texteTitre);
+            titre.setTypeface(null, Typeface.BOLD);
+            titre.setBackgroundColor(Color.WHITE);
+            RelativeLayout.LayoutParams parametreTitre = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            parametreTitre.setMargins(11, 2, 0, 0);
+
+            contenant.addView(contourTitre, parametreContourTitre);
+                contourTitre.addView(fondTitre);
+            contenant.addView(contour, parametreContour);
+                contour.addView(view);
+            contenant.addView(titre, parametreTitre);
+        return contenant;
     }
 
     private void afficherDescription() {
@@ -411,8 +361,9 @@ public class VueBrassin extends TableLayout implements View.OnClickListener, Dat
         }
 
         if (erreur.equals("")) {
-            long recette = listeRecetteActifs.get(editRecette.getSelectedItemPosition()-1).getId();
-            TableBrassin.instance(getContext()).modifier(brassin.getId(), numero, editCommentaire.getText().toString() + "", System.currentTimeMillis(), quantite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
+            long recette = listeRecetteActifs.get(editRecette.getSelectedItemPosition()).getId();
+            long date = new GregorianCalendar(annee, mois, jour).getTimeInMillis();
+            TableBrassin.instance(getContext()).modifier(brassin.getId(), numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
             indexRecette = (int)recette;
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
@@ -435,14 +386,38 @@ public class VueBrassin extends TableLayout implements View.OnClickListener, Dat
 
     private void afficherHistorique() {
         tableauHistorique.removeAllViews();
+
+        TableRow ligneAjouter = new TableRow(getContext());
+        ligneAjouter.setOrientation(LinearLayout.HORIZONTAL);
+
+        ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueBrassin();
+        String[] tabListeHistorique = new String[listeHistoriques.size()];
+        for (int i=0; i<tabListeHistorique.length ; i++) {
+            tabListeHistorique[i] = listeHistoriques.get(i).getTexte();
+        }
+        ajoutListeHistorique = new Spinner(getContext());
+        ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
+        adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
+
+        ajoutHistorique = new EditText(getContext());
+
+        btnAjouter = new Button(getContext());
+        btnAjouter.setText("Ajouter");
+        btnAjouter.setOnClickListener(this);
+
+        ligneAjouter.addView(ajoutListeHistorique);
+        ligneAjouter.addView(ajoutHistorique);
+        ligneAjouter.addView(btnAjouter);
+        tableauHistorique.addView(ligneAjouter);
+
         ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdBrassin(brassin.getId());
         for (int i=0; i<historiques.size() ; i++) {
             TableRow ligne = new TableRow(getContext());
-            TableRow.LayoutParams parametreLigne = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
                 TextView texte = new TextView(getContext());
                 texte.setText(historiques.get(i).getDateToString() + " : " + historiques.get(i).getTexte());
             ligne.addView(texte);
-            tableauHistorique.addView(ligne, parametreLigne);
+            tableauHistorique.addView(ligne);
         }
     }
 

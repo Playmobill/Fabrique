@@ -1,6 +1,7 @@
 package fabrique.gestion;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.InputType;
@@ -12,18 +13,22 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableEmplacement;
+import fabrique.gestion.BDD.TableEtatCuve;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.Objets.Cuve;
 import fabrique.gestion.Objets.Emplacement;
+import fabrique.gestion.Objets.EtatCuve;
 
-public class VueCuve extends LinearLayout implements View.OnClickListener {
+public class VueCuve extends TableLayout implements View.OnClickListener {
 
     private Cuve cuve;
 
@@ -36,49 +41,82 @@ public class VueCuve extends LinearLayout implements View.OnClickListener {
     private LinearLayout ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler;
 
-    protected VueCuve(Context contexte, Cuve cuve) {
+    //Changer Brassin
+    private LinearLayout tableauBrassin;
+    private Spinner listeBrassin;
+    private Button btnAjouter;
+
+    //Changer Etat
+    private TableLayout tableauEtat;
+    private ArrayList<EtatCuve> listeEtat;
+    private ArrayList<Button> btnsEtat;
+
+    //Historique
+    private LinearLayout tableauHistorique;
+
+    public VueCuve(Context contexte) {
+        super(contexte);
+    }
+
+    public VueCuve(Context contexte, Cuve cuve) {
         super(contexte);
 
         this.cuve = cuve;
 
-        RelativeLayout contenantDescription = new RelativeLayout(contexte);
-        RelativeLayout.LayoutParams parametreContenantDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        addView(contenantDescription, parametreContenantDescription);
-
-        LinearLayout contenantTitreDescription = new LinearLayout(contexte);
-        contenantTitreDescription.setBackgroundColor(Color.BLACK);
-        contenantTitreDescription.setPadding(1, 1, 1, 1);
-        RelativeLayout.LayoutParams parametreContenantTitreDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreContenantTitreDescription.setMargins(10, 1, 0, 0);
-        TextView titreDescription2 = new TextView(contexte);
-        titreDescription2.setText(" Description de la cuve ");
-        titreDescription2.setTypeface(null, Typeface.BOLD);
-        titreDescription2.setBackgroundColor(Color.WHITE);
-        contenantTitreDescription.addView(titreDescription2);
-        contenantDescription.addView(contenantTitreDescription, parametreContenantTitreDescription);
-
-        RelativeLayout contourDescription = new RelativeLayout(contexte);
-        contourDescription.setBackgroundColor(Color.BLACK);
-        contourDescription.setPadding(1, 1, 1, 1);
-        RelativeLayout.LayoutParams parametreContourDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreContourDescription.topMargin=15;
-        parametreContourDescription.leftMargin=5;
-        contenantDescription.addView(contourDescription, parametreContourDescription);
-
-        TextView titreDescription = new TextView(contexte);
-        titreDescription.setText(" Description de la cuve ");
-        titreDescription.setTypeface(null, Typeface.BOLD);
-        titreDescription.setBackgroundColor(Color.WHITE);
-        RelativeLayout.LayoutParams parametreTitreDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreTitreDescription.setMargins(11, 2, 0, 0);
-        contenantDescription.addView(titreDescription, parametreTitreDescription);
+        TableRow ligne = new TableRow(contexte);
 
         tableauDescription = new TableLayout(contexte);
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
         tableauDescription.setBackgroundColor(Color.WHITE);
-        contourDescription.addView(tableauDescription);
-
+        ligne.addView(cadre(tableauDescription, " Description "));
         afficherDescription();
+
+        tableauBrassin = new LinearLayout(contexte);
+        tableauBrassin.setBackgroundColor(Color.WHITE);
+        ligne.addView(cadre(tableauBrassin, " Changer brassin "));
+        changerBrassin();
+
+        tableauEtat = new TableLayout(contexte);
+        tableauEtat.setBackgroundColor(Color.WHITE);
+        ligne.addView(cadre(tableauEtat, " Changer Etat "));
+        changerEtat();
+
+        addView(ligne);
+    }
+
+    private RelativeLayout cadre(View view, String texteTitre) {
+        RelativeLayout contenant = new RelativeLayout(getContext());
+
+        LinearLayout contourTitre = new LinearLayout(getContext());
+        contourTitre.setBackgroundColor(Color.BLACK);
+        contourTitre.setPadding(1, 1, 1, 1);
+        RelativeLayout.LayoutParams parametreContourTitre = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreContourTitre.setMargins(10, 1, 0, 0);
+        TextView fondTitre = new TextView(getContext());
+        fondTitre.setText(texteTitre);
+        fondTitre.setTypeface(null, Typeface.BOLD);
+        fondTitre.setBackgroundColor(Color.WHITE);
+
+        RelativeLayout contour = new RelativeLayout(getContext());
+        contour.setBackgroundColor(Color.BLACK);
+        contour.setPadding(1, 1, 1, 1);
+        RelativeLayout.LayoutParams parametreContour = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreContour.topMargin=15;
+        parametreContour.leftMargin=5;
+
+        TextView titre = new TextView(getContext());
+        titre.setText(texteTitre);
+        titre.setTypeface(null, Typeface.BOLD);
+        titre.setBackgroundColor(Color.WHITE);
+        RelativeLayout.LayoutParams parametreTitre = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreTitre.setMargins(11, 2, 0, 0);
+
+        contenant.addView(contourTitre, parametreContourTitre);
+        contourTitre.addView(fondTitre);
+        contenant.addView(contour, parametreContour);
+        contour.addView(view);
+        contenant.addView(titre, parametreTitre);
+        return contenant;
     }
 
     private void afficherDescription() {
@@ -242,6 +280,55 @@ public class VueCuve extends LinearLayout implements View.OnClickListener {
         ligneBouton.addView(btnModifier);
     }
 
+    private void changerBrassin() {
+        tableauBrassin.removeAllViews();
+
+        listeBrassin = new Spinner(getContext());
+        TableBrassin tableBrassin = TableBrassin.instance(getContext());
+        ArrayList<String> brassins = new ArrayList<>();
+        for (int i=0; i<tableBrassin.tailleListe() ; i++) {
+            brassins.add("" + tableBrassin.recupererIndex(i).getNumero());
+        }
+        ArrayAdapter<String> adapteurBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style, brassins);
+        adapteurBrassin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        listeBrassin.setAdapter(adapteurBrassin);
+
+        btnAjouter = new Button(getContext());
+        btnAjouter.setText("Ajouter");
+        btnAjouter.setOnClickListener(this);
+
+        tableauBrassin.addView(listeBrassin);
+        tableauBrassin.addView(btnAjouter);
+    }
+
+    private void changerEtat() {
+        tableauEtat.removeAllViews();
+
+        listeEtat = TableEtatCuve.instance(getContext()).recupererListeEtatActifs();
+
+        btnsEtat = new ArrayList<>();
+        TableRow ligne = new TableRow(getContext());
+        int i;
+        for (i=0; i<listeEtat.size() ; i++) {
+            Button btnEtat = new Button(getContext());
+            btnEtat.setText(listeEtat.get(i).getTexte());
+            btnEtat.setOnClickListener((this));
+            btnsEtat.add(btnEtat);
+            ligne.addView(btnEtat);
+            if (i%3 == 2) {
+                tableauEtat.addView(ligne);
+                ligne = new TableRow(getContext());
+            }
+        }
+        if ((i-1)%3 != 2) {
+            tableauEtat.addView(ligne);
+        }
+    }
+
+    private void afficherHistorique() {
+        tableauHistorique.removeAllViews();
+    }
+
     @Override
     public void onClick(View v) {
         if (v.equals(btnModifier)) {
@@ -250,6 +337,34 @@ public class VueCuve extends LinearLayout implements View.OnClickListener {
             validerDescription();
         } else if (v.equals(btnAnnuler)) {
             reafficherDescription();
+        } else if (v.equals(btnAjouter)) {
+            TableCuve.instance(getContext()).modifier(cuve.getId(),
+                    cuve.getNumero(),
+                    cuve.getCapacite(),
+                    cuve.getIdEmplacement(),
+                    cuve.getDateLavageAcide(),
+                    cuve.getIdEtat(),
+                    cuve.getLongDateEtat(),
+                    cuve.getCommentaireEtat(),
+                    TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId());
+            Intent intent = new Intent(getContext(), ActivityVueCuve.class);
+            intent.putExtra("id", cuve.getId());
+            getContext().startActivity(intent);
+        } else {
+            for (int i=0; i<btnsEtat.size() ; i++) {
+                if (v.equals(btnsEtat.get(i))) {
+                    TableCuve.instance(getContext()).modifier(cuve.getId(),
+                            cuve.getNumero(),
+                            cuve.getCapacite(),
+                            cuve.getIdEmplacement(),
+                            cuve.getDateLavageAcide(),
+                            listeEtat.get(i).getId(),
+                            System.currentTimeMillis(),
+                            cuve.getCommentaireEtat(),
+                            cuve.getIdBrassin());
+                    afficherDescription();
+                }
+            }
         }
     }
 }

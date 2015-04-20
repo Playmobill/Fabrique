@@ -94,4 +94,14 @@ public class TableEtatCuve extends Controle {
             Collections.sort(etats);
         }
     }
+
+    public ArrayList<EtatCuve> recupererListeEtatActifs() {
+        ArrayList<EtatCuve> listeEtatActif = new ArrayList<>();
+        for (int i=0; i<etats.size(); i++) {
+            if (etats.get(i).getActif()) {
+                listeEtatActif.add(etats.get(i));
+            }
+        }
+        return listeEtatActif;
+    }
 }

@@ -17,11 +17,12 @@ public class ActivityVueCuve extends Activity {
         super.onCreate(savedInstanceState);
 
         LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
 
         Intent intent = getIntent();
-        int index = intent.getIntExtra("index", -1);
+        long id = intent.getLongExtra("id", -1);
 
-        Cuve cuve = TableCuve.instance(this).recupererIndex(index);
+        Cuve cuve = TableCuve.instance(this).recupererId(id);
         if (cuve != null) {
             if (cuve.getBrassin(this) != null) {
                 layout.addView(new VueBrassin(this, cuve.getBrassin(this)));

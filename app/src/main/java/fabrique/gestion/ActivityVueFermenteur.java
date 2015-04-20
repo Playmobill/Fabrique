@@ -20,9 +20,9 @@ public class ActivityVueFermenteur extends Activity {
         layout.setOrientation(LinearLayout.VERTICAL);
 
         Intent intent = getIntent();
-        int index = intent.getIntExtra("index", -1);
+        long id = intent.getLongExtra("id", -1);
 
-        Fermenteur fermenteur = TableFermenteur.instance(this).recupererIndex(index);
+        Fermenteur fermenteur = TableFermenteur.instance(this).recupererId(id);
         if (fermenteur != null) {
             if (fermenteur.getBrassin(this) != null) {
                 layout.addView(new VueBrassin(this, fermenteur.getBrassin(this)));

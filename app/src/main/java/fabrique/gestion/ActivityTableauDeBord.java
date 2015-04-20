@@ -67,7 +67,7 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
             for (int i = 0; i < boutonsFermenteur.size(); i++) {
                 if (v.equals(boutonsFermenteur.get(i))) {
                     Intent intent = new Intent(this, ActivityVueFermenteur.class);
-                    intent.putExtra("index", i);
+                    intent.putExtra("id", TableFermenteur.instance(this).recupererIndex(i).getId());
                     startActivity(intent);
                 }
             }
@@ -75,7 +75,7 @@ public class ActivityTableauDeBord extends Activity implements View.OnClickListe
             for (int i = 0; i < boutonsCuve.size(); i++) {
                 if (v.equals(boutonsCuve.get(i))) {
                     Intent intent = new Intent(this, ActivityVueCuve.class);
-                    intent.putExtra("index", i);
+                    intent.putExtra("id", TableCuve.instance(this).recupererIndex(i).getId());
                     startActivity(intent);
                 }
             }

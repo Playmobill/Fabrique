@@ -1,11 +1,11 @@
 package fabrique.gestion;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.InputType;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,12 +21,14 @@ import java.util.ArrayList;
 
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableEmplacement;
+import fabrique.gestion.BDD.TableEtatFermenteur;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.Objets.Emplacement;
+import fabrique.gestion.Objets.EtatFermenteur;
 import fabrique.gestion.Objets.Fermenteur;
 
-public class VueFermenteur extends TableLayout implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class VueFermenteur extends TableLayout implements View.OnClickListener {
 
     private Fermenteur fermenteur;
 
@@ -39,55 +41,81 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
     private TableRow ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler;
 
-    //Ajouter brassin
+    //Changer Brassin
     private LinearLayout tableauBrassin;
+    private Spinner listeBrassin;
+    private Button btnAjouter;
+
+    //Changer Etat
+    private TableLayout tableauEtat;
+    private ArrayList<EtatFermenteur> listeEtat;
+    private ArrayList<Button> btnsEtat;
 
     //Historique
     private LinearLayout tableauHistorique;
 
-    protected VueFermenteur(Context contexte, Fermenteur fermenteur) {
+    public VueFermenteur(Context contexte) {
+        super(contexte);
+    }
+
+    public VueFermenteur(Context contexte, Fermenteur fermenteur) {
         super(contexte);
 
         this.fermenteur = fermenteur;
 
-        RelativeLayout contenantDescription = new RelativeLayout(contexte);
-        RelativeLayout.LayoutParams parametreContenantDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        addView(contenantDescription, parametreContenantDescription);
-
-        LinearLayout contenantTitreDescription = new LinearLayout(contexte);
-        contenantTitreDescription.setBackgroundColor(Color.BLACK);
-        contenantTitreDescription.setPadding(1, 1, 1, 1);
-        RelativeLayout.LayoutParams parametreContenantTitreDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreContenantTitreDescription.setMargins(10, 1, 0, 0);
-        TextView titreDescription2 = new TextView(contexte);
-        titreDescription2.setText(" Description du fermenteur ");
-        titreDescription2.setTypeface(null, Typeface.BOLD);
-        titreDescription2.setBackgroundColor(Color.WHITE);
-        contenantTitreDescription.addView(titreDescription2);
-        contenantDescription.addView(contenantTitreDescription, parametreContenantTitreDescription);
-
-        RelativeLayout contourDescription = new RelativeLayout(contexte);
-        contourDescription.setBackgroundColor(Color.BLACK);
-        contourDescription.setPadding(1, 1, 1, 1);
-        RelativeLayout.LayoutParams parametreContourDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreContourDescription.topMargin=15;
-        parametreContourDescription.leftMargin=5;
-        contenantDescription.addView(contourDescription, parametreContourDescription);
-
-        TextView titreDescription = new TextView(contexte);
-        titreDescription.setText(" Description du fermenteur ");
-        titreDescription.setTypeface(null, Typeface.BOLD);
-        titreDescription.setBackgroundColor(Color.WHITE);
-        RelativeLayout.LayoutParams parametreTitreDescription = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreTitreDescription.setMargins(11, 2, 0, 0);
-        contenantDescription.addView(titreDescription, parametreTitreDescription);
+        TableRow ligne = new TableRow(contexte);
 
         tableauDescription = new TableLayout(contexte);
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
         tableauDescription.setBackgroundColor(Color.WHITE);
-        contourDescription.addView(tableauDescription);
-
+        ligne.addView(cadre(tableauDescription, " Description "));
         afficherDescription();
+
+        tableauBrassin = new LinearLayout(contexte);
+        tableauBrassin.setBackgroundColor(Color.WHITE);
+        ligne.addView(cadre(tableauBrassin, " Changer brassin "));
+        changerBrassin();
+        addView(ligne);
+
+        tableauEtat = new TableLayout(contexte);
+        tableauEtat.setBackgroundColor(Color.WHITE);
+        ligne.addView(cadre(tableauEtat, " Changer Etat "));
+        changerEtat();
+    }
+
+    private RelativeLayout cadre(View view, String texteTitre) {
+        RelativeLayout contenant = new RelativeLayout(getContext());
+
+        LinearLayout contourTitre = new LinearLayout(getContext());
+        contourTitre.setBackgroundColor(Color.BLACK);
+        contourTitre.setPadding(1, 1, 1, 1);
+        RelativeLayout.LayoutParams parametreContourTitre = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreContourTitre.setMargins(10, 1, 0, 0);
+        TextView fondTitre = new TextView(getContext());
+        fondTitre.setText(texteTitre);
+        fondTitre.setTypeface(null, Typeface.BOLD);
+        fondTitre.setBackgroundColor(Color.WHITE);
+
+        RelativeLayout contour = new RelativeLayout(getContext());
+        contour.setBackgroundColor(Color.BLACK);
+        contour.setPadding(1, 1, 1, 1);
+        RelativeLayout.LayoutParams parametreContour = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreContour.topMargin=15;
+        parametreContour.leftMargin=5;
+
+        TextView titre = new TextView(getContext());
+        titre.setText(texteTitre);
+        titre.setTypeface(null, Typeface.BOLD);
+        titre.setBackgroundColor(Color.WHITE);
+        RelativeLayout.LayoutParams parametreTitre = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        parametreTitre.setMargins(11, 2, 0, 0);
+
+        contenant.addView(contourTitre, parametreContourTitre);
+        contourTitre.addView(fondTitre);
+        contenant.addView(contour, parametreContour);
+        contour.addView(view);
+        contenant.addView(titre, parametreTitre);
+        return contenant;
     }
 
     private void afficherDescription() {
@@ -251,9 +279,10 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
         ligneBouton.addView(btnModifier);
     }
 
-    private void ajouterBrassin() {
+    private void changerBrassin() {
         tableauBrassin.removeAllViews();
-        Spinner listeBrassin = new Spinner(getContext());
+
+        listeBrassin = new Spinner(getContext());
         TableBrassin tableBrassin = TableBrassin.instance(getContext());
         ArrayList<String> brassins = new ArrayList<>();
         for (int i=0; i<tableBrassin.tailleListe() ; i++) {
@@ -262,9 +291,37 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
         ArrayAdapter<String> adapteurBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style, brassins);
         adapteurBrassin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         listeBrassin.setAdapter(adapteurBrassin);
-        listeBrassin.setOnItemSelectedListener(this);
+
+        btnAjouter = new Button(getContext());
+        btnAjouter.setText("Ajouter");
+        btnAjouter.setOnClickListener(this);
 
         tableauBrassin.addView(listeBrassin);
+        tableauBrassin.addView(btnAjouter);
+    }
+
+    private void changerEtat() {
+        tableauEtat.removeAllViews();
+
+        listeEtat = TableEtatFermenteur.instance(getContext()).recupererListeEtatActifs();
+
+        btnsEtat = new ArrayList<>();
+        TableRow ligne = new TableRow(getContext());
+        int i;
+        for (i=0; i<listeEtat.size() ; i++) {
+            Button btnEtat = new Button(getContext());
+            btnEtat.setText(listeEtat.get(i).getTexte());
+            btnEtat.setOnClickListener((this));
+            btnsEtat.add(btnEtat);
+            ligne.addView(btnEtat);
+            if (i%3 == 2) {
+                tableauEtat.addView(ligne);
+                ligne = new TableRow(getContext());
+            }
+        }
+        if ((i-1)%3 != 2) {
+            tableauEtat.addView(ligne);
+        }
     }
 
     private void afficherHistorique() {
@@ -279,21 +336,32 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
             validerDescription();
         } else if (v.equals(btnAnnuler)) {
             reafficherDescription();
+        } else if (v.equals(btnAjouter)) {
+            TableFermenteur.instance(getContext()).modifier(fermenteur.getId(),
+                fermenteur.getNumero(),
+                fermenteur.getCapacite(),
+                fermenteur.getIdEmplacement(),
+                fermenteur.getDateLavageAcide(),
+                fermenteur.getIdEtat(),
+                fermenteur.getLongDateEtat(),
+                TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId());
+            Intent intent = new Intent(getContext(), ActivityVueFermenteur.class);
+            intent.putExtra("id", fermenteur.getId());
+            getContext().startActivity(intent);
+        } else {
+            for (int i=0; i<btnsEtat.size() ; i++) {
+                if (v.equals(btnsEtat.get(i))) {
+                    TableFermenteur.instance(getContext()).modifier(fermenteur.getId(),
+                            fermenteur.getNumero(),
+                            fermenteur.getCapacite(),
+                            fermenteur.getIdEmplacement(),
+                            System.currentTimeMillis(),
+                            listeEtat.get(i).getId(),
+                            fermenteur.getLongDateEtat(),
+                            fermenteur.getIdBrassin());
+                    afficherDescription();
+                }
+            }
         }
     }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        TableFermenteur.instance(getContext()).modifier(fermenteur.getId(),
-                                                        fermenteur.getNumero(),
-                                                        fermenteur.getCapacite(),
-                                                        fermenteur.getIdEmplacement(),
-                                                        fermenteur.getDateLavageAcide(),
-                                                        fermenteur.getIdEtat(),
-                                                        fermenteur.getLongDateEtat(),
-                                                        TableBrassin.instance(getContext()).recupererIndex((int)id).getId());
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {}
 }
