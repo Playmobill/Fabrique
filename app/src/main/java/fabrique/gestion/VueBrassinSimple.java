@@ -19,7 +19,6 @@ public class VueBrassinSimple extends LinearLayout {
 
     //Description
     private LinearLayout tableauDescription;
-    private TextView editNumero, editDateCreation, editQuantite, editRecette, editCommentaire, editDensiteOriginale, editDensiteFinale, editPourcentageAlcool;
 
     public VueBrassinSimple(Context contexte) {
         super(contexte);
@@ -90,7 +89,7 @@ public class VueBrassinSimple extends LinearLayout {
                 numero.setText("Brassin ");
                 numero.setTypeface(null, Typeface.BOLD);
 
-                editNumero = new TextView(getContext());
+                TextView editNumero = new TextView(getContext());
                 editNumero.setText("" + brassin.getNumero());
                 editNumero.setTypeface(null, Typeface.BOLD);
 
@@ -98,7 +97,7 @@ public class VueBrassinSimple extends LinearLayout {
                 TextView dateCreation = new TextView(getContext());
                 dateCreation.setText("Date de création ");
 
-                editDateCreation = new TextView(getContext());
+                TextView editDateCreation = new TextView(getContext());
                 editDateCreation.setText(brassin.getDateCreation());
 
         TableRow ligneRecetteQuantite = new TableRow(getContext());
@@ -106,14 +105,14 @@ public class VueBrassinSimple extends LinearLayout {
                 TextView recette = new TextView(getContext());
                 recette.setText("Recette : ");
 
-                editRecette = new TextView(getContext());
+                TextView editRecette = new TextView(getContext());
                 editRecette.setText(brassin.getRecette(getContext()).getNom());
 
             LinearLayout layoutQuantite = new LinearLayout(getContext());
                 TextView quantite = new TextView(getContext());
                 quantite.setText("Quantité : ");
 
-                editQuantite = new TextView(getContext());
+                TextView editQuantite = new TextView(getContext());
                 editQuantite.setText("" + brassin.getQuantite());
 
         LinearLayout ligneCommentaire = new LinearLayout(getContext());
@@ -121,7 +120,7 @@ public class VueBrassinSimple extends LinearLayout {
                 TextView commentaire = new TextView(getContext());
                 commentaire.setText("Commentaire : ");
 
-                editCommentaire = new TextView(getContext());
+                TextView editCommentaire = new TextView(getContext());
                 editCommentaire.setText(brassin.getCommentaire());
 
         TableRow ligneDensite = new TableRow(getContext());
@@ -129,14 +128,14 @@ public class VueBrassinSimple extends LinearLayout {
                 TextView densiteOriginale = new TextView(getContext());
                 densiteOriginale.setText("Densité originale : ");
 
-                editDensiteOriginale = new EditText(getContext());
+                TextView editDensiteOriginale = new EditText(getContext());
                 editDensiteOriginale.setText("" + brassin.getDensiteOriginale());
 
             LinearLayout layoutDensiteFinale = new LinearLayout(getContext());
                 TextView densiteFinale = new TextView(getContext());
                 densiteFinale.setText("Densité finale : ");
 
-                editDensiteFinale = new TextView(getContext());
+                TextView editDensiteFinale = new TextView(getContext());
                 editDensiteFinale.setText("" + brassin.getDensiteFinale());
 
         LinearLayout lignePourcentageAlcool = new LinearLayout(getContext());
@@ -144,7 +143,7 @@ public class VueBrassinSimple extends LinearLayout {
                 TextView pourcentageAlcool = new TextView(getContext());
                 pourcentageAlcool.setText("%Alc/vol : ");
 
-                editPourcentageAlcool = new TextView(getContext());
+                TextView editPourcentageAlcool = new TextView(getContext());
                 editPourcentageAlcool.setText("" + brassin.getPourcentageAlcool());
 
 
