@@ -99,26 +99,26 @@ public class ActivityTransfert extends Activity implements AdapterView.OnItemSel
         if(parent.equals(listeOrigine)){
             vueOrigine.removeAllViews();
             if(listeTypeOrigine.getItemAtPosition(listeTypeOrigine.getSelectedItemPosition()).equals("Fermenteur") && TableFermenteur.instance(this).recupererIndex(listeOrigine.getSelectedItemPosition()).getBrassin(this)!=null) {
-                vueOrigine.addView(new VueBrassin(this, TableFermenteur.instance(this).recupererIndex(listeOrigine.getSelectedItemPosition()).getBrassin(this)));
+                vueOrigine.addView(new VueBrassinSimple(this, TableFermenteur.instance(this).recupererIndex(listeOrigine.getSelectedItemPosition()).getBrassin(this)));
             }
             else if(listeTypeOrigine.getItemAtPosition(listeTypeOrigine.getSelectedItemPosition()).equals("Fût") && TableFut.instance(this).recupererIndex(listeOrigine.getSelectedItemPosition()).getBrassin(this) !=null) {
-                vueOrigine.addView(new VueBrassin(this, TableFut.instance(this).recupererIndex(listeOrigine.getSelectedItemPosition()).getBrassin(this)));
+                vueOrigine.addView(new VueBrassinSimple(this, TableFut.instance(this).recupererIndex(listeOrigine.getSelectedItemPosition()).getBrassin(this)));
             }
             else if(listeTypeOrigine.getItemAtPosition(listeTypeOrigine.getSelectedItemPosition()).equals("Cuve") && TableCuve.instance(this).recupererIndex(listeOrigine.getSelectedItemPosition()).getBrassin(this)!=null) {
-                vueOrigine.addView(new VueBrassin(this, TableCuve.instance(this).recupererIndex(listeOrigine.getSelectedItemPosition()).getBrassin(this)));
+                vueOrigine.addView(new VueBrassinSimple(this, TableCuve.instance(this).recupererIndex(listeOrigine.getSelectedItemPosition()).getBrassin(this)));
             }
         }
         if(parent.equals(listeDestination)){
             vueDestination.removeAllViews();
 
             if(listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Fermenteur")){
-                vueDestination.addView(new VueFermenteur(this, TableFermenteur.instance(this).recupererIndex(position)));
+                vueDestination.addView(new VueFermenteurSimple(this, TableFermenteur.instance(this).recupererIndex(position)));
             }
             else if(listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Cuve")){
-                vueDestination.addView(new VueCuve(this, TableCuve.instance(this).recupererIndex(position)));
+                vueDestination.addView(new VueCuveSimple(this, TableCuve.instance(this).recupererIndex(position)));
             }
             else if(listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Fût")){
-                vueDestination.addView(new VueFut(this, TableFut.instance(this).recupererIndex(position)));
+                vueDestination.addView(new VueFutSimple(this, TableFut.instance(this).recupererIndex(position)));
             }
         }
         if(parent.equals(listeTypeOrigine)){
