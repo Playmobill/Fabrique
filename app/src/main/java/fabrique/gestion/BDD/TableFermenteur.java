@@ -101,4 +101,15 @@ public class TableFermenteur extends Controle {
         }
         return numeroFermenteurs;
     }
+
+    public ArrayList<Fermenteur> recupererFermenteurAvecBrassin() {
+        ArrayList<Fermenteur> listeCuve = new ArrayList<>();
+
+        for (int i=0; i<fermenteurs.size(); i++) {
+            if (fermenteurs.get(i).getIdBrassin() != -1) {
+                listeCuve.add(fermenteurs.get(i));
+            }
+        }
+        return listeCuve;
+    }
 }

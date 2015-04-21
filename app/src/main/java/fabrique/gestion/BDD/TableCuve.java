@@ -103,4 +103,15 @@ public class TableCuve extends Controle{
         }
         return numeroFermenteurs;
     }
+
+    public ArrayList<Cuve> recupererCuveAvecBrassin() {
+        ArrayList<Cuve> listeCuve = new ArrayList<>();
+
+        for (int i=0; i<cuves.size(); i++) {
+            if (cuves.get(i).getIdBrassin() != -1) {
+                listeCuve.add(cuves.get(i));
+            }
+        }
+        return listeCuve;
+    }
 }

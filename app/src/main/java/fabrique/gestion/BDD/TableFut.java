@@ -314,4 +314,15 @@ public class TableFut extends Controle {
         }
         return listeListe;
     }
+
+    public ArrayList<Fut> recupererFutAvecBrassin() {
+        ArrayList<Fut> listeCuve = new ArrayList<>();
+
+        for (int i=0; i<futs.size(); i++) {
+            if (futs.get(i).getId_brassin() != -1) {
+                listeCuve.add(futs.get(i));
+            }
+        }
+        return listeCuve;
+    }
 }
