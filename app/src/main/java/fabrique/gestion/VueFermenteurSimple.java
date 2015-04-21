@@ -18,7 +18,7 @@ public class VueFermenteurSimple extends LinearLayout {
     private Fermenteur fermenteur;
 
     //Description
-    private LinearLayout tableauDescription;
+    private TableLayout tableauDescription;
 
     public VueFermenteurSimple(Context contexte) {
         super(contexte);
@@ -29,12 +29,10 @@ public class VueFermenteurSimple extends LinearLayout {
 
         this.fermenteur = fermenteur;
 
-        TableRow ligne = new TableRow(contexte);
-
         tableauDescription = new TableLayout(contexte);
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
         tableauDescription.setBackgroundColor(Color.WHITE);
-        ligne.addView(cadre(tableauDescription, " Description "));
+        addView(cadre(tableauDescription, " Fermenteur "));
         afficherDescription();
     }
 
@@ -74,8 +72,6 @@ public class VueFermenteurSimple extends LinearLayout {
     }
 
     private void afficherDescription() {
-        tableauDescription.removeAllViews();
-
         TableRow.LayoutParams parametre = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parametre.setMargins(10, 10, 10, 10);
 
@@ -111,8 +107,8 @@ public class VueFermenteurSimple extends LinearLayout {
             ligneTitreLavageAcide.addView(titre, parametre);
             ligneTitreLavageAcide.addView(dateLavageAcide, parametre);
         tableauDescription.addView(ligneTitreLavageAcide);
-            ligneCapaciteEmplacement.addView(capacite);
-            ligneCapaciteEmplacement.addView(emplacement);
+            ligneCapaciteEmplacement.addView(capacite, parametre);
+            ligneCapaciteEmplacement.addView(emplacement, parametre);
         tableauDescription.addView(ligneCapaciteEmplacement);
             ligneEtatDate.addView(etat, parametre);
             ligneEtatDate.addView(dateEtat, parametre);

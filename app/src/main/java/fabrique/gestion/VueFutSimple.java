@@ -29,12 +29,10 @@ public class VueFutSimple extends LinearLayout {
 
         this.fut = fut;
 
-        TableRow ligne = new TableRow(contexte);
-
         tableauDescription = new TableLayout(contexte);
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
         tableauDescription.setBackgroundColor(Color.WHITE);
-        ligne.addView(cadre(tableauDescription, " Description "));
+        addView(cadre(tableauDescription, " Fut "));
         afficherDescription();
     }
 
@@ -74,8 +72,6 @@ public class VueFutSimple extends LinearLayout {
     }
 
     private void afficherDescription() {
-        tableauDescription.removeAllViews();
-
         TableRow.LayoutParams parametre = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parametre.setMargins(10, 10, 10, 10);
 
@@ -105,11 +101,11 @@ public class VueFutSimple extends LinearLayout {
             TextView dateEtat = new TextView(getContext());
             dateEtat.setText("Depuis le : " + fut.getDateEtat());
 
-            ligneTitreInspection.addView(titre);
+            ligneTitreInspection.addView(titre, parametre);
             ligneTitreInspection.addView(dateInspection, parametre);
         tableauDescription.addView(ligneTitreInspection);
-            ligneCapacite.addView(capacite);
-        tableauDescription.addView(ligneCapacite);
+            ligneCapacite.addView(capacite, parametre);
+        tableauDescription.addView(ligneCapacite, parametre);
             ligneEtatDate.addView(etat, parametre);
             ligneEtatDate.addView(dateEtat, parametre);
         tableauDescription.addView(ligneEtatDate);

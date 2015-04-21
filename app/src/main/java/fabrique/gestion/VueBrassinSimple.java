@@ -29,12 +29,10 @@ public class VueBrassinSimple extends LinearLayout {
 
         this.brassin = brassin;
 
-        LinearLayout ligne = new LinearLayout(contexte);
-
         tableauDescription = new TableLayout(getContext());
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
         tableauDescription.setBackgroundColor(Color.WHITE);
-        ligne.addView(cadre(tableauDescription, " Description "));
+        addView(cadre(tableauDescription, " Description "));
         afficherDescription();
     }
 

@@ -18,7 +18,7 @@ public class VueCuveSimple extends LinearLayout {
     private Cuve cuve;
 
     //Description
-    private LinearLayout tableauDescription;
+    private TableLayout tableauDescription;
 
     public VueCuveSimple(Context contexte) {
         super(contexte);
@@ -32,7 +32,7 @@ public class VueCuveSimple extends LinearLayout {
         tableauDescription = new TableLayout(contexte);
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
         tableauDescription.setBackgroundColor(Color.WHITE);
-        addView(cadre(tableauDescription, " Description "));
+        addView(cadre(tableauDescription, " Cuve "));
         afficherDescription();
     }
 
@@ -72,18 +72,13 @@ public class VueCuveSimple extends LinearLayout {
     }
 
     private void afficherDescription() {
-        tableauDescription.removeAllViews();
-
-        LinearLayout.LayoutParams parametre = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams parametre = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parametre.setMargins(10, 10, 10, 10);
 
         TableRow ligneTitreLavageAcide = new TableRow(getContext());
             TextView titre = new TextView(getContext());
-            titre.setText("Cuve ");
+            titre.setText("Cuve " + cuve.getNumero());
             titre.setTypeface(null, Typeface.BOLD);
-
-            TextView editTitre = new TextView(getContext());
-            editTitre.setText("" + cuve.getNumero());
 
             TextView dateLavageAcide = new TextView(getContext());
             dateLavageAcide.setText("" + cuve.getDateLavageAcideToString());
