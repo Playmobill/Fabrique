@@ -58,7 +58,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
     //Historique
     private TableLayout tableauHistorique;
 
-    //LigneAjouter
+    //Ajouter historique
     private Spinner ajoutListeHistorique;
     private EditText ajoutHistorique;
     private Button btnAjouter;
@@ -75,13 +75,10 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
         LinearLayout ligne = new LinearLayout(contexte);
 
         tableauDescription = new TableLayout(getContext());
-        tableauDescription.setOrientation(LinearLayout.VERTICAL);
-        tableauDescription.setBackgroundColor(Color.WHITE);
         ligne.addView(cadre(tableauDescription, " Description "));
         afficherDescription();
 
         tableauHistorique = new TableLayout(getContext());
-        tableauHistorique.setBackgroundColor(Color.WHITE);
         ligne.addView(cadre(tableauHistorique, " Historique "));
         afficherHistorique();
 
@@ -116,6 +113,8 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
             titre.setBackgroundColor(Color.WHITE);
             RelativeLayout.LayoutParams parametreTitre = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             parametreTitre.setMargins(11, 2, 0, 0);
+
+            view.setBackgroundColor(Color.WHITE);
 
             contenant.addView(contourTitre, parametreContourTitre);
                 contourTitre.addView(fondTitre);

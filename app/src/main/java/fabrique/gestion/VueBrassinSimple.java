@@ -29,8 +29,6 @@ public class VueBrassinSimple extends LinearLayout {
         this.brassin = brassin;
 
         tableauDescription = new TableLayout(getContext());
-        tableauDescription.setOrientation(LinearLayout.VERTICAL);
-        tableauDescription.setBackgroundColor(Color.WHITE);
         addView(cadre(tableauDescription, " Brassin "));
         afficherDescription();
     }
@@ -61,6 +59,8 @@ public class VueBrassinSimple extends LinearLayout {
         titre.setBackgroundColor(Color.WHITE);
         RelativeLayout.LayoutParams parametreTitre = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         parametreTitre.setMargins(11, 2, 0, 0);
+
+        view.setBackgroundColor(Color.WHITE);
 
         contenant.addView(contourTitre, parametreContourTitre);
         contourTitre.addView(fondTitre);

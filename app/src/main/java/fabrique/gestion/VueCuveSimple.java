@@ -63,6 +63,8 @@ public class VueCuveSimple extends LinearLayout {
         RelativeLayout.LayoutParams parametreTitre = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         parametreTitre.setMargins(11, 2, 0, 0);
 
+        view.setBackgroundColor(Color.WHITE);
+
         contenant.addView(contourTitre, parametreContourTitre);
         contourTitre.addView(fondTitre);
         contenant.addView(contour, parametreContour);
