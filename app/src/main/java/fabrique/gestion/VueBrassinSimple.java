@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
@@ -32,7 +31,7 @@ public class VueBrassinSimple extends LinearLayout {
         tableauDescription = new TableLayout(getContext());
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
         tableauDescription.setBackgroundColor(Color.WHITE);
-        addView(cadre(tableauDescription, " Description "));
+        addView(cadre(tableauDescription, " Brassin "));
         afficherDescription();
     }
 
@@ -74,103 +73,52 @@ public class VueBrassinSimple extends LinearLayout {
     private void afficherDescription() {
         tableauDescription.removeAllViews();
 
-        TableRow.LayoutParams parametreLigne = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        TableRow.LayoutParams parametreElement = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        parametreElement.setMargins(10, 10, 10, 10);
+        TableRow.LayoutParams parametre = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        parametre.setMargins(10, 10, 10, 10);
 
         TableRow ligneNumeroDateCreation = new TableRow(getContext());
-            LinearLayout layoutNumero = new LinearLayout(getContext());
-                TextView numero = new TextView(getContext());
-                numero.setText("Brassin ");
-                numero.setTypeface(null, Typeface.BOLD);
+            TextView numero = new TextView(getContext());
+            numero.setText("Brassin " + brassin.getNumero());
+            numero.setTypeface(null, Typeface.BOLD);
 
-                TextView editNumero = new TextView(getContext());
-                editNumero.setText("" + brassin.getNumero());
-                editNumero.setTypeface(null, Typeface.BOLD);
-
-            LinearLayout layoutDateCreation = new LinearLayout(getContext());
-                TextView dateCreation = new TextView(getContext());
-                dateCreation.setText("Date de création ");
-
-                TextView editDateCreation = new TextView(getContext());
-                editDateCreation.setText(brassin.getDateCreation());
+            TextView dateCreation = new TextView(getContext());
+            dateCreation.setText("Date de création " + brassin.getDateCreation());
 
         TableRow ligneRecetteQuantite = new TableRow(getContext());
-            LinearLayout layoutRecette = new LinearLayout(getContext());
-                TextView recette = new TextView(getContext());
-                recette.setText("Recette : ");
+            TextView recette = new TextView(getContext());
+            recette.setText("Recette : " + brassin.getRecette(getContext()).getNom());
 
-                TextView editRecette = new TextView(getContext());
-                editRecette.setText(brassin.getRecette(getContext()).getNom());
+            TextView quantite = new TextView(getContext());
+            quantite.setText("Quantité : " + brassin.getQuantite());
 
-            LinearLayout layoutQuantite = new LinearLayout(getContext());
-                TextView quantite = new TextView(getContext());
-                quantite.setText("Quantité : ");
-
-                TextView editQuantite = new TextView(getContext());
-                editQuantite.setText("" + brassin.getQuantite());
-
-        LinearLayout ligneCommentaire = new LinearLayout(getContext());
-            LinearLayout layoutCommentaire = new LinearLayout(getContext());
-                TextView commentaire = new TextView(getContext());
-                commentaire.setText("Commentaire : ");
-
-                TextView editCommentaire = new TextView(getContext());
-                editCommentaire.setText(brassin.getCommentaire());
+        TableRow ligneCommentaire = new TableRow(getContext());
+            TextView commentaire = new TextView(getContext());
+            commentaire.setText("Commentaire : " + brassin.getCommentaire());
 
         TableRow ligneDensite = new TableRow(getContext());
-            LinearLayout layoutDensiteOriginale = new LinearLayout(getContext());
-                TextView densiteOriginale = new TextView(getContext());
-                densiteOriginale.setText("Densité originale : ");
+            TextView densiteOriginale = new TextView(getContext());
+            densiteOriginale.setText("Densité originale : " + brassin.getDensiteOriginale());
 
-                TextView editDensiteOriginale = new EditText(getContext());
-                editDensiteOriginale.setText("" + brassin.getDensiteOriginale());
+            TextView densiteFinale = new TextView(getContext());
+            densiteFinale.setText("Densité finale : " + brassin.getDensiteFinale());
 
-            LinearLayout layoutDensiteFinale = new LinearLayout(getContext());
-                TextView densiteFinale = new TextView(getContext());
-                densiteFinale.setText("Densité finale : ");
-
-                TextView editDensiteFinale = new TextView(getContext());
-                editDensiteFinale.setText("" + brassin.getDensiteFinale());
-
-        LinearLayout lignePourcentageAlcool = new LinearLayout(getContext());
-            LinearLayout layoutPourcentageAlcool = new LinearLayout(getContext());
-                TextView pourcentageAlcool = new TextView(getContext());
-                pourcentageAlcool.setText("%Alc/vol : ");
-
-                TextView editPourcentageAlcool = new TextView(getContext());
-                editPourcentageAlcool.setText("" + brassin.getPourcentageAlcool());
+        TableRow lignePourcentageAlcool = new TableRow(getContext());
+            TextView pourcentageAlcool = new TextView(getContext());
+            pourcentageAlcool.setText("%Alc/vol : " + brassin.getPourcentageAlcool());
 
 
-        tableauDescription.addView(ligneNumeroDateCreation, parametreLigne);
-            ligneNumeroDateCreation.addView(layoutNumero);
-                layoutNumero.addView(numero, parametreElement);
-                layoutNumero.addView(editNumero, parametreElement);
-            ligneNumeroDateCreation.addView(layoutDateCreation);
-                layoutDateCreation.addView(dateCreation, parametreElement);
-                layoutDateCreation.addView(editDateCreation, parametreElement);
-        tableauDescription.addView(ligneRecetteQuantite, parametreLigne);
-            ligneRecetteQuantite.addView(layoutRecette);
-                layoutRecette.addView(recette, parametreElement);
-                layoutRecette.addView(editRecette, parametreElement);
-            ligneRecetteQuantite.addView(layoutQuantite);
-                layoutQuantite.addView(quantite, parametreElement);
-                layoutQuantite.addView(editQuantite, parametreElement);
-        tableauDescription.addView(ligneCommentaire, parametreLigne);
-            ligneCommentaire.addView(layoutCommentaire);
-                layoutCommentaire.addView(commentaire, parametreElement);
-                layoutCommentaire.addView(editCommentaire, parametreElement);
-        tableauDescription.addView(ligneDensite, parametreLigne);
-            ligneDensite.addView(layoutDensiteOriginale);
-                layoutDensiteOriginale.addView(densiteOriginale, parametreElement);
-                layoutDensiteOriginale.addView(editDensiteOriginale, parametreElement);
-            ligneDensite.addView(layoutDensiteFinale);
-                layoutDensiteFinale.addView(densiteFinale, parametreElement);
-                layoutDensiteFinale.addView(editDensiteFinale, parametreElement);
-        tableauDescription.addView(lignePourcentageAlcool, parametreLigne);
-            lignePourcentageAlcool.addView(layoutPourcentageAlcool);
-                lignePourcentageAlcool.addView(pourcentageAlcool, parametreElement);
-                lignePourcentageAlcool.addView(editPourcentageAlcool, parametreElement);
+        tableauDescription.addView(ligneNumeroDateCreation);
+            ligneNumeroDateCreation.addView(numero, parametre);
+            ligneNumeroDateCreation.addView(dateCreation, parametre);
+        tableauDescription.addView(ligneRecetteQuantite);
+            ligneRecetteQuantite.addView(recette, parametre);
+            ligneRecetteQuantite.addView(quantite, parametre);
+        tableauDescription.addView(ligneCommentaire);
+            ligneCommentaire.addView(commentaire, parametre);
+        tableauDescription.addView(ligneDensite);
+            ligneDensite.addView(densiteOriginale, parametre);
+            ligneDensite.addView(densiteFinale, parametre);
+        tableauDescription.addView(lignePourcentageAlcool);
+            lignePourcentageAlcool.addView(pourcentageAlcool, parametre);
     }
 }

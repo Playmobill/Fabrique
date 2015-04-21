@@ -32,7 +32,7 @@ public class VueFermenteurSimple extends LinearLayout {
         tableauDescription = new TableLayout(contexte);
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
         tableauDescription.setBackgroundColor(Color.WHITE);
-        addView(cadre(tableauDescription, " Fermenteur "));
+        addView(cadre(tableauDescription, " Description "));
         afficherDescription();
     }
 

@@ -32,7 +32,7 @@ public class VueFutSimple extends LinearLayout {
         tableauDescription = new TableLayout(contexte);
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
         tableauDescription.setBackgroundColor(Color.WHITE);
-        addView(cadre(tableauDescription, " Fut "));
+        addView(cadre(tableauDescription, " Description "));
         afficherDescription();
     }
 
