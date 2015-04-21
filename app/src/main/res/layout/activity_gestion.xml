@@ -86,7 +86,8 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="invisible"/>
 
         <Button
             android:layout_width="0dp"

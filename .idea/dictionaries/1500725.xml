@@ -100,6 +100,7 @@
       <w>numéro</w>
       <w>objet</w>
       <w>originale</w>
+      <w>origine</w>
       <w>ouvrir</w>
       <w>parametre</w>
       <w>parametres</w>
@@ -126,6 +127,7 @@
       <w>textview</w>
       <w>timepicker</w>
       <w>tous</w>
+      <w>transfert</w>
       <w>trop</w>
       <w>valeur</w>
       <w>valider</w>

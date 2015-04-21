@@ -5,7 +5,7 @@
 
         <activity
             android:name=".ActivityAccueil"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -17,7 +17,7 @@
 
         <activity
             android:name=".ActivityTableauDeBord"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -25,7 +25,7 @@
 
         <activity
             android:name=".ActivityVueFermenteur"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -33,7 +33,7 @@
 
         <activity
             android:name=".ActivityVueCuve"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -41,7 +41,7 @@
 
         <activity
             android:name=".ActivityVueBrassin"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -49,7 +49,7 @@
 
         <activity
             android:name=".ActivityVueFut"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -57,7 +57,7 @@
 
         <activity
             android:name=".ActivityGestion"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -65,31 +65,35 @@
 
         <activity
             android:name=".ActivityAjouterFermenteur"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
+            android:screenOrientation="landscape">
         </activity>
 
         <activity
             android:name=".ActivityAjouterCuve"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
+            android:screenOrientation="landscape">
         </activity>
 
         <activity
             android:name=".ActivityAjouterBrassin"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
+            android:screenOrientation="landscape">
         </activity>
 
         <activity
             android:name=".ActivityAjouterFut"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape">
+        </activity>
+
+        <activity
+            android:name=".ActivityVueListeHistorique"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -97,7 +101,7 @@
 
         <activity
             android:name=".ActivityEtat"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -105,7 +109,7 @@
 
         <activity
             android:name=".ActivityListe"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -113,7 +117,7 @@
 
         <activity
             android:name=".ActivityListeFermenteur"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -121,7 +125,7 @@
 
         <activity
             android:name=".ActivityListeCuve"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -129,7 +133,7 @@
 
         <activity
             android:name=".ActivityListeBrassin"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -137,7 +141,7 @@
 
         <activity
             android:name=".ActivityListeFut"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
@@ -145,31 +149,21 @@
 
         <activity
             android:name=".ActivityListeRecette"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
-
-        <activity
-            android:name=".ActivityVueListeHistorique"
-            android:configChanges="keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
+            android:screenOrientation="landscape">
         </activity>
 
         <activity
             android:name=".ActivityAjouterRecette"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
+            android:screenOrientation="landscape">
         </activity>
 
         <activity
             android:name=".ActivityTransfert"
-            android:configChanges="keyboardHidden|screenSize"
+            android:configChanges="screenSize"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
