@@ -11,23 +11,23 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import fabrique.gestion.BDD.TableGestion;
-import fabrique.gestion.Objets.Fermenteur;
+import fabrique.gestion.Objets.Fut;
 
-public class VueFermenteurSimple extends LinearLayout {
+public class VueFutSimple extends LinearLayout {
 
-    private Fermenteur fermenteur;
+    private Fut fut;
 
     //Description
-    private LinearLayout tableauDescription;
+    private TableLayout tableauDescription;
 
-    public VueFermenteurSimple(Context contexte) {
+    public VueFutSimple(Context contexte) {
         super(contexte);
     }
 
-    public VueFermenteurSimple(Context contexte, Fermenteur fermenteur) {
+    public VueFutSimple(Context contexte, Fut fut) {
         super(contexte);
 
-        this.fermenteur = fermenteur;
+        this.fut = fut;
 
         TableRow ligne = new TableRow(contexte);
 
@@ -79,41 +79,37 @@ public class VueFermenteurSimple extends LinearLayout {
         TableRow.LayoutParams parametre = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parametre.setMargins(10, 10, 10, 10);
 
-        TableRow ligneTitreLavageAcide = new TableRow(getContext());
+        TableRow ligneTitreInspection = new TableRow(getContext());
             TextView titre = new TextView(getContext());
-            titre.setText("Fermenteur " + fermenteur.getNumero());
+            titre.setText("Fut " + fut.getNumero());
             titre.setTypeface(null, Typeface.BOLD);
 
-            TextView dateLavageAcide = new TextView(getContext());
-            dateLavageAcide.setText("" + fermenteur.getDateLavageAcideToString());
-            if ((System.currentTimeMillis() - fermenteur.getDateLavageAcide()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
-                dateLavageAcide.setTextColor(Color.RED);
-            } else if ((System.currentTimeMillis() - fermenteur.getDateLavageAcide()) >= (TableGestion.instance(getContext()).delaiLavageAcide()-172800000)) {
-                dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
+            TextView dateInspection = new TextView(getContext());
+            dateInspection.setText("" + fut.getDateInspectionToString());
+            if ((System.currentTimeMillis() - fut.getDateInspection()) >= TableGestion.instance(getContext()).delaiInspectionBaril()) {
+                dateInspection.setTextColor(Color.RED);
+            } else if ((System.currentTimeMillis() - fut.getDateInspection()) >= (TableGestion.instance(getContext()).delaiInspectionBaril()-172800000)) {
+                dateInspection.setTextColor(Color.rgb(198, 193, 13));
             } else {
-                dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
+                dateInspection.setTextColor(Color.rgb(34, 177, 76));
             }
 
-        TableRow ligneCapaciteEmplacement = new TableRow(getContext());
+        TableRow ligneCapacite = new TableRow(getContext());
             TextView capacite = new TextView(getContext());
-            capacite.setText("Capacité : " + fermenteur.getCapacite());
-
-            TextView emplacement = new TextView(getContext());
-            emplacement.setText("Emplacement : " + fermenteur.getEmplacement(getContext()).getTexte());
+            capacite.setText("Capacité : " + fut.getCapacite());
 
         TableRow ligneEtatDate = new TableRow(getContext());
             TextView etat = new TextView(getContext());
-            etat.setText("État : " + fermenteur.getEtat(getContext()).getTexte());
+            etat.setText("État : " + fut.getEtat(getContext()).getTexte());
 
             TextView dateEtat = new TextView(getContext());
-            dateEtat.setText("Depuis le : " + fermenteur.getDateEtat());
+            dateEtat.setText("Depuis le : " + fut.getDateEtat());
 
-            ligneTitreLavageAcide.addView(titre, parametre);
-            ligneTitreLavageAcide.addView(dateLavageAcide, parametre);
-        tableauDescription.addView(ligneTitreLavageAcide);
-            ligneCapaciteEmplacement.addView(capacite);
-            ligneCapaciteEmplacement.addView(emplacement);
-        tableauDescription.addView(ligneCapaciteEmplacement);
+            ligneTitreInspection.addView(titre);
+            ligneTitreInspection.addView(dateInspection, parametre);
+        tableauDescription.addView(ligneTitreInspection);
+            ligneCapacite.addView(capacite);
+        tableauDescription.addView(ligneCapacite);
             ligneEtatDate.addView(etat, parametre);
             ligneEtatDate.addView(dateEtat, parametre);
         tableauDescription.addView(ligneEtatDate);

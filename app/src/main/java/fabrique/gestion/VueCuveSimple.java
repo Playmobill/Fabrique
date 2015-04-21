@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import fabrique.gestion.BDD.TableGestion;
@@ -76,59 +77,43 @@ public class VueCuveSimple extends LinearLayout {
         LinearLayout.LayoutParams parametre = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parametre.setMargins(10, 10, 10, 10);
 
-        LinearLayout ligneTitreLavageAcide = new LinearLayout(getContext());
-            LinearLayout layoutTitre = new LinearLayout(getContext());
-                TextView titre = new TextView(getContext());
-                titre.setText("Cuve ");
-                titre.setTypeface(null, Typeface.BOLD);
+        TableRow ligneTitreLavageAcide = new TableRow(getContext());
+            TextView titre = new TextView(getContext());
+            titre.setText("Cuve ");
+            titre.setTypeface(null, Typeface.BOLD);
 
-                TextView editTitre = new TextView(getContext());
-                editTitre.setText("" + cuve.getNumero());
+            TextView editTitre = new TextView(getContext());
+            editTitre.setText("" + cuve.getNumero());
 
-                TextView dateLavageAcide = new TextView(getContext());
-                dateLavageAcide.setText("" + cuve.getDateLavageAcideToString());
-                if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
-                    dateLavageAcide.setTextColor(Color.RED);
-                } else if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= (TableGestion.instance(getContext()).delaiLavageAcide()-172800000)) {
-                    dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
-                } else {
-                    dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
-                }
+            TextView dateLavageAcide = new TextView(getContext());
+            dateLavageAcide.setText("" + cuve.getDateLavageAcideToString());
+            if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
+                dateLavageAcide.setTextColor(Color.RED);
+            } else if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= (TableGestion.instance(getContext()).delaiLavageAcide()-172800000)) {
+                dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
+            } else {
+                dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
+            }
 
-        LinearLayout ligneCapaciteEmplacement = new LinearLayout(getContext());
-            LinearLayout layoutCapacite = new LinearLayout(getContext());
-                TextView capacite = new TextView(getContext());
-                capacite.setText("Capacité : ");
+        TableRow ligneCapaciteEmplacement = new TableRow(getContext());
+            TextView capacite = new TextView(getContext());
+            capacite.setText("Capacité : " + cuve.getCapacite());
 
-                TextView editCapacite = new TextView(getContext());
-                editCapacite.setText("" + cuve.getCapacite());
+            TextView emplacement = new TextView(getContext());
+            emplacement.setText("Emplacement : " + cuve.getEmplacement(getContext()).getTexte());
 
-            LinearLayout layoutEmplacement = new LinearLayout(getContext());
-                TextView emplacement = new TextView(getContext());
-                emplacement.setText("Emplacement : ");
-
-                TextView editEmplacement = new TextView(getContext());
-                editEmplacement.setText(cuve.getEmplacement(getContext()).getTexte());
-
-
-        LinearLayout ligneEtatDate = new LinearLayout(getContext());
+        TableRow ligneEtatDate = new TableRow(getContext());
             TextView etat = new TextView(getContext());
             etat.setText("État : " + cuve.getEtat(getContext()).getTexte());
 
             TextView dateEtat = new TextView(getContext());
             dateEtat.setText("Depuis le : " + cuve.getDateEtat());
 
-                layoutTitre.addView(titre);
-                layoutTitre.addView(editTitre);
-            ligneTitreLavageAcide.addView(layoutTitre, parametre);
+            ligneTitreLavageAcide.addView(titre, parametre);
             ligneTitreLavageAcide.addView(dateLavageAcide, parametre);
         tableauDescription.addView(ligneTitreLavageAcide);
-                layoutCapacite.addView(capacite);
-                layoutCapacite.addView(editCapacite);
-            ligneCapaciteEmplacement.addView(layoutCapacite, parametre);
-                layoutEmplacement.addView(emplacement);
-                layoutEmplacement.addView(editEmplacement);
-            ligneCapaciteEmplacement.addView(layoutEmplacement, parametre);
+            ligneCapaciteEmplacement.addView(capacite, parametre);
+            ligneCapaciteEmplacement.addView(emplacement, parametre);
         tableauDescription.addView(ligneCapaciteEmplacement);
             ligneEtatDate.addView(etat, parametre);
             ligneEtatDate.addView(dateEtat, parametre);
