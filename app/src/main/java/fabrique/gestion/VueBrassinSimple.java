@@ -36,8 +36,6 @@ public class VueBrassinSimple extends LinearLayout {
         tableauDescription.setBackgroundColor(Color.WHITE);
         ligne.addView(cadre(tableauDescription, " Description "));
         afficherDescription();
-
-        addView(tableauDescription);
     }
 
     private RelativeLayout cadre(View view, String texteTitre) {
