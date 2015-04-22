@@ -215,6 +215,14 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
             btnModifier.setText("Modifier");
             btnModifier.setOnClickListener(this);
 
+            btnValider = new Button(getContext());
+            btnValider.setText("Valider");
+            btnValider.setOnClickListener(this);
+
+            btnAnnuler = new Button(getContext());
+            btnAnnuler.setText("Annuler");
+            btnAnnuler.setOnClickListener(this);
+
                 layoutTitre.addView(titre);
                 layoutTitre.addView(editTitre);
             ligneTitreLavageAcide.addView(layoutTitre, parametre);
@@ -238,14 +246,8 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         editTitre.setEnabled(true);
         editEmplacement.setEnabled(true);
         editCapacite.setEnabled(true);
-        ligneBouton.removeAllViews();
-            btnValider = new Button(getContext());
-            btnValider.setText("Valider");
-            btnValider.setOnClickListener(this);
 
-            btnAnnuler = new Button(getContext());
-            btnAnnuler.setText("Annuler");
-            btnAnnuler.setOnClickListener(this);
+        ligneBouton.removeAllViews();
         ligneBouton.addView(btnValider);
         ligneBouton.addView(btnAnnuler);
     }
@@ -292,9 +294,6 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         editEmplacement.setSelection(indexEmplacement);
 
         ligneBouton.removeAllViews();
-            btnModifier = new Button(getContext());
-            btnModifier.setText("Modifier");
-            btnModifier.setOnClickListener(this);
         ligneBouton.addView(btnModifier);
     }
 

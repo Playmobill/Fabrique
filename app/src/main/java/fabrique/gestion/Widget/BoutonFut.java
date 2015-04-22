@@ -25,7 +25,7 @@ public class BoutonFut extends Button {
             couleurTexte = etat.getCouleurTexte();
             couleurFond = etat.getCouleurFond();
         }
-        String texte = "F" + fut.getNumero() + "\n";
+        String texte = fut.getNumero() + "\n";
         texte = texte + fut.getCapacite() + "L \n";
         texte = texte + texteEtat + "\n";
         if (fut.getBrassin(contexte) != null) {
