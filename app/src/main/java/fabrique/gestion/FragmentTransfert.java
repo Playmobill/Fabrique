@@ -1,6 +1,7 @@
 package fabrique.gestion;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableFut;
+import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Vue.VueBrassinSimple;
 import fabrique.gestion.Vue.VueCuveSimple;
 import fabrique.gestion.Vue.VueFermenteurSimple;
@@ -25,9 +28,12 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
 
     private View view;
 
-    Spinner listeTypeOrigine, listeOrigine, listeTypeDestination, listeDestination;
-    boolean listeTypeOrigineVide, listeTypeDestinationVide;
-    LinearLayout vueOrigine, vueDestination;
+    private Spinner listeTypeOrigine, listeOrigine, listeTypeDestination, listeDestination;
+    private boolean listeTypeOrigineVide, listeTypeDestinationVide;
+    private LinearLayout vueOrigine, vueDestination;
+    private Button transferer;
+
+
 
     @Nullable
     @Override
@@ -43,6 +49,8 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
         contexte = container.getContext();
 
         view = inflater.inflate(R.layout.activity_transfert, container, false);
+        transferer = (Button)view.findViewById(R.id.btnExeTransfert);
+        transferer.setOnClickListener(this);
 
         listeTypeOrigineVide = true;
         listeTypeDestinationVide = true;
@@ -98,7 +106,31 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
 
     @Override
     public void onClick(View v) {
+        if(v.equals(transferer)) {
+            if (listeTypeOrigine.getSelectedItem() != null && !(listeTypeOrigine.getSelectedItem().equals("")) && listeTypeDestination.getSelectedItem() != null &&  !(listeTypeDestination.getSelectedItem().equals(""))) {
+                long idBrassinTransfere = -1;
+                if (listeTypeOrigine.getSelectedItem().equals("Fermenteur")) {
+                    idBrassinTransfere = TableFermenteur.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem())).getBrassin(contexte).getId();
+                    TableFermenteur.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem())).setBrassin(-1);
+                } else if (listeTypeOrigine.getSelectedItem().equals("Cuve")) {
+                    idBrassinTransfere = TableCuve.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem())).getBrassin(contexte).getId();
+                    TableCuve.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem())).setBrassin(-1);
+                } else if (listeTypeOrigine.getSelectedItem().equals("Fût")) {
+                    idBrassinTransfere = TableFut.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem())).getBrassin(contexte).getId();
+                    TableFut.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem())).setBrassin(-1);
+                }
 
+                if(listeTypeDestination.getSelectedItem().equals("Fermenteur")){
+                    TableFermenteur.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getSelectedItem())).setBrassin(idBrassinTransfere);
+                }
+                else if(listeTypeDestination.getSelectedItem().equals("Fût")){
+                    TableFut.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getSelectedItem())).setBrassin(idBrassinTransfere);
+                }
+                else if(listeTypeDestination.getSelectedItem().equals("Cuve")){
+                    TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getSelectedItem())).setBrassin(idBrassinTransfere);
+                }
+            }
+        }
     }
 
     @Override
