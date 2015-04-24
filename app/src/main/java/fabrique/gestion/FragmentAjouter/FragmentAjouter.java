@@ -16,7 +16,7 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
 
     private View view;
 
-    private Button fermenteur, cuve, fut, brassin, configuration, etat, listeHistorique, recette, transfert;
+    private Button fermenteur, cuve, fut, brassin, recette, emplacement;
 
     @Nullable
     @Override
@@ -32,8 +32,8 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
         view = inflater.inflate(R.layout.activity_ajouter, container, false);
 
         initialiserBouton();
-        return view;
 
+        return view;
     }
 
     public void initialiserBouton() {
@@ -49,20 +49,11 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
         brassin = (Button)view.findViewById(R.id.btnBrassin);
         brassin.setOnClickListener(this);
 
-        configuration = (Button)view.findViewById(R.id.btnConfiguration);
-        configuration.setOnClickListener(this);
-
-        etat = (Button)view.findViewById(R.id.btnEtat);
-        etat.setOnClickListener(this);
-
-        listeHistorique = (Button)view.findViewById(R.id.btnListeHistorique);
-        listeHistorique.setOnClickListener(this);
-
         recette = (Button)view.findViewById(R.id.btnRecette);
         recette.setOnClickListener(this);
 
-        transfert = (Button)view.findViewById(R.id.btnTransfert);
-        transfert.setOnClickListener(this);
+        emplacement = (Button)view.findViewById(R.id.btnEmplacement);
+        emplacement.setOnClickListener(this);
     }
 
     @Override
@@ -91,23 +82,17 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
             transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
             transaction.addToBackStack(null).commit();
         }
-        else if (view.equals(configuration)) {
-
-        }
-        else if (view.equals(etat)) {
-
-        }
-        else if (view.equals(listeHistorique)) {
-
-        }
         else if (view.equals(recette)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.onglet, new FragmentAjouterRecette());
             transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
             transaction.addToBackStack(null).commit();
         }
-        else if (view.equals(transfert)) {
-
+        else if (view.equals(emplacement)) {
+            /*FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.onglet, new FragmentAjouterEmplacement());
+            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+            transaction.addToBackStack(null).commit();*/
         }
     }
 

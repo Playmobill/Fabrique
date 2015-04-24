@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Gérer les états"
+            android:id="@+id/btnEtat"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textAllCaps="false"
+            android:textColor="@color/noir"
+            android:background="@color/blanc"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Gérer les textes des historiques"
+            android:id="@+id/btnListeHistorique"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textAllCaps="false"
+            android:textColor="@color/noir"
+            android:background="@color/blanc"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Gérer le temps d'inspection / de lavage Acide"
+        android:id="@+id/btnTemps"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:textAllCaps="false"
+        android:textColor="@color/noir"
+        android:background="@color/blanc"
+        android:textStyle="bold"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Autre"
+            android:id="@+id/btnAutre"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textAllCaps="false"
+            android:textColor="@color/noir"
+            android:background="@color/blanc"
+            android:textStyle="bold"
+            android:visibility="invisible"/>
+    </TableRow>
+
+</TableLayout>
