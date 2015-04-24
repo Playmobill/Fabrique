@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.Objets.Brassin;
+import fabrique.gestion.Vue.VueBrassin;
 
 public class ActivityVueBrassin extends Activity {
 
@@ -38,11 +39,5 @@ public class ActivityVueBrassin extends Activity {
         layoutVerticalScroll.addView(layout);
 
         setContentView(layoutVerticalScroll);
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, ActivityListeBrassin.class);
-        startActivity(intent);
     }
 }

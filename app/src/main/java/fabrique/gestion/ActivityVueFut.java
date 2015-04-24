@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.Objets.Fut;
+import fabrique.gestion.Vue.VueBrassin;
+import fabrique.gestion.Vue.VueFut;
 
 public class ActivityVueFut extends Activity {
 
@@ -38,11 +40,5 @@ public class ActivityVueFut extends Activity {
         layoutVerticalScroll.addView(layout);
 
         setContentView(layoutVerticalScroll);
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, ActivityListeFut.class);
-        startActivity(intent);
     }
 }
