@@ -20,8 +20,6 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
 
     private Context contexte;
 
-    private View view;
-
     private Button btnAjouter;
 
     private EditText editNumero, editQuantite;
@@ -39,7 +37,7 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
 
         contexte = container.getContext();
 
-        view = inflater.inflate(R.layout.activity_ajouter_fut, container, false);
+        View view = inflater.inflate(R.layout.activity_ajouter_fut, container, false);
 
         editNumero = (EditText)view.findViewById(R.id.editNumero);
         TableFut tableFut = TableFut.instance(contexte);
@@ -90,6 +88,14 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
             if(erreur.equals("")) {
                 TableFut.instance(contexte).ajouter(numero, capacite, 1, System.currentTimeMillis(), -1, System.currentTimeMillis());
                 Toast.makeText(contexte, "Fut ajouté !", Toast.LENGTH_LONG).show();
+                TableFut tableFut = TableFut.instance(contexte);
+                int numeroSuivant = 1;
+                for (int i=0; i<tableFut.tailleListe(); i++) {
+                    if (tableFut.recupererIndex(i).getNumero() == numeroSuivant) {
+                        numeroSuivant = numeroSuivant + 1;
+                    }
+                }
+                editNumero.setText("" + numeroSuivant);
             } else {
                 Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
             }

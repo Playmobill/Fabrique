@@ -20,8 +20,6 @@ public class FragmentAjouterRecette extends FragmentAmeliore implements View.OnC
 
     private Context contexte;
 
-    private View view;
-
     private Button btnAjouter;
 
     private EditText editNom, editAcronyme, editCouleur;
@@ -39,7 +37,7 @@ public class FragmentAjouterRecette extends FragmentAmeliore implements View.OnC
 
         contexte = container.getContext();
 
-        view = inflater.inflate(R.layout.activity_ajouter_recette, container, false);
+        View view = inflater.inflate(R.layout.activity_ajouter_recette, container, false);
 
         editNom = (EditText)view.findViewById(R.id.editNom);
         editAcronyme = (EditText)view.findViewById(R.id.editAcronyme);

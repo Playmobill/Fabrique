@@ -23,8 +23,6 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
 
     private Context contexte;
 
-    private View view;
-
     private Button btnAjouter;
 
     private EditText editNumero, editCommentaire, editQuantite,
@@ -45,7 +43,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
 
         contexte = container.getContext();
 
-        view = inflater.inflate(R.layout.activity_ajouter_brassin, container, false);
+        View view = inflater.inflate(R.layout.activity_ajouter_brassin, container, false);
 
         editNumero = (EditText)view.findViewById(R.id.editNumero);
         TableBrassin tableBrassin = TableBrassin.instance(contexte);
@@ -144,6 +142,14 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
                 long recette = TableRecette.instance(contexte).recupererIndex(editRecette.getSelectedItemPosition()).getId();
                 TableBrassin.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", System.currentTimeMillis(), quantite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
                 Toast.makeText(contexte, "Brassin ajouté !", Toast.LENGTH_LONG).show();
+                TableBrassin tableBrassin = TableBrassin.instance(contexte);
+                int max = 0;
+                for (int i=0; i<tableBrassin.tailleListe(); i=i+1) {
+                    if (max < tableBrassin.recupererIndex(i).getNumero()) {
+                        max = tableBrassin.recupererIndex(i).getNumero();
+                    }
+                }
+                editNumero.setText("" + (max+1));
             } else {
                 Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
             }

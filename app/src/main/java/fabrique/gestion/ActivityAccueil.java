@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import fabrique.gestion.FragmentAjouter.FragmentAjouter;
+import fabrique.gestion.FragmentGestion.FragmentGestion;
 import fabrique.gestion.FragmentListe.FragmentListe;
 import fabrique.gestion.FragmentTableauDeBord.FragmentTableauDeBord;
 
@@ -36,6 +37,10 @@ public class ActivityAccueil extends FragmentActivity {
         ActionBar.Tab tabListe = actionBar.newTab().setText("Liste");
         tabListe.setTabListener(new TabListener(new FragmentListe()));
         actionBar.addTab(tabListe);
+
+        ActionBar.Tab tabGestion = actionBar.newTab().setText("Gestion");
+        tabGestion.setTabListener(new TabListener(new FragmentGestion()));
+        actionBar.addTab(tabGestion);
 
         ActionBar.Tab tabAjouter = actionBar.newTab().setText("Ajouter");
         tabAjouter.setTabListener(new TabListener(new FragmentAjouter()));
