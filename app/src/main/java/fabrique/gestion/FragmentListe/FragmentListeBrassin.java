@@ -2,7 +2,6 @@ package fabrique.gestion.FragmentListe;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.TypedValue;
@@ -21,22 +20,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import fabrique.gestion.ActivityAccueil;
-import fabrique.gestion.ActivityVueBrassin;
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableRecette;
+import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.R;
-import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Widget.BoutonBrassin;
 
-public class FragmentListeBrassin extends FragmentAmeliore implements AdapterView.OnItemSelectedListener, View.OnClickListener{
+public class FragmentListeBrassin extends FragmentAmeliore implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private Context contexte;
 
-    private View view;
-
-    private LinearLayout axe, header, body;
-    private ScrollView bodyScrollView;
+    private LinearLayout body;
     private Spinner tri;
     private ArrayList<BoutonBrassin> listeBoutonBrassin;
 
@@ -55,15 +50,15 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
 
         listeBoutonBrassin = new ArrayList<>();
 
-        axe = new LinearLayout(contexte);
+        LinearLayout axe = new LinearLayout(contexte);
         axe.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         axe.setOrientation(LinearLayout.VERTICAL);
 
-        header = new LinearLayout(contexte);
+        LinearLayout header = new LinearLayout(contexte);
         header.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         header.setOrientation(LinearLayout.HORIZONTAL);
 
-        bodyScrollView = new ScrollView(contexte);
+        ScrollView bodyScrollView = new ScrollView(contexte);
         bodyScrollView.setLayoutParams(new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         body = new LinearLayout(contexte);
@@ -195,9 +190,15 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
     public void onClick(View v){
         for (int i = 0; i < listeBoutonBrassin.size(); i++) {
             if(v.equals(listeBoutonBrassin.get(i))){
-                Intent intent = new Intent(contexte, ActivityVueBrassin.class);
-                intent.putExtra("index", (int)listeBoutonBrassin.get(i).getBrassin().getId());
-                startActivity(intent);
+                FragmentVueBrassin fragmentVueBrassin = new FragmentVueBrassin();
+                Bundle args = new Bundle();
+                args.putLong("id", listeBoutonBrassin.get(i).getBrassin().getId());
+                fragmentVueBrassin.setArguments(args);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.onglet, fragmentVueBrassin);
+                transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+                transaction.addToBackStack(null).commit();
             }
         }
     }
@@ -211,13 +212,13 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
         ArrayList<Brassin> listeBrassin;
         switch(position) {
             case 0 :
-                listeBrassin = trierParNumero(contexte, TableBrassin.instance(contexte).cloner(), 0 ,TableBrassin.instance(contexte).tailleListe()-1);
+                listeBrassin = trierParNumero(TableBrassin.instance(contexte).cloner(), 0 ,TableBrassin.instance(contexte).tailleListe()-1);
                 break;
             case 1 :
-                listeBrassin = trierParRecette(contexte, TableBrassin.instance(contexte).cloner());
+                listeBrassin = trierParRecette(TableBrassin.instance(contexte).cloner());
                 break;
             case 2 :
-                listeBrassin = trierParDateCreation(contexte, TableBrassin.instance(contexte).cloner(), 0 ,TableBrassin.instance(contexte).tailleListe()-1);
+                listeBrassin = trierParDateCreation(TableBrassin.instance(contexte).cloner(), 0 ,TableBrassin.instance(contexte).tailleListe()-1);
                 Collections.reverse(listeBrassin);
                 break;
             default : listeBrassin = new ArrayList<>();
@@ -232,7 +233,7 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
         }
     }
 
-    public ArrayList trierParNumero(Context contexte, ArrayList<Brassin> listeBrassin, int petitIndex, int grandIndex){
+    public ArrayList<Brassin> trierParNumero(ArrayList<Brassin> listeBrassin, int petitIndex, int grandIndex){
         int i = petitIndex;
         int j = grandIndex;
         // calculate pivot number, I am taking pivot as middle index number
@@ -256,28 +257,27 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
         }
         // call recursively
         if (petitIndex < j) {
-            listeBrassin = trierParDateCreation(contexte, listeBrassin, petitIndex, j);
+            listeBrassin = trierParDateCreation(listeBrassin, petitIndex, j);
         }
         if (i < grandIndex) {
-            listeBrassin = trierParDateCreation(contexte, listeBrassin, i, grandIndex);
+            listeBrassin = trierParDateCreation(listeBrassin, i, grandIndex);
         }
         return listeBrassin;
 
     }
 
-    public ArrayList trierParRecette(Context contexte, ArrayList<Brassin> listeBrassin){
+    public ArrayList<Brassin> trierParRecette(ArrayList<Brassin> listeBrassin){
         ArrayList<Brassin> result = new ArrayList<>();
         int index;
         long[] values = new long[2];
-        boolean possible = true;
         for (int i = 0; i < listeBrassin.size(); i++) {
             index = -1;
             values[0] = -1;
             values[1] = -1;
-            possible = true;
+            boolean possible;
             for (int j = 0; j < listeBrassin.size(); j++) {
                 possible=true;
-                for (int k = 0; k < result.size() && possible == true; k++) {
+                for (int k = 0; k < result.size() && possible; k++) {
                     if(result.get(k).getNumero() == listeBrassin.get(j).getNumero()){
                         possible = false;
                     }
@@ -300,7 +300,7 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
         return result;
     }
 
-    public ArrayList trierParDateCreation(Context contexte, ArrayList<Brassin> listeBrassin, int petitIndex, int grandIndex){
+    public ArrayList<Brassin> trierParDateCreation(ArrayList<Brassin> listeBrassin, int petitIndex, int grandIndex){
         int i = petitIndex;
         int j = grandIndex;
         // calculate pivot number, I am taking pivot as middle index number
@@ -324,10 +324,10 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
         }
         // call recursively
         if (petitIndex < j) {
-            listeBrassin = trierParDateCreation(contexte, listeBrassin, petitIndex, j);
+            listeBrassin = trierParDateCreation(listeBrassin, petitIndex, j);
         }
         if (i < grandIndex) {
-            listeBrassin = trierParDateCreation(contexte, listeBrassin, i, grandIndex);
+            listeBrassin = trierParDateCreation(listeBrassin, i, grandIndex);
         }
         return listeBrassin;
 

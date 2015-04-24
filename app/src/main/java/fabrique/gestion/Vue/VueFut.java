@@ -1,7 +1,6 @@
 package fabrique.gestion.Vue;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.InputType;
@@ -20,7 +19,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import fabrique.gestion.ActivityVueFut;
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableEtatFut;
 import fabrique.gestion.BDD.TableFut;
@@ -353,9 +351,6 @@ public class VueFut extends TableLayout implements View.OnClickListener {
                     fut.getLongDateEtat(),
                     TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId(),
                     fut.getDateInspection());
-            Intent intent = new Intent(getContext(), ActivityVueFut.class);
-            intent.putExtra("id", fut.getId());
-            getContext().startActivity(intent);
         } else if (v.equals(btnAjouter)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, -1, fut.getId());
             afficherHistorique();
@@ -372,9 +367,6 @@ public class VueFut extends TableLayout implements View.OnClickListener {
                     String texte = listeEtat.get(i).getHistorique();
                     if (texte != null) {
                         TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, -1, fut.getId(), fut.getId_brassin());
-                        Intent intent = new Intent(getContext(), ActivityVueFut.class);
-                        intent.putExtra("id", fut.getId());
-                        getContext().startActivity(intent);
                     }
                     afficherDescription();
                 }

@@ -2,7 +2,6 @@ package fabrique.gestion.FragmentListe;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
@@ -22,13 +21,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import fabrique.gestion.ActivityAccueil;
-import fabrique.gestion.ActivityVueFut;
 import fabrique.gestion.BDD.TableEtatFut;
 import fabrique.gestion.BDD.TableFut;
+import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.Fut;
 import fabrique.gestion.R;
-import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Widget.BoutonFut;
 
 public class FragmentListeFut extends FragmentAmeliore implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -257,9 +255,15 @@ public class FragmentListeFut extends FragmentAmeliore implements View.OnClickLi
     public void onClick(View v) {
         for (int i=0; i<btnsFut.size() ; i++) {
             if (btnsFut.get(i).equals(v)) {
-                Intent intent = new Intent(contexte, ActivityVueFut.class);
-                intent.putExtra("id", futs.get(i).getId());
-                startActivity(intent);
+                FragmentVueFut fragmentVueFut = new FragmentVueFut();
+                Bundle args = new Bundle();
+                args.putLong("id", futs.get(i).getId());
+                fragmentVueFut.setArguments(args);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.onglet, fragmentVueFut);
+                transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+                transaction.addToBackStack(null).commit();
             }
         }
     }
