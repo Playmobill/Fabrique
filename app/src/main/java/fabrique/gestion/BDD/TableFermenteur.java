@@ -112,4 +112,26 @@ public class TableFermenteur extends Controle {
         }
         return listeCuve;
     }
+
+    public ArrayList<String> recupererNumerosFermenteurAvecBrassin() {
+        ArrayList<String> listeCuve = new ArrayList<>();
+
+        for (int i=0; i<fermenteurs.size(); i++) {
+            if (fermenteurs.get(i).getIdBrassin() != -1) {
+                listeCuve.add(Integer.toString(fermenteurs.get(i).getNumero()));
+            }
+        }
+        return listeCuve;
+    }
+
+    public ArrayList<String> recupererNumerosFermenteurSansBrassin() {
+        ArrayList<String> listeCuve = new ArrayList<>();
+
+        for (int i=0; i<fermenteurs.size(); i++) {
+            if (fermenteurs.get(i).getIdBrassin() == -1) {
+                listeCuve.add(Integer.toString(fermenteurs.get(i).getNumero()));
+            }
+        }
+        return listeCuve;
+    }
 }

@@ -26,14 +26,16 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/listeTypeOrigine"
                 android:layout_weight="1"
-                android:layout_margin="25dp" />
+                android:layout_margin="25dp"
+                android:minWidth="100dp"/>
 
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/listeOrigine"
-                android:layout_margin="25dp" />
+                android:layout_margin="25dp"
+                android:minWidth="100dp"/>
 
         </LinearLayout>
 
@@ -81,14 +83,16 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/listeTypeDestination"
                 android:layout_weight="1"
-                android:layout_margin="25dp" />
+                android:layout_margin="25dp"
+                android:minWidth="100dp"/>
 
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/listeDestination"
-                android:layout_margin="25dp" />
+                android:layout_margin="25dp"
+                android:minWidth="100dp"/>
 
         </LinearLayout>
 

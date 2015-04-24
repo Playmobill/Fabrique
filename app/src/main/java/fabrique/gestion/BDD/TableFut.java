@@ -31,11 +31,8 @@ public class TableFut extends Controle {
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
             futs.add(new Fut(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getLong(3), tmp.getLong(4), tmp.getLong(5), tmp.getLong(6)));
-            long id_brassin = (long)(Math.random()*4);
-            if (id_brassin == 0) {
-                id_brassin = -1;
-            }
-            modifier(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getLong(3), tmp.getLong(4), id_brassin, tmp.getLong(6));
+
+            modifier(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getLong(3), tmp.getLong(4), tmp.getLong(5), tmp.getLong(6));
         }
         Collections.sort(futs);
     }
@@ -325,4 +322,27 @@ public class TableFut extends Controle {
         }
         return listeCuve;
     }
+
+    public ArrayList<String> recupererNumeroFutAvecBrassin() {
+        ArrayList<String> listeCuve = new ArrayList<>();
+
+        for (int i=0; i<futs.size(); i++) {
+            if (futs.get(i).getId_brassin() != -1) {
+                listeCuve.add(Integer.toString(futs.get(i).getNumero()));
+            }
+        }
+        return listeCuve;
+    }
+
+    public ArrayList<String> recupererNumeroFutSansBrassin() {
+        ArrayList<String> listeCuve = new ArrayList<>();
+
+        for (int i=0; i<futs.size(); i++) {
+            if (futs.get(i).getId_brassin() == -1) {
+                listeCuve.add(Integer.toString(futs.get(i).getNumero()));
+            }
+        }
+        return listeCuve;
+    }
+
 }

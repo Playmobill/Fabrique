@@ -199,18 +199,24 @@ public class ActivityListeBrassin extends Activity implements AdapterView.OnItem
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         tri.setSelection(position);
         ArrayList<Brassin> listeBrassin;
-        switch(position) {
-            case 0 :
-                listeBrassin = trierParNumero(this, TableBrassin.instance(this).cloner(), 0 ,TableBrassin.instance(this).tailleListe()-1);
-                break;
-            case 1 :
-                listeBrassin = trierParRecette(this, TableBrassin.instance(this).cloner());
-                break;
-            case 2 :
-                listeBrassin = trierParDateCreation(this, TableBrassin.instance(this).cloner(), 0 ,TableBrassin.instance(this).tailleListe()-1);
-                Collections.reverse(listeBrassin);
-                break;
-            default : listeBrassin = new ArrayList<>();
+        if(TableBrassin.instance(this).tailleListe()!=0) {
+            switch (position) {
+                case 0:
+                    listeBrassin = trierParNumero(this, TableBrassin.instance(this).cloner(), 0, TableBrassin.instance(this).tailleListe() - 1);
+                    break;
+                case 1:
+                    listeBrassin = trierParRecette(this, TableBrassin.instance(this).cloner());
+                    break;
+                case 2:
+                    listeBrassin = trierParDateCreation(this, TableBrassin.instance(this).cloner(), 0, TableBrassin.instance(this).tailleListe() - 1);
+                    Collections.reverse(listeBrassin);
+                    break;
+                default:
+                    listeBrassin = new ArrayList<>();
+            }
+        }
+        else{
+            listeBrassin = new ArrayList<>();
         }
         listeBoutonBrassin.clear();
         body.removeAllViews();
