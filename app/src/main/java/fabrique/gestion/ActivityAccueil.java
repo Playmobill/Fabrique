@@ -1,61 +1,53 @@
 package fabrique.gestion;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
+import android.app.ActionBar;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
+import android.support.v4.app.FragmentActivity;
 
-public class ActivityAccueil extends Activity implements View.OnClickListener {
+import fabrique.gestion.FragmentAjouter.FragmentAjouter;
+import fabrique.gestion.FragmentListe.FragmentListe;
+import fabrique.gestion.FragmentTableauDeBord.FragmentTableauDeBord;
 
-    Button btnApplication, btnConfiguration, btnListe;
+public class ActivityAccueil extends FragmentActivity {
 
+    private FragmentAmeliore vue;
+
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setContentView(R.layout.onglet);
 
-        setContentView(R.layout.activity_acceuil);
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        ActionBar.Tab tabTableauDeBord = actionBar.newTab().setText("Tableau de bord");
+        FragmentTableauDeBord fragmentTableauDeBord = new FragmentTableauDeBord();
+        vue = fragmentTableauDeBord;
+        tabTableauDeBord.setTabListener(new TabListener(fragmentTableauDeBord));
+        actionBar.addTab(tabTableauDeBord);
 
-        btnApplication = (Button) findViewById(R.id.btnApplication);
-        //btnApplication.setWidth(metrics.widthPixels/3);
-        //btnApplication.setHeight(metrics.heightPixels/3);
-        btnApplication.setOnClickListener(this);
+        ActionBar.Tab tabTransfert = actionBar.newTab().setText("Transfert");
+        tabTransfert.setTabListener(new TabListener(new FragmentTransfert()));
+        actionBar.addTab(tabTransfert);
 
-        btnConfiguration = (Button) findViewById(R.id.btnConfiguration);
-        //btnConfiguration.setWidth(metrics.widthPixels/3);
-        //btnConfiguration.setHeight(metrics.heightPixels/3);
-        btnConfiguration.setOnClickListener(this);
+        ActionBar.Tab tabListe = actionBar.newTab().setText("Liste");
+        tabListe.setTabListener(new TabListener(new FragmentListe()));
+        actionBar.addTab(tabListe);
 
-        btnListe = (Button) findViewById(R.id.btnListe);
-        //btnListe.setWidth(metrics.widthPixels/3);
-        //btnListe.setHeight(metrics.heightPixels/3);
-        btnListe.setOnClickListener(this);
+        ActionBar.Tab tabAjouter = actionBar.newTab().setText("Ajouter");
+        tabAjouter.setTabListener(new TabListener(new FragmentAjouter()));
+        actionBar.addTab(tabAjouter);
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.equals(btnApplication)) {
-            Intent intent = new Intent(this, ActivityTableauDeBord.class);
-            startActivity(intent);
-        } else if (view.equals(btnConfiguration)) {
-            Intent intent = new Intent(this, ActivityGestion.class);
-            startActivity(intent);
-        }  else if (view.equals(btnListe)) {
-            Intent intent = new Intent(this, ActivityListe.class);
-            startActivity(intent);
-        }
+    public void setVue(FragmentAmeliore vue) {
+        this.vue = vue;
     }
 
     @Override
     public void onBackPressed() {
+        vue.onBackPressed();
     }
 }

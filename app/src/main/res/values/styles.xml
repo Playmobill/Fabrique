@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
-    <style name="theme" parent="android:Theme.Holo.Light.NoActionBar">
+    <style name="theme" parent="android:Theme.Holo.Light">
 
     </style>
 

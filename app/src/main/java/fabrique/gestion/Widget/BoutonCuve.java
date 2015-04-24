@@ -33,9 +33,9 @@ public class BoutonCuve extends Button {
         if (cuve.getBrassin(contexte) != null) {
             texte = texte + cuve.getBrassin(contexte).getNumero();
         }
-        texte = texte + "\n" + cuve.getCommentaireEtat() + "\n";
-        texte = texte + /*"depuis " + cuve.getDureeEtat() + */"\n";
-        texte = texte + cuve.getDateEtat() + "\n";
+        texte = texte + "\n" /*+ cuve.getCommentaireEtat() + "\n"*/;
+        //texte = texte + "depuis " + cuve.getDureeEtat() + "\n";
+        texte = texte + cuve.getDateEtat();
 
         setText(texte);
         setTextColor(couleurTexte);
