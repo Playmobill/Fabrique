@@ -26,8 +26,6 @@ public class FragmentAjouterFermenteur extends FragmentAmeliore implements View.
 
     private Context contexte;
 
-    private View view;
-
     private ArrayList<Emplacement> emplacements;
 
     private Button btnAjouter;
@@ -49,7 +47,7 @@ public class FragmentAjouterFermenteur extends FragmentAmeliore implements View.
 
         contexte = container.getContext();
 
-        view = inflater.inflate(R.layout.activity_ajouter_fermenteur, container, false);
+        View view = inflater.inflate(R.layout.activity_ajouter_fermenteur, container, false);
 
         emplacements = TableEmplacement.instance(contexte).recupererActifs();
         if (emplacements.size() == 0) {
@@ -116,6 +114,14 @@ public class FragmentAjouterFermenteur extends FragmentAmeliore implements View.
                 long emplacement = emplacements.get(editEmplacement.getSelectedItemPosition()).getId();
                 TableFermenteur.instance(contexte).ajouter(numero, capacite, emplacement, System.currentTimeMillis(), 1, System.currentTimeMillis(), -1);
                 Toast.makeText(contexte, "Fermenteur ajouté !", Toast.LENGTH_LONG).show();
+                TableFermenteur tableFermenteur = TableFermenteur.instance(contexte);
+                int numeroSuivant = 1;
+                for (int i=0; i<tableFermenteur.tailleListe(); i++) {
+                    if (tableFermenteur.recupererIndex(i).getNumero() == numeroSuivant) {
+                        numeroSuivant = numeroSuivant + 1;
+                    }
+                }
+                editNumero.setText("" + numeroSuivant);
             } else {
                 Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
             }
