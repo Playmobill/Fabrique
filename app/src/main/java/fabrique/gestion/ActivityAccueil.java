@@ -21,6 +21,7 @@ public class ActivityAccueil extends FragmentActivity {
         setContentView(R.layout.onglet);
 
         ActionBar actionBar = getActionBar();
+        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
