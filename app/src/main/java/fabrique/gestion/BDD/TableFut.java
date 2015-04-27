@@ -108,7 +108,7 @@ public class TableFut extends Controle {
         ArrayList<Fut> cloneFuts = (ArrayList<Fut>)futs.clone();
         while(cloneFuts.size()!=0) {
             long id = cloneFuts.get(0).getId_brassin();
-            ArrayList<Fut> listeFutDeMemeBrassin = new ArrayList<Fut>();
+            ArrayList<Fut> listeFutDeMemeBrassin = new ArrayList<>();
             for(int i=0; i<cloneFuts.size() ; i++) {
                 if (cloneFuts.get(i).getId_brassin() == id) {
                     listeFutDeMemeBrassin.add(cloneFuts.get(i));
@@ -187,7 +187,7 @@ public class TableFut extends Controle {
             if (brassin != null) {
                 id_recette = brassin.getId_recette();
             }
-            ArrayList<Fut> listeFutDeMemeRecette = new ArrayList<Fut>();
+            ArrayList<Fut> listeFutDeMemeRecette = new ArrayList<>();
             for(int i=0; i<cloneFuts.size() ; i++) {
                 brassin = cloneFuts.get(i).getBrassin(contexte);
                 long id_recette_temp = -1;
@@ -261,13 +261,13 @@ public class TableFut extends Controle {
         return listeListe;
     }
 
-    public ArrayList<ArrayList<Fut>> recupererSelonEtat(Context contexte) {
+    public ArrayList<ArrayList<Fut>> recupererSelonEtat() {
         ArrayList<ArrayList<Fut>> listeListeFutSelonEtat = new ArrayList<>();
 
         ArrayList<Fut> cloneFuts = (ArrayList<Fut>)futs.clone();
         while(cloneFuts.size()!=0) {
             long id = cloneFuts.get(0).getId_etat();
-            ArrayList<Fut> listeFutDeMemeEtat = new ArrayList<Fut>();
+            ArrayList<Fut> listeFutDeMemeEtat = new ArrayList<>();
             for(int i=0; i<cloneFuts.size() ; i++) {
                 if (cloneFuts.get(i).getId_etat() == id) {
                     listeFutDeMemeEtat.add(cloneFuts.get(i));
@@ -277,10 +277,10 @@ public class TableFut extends Controle {
             }
             listeListeFutSelonEtat.add(listeFutDeMemeEtat);
         }
-        return trierListeParEtat(contexte, listeListeFutSelonEtat, 0, listeListeFutSelonEtat.size() - 1);
+        return trierListeParEtat(listeListeFutSelonEtat, 0, listeListeFutSelonEtat.size() - 1);
     }
 
-    private ArrayList<ArrayList<Fut>> trierListeParEtat(Context contexte, ArrayList<ArrayList<Fut>> listeListe, int petitIndex, int grandIndex) {
+    private ArrayList<ArrayList<Fut>> trierListeParEtat(ArrayList<ArrayList<Fut>> listeListe, int petitIndex, int grandIndex) {
         int i = petitIndex;
         int j = grandIndex;
         // calculate pivot number, I am taking pivot as middle index number
@@ -304,10 +304,10 @@ public class TableFut extends Controle {
         }
         // call recursively
         if (petitIndex < j) {
-            listeListe = trierListeParEtat(contexte, listeListe, petitIndex, j);
+            listeListe = trierListeParEtat(listeListe, petitIndex, j);
         }
         if (i < grandIndex) {
-            listeListe = trierListeParEtat(contexte, listeListe, i, grandIndex);
+            listeListe = trierListeParEtat(listeListe, i, grandIndex);
         }
         return listeListe;
     }

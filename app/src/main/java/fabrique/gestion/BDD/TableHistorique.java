@@ -85,6 +85,12 @@ public class TableHistorique extends Controle {
         }
     }
 
+    public void supprimer(long id) {
+        if (accesBDD.delete(nomTable, "id = ?", new String[] {"" + id}) == 1) {
+            historiques.remove(recupererId(id));
+        }
+    }
+
     public ArrayList<Historique> recupererSelonIdFermenteur (long id_fermenteur) {
         ArrayList<Historique> historiqueSelonFermenteur = new ArrayList<>();
 

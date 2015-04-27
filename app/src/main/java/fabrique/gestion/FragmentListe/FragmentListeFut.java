@@ -218,7 +218,7 @@ public class FragmentListeFut extends FragmentAmeliore implements View.OnClickLi
         btnsFut.clear();
         futs.clear();
 
-        ArrayList<ArrayList<Fut>> listeListeFut = TableFut.instance(contexte).recupererSelonEtat(contexte);
+        ArrayList<ArrayList<Fut>> listeListeFut = TableFut.instance(contexte).recupererSelonEtat();
         Collections.reverse(listeListeFut);
         for (int i=0; i<listeListeFut.size(); i++) {
             ArrayList<Fut> listeFut = listeListeFut.get(i);
