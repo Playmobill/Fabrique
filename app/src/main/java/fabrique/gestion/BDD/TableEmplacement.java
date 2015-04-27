@@ -66,7 +66,7 @@ public class TableEmplacement extends Controle {
         return null;
     }
 
-    public void modifier(int id, String texte, boolean actif){
+    public void modifier(long id, String texte, boolean actif){
         ContentValues valeur = new ContentValues();
         valeur.put("texte", texte);
         valeur.put("actif", actif);
@@ -76,6 +76,10 @@ public class TableEmplacement extends Controle {
             emplacement.setActif(actif);
             Collections.sort(emplacements);
         }
+    }
+
+    public ArrayList<Emplacement> recupererTous() {
+        return emplacements;
     }
 
     public ArrayList<Emplacement> recupererActifs() {

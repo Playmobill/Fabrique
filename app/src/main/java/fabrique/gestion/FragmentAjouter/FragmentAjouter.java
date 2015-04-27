@@ -16,7 +16,7 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
 
     private View view;
 
-    private Button fermenteur, cuve, fut, brassin, recette, emplacement;
+    private Button fermenteur, cuve, fut, brassin, recette;
 
     @Nullable
     @Override
@@ -51,9 +51,6 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
 
         recette = (Button)view.findViewById(R.id.btnRecette);
         recette.setOnClickListener(this);
-
-        emplacement = (Button)view.findViewById(R.id.btnEmplacement);
-        emplacement.setOnClickListener(this);
     }
 
     @Override
@@ -87,12 +84,6 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
             transaction.replace(R.id.onglet, new FragmentAjouterRecette());
             transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
             transaction.addToBackStack(null).commit();
-        }
-        else if (view.equals(emplacement)) {
-            /*FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.onglet, new FragmentAjouterEmplacement());
-            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
-            transaction.addToBackStack(null).commit();*/
         }
     }
 
