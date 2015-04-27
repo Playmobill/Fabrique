@@ -213,13 +213,13 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
         if(TableBrassin.instance(contexte).tailleListe()!=0) {
             switch (position) {
                 case 0:
-                    listeBrassin = trierParNumero(TableBrassin.instance(contexte).cloner(), 0, TableBrassin.instance(contexte).tailleListe() - 1);
+                    listeBrassin = trierParNumero(TableBrassin.instance(contexte).cloner());
                     break;
                 case 1:
                     listeBrassin = trierParRecette(TableBrassin.instance(contexte).cloner());
                     break;
                 case 2:
-                    listeBrassin = trierParDateCreation(TableBrassin.instance(contexte).cloner(), 0, TableBrassin.instance(contexte).tailleListe() - 1);
+                    listeBrassin = trierParDateCreation(TableBrassin.instance(contexte).cloner());
                     Collections.reverse(listeBrassin);
                     break;
                 default:
@@ -239,36 +239,31 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
         }
     }
 
-    public ArrayList<Brassin> trierParNumero(ArrayList<Brassin> listeBrassin, int petitIndex, int grandIndex){
-        int i = petitIndex;
-        int j = grandIndex;
-        // calculate pivot number, I am taking pivot as middle index number
-        Brassin pivot = listeBrassin.get(petitIndex+(grandIndex-petitIndex)/2);
-        // Divide into two arrays
-        while (i <= j) {
-            while (listeBrassin.get(i).getNumero() < pivot.getNumero()) {
-                i++;
+    public ArrayList<Brassin> trierParNumero(ArrayList<Brassin> listeBrassin){
+        ArrayList<Brassin> result = new ArrayList<>();
+        int index;
+        long value;
+        for (int i = 0; i < listeBrassin.size(); i++) {
+            index = -1;
+            value = listeBrassin.size();
+            boolean possible;
+            for (int j = 0; j < listeBrassin.size(); j++) {
+                possible=true;
+                for (int k = 0; k < result.size() && possible; k++) {
+                    if(result.get(k).getNumero() == listeBrassin.get(j).getNumero()){
+                        possible = false;
+                    }
+                }
+                if((possible) && ((index<0) || (listeBrassin.get(j).getNumero() < value))){
+                    index = j;
+                    value = listeBrassin.get(index).getNumero();
+                }
             }
-            while (listeBrassin.get(j).getNumero() > pivot.getNumero()) {
-                j--;
-            }
-            if (i <= j) {
-                Brassin temp = listeBrassin.get(i);
-                listeBrassin.set(i, listeBrassin.get(j));
-                listeBrassin.set(j, temp);
-                //move index to next position on both sides
-                i++;
-                j--;
+            if(index>=0 && index<listeBrassin.size()) {
+                result.add(listeBrassin.get(index));
             }
         }
-        // call recursively
-        if (petitIndex < j) {
-            listeBrassin = trierParDateCreation(listeBrassin, petitIndex, j);
-        }
-        if (i < grandIndex) {
-            listeBrassin = trierParDateCreation(listeBrassin, i, grandIndex);
-        }
-        return listeBrassin;
+        return result;
 
     }
 
@@ -306,36 +301,37 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
         return result;
     }
 
-    public ArrayList<Brassin> trierParDateCreation(ArrayList<Brassin> listeBrassin, int petitIndex, int grandIndex){
-        int i = petitIndex;
-        int j = grandIndex;
-        // calculate pivot number, I am taking pivot as middle index number
-        Brassin pivot = listeBrassin.get(petitIndex+(grandIndex-petitIndex)/2);
-        // Divide into two arrays
-        while (i <= j) {
-            while (listeBrassin.get(i).getDateLong() < pivot.getDateLong()) {
-                i++;
+    public ArrayList<Brassin> trierParDateCreation(ArrayList<Brassin> listeBrassin){
+        ArrayList<Brassin> result = new ArrayList<>();
+        int index;
+        long[] values = new long[2];
+        for (int i = 0; i < listeBrassin.size(); i++) {
+            index = -1;
+            values[0] = -1;
+            values[1] = -1;
+            boolean possible;
+            for (int j = 0; j < listeBrassin.size(); j++) {
+                possible=true;
+                for (int k = 0; k < result.size() && possible; k++) {
+                    if(result.get(k).getNumero() == listeBrassin.get(j).getNumero()){
+                        possible = false;
+                    }
+                }
+                if((possible) && ((index<0) || (listeBrassin.get(j).getDateLong() > values[0]))){
+                    index = j;
+                    values[0] = listeBrassin.get(index).getDateLong();
+                    values[1] = listeBrassin.get(index).getNumero();
+                }
+                else if((possible) && ((index<0) || (listeBrassin.get(j).getDateLong() == values[0] && listeBrassin.get(j).getNumero() > values[1]))){
+                    index = j;
+                    values[0] = listeBrassin.get(index).getDateLong();
+                    values[1] = listeBrassin.get(index).getNumero();
+                }
             }
-            while (listeBrassin.get(j).getDateLong() > pivot.getDateLong()) {
-                j--;
-            }
-            if (i <= j) {
-                Brassin temp = listeBrassin.get(i);
-                listeBrassin.set(i, listeBrassin.get(j));
-                listeBrassin.set(j, temp);
-                //move index to next position on both sides
-                i++;
-                j--;
+            if(index>=0 && index<listeBrassin.size()) {
+                result.add(listeBrassin.get(index));
             }
         }
-        // call recursively
-        if (petitIndex < j) {
-            listeBrassin = trierParDateCreation(listeBrassin, petitIndex, j);
-        }
-        if (i < grandIndex) {
-            listeBrassin = trierParDateCreation(listeBrassin, i, grandIndex);
-        }
-        return listeBrassin;
-
+        return result;
     }
 }
