@@ -373,7 +373,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
     private void reafficherDescription() {
         editNumero.setEnabled(false);
         editRecette.setEnabled(false);
-        editRecette.setSelection(indexRecette);
+        editRecette.setSelection(indexRecette-1);
         editQuantite.setEnabled(false);
         editCommentaire.setEnabled(false);
         editDensiteOriginale.setEnabled(false);

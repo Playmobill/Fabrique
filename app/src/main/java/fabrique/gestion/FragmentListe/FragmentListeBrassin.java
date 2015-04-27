@@ -220,7 +220,6 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
                     break;
                 case 2:
                     listeBrassin = trierParDateCreation(TableBrassin.instance(contexte).cloner());
-                    Collections.reverse(listeBrassin);
                     break;
                 default:
                     listeBrassin = new ArrayList<>();
@@ -322,7 +321,7 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
                     values[0] = listeBrassin.get(index).getDateLong();
                     values[1] = listeBrassin.get(index).getNumero();
                 }
-                else if((possible) && ((index<0) || (listeBrassin.get(j).getDateLong() == values[0] && listeBrassin.get(j).getNumero() > values[1]))){
+                else if((possible) && ((index<0) || (listeBrassin.get(j).getDateLong() == values[0] && listeBrassin.get(j).getNumero() < values[1]))){
                     index = j;
                     values[0] = listeBrassin.get(index).getDateLong();
                     values[1] = listeBrassin.get(index).getNumero();
