@@ -1,5 +1,7 @@
 package fabrique.gestion.Objets;
 
+import android.support.annotation.NonNull;
+
 public class Emplacement extends Objet implements Comparable<Emplacement> {
 
     private String texte;
@@ -26,7 +28,7 @@ public class Emplacement extends Objet implements Comparable<Emplacement> {
     }
 
     @Override
-    public int compareTo(Emplacement emplacement) {
+    public int compareTo(@NonNull Emplacement emplacement) {
         if (actif == emplacement.getActif()) {
             for (int i=0; i<Math.min(texte.length(), emplacement.getTexte().length()) ; i++) {
                 if (texte.charAt(i) < emplacement.getTexte().charAt(i)) {
@@ -40,7 +42,7 @@ public class Emplacement extends Objet implements Comparable<Emplacement> {
             } else if (texte.length() < emplacement.getTexte().length()) {
                 return -1;
             }
-        } else if (actif && !emplacement.getActif()) {
+        } else if (actif && !emplacement.actif) {
             return -1;
         }
         return 1;

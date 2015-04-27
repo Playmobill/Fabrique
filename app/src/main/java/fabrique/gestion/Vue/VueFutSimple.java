@@ -81,10 +81,10 @@ public class VueFutSimple extends LinearLayout {
             titre.setTypeface(null, Typeface.BOLD);
 
             TextView dateInspection = new TextView(getContext());
-            dateInspection.setText("" + fut.getDateInspectionToString());
-            if ((System.currentTimeMillis() - fut.getDateInspection()) >= TableGestion.instance(getContext()).delaiInspectionBaril()) {
+            dateInspection.setText("" + fut.getDateInspection());
+            if ((System.currentTimeMillis() - fut.getDateInspectionToLong()) >= TableGestion.instance(getContext()).delaiInspectionBaril()) {
                 dateInspection.setTextColor(Color.RED);
-            } else if ((System.currentTimeMillis() - fut.getDateInspection()) >= (TableGestion.instance(getContext()).delaiInspectionBaril()-172800000)) {
+            } else if ((System.currentTimeMillis() - fut.getDateInspectionToLong()) >= (TableGestion.instance(getContext()).delaiInspectionBaril()-172800000)) {
                 dateInspection.setTextColor(Color.rgb(198, 193, 13));
             } else {
                 dateInspection.setTextColor(Color.rgb(34, 177, 76));

@@ -1,5 +1,7 @@
 package fabrique.gestion.Objets;
 
+import android.support.annotation.NonNull;
+
 public class Recette extends Objet implements Comparable<Recette> {
 
     private String nom;
@@ -30,7 +32,7 @@ public class Recette extends Objet implements Comparable<Recette> {
     }
 
     @Override
-    public int compareTo(Recette type) {
+    public int compareTo(@NonNull Recette type) {
         if (getId() == type.getId()) {
             return 0;
         } else if (getId() > type.getId()) {

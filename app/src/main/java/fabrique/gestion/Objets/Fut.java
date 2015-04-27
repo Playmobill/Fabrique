@@ -1,8 +1,7 @@
 package fabrique.gestion.Objets;
 
 import android.content.Context;
-
-import java.util.Calendar;
+import android.support.annotation.NonNull;
 
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableEtatFut;
@@ -40,11 +39,9 @@ public class Fut extends Objet implements Comparable<Fut> {
         return TableEtatFut.instance(contexte).recupererId(id_etat);
     }
     public String getDateEtat() {
-        Calendar calendrier = Calendar.getInstance();
-        calendrier.setTimeInMillis(dateEtat);
-        return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
+        return DateToString.dateToString(dateEtat);
     }
-    public long getLongDateEtat() {
+    public long getDateEtatToLong() {
         return dateEtat;
     }
     public long getId_brassin() {
@@ -53,13 +50,11 @@ public class Fut extends Objet implements Comparable<Fut> {
     public Brassin getBrassin(Context contexte) {
         return TableBrassin.instance(contexte).recupererId(id_brassin);
     }
-    public long getDateInspection() {
-        return dateInspection;
+    public String getDateInspection() {
+        return DateToString.dateToString(dateInspection);
     }
-    public String getDateInspectionToString() {
-        Calendar calendrier = Calendar.getInstance();
-        calendrier.setTimeInMillis(dateInspection);
-        return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
+    public long getDateInspectionToLong() {
+        return dateInspection;
     }
 
     public void setNumero(int numero) {
@@ -82,7 +77,7 @@ public class Fut extends Objet implements Comparable<Fut> {
     }
 
     @Override
-    public int compareTo(Fut fut) {
+    public int compareTo(@NonNull Fut fut) {
         if (numero == fut.numero) {
             if (getId() == fut.getId()) {
                 return 0;

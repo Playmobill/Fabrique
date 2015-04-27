@@ -1,5 +1,7 @@
 package fabrique.gestion.Objets;
 
+import android.support.annotation.NonNull;
+
 public class EtatFut extends Objet implements Comparable<EtatFut> {
 
     private String texte;
@@ -46,7 +48,7 @@ public class EtatFut extends Objet implements Comparable<EtatFut> {
     }
 
     @Override
-    public int compareTo(EtatFut etat) {
+    public int compareTo(@NonNull EtatFut etat) {
         if (actif == etat.getActif()) {
             for (int i=0; i<Math.min(texte.length(), etat.getTexte().length()) ; i++) {
                 if (texte.charAt(i) < etat.getTexte().charAt(i)) {
@@ -60,7 +62,7 @@ public class EtatFut extends Objet implements Comparable<EtatFut> {
             } else if (texte.length() < etat.getTexte().length()) {
                 return -1;
             }
-        } else if (actif && !etat.getActif()) {
+        } else if (actif && !etat.actif) {
             return -1;
         }
         return 1;

@@ -81,10 +81,10 @@ public class VueFermenteurSimple extends LinearLayout {
             titre.setTypeface(null, Typeface.BOLD);
 
             TextView dateLavageAcide = new TextView(getContext());
-            dateLavageAcide.setText("" + fermenteur.getDateLavageAcideToString());
-            if ((System.currentTimeMillis() - fermenteur.getDateLavageAcide()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
+            dateLavageAcide.setText("" + fermenteur.getDateLavageAcide());
+            if ((System.currentTimeMillis() - fermenteur.getDateLavageAcideToLong()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
                 dateLavageAcide.setTextColor(Color.RED);
-            } else if ((System.currentTimeMillis() - fermenteur.getDateLavageAcide()) >= (TableGestion.instance(getContext()).delaiLavageAcide()-172800000)) {
+            } else if ((System.currentTimeMillis() - fermenteur.getDateLavageAcideToLong()) >= (TableGestion.instance(getContext()).delaiLavageAcide()-172800000)) {
                 dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
             } else {
                 dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));

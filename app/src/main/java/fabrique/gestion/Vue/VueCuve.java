@@ -347,7 +347,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
 
         TableRow ligneAjouter = new TableRow(getContext());
 
-        ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueBrassin();
+        ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueCuve();
         String[] tabListeHistorique = new String[listeHistoriques.size()];
         for (int i=0; i<tabListeHistorique.length ; i++) {
             tabListeHistorique[i] = listeHistoriques.get(i).getTexte();

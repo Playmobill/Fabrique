@@ -155,10 +155,10 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 editTitre.setEnabled(false);
 
             TextView dateLavageAcide = new TextView(getContext());
-            dateLavageAcide.setText("" + fermenteur.getDateLavageAcideToString());
-            if ((System.currentTimeMillis() - fermenteur.getDateLavageAcide()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
+            dateLavageAcide.setText("" + fermenteur.getDateLavageAcide());
+            if ((System.currentTimeMillis() - fermenteur.getDateLavageAcideToLong()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
                 dateLavageAcide.setTextColor(Color.RED);
-            } else if ((System.currentTimeMillis() - fermenteur.getDateLavageAcide()) >= (TableGestion.instance(getContext()).delaiLavageAcide()-172800000)) {
+            } else if ((System.currentTimeMillis() - fermenteur.getDateLavageAcideToLong()) >= (TableGestion.instance(getContext()).delaiLavageAcide()-172800000)) {
                 dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
             } else {
                 dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
@@ -275,7 +275,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcide(), fermenteur.getIdEtat(), fermenteur.getLongDateEtat(), fermenteur.getIdBrassin());
+            TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdEtat(), fermenteur.getDateEtatToLong(), fermenteur.getIdBrassin());
             indexEmplacement = editEmplacement.getSelectedItemPosition();
             reafficherDescription();
         } else {
@@ -348,7 +348,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         TableRow ligneAjouter = new TableRow(getContext());
         ligneAjouter.setOrientation(LinearLayout.HORIZONTAL);
 
-        ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueBrassin();
+        ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueFermenteur();
         String[] tabListeHistorique = new String[listeHistoriques.size()];
         for (int i=0; i<tabListeHistorique.length ; i++) {
             tabListeHistorique[i] = listeHistoriques.get(i).getTexte();
@@ -369,7 +369,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         ligneAjouter.addView(btnAjouter);
         tableauHistorique.addView(ligneAjouter);
 
-        ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdCuve(fermenteur.getId());
+        ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdFermenteur(fermenteur.getId());
         for (int i=0; i<historiques.size() ; i++) {
             TableRow ligne = new TableRow(getContext());
             TextView texte = new TextView(getContext());
@@ -392,13 +392,10 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 fermenteur.getNumero(),
                 fermenteur.getCapacite(),
                 fermenteur.getIdEmplacement(),
-                fermenteur.getDateLavageAcide(),
+                fermenteur.getDateLavageAcideToLong(),
                 fermenteur.getIdEtat(),
-                fermenteur.getLongDateEtat(),
+                fermenteur.getDateEtatToLong(),
                 TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId());
-            /*Intent intent = new Intent(getContext(), ActivityVueFermenteur.class);
-            intent.putExtra("id", fermenteur.getId());
-            getContext().startActivity(intent);*/
             invalidate();
         } else if (v.equals(btnAjouter)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, -1, fermenteur.getId());
@@ -412,14 +409,11 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                             fermenteur.getIdEmplacement(),
                             System.currentTimeMillis(),
                             listeEtat.get(i).getId(),
-                            fermenteur.getLongDateEtat(),
+                            fermenteur.getDateEtatToLong(),
                             fermenteur.getIdBrassin());
                     String texte = listeEtat.get(i).getHistorique();
                     if (texte != null) {
                         TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), fermenteur.getId(), -1, -1, fermenteur.getIdBrassin());
-                        /*Intent intent = new Intent(getContext(), ActivityVueFermenteur.class);
-                        intent.putExtra("id", fermenteur.getId());
-                        getContext().startActivity(intent);*/
                         invalidate();
                     }
                     afficherDescription();

@@ -1,8 +1,7 @@
 package fabrique.gestion.Objets;
 
 import android.content.Context;
-
-import java.util.Calendar;
+import android.support.annotation.NonNull;
 
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableEmplacement;
@@ -41,13 +40,11 @@ public class Fermenteur extends Objet implements Comparable<Fermenteur> {
     public Emplacement getEmplacement(Context contexte) {
         return TableEmplacement.instance(contexte).recupererId(id_emplacement);
     }
-    public long getDateLavageAcide() {
-        return dateLavageAcide;
+    public String getDateLavageAcide() {
+        return DateToString.dateToString(dateLavageAcide);
     }
-    public String getDateLavageAcideToString() {
-        Calendar calendrier = Calendar.getInstance();
-        calendrier.setTimeInMillis(dateLavageAcide);
-        return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
+    public long getDateLavageAcideToLong() {
+        return dateLavageAcide;
     }
     public long getIdEtat() {
         return id_etat;
@@ -55,13 +52,11 @@ public class Fermenteur extends Objet implements Comparable<Fermenteur> {
     public EtatFermenteur getEtat(Context contexte) {
         return TableEtatFermenteur.instance(contexte).recupererId(id_etat);
     }
-    public long getLongDateEtat() {
+    public long getDateEtatToLong() {
         return dateEtat;
     }
     public String getDateEtat() {
-        Calendar calendrier = Calendar.getInstance();
-        calendrier.setTimeInMillis(dateEtat);
-        return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
+        return DateToString.dateToString(dateEtat);
     }
     public long getIdBrassin() {
         return id_brassin;
@@ -93,7 +88,7 @@ public class Fermenteur extends Objet implements Comparable<Fermenteur> {
     }
 
     @Override
-    public int compareTo(Fermenteur fermenteur) {
+    public int compareTo(@NonNull Fermenteur fermenteur) {
         if (numero == fermenteur.numero) {
             if (getId() == fermenteur.getId()) {
                 return 0;

@@ -1,5 +1,7 @@
 package fabrique.gestion.Objets;
 
+import android.support.annotation.NonNull;
+
 public class ListeHistorique extends Objet implements Comparable<ListeHistorique> {
 
     private int elementConcerne;
@@ -23,7 +25,7 @@ public class ListeHistorique extends Objet implements Comparable<ListeHistorique
     }
 
     @Override
-    public int compareTo(ListeHistorique listeHistorique) {
+    public int compareTo(@NonNull ListeHistorique listeHistorique) {
         if (getId() == listeHistorique.getId()) {
             return 0;
         } else if (getId() > listeHistorique.getId()) {

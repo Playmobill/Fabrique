@@ -1,8 +1,7 @@
 package fabrique.gestion.Objets;
 
 import android.content.Context;
-
-import java.util.Calendar;
+import android.support.annotation.NonNull;
 
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableEmplacement;
@@ -47,9 +46,7 @@ public class Cuve extends Objet implements Comparable<Cuve> {
         return dateLavageAcide;
     }
     public String getDateLavageAcideToString() {
-        Calendar calendrier = Calendar.getInstance();
-        calendrier.setTimeInMillis(dateLavageAcide);
-        return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
+        return DateToString.dateToString(dateLavageAcide);
     }
     public long getIdEtat() {
         return id_etat;
@@ -67,9 +64,7 @@ public class Cuve extends Objet implements Comparable<Cuve> {
         return jour + "j" + heure + "h";
     }
     public String getDateEtat() {
-        Calendar calendrier = Calendar.getInstance();
-        calendrier.setTimeInMillis(dateEtat);
-        return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
+        return DateToString.dateToString(dateEtat);
     }
     public String getCommentaireEtat() {
         String texte = "";
@@ -109,7 +104,7 @@ public class Cuve extends Objet implements Comparable<Cuve> {
     }
 
     @Override
-    public int compareTo(Cuve cuve) {
+    public int compareTo(@NonNull Cuve cuve) {
         if (numero == cuve.numero) {
             if (getId() == cuve.getId()) {
                 return 0;

@@ -111,7 +111,7 @@ public class TableHistorique extends Controle {
         ArrayList<Historique> historiqueSelonFut = new ArrayList<>();
 
         for (int i=0; i<historiques.size() ; i++) {
-            if (historiques.get(i).getId_cuve() == id_fut) {
+            if (historiques.get(i).getId_fut() == id_fut) {
                 historiqueSelonFut.add(historiques.get(i));
             }
         }

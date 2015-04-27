@@ -1,8 +1,7 @@
 package fabrique.gestion.Objets;
 
 import android.content.Context;
-
-import java.util.Calendar;
+import android.support.annotation.NonNull;
 
 import fabrique.gestion.BDD.TableRecette;
 
@@ -32,9 +31,7 @@ public class Brassin extends Objet implements Comparable<Brassin> {
     public int getNumero() { return numero; }
     public String getCommentaire() { return commentaire; }
     public String getDateCreation() {
-        Calendar calendrier = Calendar.getInstance();
-        calendrier.setTimeInMillis(dateCreation);
-        return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
+        return DateToString.dateToString(dateCreation);
     }
     public int getQuantite() { return quantite; }
     public long getId_recette() { return id_recette; }
@@ -56,7 +53,7 @@ public class Brassin extends Objet implements Comparable<Brassin> {
     public void setPourcentageAlcool(float pourcentageAlcool) { this.pourcentageAlcool = pourcentageAlcool; }
 
     @Override
-    public int compareTo(Brassin brassin) {
+    public int compareTo(@NonNull Brassin brassin) {
         if (numero == brassin.numero) {
             if (getId() == brassin.getId()) {
                 return 0;

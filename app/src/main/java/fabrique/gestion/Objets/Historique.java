@@ -1,6 +1,6 @@
 package fabrique.gestion.Objets;
 
-import java.util.Calendar;
+import android.support.annotation.NonNull;
 
 public class Historique extends Objet implements Comparable<Historique> {
 
@@ -28,9 +28,7 @@ public class Historique extends Objet implements Comparable<Historique> {
         return date;
     }
     public String getDateToString() {
-        Calendar calendrier = Calendar.getInstance();
-        calendrier.setTimeInMillis(date);
-        return calendrier.get(Calendar.DAY_OF_MONTH) + "/" + (calendrier.get(Calendar.MONTH)+1) + "/" + calendrier.get(Calendar.YEAR);
+        return DateToString.dateToString(date);
     }
     public long getId_fermenteur() {
         return id_fermenteur;
@@ -50,7 +48,7 @@ public class Historique extends Objet implements Comparable<Historique> {
     }
 
     @Override
-    public int compareTo(Historique historique) {
+    public int compareTo(@NonNull Historique historique) {
         if (date == historique.date) {
             return 0;
         } else if (date > historique.date) {

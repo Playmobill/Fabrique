@@ -139,69 +139,69 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         parametre.setMargins(10, 10, 10, 10);
 
         TableRow ligneTitreInspection = new TableRow(getContext());
-            LinearLayout layoutTitre = new LinearLayout(getContext());
-                TextView titre = new TextView(getContext());
-                titre.setText("Fut ");
-                titre.setTypeface(null, Typeface.BOLD);
+        LinearLayout layoutTitre = new LinearLayout(getContext());
+        TextView titre = new TextView(getContext());
+        titre.setText("Fut ");
+        titre.setTypeface(null, Typeface.BOLD);
 
-                editTitre = new EditText(getContext());
-                editTitre.setText("" + fut.getNumero());
-                editTitre.setInputType(InputType.TYPE_CLASS_NUMBER);
-                editTitre.setEnabled(false);
+        editTitre = new EditText(getContext());
+        editTitre.setText("" + fut.getNumero());
+        editTitre.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editTitre.setEnabled(false);
 
-                TextView dateInspection = new TextView(getContext());
-                dateInspection.setText("" + fut.getDateInspectionToString());
-                if ((System.currentTimeMillis() - fut.getDateInspection()) >= TableGestion.instance(getContext()).delaiInspectionBaril()) {
-                    dateInspection.setTextColor(Color.RED);
-                } else if ((System.currentTimeMillis() - fut.getDateInspection()) >= (TableGestion.instance(getContext()).delaiInspectionBaril()-172800000)) {
-                    dateInspection.setTextColor(Color.rgb(198, 193, 13));
-                } else {
-                    dateInspection.setTextColor(Color.rgb(34, 177, 76));
-                }
+        TextView dateInspection = new TextView(getContext());
+        dateInspection.setText("" + fut.getDateInspection());
+        if ((System.currentTimeMillis() - fut.getDateInspectionToLong()) >= TableGestion.instance(getContext()).delaiInspectionBaril()) {
+            dateInspection.setTextColor(Color.RED);
+        } else if ((System.currentTimeMillis() - fut.getDateInspectionToLong()) >= (TableGestion.instance(getContext()).delaiInspectionBaril()-172800000)) {
+            dateInspection.setTextColor(Color.rgb(198, 193, 13));
+        } else {
+            dateInspection.setTextColor(Color.rgb(34, 177, 76));
+        }
 
         TableRow ligneCapacite = new TableRow(getContext());
-            LinearLayout layoutCapacite = new LinearLayout(getContext());
-                TextView capacite = new TextView(getContext());
-                capacite.setText("Capacité : ");
+        LinearLayout layoutCapacite = new LinearLayout(getContext());
+        TextView capacite = new TextView(getContext());
+        capacite.setText("Capacité : ");
 
-                editCapacite = new EditText(getContext());
-                editCapacite.setText("" + fut.getCapacite());
-                editCapacite.setInputType(InputType.TYPE_CLASS_NUMBER);
-                editCapacite.setEnabled(false);
+        editCapacite = new EditText(getContext());
+        editCapacite.setText("" + fut.getCapacite());
+        editCapacite.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editCapacite.setEnabled(false);
 
         TableRow ligneEtatDate = new TableRow(getContext());
-            TextView etat = new TextView(getContext());
-            etat.setText("État : " + fut.getEtat(getContext()).getTexte());
+        TextView etat = new TextView(getContext());
+        etat.setText("État : " + fut.getEtat(getContext()).getTexte());
 
-            TextView dateEtat = new TextView(getContext());
-            dateEtat.setText("Depuis le : " + fut.getDateEtat());
+        TextView dateEtat = new TextView(getContext());
+        dateEtat.setText("Depuis le : " + fut.getDateEtat());
 
         ligneBouton = new TableRow(getContext());
-            btnModifier = new Button(getContext());
-            btnModifier.setText("Modifier");
+        btnModifier = new Button(getContext());
+        btnModifier.setText("Modifier");
 
-            btnModifier.setOnClickListener(this);
-            btnValider = new Button(getContext());
-            btnValider.setText("Valider");
+        btnModifier.setOnClickListener(this);
+        btnValider = new Button(getContext());
+        btnValider.setText("Valider");
 
-            btnValider.setOnClickListener(this);
-            btnAnnuler = new Button(getContext());
-            btnAnnuler.setText("Annuler");
-            btnAnnuler.setOnClickListener(this);
+        btnValider.setOnClickListener(this);
+        btnAnnuler = new Button(getContext());
+        btnAnnuler.setText("Annuler");
+        btnAnnuler.setOnClickListener(this);
 
-                layoutTitre.addView(titre);
-                layoutTitre.addView(editTitre);
-            ligneTitreInspection.addView(layoutTitre, parametre);
-            ligneTitreInspection.addView(dateInspection, parametre);
+        layoutTitre.addView(titre);
+        layoutTitre.addView(editTitre);
+        ligneTitreInspection.addView(layoutTitre, parametre);
+        ligneTitreInspection.addView(dateInspection, parametre);
         tableauDescription.addView(ligneTitreInspection);
-                layoutCapacite.addView(capacite);
-                layoutCapacite.addView(editCapacite);
-            ligneCapacite.addView(layoutCapacite, parametre);
+        layoutCapacite.addView(capacite);
+        layoutCapacite.addView(editCapacite);
+        ligneCapacite.addView(layoutCapacite, parametre);
         tableauDescription.addView(ligneCapacite);
-            ligneEtatDate.addView(etat, parametre);
-            ligneEtatDate.addView(dateEtat, parametre);
+        ligneEtatDate.addView(etat, parametre);
+        ligneEtatDate.addView(dateEtat, parametre);
         tableauDescription.addView(ligneEtatDate);
-            ligneBouton.addView(btnModifier, parametre);
+        ligneBouton.addView(btnModifier, parametre);
         tableauDescription.addView(ligneBouton);
     }
 
@@ -237,7 +237,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite,fut.getId_etat(), fut.getLongDateEtat(), fut.getId_brassin(), fut.getDateInspection());
+            TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite,fut.getId_etat(), fut.getDateEtatToLong(), fut.getId_brassin(), fut.getDateInspectionToLong());
             reafficherDescription();
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
@@ -304,7 +304,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         TableRow ligneAjouter = new TableRow(getContext());
         ligneAjouter.setOrientation(LinearLayout.HORIZONTAL);
 
-        ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueBrassin();
+        ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueFut();
         String[] tabListeHistorique = new String[listeHistoriques.size()];
         for (int i=0; i<tabListeHistorique.length ; i++) {
             tabListeHistorique[i] = listeHistoriques.get(i).getTexte();
@@ -325,7 +325,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         ligneAjouter.addView(btnAjouter);
         tableauHistorique.addView(ligneAjouter);
 
-        ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdCuve(fut.getId());
+        ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdFut(fut.getId());
         for (int i=0; i<historiques.size() ; i++) {
             TableRow ligne = new TableRow(getContext());
             TextView texte = new TextView(getContext());
@@ -348,9 +348,9 @@ public class VueFut extends TableLayout implements View.OnClickListener {
                     fut.getNumero(),
                     fut.getCapacite(),
                     fut.getId_etat(),
-                    fut.getLongDateEtat(),
+                    fut.getDateEtatToLong(),
                     TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId(),
-                    fut.getDateInspection());
+                    fut.getDateInspectionToLong());
         } else if (v.equals(btnAjouter)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, -1, fut.getId());
             afficherHistorique();
@@ -363,7 +363,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
                             listeEtat.get(i).getId(),
                             System.currentTimeMillis(),
                             fut.getId_brassin(),
-                            fut.getDateInspection());
+                            fut.getDateInspectionToLong());
                     String texte = listeEtat.get(i).getHistorique();
                     if (texte != null) {
                         TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, -1, fut.getId(), fut.getId_brassin());
