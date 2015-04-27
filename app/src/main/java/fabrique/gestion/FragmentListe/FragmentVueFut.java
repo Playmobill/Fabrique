@@ -35,6 +35,7 @@ public class FragmentVueFut extends FragmentAmeliore {
         Context contexte = container.getContext();
 
         LinearLayout layout = new LinearLayout(contexte);
+        layout.setOrientation(LinearLayout.VERTICAL);
 
         Fut fut = TableFut.instance(contexte).recupererId(getArguments().getLong("id"));
         if (fut != null) {
