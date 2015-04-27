@@ -352,7 +352,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
                     TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId(),
                     fut.getDateInspectionToLong());
         } else if (v.equals(btnAjouter)) {
-            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, -1, fut.getId());
+            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, fut.getId(), -1);
             afficherHistorique();
         } else {
             for (int i=0; i<btnsEtat.size() ; i++) {

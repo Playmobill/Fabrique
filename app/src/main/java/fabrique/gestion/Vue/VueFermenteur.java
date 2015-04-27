@@ -398,7 +398,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId());
             invalidate();
         } else if (v.equals(btnAjouter)) {
-            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, -1, fermenteur.getId());
+            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), fermenteur.getId(), -1, -1, -1);
             afficherHistorique();
         } else {
             for (int i=0; i<btnsEtat.size() ; i++) {

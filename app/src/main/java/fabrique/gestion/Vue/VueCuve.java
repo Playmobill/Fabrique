@@ -396,12 +396,9 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                     cuve.getLongDateEtat(),
                     cuve.getCommentaireEtat(),
                     TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId());
-            /*Intent intent = new Intent(getContext(), ActivityVueCuve.class);
-            intent.putExtra("id", cuve.getId());
-            getContext().startActivity(intent);*/
             invalidate();
         } else if (v.equals(btnAjouter)) {
-            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, -1, cuve.getId());
+            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, cuve.getId(), -1, -1);
             afficherHistorique();
         } else {
             for (int i=0; i<btnsEtat.size() ; i++) {
