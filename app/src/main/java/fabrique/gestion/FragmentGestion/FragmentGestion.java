@@ -65,7 +65,10 @@ public class FragmentGestion extends FragmentAmeliore implements View.OnClickLis
             transaction.addToBackStack(null).commit();
         }
         else if (view.equals(temps)) {
-
+            /*FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.onglet, new FragmentTemps());
+            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+            transaction.addToBackStack(null).commit();*/
         }
         else if (view.equals(emplacement)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
