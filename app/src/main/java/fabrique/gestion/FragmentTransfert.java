@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableFermenteur;
@@ -141,6 +142,48 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                     Cuve cuveDest = TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getSelectedItem()));
                     TableCuve.instance(contexte).modifier(cuveDest.getId(), cuveDest.getNumero(), cuveDest.getCapacite(), cuveDest.getIdEmplacement(), cuveDest.getDateLavageAcide(), cuveDest.getIdEtat(), cuveDest.getLongDateEtat(), cuveDest.getCommentaireEtat(), idBrassinTransfere);
                 }
+                Toast.makeText(contexte, "Brassin transféré !", Toast.LENGTH_LONG).show();
+
+                //Mise a jour du spinner du type d'origine
+                ArrayAdapter<String> adapteurTypeOrigine= new ArrayAdapter<>(contexte, R.layout.spinner_style);
+                adapteurTypeOrigine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                if(TableFermenteur.instance(contexte).recupererNumerosFermenteurAvecBrassin().size()!=0) {
+                    adapteurTypeOrigine.add("Fermenteur");
+                    listeTypeOrigineVide = false;
+                }
+                if(TableCuve.instance(contexte).recupererNumerosCuveAvecBrassin().size()!=0) {
+                    adapteurTypeOrigine.add("Cuve");
+                    listeTypeOrigineVide = false;
+                }
+                if(TableFut.instance(contexte).recupererNumeroFutAvecBrassin().size()!=0) {
+                    adapteurTypeOrigine.add("Fût");
+                    listeTypeOrigineVide = false;
+                }
+                listeTypeOrigine.setAdapter(adapteurTypeOrigine);
+                listeTypeOrigine.setOnItemSelectedListener(this);
+                //Fin MaJ type origine
+
+                //Mise a jour du spinner du tye de destination
+                ArrayAdapter<String> adapteurTypeDestination= new ArrayAdapter<>(contexte, R.layout.spinner_style);
+                adapteurTypeDestination.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                if(TableFermenteur.instance(contexte).recupererNumerosFermenteurSansBrassin().size()!=0) {
+                    adapteurTypeDestination.add("Fermenteur");
+                    listeTypeDestinationVide = false;
+                }
+                if(TableCuve.instance(contexte).recupererNumerosCuveSansBrassin().size()!=0) {
+                    adapteurTypeDestination.add("Cuve");
+                    listeTypeDestinationVide = false;
+                }
+                if(TableFut.instance(contexte).recupererNumeroFutSansBrassin().size()!=0) {
+                    adapteurTypeDestination.add("Fût");
+                    listeTypeDestinationVide = false;
+                }
+                listeTypeDestination.setAdapter(adapteurTypeDestination);
+                listeTypeDestination.setOnItemSelectedListener(this);
+                //Fin MaJ type destination
+            }
+            else{
+                Toast.makeText(contexte, "Vous avez besoin d'un contenant d'origine et une destination pour transférer un brassin.", Toast.LENGTH_LONG).show();
             }
         }
     }
