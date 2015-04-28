@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.InputType;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -62,7 +64,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     //Ajouter historique
     private Spinner ajoutListeHistorique;
     private EditText ajoutHistorique;
-    private Button btnAjouter;
+    private TextView btnAjouterHistorique;
 
     public VueFermenteur(Context contexte) {
         super(contexte);
@@ -85,7 +87,9 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
 
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(getContext());
         layoutHorizontalScroll.addView(ligne);
-
+        addView(layoutHorizontalScroll);
+        
+        //Interface pour tester les états et les brassins
         TableRow ligne2 = new TableRow(contexte);
 
         tableauBrassin = new LinearLayout(contexte);
@@ -96,7 +100,6 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         ligne2.addView(cadre(tableauEtat, " Changer Etat "));
         changerEtat();
 
-        addView(layoutHorizontalScroll);
         addView(ligne2);
     }
 
@@ -343,39 +346,41 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     }
 
     private void afficherHistorique() {
+        TableLayout.LayoutParams margeTableau = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
+        margeTableau.setMargins(10, 0, 10, 0);
+
+        TableRow.LayoutParams margeCase = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        margeCase.setMargins(10, 0, 10, 0);
+
         tableauHistorique.removeAllViews();
 
-        TableRow ligneAjouter = new TableRow(getContext());
-        ligneAjouter.setOrientation(LinearLayout.HORIZONTAL);
-
-        ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueFermenteur();
-        String[] tabListeHistorique = new String[listeHistoriques.size()];
-        for (int i=0; i<tabListeHistorique.length ; i++) {
-            tabListeHistorique[i] = listeHistoriques.get(i).getTexte();
-        }
-        ajoutListeHistorique = new Spinner(getContext());
-        ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
-        adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
-
-        ajoutHistorique = new EditText(getContext());
-
-        btnAjouter = new Button(getContext());
-        btnAjouter.setText("Ajouter");
-        btnAjouter.setOnClickListener(this);
-
-        ligneAjouter.addView(ajoutListeHistorique);
-        ligneAjouter.addView(ajoutHistorique);
-        ligneAjouter.addView(btnAjouter);
-        tableauHistorique.addView(ligneAjouter);
+            TableRow ligneAjouter = new TableRow(getContext());
+                LinearLayout sous_ligneAjouter = new LinearLayout(getContext());
+                    ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueFermenteur();
+                    String[] tabListeHistorique = new String[listeHistoriques.size()+1];
+                    tabListeHistorique[0] = "";
+                    for (int i=0; i<listeHistoriques.size() ; i++) {
+                        tabListeHistorique[i+1] = listeHistoriques.get(i).getTexte();
+                    }
+                    ajoutListeHistorique = new Spinner(getContext());
+                        ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
+                        adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
+                sous_ligneAjouter.addView(ajoutListeHistorique);
+                    ajoutHistorique = new EditText(getContext());
+                sous_ligneAjouter.addView(ajoutHistorique);
+            ligneAjouter.addView(sous_ligneAjouter);
+                btnAjouterHistorique = new TextView(getContext());
+                    SpannableString ajouter = new SpannableString("Ajouter");
+                    ajouter.setSpan(new UnderlineSpan(), 0, ajouter.length(), 0);
+                btnAjouterHistorique.setText(ajouter);
+                btnAjouterHistorique.setOnClickListener(this);
+            ligneAjouter.addView(btnAjouterHistorique, margeCase);
+        tableauHistorique.addView(ligneAjouter, margeTableau);
 
         ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdFermenteur(fermenteur.getId());
         for (int i=0; i<historiques.size() ; i++) {
-            TableRow ligne = new TableRow(getContext());
-            TextView texte = new TextView(getContext());
-            texte.setText(historiques.get(i).getDateToString() + " : " + historiques.get(i).getTexte());
-            ligne.addView(texte);
-            tableauHistorique.addView(ligne);
+            tableauHistorique.addView(new LigneHistorique(getContext(), this, historiques.get(i)), margeTableau);
         }
     }
 
@@ -397,7 +402,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 fermenteur.getDateEtatToLong(),
                 TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId());
             invalidate();
-        } else if (v.equals(btnAjouter)) {
+        } else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), fermenteur.getId(), -1, -1, -1);
             afficherHistorique();
         } else {
@@ -420,5 +425,11 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 }
             }
         }
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        afficherHistorique();
     }
 }

@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.InputType;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -62,7 +64,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
     //Ajouter historique
     private Spinner ajoutListeHistorique;
     private EditText ajoutHistorique;
-    private Button btnAjouter;
+    private TextView btnAjouterHistorique;
 
     public VueBrassin(Context contexte) {
         super(contexte);
@@ -394,39 +396,39 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
     }
 
     private void afficherHistorique() {
+        TableLayout.LayoutParams margeTableau = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
+        margeTableau.setMargins(10, 0, 10, 0);
+
+        TableRow.LayoutParams margeCase = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        margeCase.setMargins(10, 0, 10, 0);
+
         tableauHistorique.removeAllViews();
-
-        TableRow ligneAjouter = new TableRow(getContext());
-        ligneAjouter.setOrientation(LinearLayout.HORIZONTAL);
-
-        ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueBrassin();
-        String[] tabListeHistorique = new String[listeHistoriques.size()];
-        for (int i=0; i<tabListeHistorique.length ; i++) {
-            tabListeHistorique[i] = listeHistoriques.get(i).getTexte();
-        }
-        ajoutListeHistorique = new Spinner(getContext());
-        ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
-        adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
-
-        ajoutHistorique = new EditText(getContext());
-
-        btnAjouter = new Button(getContext());
-        btnAjouter.setText("Ajouter");
-        btnAjouter.setOnClickListener(this);
-
-        ligneAjouter.addView(ajoutListeHistorique);
-        ligneAjouter.addView(ajoutHistorique);
-        ligneAjouter.addView(btnAjouter);
-        tableauHistorique.addView(ligneAjouter);
-
+            TableRow ligneAjouter = new TableRow(getContext());
+                LinearLayout sous_ligneAjouter = new LinearLayout(getContext());
+                    ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueBrassin();
+                    String[] tabListeHistorique = new String[listeHistoriques.size()+1];
+                    tabListeHistorique[0] = "";
+                    for (int i=0; i<listeHistoriques.size() ; i++) {
+                        tabListeHistorique[i+1] = listeHistoriques.get(i).getTexte();
+                    }
+                    ajoutListeHistorique = new Spinner(getContext());
+                        ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
+                        adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
+                sous_ligneAjouter.addView(ajoutListeHistorique);
+                    ajoutHistorique = new EditText(getContext());
+                sous_ligneAjouter.addView(ajoutHistorique);
+            ligneAjouter.addView(sous_ligneAjouter);
+                btnAjouterHistorique = new TextView(getContext());
+                    SpannableString ajouter = new SpannableString("Ajouter");
+                    ajouter.setSpan(new UnderlineSpan(), 0, ajouter.length(), 0);
+                btnAjouterHistorique.setText(ajouter);
+                btnAjouterHistorique.setOnClickListener(this);
+            ligneAjouter.addView(btnAjouterHistorique, margeCase);
+        tableauHistorique.addView(ligneAjouter, margeTableau);
         ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdBrassin(brassin.getId());
         for (int i=0; i<historiques.size() ; i++) {
-            TableRow ligne = new TableRow(getContext());
-                TextView texte = new TextView(getContext());
-                texte.setText(historiques.get(i).getDateToString() + " : " + historiques.get(i).getTexte());
-            ligne.addView(texte);
-            tableauHistorique.addView(ligne);
+            tableauHistorique.addView(new LigneHistorique(getContext(), this, historiques.get(i)), margeTableau);
         }
     }
 
@@ -449,7 +451,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
             new DatePickerDialog(getContext(), this, annee, mois, jour).show();
         }
 
-        else if (v.equals(btnAjouter)) {
+        else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, -1, brassin.getId());
             afficherHistorique();
         }
@@ -461,5 +463,11 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
         this.mois = mois;
         this.jour = jour;
         editDateCreation.setText(jour + " / " + mois + " / " + annee);
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        afficherHistorique();
     }
 }

@@ -1,10 +1,9 @@
-package fabrique.gestion.BDD;
+package fabrique.gestion.Vue;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.Objets.DateToString;
 import fabrique.gestion.Objets.Historique;
 
@@ -163,7 +163,6 @@ public class LigneHistorique extends TableRow implements View.OnClickListener, D
     public void onDateSet(DatePicker view, int annee, int mois, int jour) {
         GregorianCalendar calendrier = new GregorianCalendar(annee, mois, jour);
         longDate = calendrier.getTimeInMillis();
-        Log.i("LigneHistorique", "Valider : " + calendrier.getTime().toString());
         editDate.setText(DateToString.dateToString(longDate));
     }
 }

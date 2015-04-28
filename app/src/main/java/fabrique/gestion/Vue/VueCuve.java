@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import fabrique.gestion.BDD.LigneHistorique;
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableEmplacement;
@@ -89,7 +87,9 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
 
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(getContext());
         layoutHorizontalScroll.addView(ligne);
+        addView(layoutHorizontalScroll);
 
+        //Interface pour tester les états et les brassins
         TableRow ligne2 = new TableRow(contexte);
 
         tableauBrassin = new LinearLayout(contexte);
@@ -97,10 +97,9 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         changerBrassin();
 
         tableauEtat = new TableLayout(contexte);
-        changerEtat();
         ligne2.addView(cadre(tableauEtat, " Changer Etat "));
+        changerEtat();
 
-        addView(layoutHorizontalScroll);
         addView(ligne2);
     }
 
@@ -365,8 +364,8 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                         tabListeHistorique[i+1] = listeHistoriques.get(i).getTexte();
                     }
                     ajoutListeHistorique = new Spinner(getContext());
-                    ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
-                    adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
+                        adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
                 sous_ligneAjouter.addView(ajoutListeHistorique);
                     ajoutHistorique = new EditText(getContext());
@@ -442,6 +441,5 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
     public void invalidate() {
         super.invalidate();
         afficherHistorique();
-        Log.i("VueCuve", "afficherHistorique");
     }
 }
