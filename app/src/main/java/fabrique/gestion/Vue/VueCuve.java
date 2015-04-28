@@ -161,7 +161,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
             dateLavageAcide.setText("" + cuve.getDateLavageAcideToString());
             if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
                 dateLavageAcide.setTextColor(Color.RED);
-            } else if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= (TableGestion.instance(getContext()).delaiLavageAcide()-172800000)) {
+            } else if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= (TableGestion.instance(getContext()).avertissementLavageAcide())) {
                 dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
             } else {
                 dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));

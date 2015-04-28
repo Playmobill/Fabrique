@@ -161,7 +161,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
             dateLavageAcide.setText("" + fermenteur.getDateLavageAcide());
             if ((System.currentTimeMillis() - fermenteur.getDateLavageAcideToLong()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
                 dateLavageAcide.setTextColor(Color.RED);
-            } else if ((System.currentTimeMillis() - fermenteur.getDateLavageAcideToLong()) >= (TableGestion.instance(getContext()).delaiLavageAcide()-172800000)) {
+            } else if ((System.currentTimeMillis() - fermenteur.getDateLavageAcideToLong()) >= (TableGestion.instance(getContext()).avertissementLavageAcide())) {
                 dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
             } else {
                 dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
