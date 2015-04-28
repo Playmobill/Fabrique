@@ -363,8 +363,8 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
         if (erreur.equals("")) {
             long recette = listeRecetteActifs.get(editRecette.getSelectedItemPosition()).getId();
             long date = new GregorianCalendar(annee, mois, jour).getTimeInMillis();
-            TableBrassin.instance(
-                    getContext()).modifier(brassin.getId(),
+            TableBrassin.instance(getContext()).modifier(
+                    brassin.getId(),
                     numero,
                     editCommentaire.getText().toString() + "",
                     date,

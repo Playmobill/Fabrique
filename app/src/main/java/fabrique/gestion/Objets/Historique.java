@@ -46,6 +46,9 @@ public class Historique extends Objet implements Comparable<Historique> {
     public void setTexte(String texte) {
         this.texte = texte;
     }
+    public void setDate(long date) {
+        this.date = date;
+    }
 
     @Override
     public int compareTo(@NonNull Historique historique) {

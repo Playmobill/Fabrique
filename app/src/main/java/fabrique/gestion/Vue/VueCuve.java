@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import fabrique.gestion.BDD.LigneHistorique;
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableEmplacement;
@@ -60,9 +62,6 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
 
     //Historique
     private LinearLayout tableauHistorique;
-    private ArrayList<TextView> btnsModifier;
-    private ArrayList<TextView> btnsSupprimer;
-    private ArrayList<Historique> historiques;
 
     //Ajouter historique
     private Spinner ajoutListeHistorique;
@@ -348,8 +347,11 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
     }
 
     private void afficherHistorique() {
-        TableRow.LayoutParams parametre = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        parametre.setMargins(10, 0, 10, 0);
+        TableLayout.LayoutParams margeTableau = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
+        margeTableau.setMargins(10, 0, 10, 0);
+
+        TableRow.LayoutParams margeCase = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        margeCase.setMargins(10, 0, 10, 0);
 
         tableauHistorique.removeAllViews();
 
@@ -357,9 +359,10 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                 LinearLayout sous_ligneAjouter = new LinearLayout(getContext());
 
                     ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueCuve();
-                    String[] tabListeHistorique = new String[listeHistoriques.size()];
-                    for (int i=0; i<tabListeHistorique.length ; i++) {
-                        tabListeHistorique[i] = listeHistoriques.get(i).getTexte();
+                    String[] tabListeHistorique = new String[listeHistoriques.size()+1];
+                    tabListeHistorique[0] = "";
+                    for (int i=0; i<listeHistoriques.size() ; i++) {
+                        tabListeHistorique[i+1] = listeHistoriques.get(i).getTexte();
                     }
                     ajoutListeHistorique = new Spinner(getContext());
                     ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
@@ -374,40 +377,12 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                 ajouter.setSpan(new UnderlineSpan(), 0, ajouter.length(), 0);
                 btnAjouterHistorique.setText(ajouter);
                 btnAjouterHistorique.setOnClickListener(this);
-            ligneAjouter.addView(btnAjouterHistorique, parametre);
-        tableauHistorique.addView(ligneAjouter, parametre);
+            ligneAjouter.addView(btnAjouterHistorique, margeCase);
+        tableauHistorique.addView(ligneAjouter, margeTableau);
 
-        historiques  = TableHistorique.instance(getContext()).recupererSelonIdCuve(cuve.getId());
-        btnsModifier = new ArrayList<>();
-        btnsSupprimer = new ArrayList<>();
+        ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdCuve(cuve.getId());
         for (int i=0; i<historiques.size() ; i++) {
-                TableRow ligne = new TableRow(getContext());
-                    LinearLayout sous_ligne = new LinearLayout(getContext());
-                        TextView date = new TextView(getContext());
-                        date.setText(historiques.get(i).getDateToString());
-                    sous_ligne.addView(date);
-                        TextView entre = new TextView(getContext());
-                        entre.setText(" : ");
-                    sous_ligne.addView(entre);
-                        TextView texte = new TextView(getContext());
-                        texte.setText(historiques.get(i).getTexte());
-                    sous_ligne.addView(texte);
-                ligne.addView(sous_ligne);
-                    TextView btnModifierHistorique = new TextView(getContext());
-                    SpannableString modifier = new SpannableString("Modifier");
-                    modifier.setSpan(new UnderlineSpan(), 0, modifier.length(), 0);
-                    btnModifierHistorique.setText(modifier);
-                    btnModifierHistorique.setOnClickListener(this);
-                    btnsModifier.add(btnModifierHistorique);
-                ligne.addView(btnModifierHistorique, parametre);
-                    TextView btnSupprimerHistorique = new TextView(getContext());
-                    SpannableString supprimer = new SpannableString("Supprimer");
-                    supprimer.setSpan(new UnderlineSpan(), 0, supprimer.length(), 0);
-                    btnSupprimerHistorique.setText(supprimer);
-                    btnSupprimerHistorique.setOnClickListener(this);
-                    btnsSupprimer.add(btnSupprimerHistorique);
-                ligne.addView(btnSupprimerHistorique, parametre);
-            tableauHistorique.addView(ligne, parametre);
+            tableauHistorique.addView(new LigneHistorique(getContext(), this, historiques.get(i)), margeTableau);
         }
     }
 
@@ -415,11 +390,14 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
     public void onClick(View v) {
         if (v.equals(btnModifier)) {
             modifierDescription();
-        } else if (v.equals(btnValider)) {
+        }
+        else if (v.equals(btnValider)) {
             validerDescription();
-        } else if (v.equals(btnAnnuler)) {
+        }
+        else if (v.equals(btnAnnuler)) {
             reafficherDescription();
-        } else if (v.equals(btnChanger)) {
+        }
+        else if (v.equals(btnChanger)) {
             TableCuve.instance(getContext()).modifier(cuve.getId(),
                     cuve.getNumero(),
                     cuve.getCapacite(),
@@ -430,12 +408,14 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                     cuve.getCommentaireEtat(),
                     TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId());
             invalidate();
-        } else if (v.equals(btnAjouterHistorique)) {
+        }
+        else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, cuve.getId(), -1, -1);
             afficherHistorique();
-        } else {
+        }
+        else {
             boolean etat = false;
-            for (int i=0; i<btnsEtat.size() ; i++) {
+            for (int i=0; (i<btnsEtat.size()) && !etat ; i++) {
                 if (v.equals(btnsEtat.get(i))) {
                     etat = true;
                     TableCuve.instance(getContext()).modifier(cuve.getId(),
@@ -455,19 +435,13 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                     afficherDescription();
                 }
             }
-            boolean modifier = false;
-            for (int i=0; !etat && (i<btnsModifier.size()); i++) {
-                if (v.equals(btnsModifier.get(i))) {
-                    modifier = true;
-
-                }
-            }
-            for (int i=0; !etat && !modifier && (i<btnsSupprimer.size()); i++) {
-                if (v.equals(btnsSupprimer.get(i))) {
-                    TableHistorique.instance(getContext()).supprimer(historiques.get(i).getId());
-                    afficherHistorique();
-                }
-            }
         }
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        afficherHistorique();
+        Log.i("VueCuve", "afficherHistorique");
     }
 }

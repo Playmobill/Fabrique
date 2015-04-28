@@ -82,12 +82,15 @@ public class TableHistorique extends Controle {
         if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
             Historique historique = recupererId(id);
             historique.setTexte(texte);
+            historique.setDate(date);
+            Collections.sort(historiques);
         }
     }
 
     public void supprimer(long id) {
         if (accesBDD.delete(nomTable, "id = ?", new String[] {"" + id}) == 1) {
             historiques.remove(recupererId(id));
+            Collections.sort(historiques);
         }
     }
 
