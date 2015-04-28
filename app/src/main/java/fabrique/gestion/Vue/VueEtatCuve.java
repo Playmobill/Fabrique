@@ -17,12 +17,9 @@ import fabrique.gestion.ColorPicker.ColorPickerDialog;
 
 public class VueEtatCuve extends TableLayout implements View.OnClickListener {
 
-    private TableRow.LayoutParams marge;
-
     //Titre
     private TableRow ligneTitre;
     private TableRow ligneEnTete;
-    private TextView txtTitre, txtEtat, txtHistorique, txtActif;
 
     //Ajouter
     private TableRow ligneAjouter;
@@ -37,24 +34,24 @@ public class VueEtatCuve extends TableLayout implements View.OnClickListener {
     }
 
     private void initialiser() {
-        marge = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams marge = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         marge.setMargins(10, 1, 10, 1);
 
         ligneTitre = new TableRow(getContext());
-            txtTitre = new TextView(getContext());
+            TextView txtTitre = new TextView(getContext());
             txtTitre.setText("État pour une cuve");
             txtTitre.setTypeface(null, Typeface.BOLD);
         ligneTitre.addView(txtTitre, marge);
         ligneEnTete = new TableRow(getContext());
-            txtEtat = new TextView(getContext());
+            TextView txtEtat = new TextView(getContext());
             txtEtat.setText("État");
             txtEtat.setTypeface(null, Typeface.BOLD);
         ligneEnTete.addView(txtEtat, marge);
-            txtHistorique = new TextView(getContext());
+            TextView txtHistorique = new TextView(getContext());
             txtHistorique.setText("Historique");
             txtHistorique.setTypeface(null, Typeface.BOLD);
         ligneEnTete.addView(txtHistorique, marge);
-            txtActif = new TextView(getContext());
+            TextView txtActif = new TextView(getContext());
             txtActif.setText("Actif");
             txtActif.setTypeface(null, Typeface.BOLD);
         ligneEnTete.addView(txtActif, marge);
