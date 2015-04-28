@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.R;
@@ -86,8 +89,15 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
             }
 
             if(erreur.equals("")) {
-                TableFut.instance(contexte).ajouter(numero, capacite, 1, System.currentTimeMillis(), -1, System.currentTimeMillis());
+                //Date avec seulement jour, mois annee
+                Calendar calendrier = Calendar.getInstance();
+                calendrier.setTimeInMillis(System.currentTimeMillis());
+                long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
+                TableFut.instance(contexte).ajouter(numero, capacite, 1, date, -1, date);
+
                 Toast.makeText(contexte, "Fut ajouté !", Toast.LENGTH_LONG).show();
+
                 TableFut tableFut = TableFut.instance(contexte);
                 int numeroSuivant = 1;
                 for (int i=0; i<tableFut.tailleListe(); i++) {

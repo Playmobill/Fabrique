@@ -13,11 +13,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableRecette;
-import fabrique.gestion.R;
 import fabrique.gestion.FragmentAmeliore;
+import fabrique.gestion.R;
 
 public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnClickListener {
 
@@ -140,9 +143,16 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
 
             if (erreur.equals("")) {
                 long recette = TableRecette.instance(contexte).recupererIndex(editRecette.getSelectedItemPosition()).getId();
-                TableBrassin.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", System.currentTimeMillis(), quantite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
+
+                //Date avec seulement jour, mois annee
+                Calendar calendrier = Calendar.getInstance();
+                calendrier.setTimeInMillis(System.currentTimeMillis());
+                long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
+                TableBrassin.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
                 Toast.makeText(contexte, "Brassin ajouté !", Toast.LENGTH_LONG).show();
                 TableBrassin tableBrassin = TableBrassin.instance(contexte);
+
                 int max = 0;
                 for (int i=0; i<tableBrassin.tailleListe(); i=i+1) {
                     if (max < tableBrassin.recupererIndex(i).getNumero()) {

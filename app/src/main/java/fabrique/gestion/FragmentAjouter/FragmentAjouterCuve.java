@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableCuve;
@@ -112,8 +114,16 @@ public class FragmentAjouterCuve extends FragmentAmeliore implements View.OnClic
 
             if (erreur.equals("")) {
                 long emplacement = emplacements.get(editEmplacement.getSelectedItemPosition()).getId();
-                TableCuve.instance(contexte).ajouter(numero, capacite, emplacement, System.currentTimeMillis(), 1, System.currentTimeMillis(), "", -1);
+
+                //Date avec seulement jour, mois annee
+                Calendar calendrier = Calendar.getInstance();
+                calendrier.setTimeInMillis(System.currentTimeMillis());
+                long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
+                TableCuve.instance(contexte).ajouter(numero, capacite, emplacement, date, 1, date, "", -1);
+
                 Toast.makeText(contexte, "Cuve ajouté !", Toast.LENGTH_LONG).show();
+
                 TableCuve tableCuve = TableCuve.instance(contexte);
                 int numeroSuivant = 1;
                 for (int i=0; i<tableCuve.tailleListe(); i++) {
