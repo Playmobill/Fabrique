@@ -86,8 +86,10 @@ public class BDD extends SQLiteOpenHelper {
                                                 "dateInspection INTEGER NOT NULL)";
 
     private static String createurTableGestion = "CREATE TABLE IF NOT EXISTS Gestion (" +
-                                                "delaiLavageAcide INTEGER DEFAULT 604800000," +
-                                                "delaiInspectionBaril INTEGER DEFAULT 604800000)";
+                                                "delaiLavageAcide INTEGER DEFAULT 1209600000," +
+                                                "avertissementLavageAcide INTEGER DEFAULT 604800000," +
+                                                "delaiInspectionBaril INTEGER DEFAULT 1209600000," +
+                                                "avertissementInspectionBaril INTEGER DEFAULT 604800000)";
 
     private static String createurTableHistorique = "CREATE TABLE IF NOT EXISTS Historique (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -131,7 +133,7 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, actif) VALUES ('République', 'Blonde', 'Rpb', 1)");
         db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, actif) VALUES ('Goupil', 'Rousse', 'Gpl', 1)");
 
-        db.execSQL("INSERT INTO Gestion (delaiLavageAcide, delaiInspectionBaril) VALUES(604800000, 604800000)");
+        db.execSQL("INSERT INTO Gestion (delaiLavageAcide, avertissementLavageAcide, delaiInspectionBaril, avertissementInspectionBaril) VALUES(1209600000, 604800000, 1209600000, 604800000)");
 
         db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('SS', 1)");
         db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('Ch.Froide', 1)");

@@ -1,5 +1,6 @@
 package fabrique.gestion.FragmentGestion;
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -65,10 +66,10 @@ public class FragmentGestion extends FragmentAmeliore implements View.OnClickLis
             transaction.addToBackStack(null).commit();
         }
         else if (view.equals(temps)) {
-            /*FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.onglet, new FragmentTemps());
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.onglet, new FragmentTempsInspectionDateLavageAcide());
             transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
-            transaction.addToBackStack(null).commit();*/
+            transaction.addToBackStack(null).commit();
         }
         else if (view.equals(emplacement)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
