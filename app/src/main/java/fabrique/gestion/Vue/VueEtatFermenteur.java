@@ -17,12 +17,12 @@ import fabrique.gestion.ColorPicker.ColorPickerDialog;
 
 public class VueEtatFermenteur extends TableLayout implements View.OnClickListener {
 
-    TableRow.LayoutParams marge;
+    private TableRow.LayoutParams marge;
 
     //Titre
-    TableRow ligneTitre;
-    TableRow ligneEnTete;
-    TextView txtTitre, txtEtat, txtHistorique, txtActif;
+    private TableRow ligneTitre;
+    private TableRow ligneEnTete;
+    private TextView txtTitre, txtEtat, txtHistorique, txtActif;
 
     //Ajouter
     private TableRow ligneAjouter;
