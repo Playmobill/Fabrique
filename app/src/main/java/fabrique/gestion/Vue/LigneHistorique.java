@@ -32,12 +32,11 @@ public class LigneHistorique extends TableRow implements View.OnClickListener, D
     private long longDate;
     private EditText editDate;
 
-
-    public LigneHistorique(Context context) {
+    protected LigneHistorique(Context context) {
         super(context);
     }
 
-    public LigneHistorique(Context context, View parent, Historique historique) {
+    protected LigneHistorique(Context context, View parent, Historique historique) {
         this(context);
         this.parent = parent;
         this.historique = historique;
@@ -107,13 +106,13 @@ public class LigneHistorique extends TableRow implements View.OnClickListener, D
 
     private void modifier() {
         removeAllViews();
-        longDate = historique.getDate();
-        sous_ligne.removeAllViews();
-        editDate.setText(DateToString.dateToString(longDate));
-        sous_ligne.addView(editDate);
-        sous_ligne.addView(entre);
-        editTexte.setText(historique.getTexte());
-        sous_ligne.addView(editTexte);
+                longDate = historique.getDate();
+            sous_ligne.removeAllViews();
+                editDate.setText(DateToString.dateToString(longDate));
+            sous_ligne.addView(editDate);
+            sous_ligne.addView(entre);
+                editTexte.setText(historique.getTexte());
+            sous_ligne.addView(editTexte);
         addView(sous_ligne);
         addView(btnValider, marge);
         addView(btnAnnuler, marge);
