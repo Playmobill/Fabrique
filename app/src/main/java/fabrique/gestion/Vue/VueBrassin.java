@@ -2,8 +2,6 @@ package fabrique.gestion.Vue;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.InputType;
@@ -15,7 +13,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -52,7 +49,6 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
     private Button btnModifier, btnValider, btnAnnuler;
 
     //DatePicker
-    private ImageButton btnDateCreation;
     protected int jour;
     protected int mois;
     protected int annee;
@@ -157,13 +153,9 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
                 annee = calendrier.get(Calendar.YEAR);
                 editDateCreation = new EditText(getContext());
                 editDateCreation.setText(jour + " / " + (mois + 1) + " / " + annee);
+                editDateCreation.setFocusable(false);
                 editDateCreation.setEnabled(false);
-
-                btnDateCreation = new ImageButton(getContext());
-                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.calendar_icon);
-                btnDateCreation.setImageBitmap(Bitmap.createScaledBitmap(image, 15, 15, false));
-                btnDateCreation.setOnClickListener(this);
-                btnDateCreation.setEnabled(false);
+                editDateCreation.setOnClickListener(this);
 
         TableRow ligneRecetteQuantite = new TableRow(getContext());
             LinearLayout layoutRecette = new LinearLayout(getContext());
@@ -258,7 +250,6 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
             ligneNumeroDateCreation.addView(layoutDateCreation);
                 layoutDateCreation.addView(dateCreation, parametreElement);
                 layoutDateCreation.addView(editDateCreation, parametreElement);
-                layoutDateCreation.addView(btnDateCreation, parametreElement);
         tableauDescription.addView(ligneRecetteQuantite, parametreLigne);
             ligneRecetteQuantite.addView(layoutRecette);
                 layoutRecette.addView(recette, parametreElement);
@@ -288,13 +279,13 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
 
     private void afficherModifier() {
         editNumero.setEnabled(true);
+        editDateCreation.setEnabled(true);
         editRecette.setEnabled(true);
         editQuantite.setEnabled(true);
         editCommentaire.setEnabled(true);
         editDensiteOriginale.setEnabled(true);
         editDensiteFinale.setEnabled(true);
         editPourcentageAlcool.setEnabled(true);
-        btnDateCreation.setEnabled(true);
         layoutBouton.removeAllViews();
         layoutBouton.addView(btnValider);
         layoutBouton.addView(btnAnnuler);
@@ -383,6 +374,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
 
     private void reafficherDescription() {
         editNumero.setEnabled(false);
+        editDateCreation.setEnabled(false);
         editRecette.setEnabled(false);
         editRecette.setSelection(indexRecette-1);
         editQuantite.setEnabled(false);
@@ -390,7 +382,6 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
         editDensiteOriginale.setEnabled(false);
         editDensiteFinale.setEnabled(false);
         editPourcentageAlcool.setEnabled(false);
-        btnDateCreation.setEnabled(false);
         layoutBouton.removeAllViews();
         layoutBouton.addView(btnModifier);
     }
@@ -447,7 +438,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
             reafficherDescription();
         }
 
-        else if (v.equals(btnDateCreation)){
+        else if (v.equals(editDateCreation)){
             new DatePickerDialog(getContext(), this, annee, mois, jour).show();
         }
 
