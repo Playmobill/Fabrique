@@ -15,46 +15,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ActivityVueBrassin"
-            android:configChanges="screenSize"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
-
-        <activity
-            android:name=".ActivityVueFut"
-            android:configChanges="screenSize"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
-
-        <activity
-            android:name=".FragmentGestion.ActivityVueListeHistorique"
-            android:configChanges="screenSize"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
-
-        <activity
-            android:name=".FragmentGestion.FragmentEtat"
-            android:configChanges="screenSize"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
-
-        <activity
-            android:name=".ActivityTransfert"
-            android:configChanges="screenSize"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
-
     </application>
 
 </manifest>
