@@ -30,6 +30,7 @@ public class FragmentListeHistorique extends FragmentAmeliore implements View.On
     private Context contexte;
 
     private TableLayout tableau;
+    private TableRow ligneTitreFermenteur, ligneTitreCuve, ligneTitreFut, ligneTitreBrassin, ligneTitreAjouter;
 
     //Ajouter
     private TableRow ligneAjouter;
@@ -50,96 +51,100 @@ public class FragmentListeHistorique extends FragmentAmeliore implements View.On
 
         contexte = container.getContext();
 
-        ligneAjouter = new TableRow(contexte);
-            texteAjouter = new EditText(contexte);
-        ligneAjouter.addView(texteAjouter);
-            elementConcerne = new Spinner(contexte);
-            ArrayAdapter adapteurTri = new ArrayAdapter<>(contexte, R.layout.spinner_style, new String[] {"Fermenteur", "Cuve", "Fût", "Brassin"});
-            adapteurTri.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            elementConcerne.setAdapter(adapteurTri);
-        ligneAjouter.addView(elementConcerne);
-            btnAjouter = new Button(contexte);
-            btnAjouter.setText("Ajouter");
-            btnAjouter.setOnClickListener(this);
-        ligneAjouter.addView(btnAjouter);
+        initialiser();
 
         tableau = new TableLayout(contexte);
-        tableauListeHistorique();
+        afficher();
         ScrollView verticalScroll = new ScrollView(contexte);
         verticalScroll.addView(tableau);
 
         return verticalScroll;
     }
 
-    protected void tableauListeHistorique() {
-        TableRow.LayoutParams marge = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+    private void initialiser() {
+        TableLayout.LayoutParams marge = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
         marge.setMargins(10, 0, 10, 0);
 
-        tableau.removeAllViews();
-            TableRow ligneTitreFermenteur = new TableRow(contexte);
-                TextView titreFermenteur = new TextView(contexte);
-                titreFermenteur.setText("Texte pour l'historique des fermenteurs :");
-                titreFermenteur.setTypeface(null, Typeface.BOLD);
-            ligneTitreFermenteur.addView(titreFermenteur, marge);
-        tableau.addView(ligneTitreFermenteur);
+        ligneTitreFermenteur = new TableRow(contexte);
+        ligneTitreFermenteur.setLayoutParams(marge);
+            TextView titreFermenteur = new TextView(contexte);
+            titreFermenteur.setText("Texte pour l'historique des fermenteurs :");
+            titreFermenteur.setTypeface(null, Typeface.BOLD);
+        ligneTitreFermenteur.addView(titreFermenteur);
 
+        ligneTitreCuve = new TableRow(contexte);
+        ligneTitreCuve.setLayoutParams(marge);
+            TextView titreCuve = new TextView(contexte);
+            titreCuve.setText("Texte pour l'historique des cuves :");
+            titreCuve.setTypeface(null, Typeface.BOLD);
+        ligneTitreCuve.addView(titreCuve);
+
+        ligneTitreFut = new TableRow(contexte);
+        ligneTitreFut.setLayoutParams(marge);
+            TextView titreFut = new TextView(contexte);
+            titreFut.setText("Texte pour l'historique des fûts :");
+            titreFut.setTypeface(null, Typeface.BOLD);
+        ligneTitreFut.addView(titreFut);
+
+        ligneTitreBrassin = new TableRow(contexte);
+        ligneTitreBrassin.setLayoutParams(marge);
+            TextView titreBrassin = new TextView(contexte);
+            titreBrassin.setText("Texte pour l'historique des brassins :");
+            titreBrassin.setTypeface(null, Typeface.BOLD);
+        ligneTitreBrassin.addView(titreBrassin);
+
+        ligneTitreAjouter = new TableRow(contexte);
+        ligneTitreAjouter.setLayoutParams(marge);
+            TextView titreAjouter = new TextView(contexte);
+            titreAjouter.setText("Ajouter un texte :");
+            titreAjouter.setTypeface(null, Typeface.BOLD);
+        ligneTitreAjouter.addView(titreAjouter);
+
+        ligneAjouter = new TableRow(contexte);
+        ligneAjouter.setLayoutParams(marge);
+            texteAjouter = new EditText(contexte);
+        ligneAjouter.addView(texteAjouter);
+            elementConcerne = new Spinner(contexte);
+                ArrayAdapter adapteurTri = new ArrayAdapter<>(contexte, R.layout.spinner_style, new String[] {"Fermenteur", "Cuve", "Fût", "Brassin"});
+                adapteurTri.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            elementConcerne.setAdapter(adapteurTri);
+        ligneAjouter.addView(elementConcerne);
+            btnAjouter = new Button(contexte);
+            btnAjouter.setText("Ajouter");
+            btnAjouter.setOnClickListener(this);
+        ligneAjouter.addView(btnAjouter);
+    }
+
+    protected void afficher() {
+        tableau.removeAllViews();
+        tableau.addView(ligneTitreFermenteur);
         ArrayList<ListeHistorique> listeHistoriqueFermenteur = TableListeHistorique.instance(contexte).listeHistoriqueFermenteur();
         for (int i=0; i< listeHistoriqueFermenteur.size(); i++) {
             tableau.addView(new LigneListeHistorique(contexte, this, listeHistoriqueFermenteur.get(i)));
         }
-
-            TableRow ligneTitreCuve = new TableRow(contexte);
-                TextView titreCuve = new TextView(contexte);
-                titreCuve.setText("Texte pour l'historique des cuves :");
-                titreCuve.setTypeface(null, Typeface.BOLD);
-            ligneTitreCuve.addView(titreCuve, marge);
         tableau.addView(ligneTitreCuve);
-
         ArrayList<ListeHistorique> listeHistoriqueCuve = TableListeHistorique.instance(contexte).listeHistoriqueCuve();
         for (int i=0; i< listeHistoriqueCuve.size(); i++) {
             tableau.addView(new LigneListeHistorique(contexte, this, listeHistoriqueCuve.get(i)));
         }
-
-            TableRow ligneTitreFut = new TableRow(contexte);
-                TextView titreFut = new TextView(contexte);
-                titreFut.setText("Texte pour l'historique des fûts :");
-                titreFut.setTypeface(null, Typeface.BOLD);
-            ligneTitreFut.addView(titreFut, marge);
         tableau.addView(ligneTitreFut);
-
         ArrayList<ListeHistorique> listeHistoriqueFut = TableListeHistorique.instance(contexte).listeHistoriqueFut();
         for (int i=0; i< listeHistoriqueFut.size(); i++) {
             tableau.addView(new LigneListeHistorique(contexte, this, listeHistoriqueFut.get(i)));
         }
-
-            TableRow ligneTitreBrassin = new TableRow(contexte);
-                TextView titreBrassin = new TextView(contexte);
-                titreBrassin.setText("Texte pour l'historique des Brassins :");
-                titreBrassin.setTypeface(null, Typeface.BOLD);
-            ligneTitreBrassin.addView(titreBrassin, marge);
         tableau.addView(ligneTitreBrassin);
-
         ArrayList<ListeHistorique> listeHistoriqueBrassin = TableListeHistorique.instance(contexte).listeHistoriqueBrassin();
         for (int i=0; i< listeHistoriqueBrassin.size(); i++) {
             tableau.addView(new LigneListeHistorique(contexte, this, listeHistoriqueBrassin.get(i)));
         }
-
-            TableRow ligneTitreAjouter = new TableRow(contexte);
-                TextView titreAjouter = new TextView(contexte);
-                titreAjouter.setText("Ajouter un texte :");
-                titreAjouter.setTypeface(null, Typeface.BOLD);
-            ligneTitreAjouter.addView(titreAjouter, marge);
         tableau.addView(ligneTitreAjouter);
-
-        texteAjouter.setText("");
+            texteAjouter.setText("");
         tableau.addView(ligneAjouter);
-
-        tableau.invalidate();
     }
 
     private void ajouter() {
         TableListeHistorique.instance(contexte).ajouter(elementConcerne.getSelectedItemPosition(), texteAjouter.getText().toString());
-        tableauListeHistorique();
+        afficher();
     }
 
     @Override

@@ -80,7 +80,7 @@ public class LigneListeHistorique extends TableRow implements View.OnClickListen
 
     private void supprimer() {
         TableListeHistorique.instance(getContext()).supprimer(listeHistorique.getId());
-        parent.tableauListeHistorique();
+        parent.afficher();
     }
 
     @Override

@@ -1,10 +1,22 @@
 package fabrique.gestion;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableCuve;
+import fabrique.gestion.BDD.TableEmplacement;
+import fabrique.gestion.BDD.TableEtatCuve;
+import fabrique.gestion.BDD.TableEtatFermenteur;
+import fabrique.gestion.BDD.TableFermenteur;
+import fabrique.gestion.BDD.TableFut;
+import fabrique.gestion.BDD.TableGestion;
+import fabrique.gestion.BDD.TableHistorique;
+import fabrique.gestion.BDD.TableListeHistorique;
+import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.FragmentAjouter.FragmentAjouter;
 import fabrique.gestion.FragmentGestion.FragmentGestion;
 import fabrique.gestion.FragmentListe.FragmentListe;
@@ -21,6 +33,11 @@ public class ActivityAccueil extends FragmentActivity {
 
         setContentView(R.layout.onglet);
 
+        configurerActionBar();
+        chargerBDD();
+    }
+
+    private void configurerActionBar() {
         ActionBar actionBar = getActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(false);
@@ -49,6 +66,47 @@ public class ActivityAccueil extends FragmentActivity {
         ActionBar.Tab tabAjouter = actionBar.newTab().setText("Ajouter");
         tabAjouter.setTabListener(new TabListener(new FragmentAjouter()));
         actionBar.addTab(tabAjouter);
+    }
+
+    private void chargerBDD() {
+        ProgressDialog progressDialog = ProgressDialog.show(this, "Chargement de la base de données", "", true);
+
+        progressDialog.setMessage("Emplacements");
+        TableEmplacement.instance(this);
+
+        progressDialog.setMessage("Recettes");
+        TableRecette.instance(this);
+
+        progressDialog.setMessage("Brassins");
+        TableBrassin.instance(this);
+
+        progressDialog.setMessage("Fermenteurs");
+        TableFermenteur.instance(this);
+
+        progressDialog.setMessage("États fermenteur");
+        TableEtatFermenteur.instance(this);
+
+        progressDialog.setMessage("Cuves");
+        TableCuve.instance(this);
+
+        progressDialog.setMessage("États cuve");
+        TableEtatCuve.instance(this);
+
+        progressDialog.setMessage("Fûts");
+        TableFut.instance(this);
+
+        progressDialog.setMessage("Historiques");
+        TableHistorique.instance(this);
+
+        progressDialog.setMessage("Liste d'historiques");
+        TableListeHistorique.instance(this);
+
+        progressDialog.setMessage("Gestion");
+        TableGestion.instance(this);
+
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
 
     public void setVue(FragmentAmeliore vue) {

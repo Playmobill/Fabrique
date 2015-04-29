@@ -92,12 +92,12 @@ public class LigneHistorique extends TableRow implements View.OnClickListener, D
 
     private void afficher() {
         removeAllViews();
-        sous_ligne.removeAllViews();
-        date.setText(historique.getDateToString());
-        sous_ligne.addView(date);
-        sous_ligne.addView(entre);
-        texte.setText(historique.getTexte());
-        sous_ligne.addView(texte);
+            sous_ligne.removeAllViews();
+                date.setText(historique.getDateToString());
+            sous_ligne.addView(date);
+            sous_ligne.addView(entre);
+                texte.setText(historique.getTexte());
+            sous_ligne.addView(texte);
         addView(sous_ligne);
         addView(btnModifier, marge);
         addView(btnSupprimer, marge);

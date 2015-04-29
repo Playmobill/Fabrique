@@ -57,6 +57,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
     private TableLayout tableauHistorique;
 
     //Ajouter historique
+    private TableRow ligneAjouter;
     private Spinner ajoutListeHistorique;
     private EditText ajoutHistorique;
     private TextView btnAjouterHistorique;
@@ -69,6 +70,8 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         super(contexte);
 
         this.fut = fut;
+
+        initialiser();
 
         TableRow ligne = new TableRow(contexte);
 
@@ -133,6 +136,34 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         contour.addView(view);
         contenant.addView(titre, parametreTitre);
         return contenant;
+    }
+
+    private void initialiser() {
+        TableRow.LayoutParams margeCase = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        margeCase.setMargins(10, 0, 10, 0);
+
+        ligneAjouter = new TableRow(getContext());
+        LinearLayout sous_ligneAjouter = new LinearLayout(getContext());
+        ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueFut();
+        String[] tabListeHistorique = new String[listeHistoriques.size()+1];
+        tabListeHistorique[0] = "";
+        for (int i=0; i<listeHistoriques.size() ; i++) {
+            tabListeHistorique[i+1] = listeHistoriques.get(i).getTexte();
+        }
+        ajoutListeHistorique = new Spinner(getContext());
+        ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
+        adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
+        sous_ligneAjouter.addView(ajoutListeHistorique);
+        ajoutHistorique = new EditText(getContext());
+        sous_ligneAjouter.addView(ajoutHistorique);
+        ligneAjouter.addView(sous_ligneAjouter);
+        btnAjouterHistorique = new TextView(getContext());
+        SpannableString ajouter = new SpannableString("Ajouter");
+        ajouter.setSpan(new UnderlineSpan(), 0, ajouter.length(), 0);
+        btnAjouterHistorique.setText(ajouter);
+        btnAjouterHistorique.setOnClickListener(this);
+        ligneAjouter.addView(btnAjouterHistorique, margeCase);
     }
 
     private void afficherDescription() {
@@ -305,32 +336,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         TableLayout.LayoutParams margeTableau = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
         margeTableau.setMargins(10, 0, 10, 0);
 
-        TableRow.LayoutParams margeCase = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        margeCase.setMargins(10, 0, 10, 0);
-
         tableauHistorique.removeAllViews();
-            TableRow ligneAjouter = new TableRow(getContext());
-                LinearLayout sous_ligneAjouter = new LinearLayout(getContext());
-                    ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueFut();
-                    String[] tabListeHistorique = new String[listeHistoriques.size()+1];
-                    tabListeHistorique[0] = "";
-                    for (int i=0; i<listeHistoriques.size() ; i++) {
-                        tabListeHistorique[i+1] = listeHistoriques.get(i).getTexte();
-                    }
-                    ajoutListeHistorique = new Spinner(getContext());
-                        ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
-                        adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
-                sous_ligneAjouter.addView(ajoutListeHistorique);
-                    ajoutHistorique = new EditText(getContext());
-                sous_ligneAjouter.addView(ajoutHistorique);
-            ligneAjouter.addView(sous_ligneAjouter);
-                btnAjouterHistorique = new TextView(getContext());
-                    SpannableString ajouter = new SpannableString("Ajouter");
-                    ajouter.setSpan(new UnderlineSpan(), 0, ajouter.length(), 0);
-                btnAjouterHistorique.setText(ajouter);
-                btnAjouterHistorique.setOnClickListener(this);
-            ligneAjouter.addView(btnAjouterHistorique, margeCase);
         tableauHistorique.addView(ligneAjouter, margeTableau);
         ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdFut(fut.getId());
         for (int i=0; i<historiques.size() ; i++) {
@@ -379,7 +385,6 @@ public class VueFut extends TableLayout implements View.OnClickListener {
 
     @Override
     public void invalidate() {
-        super.invalidate();
         afficherHistorique();
     }
 }
