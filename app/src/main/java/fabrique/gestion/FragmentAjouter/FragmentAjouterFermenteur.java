@@ -142,7 +142,7 @@ public class FragmentAjouterFermenteur extends FragmentAmeliore implements View.
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, new FragmentAjouter());
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
         transaction.addToBackStack(null).commit();
     }
 }

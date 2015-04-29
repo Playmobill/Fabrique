@@ -58,31 +58,31 @@ public class FragmentListe extends FragmentAmeliore implements View.OnClickListe
         if (view.equals(fermenteur)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.onglet, new FragmentListeFermenteur());
-            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
             transaction.addToBackStack(null).commit();
         }
         else if (view.equals(cuve)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.onglet, new FragmentListeCuve());
-            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
             transaction.addToBackStack(null).commit();
         }
         else if (view.equals(fut)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.onglet, new FragmentListeFut());
-            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
             transaction.addToBackStack(null).commit();
         }
         else if (view.equals(brassin)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.onglet, new FragmentListeBrassin());
-            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
             transaction.addToBackStack(null).commit();
         }
         else if (view.equals(recette)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.onglet, new FragmentListeRecette());
-            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
             transaction.addToBackStack(null).commit();
         }
     }

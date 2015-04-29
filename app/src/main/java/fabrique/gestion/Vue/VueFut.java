@@ -280,9 +280,9 @@ public class VueFut extends TableLayout implements View.OnClickListener {
 
     private void reafficherDescription() {
         editTitre.setEnabled(false);
-        editTitre.setText("" + fut.getNumero());
+            editTitre.setText("" + fut.getNumero());
         editCapacite.setEnabled(false);
-        editCapacite.setText("" + fut.getCapacite());
+            editCapacite.setText("" + fut.getCapacite());
         ligneBouton.removeAllViews();
         ligneBouton.addView(btnModifier);
     }
@@ -290,14 +290,14 @@ public class VueFut extends TableLayout implements View.OnClickListener {
     private void changerBrassin() {
         tableauBrassin.removeAllViews();
 
-        listeBrassin = new Spinner(getContext());
         TableBrassin tableBrassin = TableBrassin.instance(getContext());
-        ArrayList<String> brassins = new ArrayList<>();
+        ArrayList<String> listeNumeroBrassin = new ArrayList<>();
         for (int i=0; i<tableBrassin.tailleListe() ; i++) {
-            brassins.add("" + tableBrassin.recupererIndex(i).getNumero());
+            listeNumeroBrassin.add("" + tableBrassin.recupererIndex(i).getNumero());
         }
-        ArrayAdapter<String> adapteurBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style, brassins);
-        adapteurBrassin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        listeBrassin = new Spinner(getContext());
+            ArrayAdapter<String> adapteurBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style, listeNumeroBrassin);
+            adapteurBrassin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         listeBrassin.setAdapter(adapteurBrassin);
 
         btnChanger = new Button(getContext());

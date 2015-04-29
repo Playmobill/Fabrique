@@ -37,22 +37,22 @@ public class FragmentTableauDeBord extends FragmentAmeliore {
         ((ActivityAccueil)getActivity()).setVue(this);
 
         //Tableau pour les elements de la fenetre
-        LinearLayout layout = new LinearLayout(contexte);
-        layout.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout tableau = new LinearLayout(contexte);
+        tableau.setOrientation(LinearLayout.VERTICAL);
 
         LinearLayout.LayoutParams marge = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         marge.setMargins(10, 0, 10,  0);
 
         LinearLayout.LayoutParams parametre = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        layout.addView(nouvelleLigneTexte("Fermenteurs"), marge);
-        layout.addView(intialiserLigneFermenteur(), parametre);
+        tableau.addView(nouvelleLigneTexte("Fermenteurs"), marge);
+        tableau.addView(intialiserLigneFermenteur(), parametre);
 
-        layout.addView(nouvelleLigneTexte("Garde"), marge);
-        layout.addView(intialiserLigneGarde(), parametre);
+        tableau.addView(nouvelleLigneTexte("Garde"), marge);
+        tableau.addView(intialiserLigneGarde(), parametre);
 
         ScrollView layoutVerticalScroll = new ScrollView(contexte);
-        layoutVerticalScroll.addView(layout);
+        layoutVerticalScroll.addView(tableau);
 
         return layoutVerticalScroll;
     }

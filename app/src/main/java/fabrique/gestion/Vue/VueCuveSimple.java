@@ -31,7 +31,6 @@ public class VueCuveSimple extends LinearLayout {
 
         tableauDescription = new TableLayout(contexte);
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
-        tableauDescription.setBackgroundColor(Color.WHITE);
         addView(cadre(tableauDescription, " Description "));
         afficherDescription();
     }

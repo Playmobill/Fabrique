@@ -171,7 +171,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, new FragmentAjouter());
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
         transaction.addToBackStack(null).commit();
     }
 }

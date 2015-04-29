@@ -68,7 +68,7 @@ public class BoutonFut extends Button implements View.OnClickListener {
 
         FragmentTransaction transaction = fragmentListeFut.getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, fragmentVueFut);
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
         transaction.addToBackStack(null).commit();
     }
 }

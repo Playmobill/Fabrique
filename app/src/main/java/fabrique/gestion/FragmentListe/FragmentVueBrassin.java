@@ -53,7 +53,7 @@ public class FragmentVueBrassin extends FragmentAmeliore {
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, new FragmentListeBrassin());
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
         transaction.addToBackStack(null).commit();
     }
 }

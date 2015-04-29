@@ -59,7 +59,7 @@ public class FragmentEtat extends FragmentAmeliore {
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, new FragmentGestion());
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
         transaction.addToBackStack(null).commit();
     }
 }

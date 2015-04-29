@@ -17,7 +17,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableBrassin;
@@ -85,7 +84,7 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, new FragmentListe());
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
         transaction.addToBackStack(null).commit();
     }
 
@@ -197,7 +196,7 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.onglet, fragmentVueBrassin);
-                transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+                transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
                 transaction.addToBackStack(null).commit();
             }
         }

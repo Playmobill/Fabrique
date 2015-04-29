@@ -16,9 +16,6 @@ import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.R;
 
-/**
- * Created by thibaut on 27/04/15.
- */
 public class FragmentTempsInspectionDateLavageAcide extends FragmentAmeliore implements View.OnClickListener{
 
     Context contexte;
@@ -87,7 +84,7 @@ public class FragmentTempsInspectionDateLavageAcide extends FragmentAmeliore imp
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, new FragmentGestion());
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
         transaction.addToBackStack(null).commit();
     }
 

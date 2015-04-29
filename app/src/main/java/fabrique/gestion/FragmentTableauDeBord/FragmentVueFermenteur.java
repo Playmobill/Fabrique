@@ -59,7 +59,7 @@ public class FragmentVueFermenteur extends FragmentAmeliore {
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, new FragmentTableauDeBord());
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
         transaction.addToBackStack(null).commit();
     }
 }

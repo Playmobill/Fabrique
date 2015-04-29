@@ -45,7 +45,7 @@ public class FragmentVueCuve extends FragmentAmeliore {
             layout.addView(new VueCuve(contexte, cuve));
         } else {
             TextView txtErreur = new TextView(contexte);
-            txtErreur.setText("Aucune cuve sélectionné");
+            txtErreur.setText("Aucune cuve sélectionnée");
         }
 
         ScrollView layoutVerticalScroll = new ScrollView(contexte);
@@ -58,7 +58,7 @@ public class FragmentVueCuve extends FragmentAmeliore {
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, new FragmentTableauDeBord());
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
         transaction.addToBackStack(null).commit();
     }
 }

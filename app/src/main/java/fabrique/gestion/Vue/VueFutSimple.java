@@ -31,7 +31,6 @@ public class VueFutSimple extends LinearLayout {
 
         tableauDescription = new TableLayout(contexte);
         tableauDescription.setOrientation(LinearLayout.VERTICAL);
-        tableauDescription.setBackgroundColor(Color.WHITE);
         addView(cadre(tableauDescription, " Description "));
         afficherDescription();
     }
@@ -62,6 +61,8 @@ public class VueFutSimple extends LinearLayout {
         titre.setBackgroundColor(Color.WHITE);
         RelativeLayout.LayoutParams parametreTitre = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         parametreTitre.setMargins(11, 2, 0, 0);
+
+        view.setBackgroundColor(Color.WHITE);
 
         contenant.addView(contourTitre, parametreContourTitre);
         contourTitre.addView(fondTitre);

@@ -1,6 +1,5 @@
 package fabrique.gestion.FragmentGestion;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -56,25 +55,25 @@ public class FragmentGestion extends FragmentAmeliore implements View.OnClickLis
         if (view.equals(etat)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.onglet, new FragmentEtat());
-            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
             transaction.addToBackStack(null).commit();
         }
         else if (view.equals(listeHistorique)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.onglet, new FragmentListeHistorique());
-            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
             transaction.addToBackStack(null).commit();
         }
         else if (view.equals(temps)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.onglet, new FragmentTempsInspectionDateLavageAcide());
-            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
             transaction.addToBackStack(null).commit();
         }
         else if (view.equals(emplacement)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.onglet, new FragmentEmplacement());
-            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
             transaction.addToBackStack(null).commit();
         }
     }

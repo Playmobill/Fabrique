@@ -1,7 +1,6 @@
 package fabrique.gestion;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableFut;
-import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.Cuve;
 import fabrique.gestion.Objets.Fermenteur;
 import fabrique.gestion.Objets.Fut;
@@ -36,8 +34,6 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
     private boolean listeTypeOrigineVide, listeTypeDestinationVide;
     private LinearLayout vueOrigine, vueDestination;
     private Button transferer;
-
-
 
     @Nullable
     @Override
@@ -192,7 +188,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if(parent.equals(listeOrigine)){
             vueOrigine.removeAllViews();
-            if(listeTypeOrigineVide == false){
+            if(!listeTypeOrigineVide){
             if(listeTypeOrigine.getItemAtPosition(listeTypeOrigine.getSelectedItemPosition()).equals("Fermenteur") && TableFermenteur.instance(contexte).recupererId(Long.parseLong((String)listeOrigine.getItemAtPosition(position))).getBrassin(contexte)!=null) {
                 vueOrigine.addView(new VueBrassinSimple(contexte, TableFermenteur.instance(contexte).recupererId(Long.parseLong((String)listeOrigine.getItemAtPosition(position))).getBrassin(contexte)));
             }
@@ -206,7 +202,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
         }
         if(parent.equals(listeDestination)){
             vueDestination.removeAllViews();
-            if(listeTypeDestinationVide == false){
+            if(!listeTypeDestinationVide){
             if(listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Fermenteur")){
                 vueDestination.addView(new VueFermenteurSimple(contexte, TableFermenteur.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getItemAtPosition(position)))));
             }

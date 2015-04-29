@@ -72,7 +72,7 @@ public class BoutonCuve extends Button implements View.OnClickListener {
 
         FragmentTransaction transaction = fragmentTableauDeBord.getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, fragmentVueCuve);
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
         transaction.addToBackStack(null).commit();
     }
 }
