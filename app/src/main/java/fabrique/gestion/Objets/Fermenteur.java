@@ -102,4 +102,16 @@ public class Fermenteur extends Objet implements Comparable<Fermenteur> {
         }
         return -1;
     }
+
+    public String sauvegarde() {
+        return ("<Fermenteur>" +
+                    "<numero>" + numero + "</numero>" +
+                    "<capacite>" + capacite + "</capacite>" +
+                    "<id_emplacement>" + id_emplacement + "</id_emplacement>" +
+                    "<dateLavageAcide>" + dateLavageAcide + "</dateLavageAcide>" +
+                    "<id_etat>" + id_etat + "</id_etat>" +
+                    "<dateEtat>" + dateEtat + "</dateEtat>" +
+                    "<id_brassin>" + id_brassin + "</id_brassin>" +
+                "</Fermenteur>");
+    }
 }
