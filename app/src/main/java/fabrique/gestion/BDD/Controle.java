@@ -18,11 +18,9 @@ public abstract class Controle {
         this.nomTable = nomTable;
     }
 
-    public void fermer() {
-        accesBDD.close();
-    }
-
     public Cursor select(){
         return accesBDD.query(nomTable, null, null, null, null, null, null);
     }
+
+    public abstract String sauvegarde();
 }

@@ -137,4 +137,14 @@ public class TableHistorique extends Controle {
         }
         return historiqueSelonBrassin;
     }
+
+    public String sauvegarde() {
+        StringBuilder texte = new StringBuilder();
+        texte.append("<Historiques>");
+        for (int i=0; i<historiques.size(); i++) {
+            texte.append(historiques.get(i).sauvegarde());
+        }
+        texte.append("</Historiques>");
+        return texte.toString();
+    }
 }

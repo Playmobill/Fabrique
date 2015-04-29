@@ -134,4 +134,14 @@ public class TableFermenteur extends Controle {
         }
         return listeCuve;
     }
+
+    public String sauvegarde() {
+        StringBuilder texte = new StringBuilder();
+        texte.append("<Fermenteurs>");
+        for (int i=0; i<fermenteurs.size(); i++) {
+            texte.append(fermenteurs.get(i).sauvegarde());
+        }
+        texte.append("</Fermenteurs>");
+        return texte.toString();
+    }
 }

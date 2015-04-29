@@ -202,49 +202,49 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
         }
         if(parent.equals(listeDestination)){
             vueDestination.removeAllViews();
-            if(!listeTypeDestinationVide){
-            if(listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Fermenteur")){
-                vueDestination.addView(new VueFermenteurSimple(contexte, TableFermenteur.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getItemAtPosition(position)))));
-            }
-            else if(listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Cuve")){
-                vueDestination.addView(new VueCuveSimple(contexte, TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getItemAtPosition(position)))));
-            }
-            else if(listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Fût")){
-                vueDestination.addView(new VueFutSimple(contexte, TableFut.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getItemAtPosition(position)))));
-            }}
+            if (!listeTypeDestinationVide){
+                if (listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Fermenteur")){
+                    vueDestination.addView(new VueFermenteurSimple(contexte, TableFermenteur.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getItemAtPosition(position)))));
+                }
+                else if (listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Cuve")){
+                    vueDestination.addView(new VueCuveSimple(contexte, TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getItemAtPosition(position)))));
+                }
+                else if (listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Fût")){
+                    vueDestination.addView(new VueFutSimple(contexte, TableFut.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getItemAtPosition(position)))));
+                }}
         }
-        if(parent.equals(listeTypeOrigine)){
+        if (parent.equals(listeTypeOrigine)){
             ArrayAdapter<String> adapteurOrigine;
-            if(listeTypeOrigine.getItemAtPosition(position).equals("Cuve")){
+            if (listeTypeOrigine.getItemAtPosition(position).equals("Cuve")){
                 adapteurOrigine = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableCuve.instance(contexte).recupererNumerosCuveAvecBrassin());
             }
-            else if(listeTypeOrigine.getItemAtPosition(position).equals("Fût")){
+            else if (listeTypeOrigine.getItemAtPosition(position).equals("Fût")){
                 adapteurOrigine = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableFut.instance(contexte).recupererNumeroFutAvecBrassin());
             }
-            else if(listeTypeOrigine.getItemAtPosition(position).equals("Fermenteur")){
+            else if (listeTypeOrigine.getItemAtPosition(position).equals("Fermenteur")){
                 adapteurOrigine = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableFermenteur.instance(contexte).recupererNumerosFermenteurAvecBrassin());
 
             }
-            else{
+            else {
                 adapteurOrigine = new ArrayAdapter<>(contexte, R.layout.spinner_style);
             }
             adapteurOrigine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             listeOrigine.setAdapter(adapteurOrigine);
             listeOrigine.setOnItemSelectedListener(this);
         }
-        if(parent.equals(listeTypeDestination)){
+        if (parent.equals(listeTypeDestination)){
             ArrayAdapter<String> adapteurDestination;
-            if(listeTypeDestination.getItemAtPosition(position).equals("Cuve")){
+            if (listeTypeDestination.getItemAtPosition(position).equals("Cuve")){
                 adapteurDestination = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableCuve.instance(contexte).recupererNumerosCuveSansBrassin());
             }
-            else if(listeTypeDestination.getItemAtPosition(position).equals("Fût")){
+            else if (listeTypeDestination.getItemAtPosition(position).equals("Fût")){
                 adapteurDestination = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableFut.instance(contexte).recupererNumeroFutSansBrassin());
             }
-            else if(listeTypeDestination.getItemAtPosition(position).equals("Fermenteur")){
+            else if (listeTypeDestination.getItemAtPosition(position).equals("Fermenteur")){
                 adapteurDestination = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableFermenteur.instance(contexte).recupererNumerosFermenteurSansBrassin());
 
             }
-            else{
+            else {
                 adapteurDestination = new ArrayAdapter<>(contexte, R.layout.spinner_style);
             }
             adapteurDestination.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

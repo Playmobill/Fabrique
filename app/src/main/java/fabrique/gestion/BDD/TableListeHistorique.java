@@ -121,4 +121,14 @@ public class TableListeHistorique extends Controle {
         }
         return listeHistoriqueBrassin;
     }
+
+    public String sauvegarde() {
+        StringBuilder texte = new StringBuilder();
+        texte.append("<ListeHistoriques>");
+        for (int i=0; i<listeHistoriques.size(); i++) {
+            texte.append(listeHistoriques.get(i).sauvegarde());
+        }
+        texte.append("</ListeHistoriques>");
+        return texte.toString();
+    }
 }

@@ -20,6 +20,7 @@ import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.FragmentAjouter.FragmentAjouter;
 import fabrique.gestion.FragmentGestion.FragmentGestion;
 import fabrique.gestion.FragmentListe.FragmentListe;
+import fabrique.gestion.FragmentSauvegarde.FragmentSauvegarde;
 import fabrique.gestion.FragmentTableauDeBord.FragmentTableauDeBord;
 
 public class ActivityAccueil extends FragmentActivity {
@@ -66,6 +67,10 @@ public class ActivityAccueil extends FragmentActivity {
         ActionBar.Tab tabAjouter = actionBar.newTab().setText("Ajouter");
         tabAjouter.setTabListener(new TabListener(new FragmentAjouter()));
         actionBar.addTab(tabAjouter);
+
+        ActionBar.Tab tabSauvegardeLecture = actionBar.newTab().setText("Sauvegarde");
+        tabSauvegardeLecture.setTabListener(new TabListener(new FragmentSauvegarde()));
+        actionBar.addTab(tabSauvegardeLecture);
     }
 
     private void chargerBDD() {

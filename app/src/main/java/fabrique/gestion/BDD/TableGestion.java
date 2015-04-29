@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import java.util.Collections;
-
 public class TableGestion extends Controle {
 
     private long delaiLavageAcide, avertissementLavageAcide,
@@ -57,6 +55,15 @@ public class TableGestion extends Controle {
             delaiInspectionBaril = delaiIB;
             avertissementInspectionBaril = avertIB;
         }
+    }
+
+    public String sauvegarde() {
+        return ("<Gestion>" +
+                    "<delaiLavageAcide>" + delaiLavageAcide + "</delaiLavageAcide>" +
+                    "<avertissementLavageAcide>" + avertissementLavageAcide + "</avertissementLavageAcide>" +
+                    "<delaiInspectionBaril>" + delaiInspectionBaril + "</delaiInspectionBaril>" +
+                    "<avertissementInspectionBaril>" + avertissementInspectionBaril + "</avertissementInspectionBaril>" +
+                "</Gestion>");
     }
 }
 

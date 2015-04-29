@@ -9,7 +9,4 @@
         <item name="android:lineSpacingMultiplier">1.2</item>
     </style>
 
-    <style name="spinner" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
-    </style>
-
 </resources>

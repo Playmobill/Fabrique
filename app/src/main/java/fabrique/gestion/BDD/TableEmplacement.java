@@ -91,4 +91,14 @@ public class TableEmplacement extends Controle {
         }
         return emplacementsActif;
     }
+
+    public String sauvegarde() {
+        StringBuilder texte = new StringBuilder();
+        texte.append("<Emplacements>");
+        for (int i=0; i<emplacements.size(); i++) {
+            texte.append(emplacements.get(i).sauvegarde());
+        }
+        texte.append("</Emplacements>");
+        return texte.toString();
+    }
 }

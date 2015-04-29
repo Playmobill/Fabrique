@@ -101,12 +101,21 @@ public class TableRecette extends Controle {
         return listeRecetteActifs;
     }
 
-
     public String[] noms() {
         String[] numeroFermenteurs = new String[types.size()];
         for (int i=0; i<types.size() ; i++) {
             numeroFermenteurs[i] = types.get(i).getNom() + "";
         }
         return numeroFermenteurs;
+    }
+
+    public String sauvegarde() {
+        StringBuilder texte = new StringBuilder();
+        texte.append("<Recettes>");
+        for (int i=0; i<types.size(); i++) {
+            texte.append(types.get(i).sauvegarde());
+        }
+        texte.append("</Recettes>");
+        return texte.toString();
     }
 }

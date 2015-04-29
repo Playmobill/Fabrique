@@ -345,4 +345,13 @@ public class TableFut extends Controle {
         return listeCuve;
     }
 
+    public String sauvegarde() {
+        StringBuilder texte = new StringBuilder();
+        texte.append("<Futs>");
+        for (int i=0; i<futs.size(); i++) {
+            texte.append(futs.get(i).sauvegarde());
+        }
+        texte.append("</Futs>");
+        return texte.toString();
+    }
 }
