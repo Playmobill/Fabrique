@@ -410,7 +410,6 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                     cuve.getLongDateEtat(),
                     cuve.getCommentaireEtat(),
                     TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId());
-            invalidate();
         }
         else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, cuve.getId(), -1, -1);

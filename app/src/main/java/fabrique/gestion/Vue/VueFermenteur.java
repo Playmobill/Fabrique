@@ -406,7 +406,6 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 fermenteur.getIdEtat(),
                 fermenteur.getDateEtatToLong(),
                 TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId());
-            invalidate();
         } else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), fermenteur.getId(), -1, -1, -1);
             afficherHistorique();
@@ -424,7 +423,6 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                     String texte = listeEtat.get(i).getHistorique();
                     if (texte != null) {
                         TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), fermenteur.getId(), -1, -1, fermenteur.getIdBrassin());
-                        invalidate();
                     }
                     afficherDescription();
                 }
