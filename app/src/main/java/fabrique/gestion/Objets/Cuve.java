@@ -118,4 +118,17 @@ public class Cuve extends Objet implements Comparable<Cuve> {
         }
         return -1;
     }
+
+    public String sauvegarde() {
+        return ("<Cuve>" +
+                    "<numero>" + numero + "</numero>" +
+                    "<capacite>" + capacite + "</capacite>" +
+                    "<id_emplacement>" + id_emplacement + "</id_emplacement>" +
+                    "<dateLavageAcide>" + dateLavageAcide + "</dateLavageAcide>" +
+                    "<id_etat>" + id_etat + "</id_etat>" +
+                    "<dateEtat>" + dateEtat + "</dateEtat>" +
+                    "<commentaireEtat>" + commentaireEtat + "</commentaireEtat>" +
+                    "<id_brassin>" + id_brassin + "</id_brassin>" +
+                "</Cuve>");
+    }
 }

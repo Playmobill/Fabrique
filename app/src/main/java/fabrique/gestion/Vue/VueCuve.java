@@ -430,9 +430,9 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                             cuve.getCommentaireEtat(),
                             cuve.getIdBrassin());
                     String texte = listeEtat.get(i).getHistorique();
-                    if (texte != null) {
+                    if ((texte != null) && (!texte.equals(""))) {
                         TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, cuve.getId(), -1, cuve.getIdBrassin());
-                        invalidate();
+                        afficherHistorique();
                     }
                     afficherDescription();
                 }

@@ -75,4 +75,17 @@ public class Brassin extends Objet implements Comparable<Brassin> {
         float differenceDensite = densiteO - densiteF;
         return (((differenceDensite * constanteConversionPourcentageAlcool)/densiteF)/0.789f)*100;
     }
+
+    public String sauvegarde() {
+        return ("<Brassin>" +
+                    "<numero>" + numero + "</numero>" +
+                    "<commentaire>" + commentaire + "</commentaire>" +
+                    "<dateCreation>" + dateCreation + "</dateCreation>" +
+                    "<quantite>" + quantite + "</quantite>" +
+                    "<id_recette>" + id_recette + "</id_recette>" +
+                    "<densiteOriginale>" + densiteOriginale + "</densiteOriginale>" +
+                    "<densiteFinale>" + densiteFinale + "</densiteFinale>" +
+                    "<pourcentageAlcool>" + pourcentageAlcool + "</pourcentageAlcool>" +
+                "</Brassin>");
+    }
 }

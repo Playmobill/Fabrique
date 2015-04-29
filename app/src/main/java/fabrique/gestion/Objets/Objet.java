@@ -1,6 +1,6 @@
 package fabrique.gestion.Objets;
 
-public class Objet {
+public abstract class Objet {
 
     private long id;
 
@@ -11,4 +11,6 @@ public class Objet {
     public long getId() {
         return id;
     }
+
+    public abstract String sauvegarde();
 }

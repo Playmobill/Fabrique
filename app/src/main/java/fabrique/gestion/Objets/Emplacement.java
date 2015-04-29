@@ -47,4 +47,11 @@ public class Emplacement extends Objet implements Comparable<Emplacement> {
         }
         return 1;
     }
+
+    public String sauvegarde() {
+        return ("<Emplacement>" +
+                    "<texte>" + texte + "</texte>" +
+                    "<actif>" + actif + "</actif>" +
+                "</Emplacement>");
+    }
 }

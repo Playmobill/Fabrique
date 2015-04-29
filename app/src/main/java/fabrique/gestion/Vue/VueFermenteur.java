@@ -421,8 +421,9 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                             fermenteur.getDateEtatToLong(),
                             fermenteur.getIdBrassin());
                     String texte = listeEtat.get(i).getHistorique();
-                    if (texte != null) {
+                    if ((texte != null) && (!texte.equals(""))) {
                         TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), fermenteur.getId(), -1, -1, fermenteur.getIdBrassin());
+                        afficherHistorique();
                     }
                     afficherDescription();
                 }

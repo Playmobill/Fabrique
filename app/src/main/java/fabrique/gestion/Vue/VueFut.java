@@ -374,8 +374,9 @@ public class VueFut extends TableLayout implements View.OnClickListener {
                             fut.getId_brassin(),
                             fut.getDateInspectionToLong());
                     String texte = listeEtat.get(i).getHistorique();
-                    if (texte != null) {
+                    if ((texte != null) && (!texte.equals(""))) {
                         TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, -1, fut.getId(), fut.getId_brassin());
+                        afficherHistorique();
                     }
                     afficherDescription();
                 }
