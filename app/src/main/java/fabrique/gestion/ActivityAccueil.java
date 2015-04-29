@@ -26,7 +26,6 @@ public class ActivityAccueil extends FragmentActivity {
 
     private FragmentAmeliore vue;
 
-    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +36,7 @@ public class ActivityAccueil extends FragmentActivity {
         chargerBDD();
     }
 
+    @SuppressWarnings("deprecation")
     private void configurerActionBar() {
         ActionBar actionBar = getActionBar();
         assert actionBar != null;
