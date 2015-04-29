@@ -44,7 +44,8 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
     private Spinner editRecette;
     private ArrayList<Recette> listeRecetteActifs;
     private int indexRecette;
-    private EditText editNumero, editQuantite, editCommentaire, editDensiteOriginale, editDensiteFinale, editPourcentageAlcool;
+    private EditText editNumero, editQuantite, editCommentaire, editDensiteOriginale, editDensiteFinale;
+    private TextView editPourcentageAlcool;
     private LinearLayout layoutBouton;
     private Button btnModifier, btnValider, btnAnnuler;
 
@@ -256,10 +257,9 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
                 TextView pourcentageAlcool = new TextView(getContext());
                 pourcentageAlcool.setText("%Alc/vol : ");
 
-                editPourcentageAlcool = new EditText(getContext());
+                editPourcentageAlcool = new TextView(getContext());
                 editPourcentageAlcool.setText("" + brassin.getPourcentageAlcool());
-                editPourcentageAlcool.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                editPourcentageAlcool.setEnabled(false);
+
         LinearLayout ligneBouton = new LinearLayout(getContext());
             layoutBouton = new TableRow(getContext());
                 btnModifier = new Button(getContext());
@@ -316,7 +316,6 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
         editCommentaire.setEnabled(true);
         editDensiteOriginale.setEnabled(true);
         editDensiteFinale.setEnabled(true);
-        editPourcentageAlcool.setEnabled(true);
         layoutBouton.removeAllViews();
         layoutBouton.addView(btnValider);
         layoutBouton.addView(btnAnnuler);
@@ -374,8 +373,9 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
 
         float pourcentageAlcool = 0;
         try {
-            if ((editPourcentageAlcool.getText() != null) && (!editPourcentageAlcool.getText().toString().equals(""))) {
-                pourcentageAlcool = Float.parseFloat(editPourcentageAlcool.getText().toString());
+            if ((editDensiteFinale.getText() != null) && (!editDensiteFinale.getText().toString().equals(""))  && (editDensiteOriginale.getText() != null) && (!editDensiteOriginale.getText().toString().equals(""))) {
+                pourcentageAlcool = Brassin.convertDensiteVersPourcentageAlcool(Float.parseFloat(editDensiteOriginale.getText().toString()) , Float.parseFloat(editDensiteFinale.getText().toString()));
+                editPourcentageAlcool.setText(""+pourcentageAlcool);
             }
         } catch (NumberFormatException e) {
             if (!erreur.equals("")) {
@@ -412,7 +412,6 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
         editCommentaire.setEnabled(false);
         editDensiteOriginale.setEnabled(false);
         editDensiteFinale.setEnabled(false);
-        editPourcentageAlcool.setEnabled(false);
         layoutBouton.removeAllViews();
         layoutBouton.addView(btnModifier);
     }

@@ -20,6 +20,7 @@ import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.FragmentAmeliore;
+import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.R;
 
 public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnClickListener {
@@ -29,7 +30,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
     private Button btnAjouter;
 
     private EditText editNumero, editCommentaire, editQuantite,
-            editDensiteOriginale, editDensiteFinale, editPourcentageAlcool;
+            editDensiteOriginale, editDensiteFinale;
 
     private Spinner editRecette;
 
@@ -62,7 +63,6 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
         editQuantite = (EditText)view.findViewById(R.id.editQuantite);
         editDensiteOriginale = (EditText)view.findViewById(R.id.editDensiteOriginale);
         editDensiteFinale = (EditText)view.findViewById(R.id.editDensiteFinale);
-        editPourcentageAlcool = (EditText)view.findViewById(R.id.editPourcentageAlcool);
 
         editRecette = (Spinner)view.findViewById(R.id.editRecette);
         TableRecette tableRecette = TableRecette.instance(contexte);
@@ -107,7 +107,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
 
             float densiteOriginale = 0;
             try {
-                if ((!editDensiteOriginale.getText().toString().equals(""))) {
+                if ((editDensiteOriginale.getText() != null) && (!editDensiteOriginale.getText().toString().equals(""))) {
                     densiteOriginale = Float.parseFloat(editDensiteOriginale.getText().toString());
                 }
             } catch (NumberFormatException e) {
@@ -131,8 +131,9 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
 
             float pourcentageAlcool = 0;
             try {
-                if ((editPourcentageAlcool.getText() != null) && (!editPourcentageAlcool.getText().toString().equals(""))) {
-                    pourcentageAlcool = Float.parseFloat(editPourcentageAlcool.getText().toString());
+                if ((editDensiteFinale.getText() != null) && (!editDensiteFinale.getText().toString().equals(""))
+                        && (editDensiteOriginale.getText() != null) && (!editDensiteOriginale.getText().toString().equals(""))) {
+                    pourcentageAlcool = Brassin.convertDensiteVersPourcentageAlcool(Float.parseFloat(editDensiteOriginale.getText().toString()), Float.parseFloat(editDensiteFinale.getText().toString()));
                 }
             } catch (NumberFormatException e) {
                 if (!erreur.equals("")) {

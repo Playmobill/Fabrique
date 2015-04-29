@@ -16,6 +16,9 @@ public class Brassin extends Objet implements Comparable<Brassin> {
     private float densiteFinale;
     private float pourcentageAlcool;
 
+    private final static float constanteConversionPourcentageAlcool = 1.047f;
+    //Pour un gramme de CO2 produit, il y a environ (à 3 décimales sures) 1.047 grammes d'ethanol produit.
+
     public Brassin(long id, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool) {
         super(id);
         this.numero = numero;
@@ -50,7 +53,7 @@ public class Brassin extends Objet implements Comparable<Brassin> {
     public void setId_recette(long id_recette) { this.id_recette = id_recette; }
     public void setDensiteOriginale(float densiteOriginale) { this.densiteOriginale = densiteOriginale; }
     public void setDensiteFinale(float densiteFinale) { this.densiteFinale = densiteFinale; }
-    public void setPourcentageAlcool(float pourcentageAlcool) { this.pourcentageAlcool = pourcentageAlcool; }
+    public void setPourcentageAlcool() { pourcentageAlcool = convertDensiteVersPourcentageAlcool(densiteOriginale, densiteFinale); }
 
     @Override
     public int compareTo(@NonNull Brassin brassin) {
@@ -66,5 +69,10 @@ public class Brassin extends Objet implements Comparable<Brassin> {
             return 1;
         }
         return -1;
+    }
+
+    public static float convertDensiteVersPourcentageAlcool(float densiteO, float densiteF){
+        float differenceDensite = densiteO - densiteF;
+        return (((differenceDensite * constanteConversionPourcentageAlcool)/densiteF)/0.789f)*100;
     }
 }

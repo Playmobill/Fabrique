@@ -92,7 +92,7 @@ public class TableBrassin extends Controle {
             brassin.setId_recette(id_recette);
             brassin.setDensiteOriginale(densiteOriginale);
             brassin.setDensiteFinale(densiteFinale);
-            brassin.setPourcentageAlcool(pourcentageAlcool);
+            brassin.setPourcentageAlcool();
             Collections.sort(brassins);
         }
     }
