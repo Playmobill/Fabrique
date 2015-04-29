@@ -29,19 +29,13 @@ import fabrique.gestion.Objets.Fut;
 import fabrique.gestion.R;
 import fabrique.gestion.Widget.BoutonFut;
 
-public class FragmentListeFut extends FragmentAmeliore implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class FragmentListeFut extends FragmentAmeliore implements AdapterView.OnItemSelectedListener {
 
     private Context contexte;
 
-    private int nombreElementParLigne;
-
-    private ArrayList<BoutonFut> btnsFut;
-
-    private ArrayList<Fut> futs;
-
     private LinearLayout tableau;
 
-    private LinearLayout.LayoutParams margeBouton, margeAutre;
+    private LinearLayout.LayoutParams marge;
 
     @Nullable
     @Override
@@ -73,22 +67,14 @@ public class FragmentListeFut extends FragmentAmeliore implements View.OnClickLi
         tableau = new TableLayout(contexte);
         tableau.setOrientation(LinearLayout.VERTICAL);
 
-        nombreElementParLigne = tailleEcran.widthPixels/160;
-
-        btnsFut = new ArrayList<>();
-        futs = new ArrayList<>();
-
-        margeBouton = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        margeBouton.setMargins(10, 10, 10, 10);
-
-        margeAutre = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        margeAutre.setMargins(10, 10, 10, 10);
+        marge = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        marge.setMargins(10, 10, 10, 10);
 
         layoutTri.addView(texte);
         layoutTri.addView(tri);
         LinearLayout linearLayout = new LinearLayout(contexte);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.addView(layoutTri, margeAutre);
+        linearLayout.addView(layoutTri, marge);
         ScrollView layoutVerticalScroll = new ScrollView(contexte);
         layoutVerticalScroll.addView(tableau);
         linearLayout.addView(layoutVerticalScroll);
@@ -102,169 +88,85 @@ public class FragmentListeFut extends FragmentAmeliore implements View.OnClickLi
         tableau.removeAllViews();
 
         TableFut tableFut = TableFut.instance(contexte);
-
-        btnsFut.clear();
-        futs.clear();
-
-        TableRow ligne = new TableRow(contexte);
-
-        int j = 0;
-        for (int i=0; i<tableFut.tailleListe(); i++) {
-            BoutonFut btnFut = new BoutonFut(contexte, tableFut.recupererIndex(i));
-            btnFut.setOnClickListener(this);
-            ligne.addView(btnFut, margeBouton);
-            btnsFut.add(btnFut);
-            futs.add(tableFut.recupererIndex(i));
-            j = j + 1;
-            if (j>=nombreElementParLigne) {
-                tableau.addView(ligne);
-                ligne = new TableRow(contexte);
-                j = 0;
+            PredicateLayout ligne = new PredicateLayout(contexte);
+            for (int i=0; i<tableFut.tailleListe(); i++) {
+                BoutonFut btnFut = new BoutonFut(contexte, this, tableFut.recupererIndex(i));
+                ligne.addView(btnFut, new PredicateLayout.LayoutParams(10, 10));
             }
-        }
-        if (j != 0) {
-            tableau.addView(ligne);
-        }
-        tableau.invalidate();
+        tableau.addView(ligne);
     }
 
     private void affichageSelonBrassin() {
         tableau.removeAllViews();
 
-        btnsFut.clear();
-        futs.clear();
-
         ArrayList<ArrayList<Fut>> listeListeFut = TableFut.instance(contexte).recupererSelonBrassin(contexte);
         Collections.reverse(listeListeFut);
         for (int i=0; i<listeListeFut.size(); i++) {
             ArrayList<Fut> listeFut = listeListeFut.get(i);
-            TableRow ligneTitre = new TableRow(contexte);
-            TextView titre = new TextView(contexte);
-            long id_brassin = listeFut.get(0).getId_brassin();
-            if (id_brassin == -1) {
-                titre.setText("Sans brassin");
-            } else {
-                titre.setText("Brassin #" + id_brassin);
-            }
-            ligneTitre.addView(titre, margeAutre);
+                TableRow ligneTitre = new TableRow(contexte);
+                    TextView titre = new TextView(contexte);
+                    long id_brassin = listeFut.get(0).getId_brassin();
+                    if (id_brassin == -1) {
+                        titre.setText("Sans brassin");
+                    } else {
+                        titre.setText("Brassin #" + id_brassin);
+                    }
+                ligneTitre.addView(titre, marge);
             tableau.addView(ligneTitre);
-            TableRow ligneElement = new TableRow(contexte);
-            int j = 0;
+
+            PredicateLayout ligne = new PredicateLayout(contexte);
             for (int k=0; k<listeFut.size(); k++) {
-                BoutonFut btnFut = new BoutonFut(contexte, listeFut.get(k));
-                btnFut.setOnClickListener(this);
-                ligneElement.addView(btnFut, margeBouton);
-                btnsFut.add(btnFut);
-                futs.add(listeFut.get(k));
-                j = j + 1;
-                if (j>=nombreElementParLigne) {
-                    tableau.addView(ligneElement);
-                    ligneElement = new TableRow(contexte);
-                    j = 0;
-                }
+                BoutonFut btnFut = new BoutonFut(contexte, this, listeFut.get(k));
+                ligne.addView(btnFut, new PredicateLayout.LayoutParams(10, 10));
             }
-            if (j != 0) {
-                tableau.addView(ligneElement);
-            }
+            tableau.addView(ligne);
         }
-        tableau.invalidate();
     }
 
     private void affichageSelonRecette() {
         tableau.removeAllViews();
 
-        btnsFut.clear();
-        futs.clear();
-
         ArrayList<ArrayList<Fut>> listeListeFut = TableFut.instance(contexte).recupererSelonRecette(contexte);
         Collections.reverse(listeListeFut);
         for (int i=0; i<listeListeFut.size(); i++) {
             ArrayList<Fut> listeFut = listeListeFut.get(i);
-            TableRow ligneTitre = new TableRow(contexte);
-            TextView titre = new TextView(contexte);
-            Brassin brassin = listeFut.get(0).getBrassin(contexte);
-            if (brassin == null) {
-                titre.setText("Sans brassin");
-            } else {
-                titre.setText("" + brassin.getRecette(contexte).getNom());
-            }
-            ligneTitre.addView(titre, margeAutre);
+                TableRow ligneTitre = new TableRow(contexte);
+                    TextView titre = new TextView(contexte);
+                    Brassin brassin = listeFut.get(0).getBrassin(contexte);
+                    if (brassin == null) {
+                        titre.setText("Sans brassin");
+                    } else {
+                        titre.setText("" + brassin.getRecette(contexte).getNom());
+                    }
+                ligneTitre.addView(titre, marge);
             tableau.addView(ligneTitre);
-            TableRow ligneElement = new TableRow(contexte);
-            int j = 0;
+            PredicateLayout ligne = new PredicateLayout(contexte);
             for (int k=0; k<listeFut.size(); k++) {
-                BoutonFut btnFut = new BoutonFut(contexte, listeFut.get(k));
-                btnFut.setOnClickListener(this);
-                ligneElement.addView(btnFut, margeBouton);
-                btnsFut.add(btnFut);
-                futs.add(listeFut.get(k));
-                j = j + 1;
-                if (j>=nombreElementParLigne) {
-                    tableau.addView(ligneElement);
-                    ligneElement = new TableRow(contexte);
-                    j = 0;
-                }
+                BoutonFut btnFut = new BoutonFut(contexte, this, listeFut.get(k));
+                ligne.addView(btnFut, new PredicateLayout.LayoutParams(10, 10));
             }
-            if (j != 0) {
-                tableau.addView(ligneElement);
-            }
+            tableau.addView(ligne);
         }
-        tableau.invalidate();
     }
 
     private void affichageSelonEtat() {
         tableau.removeAllViews();
 
-        btnsFut.clear();
-        futs.clear();
-
         ArrayList<ArrayList<Fut>> listeListeFut = TableFut.instance(contexte).recupererSelonEtat();
         Collections.reverse(listeListeFut);
         for (int i=0; i<listeListeFut.size(); i++) {
             ArrayList<Fut> listeFut = listeListeFut.get(i);
-            TableRow ligneTitre = new TableRow(contexte);
-            TextView titre = new TextView(contexte);
-
-            titre.setText("" + TableEtatFut.instance(contexte).recupererId(listeFut.get(0).getId_etat()).getTexte());
-
-            ligneTitre.addView(titre, margeAutre);
+                TableRow ligneTitre = new TableRow(contexte);
+                    TextView titre = new TextView(contexte);
+                    titre.setText("" + TableEtatFut.instance(contexte).recupererId(listeFut.get(0).getId_etat()).getTexte());
+                ligneTitre.addView(titre, marge);
             tableau.addView(ligneTitre);
-            TableRow ligneElement = new TableRow(contexte);
-            int j = 0;
+            PredicateLayout ligne = new PredicateLayout(contexte);
             for (int k=0; k<listeFut.size(); k++) {
-                BoutonFut btnFut = new BoutonFut(contexte, listeFut.get(k));
-                btnFut.setOnClickListener(this);
-                ligneElement.addView(btnFut, margeBouton);
-                btnsFut.add(btnFut);
-                futs.add(listeFut.get(k));
-                j = j + 1;
-                if (j>=nombreElementParLigne) {
-                    tableau.addView(ligneElement);
-                    ligneElement = new TableRow(contexte);
-                    j = 0;
-                }
+                BoutonFut btnFut = new BoutonFut(contexte, this, listeFut.get(k));
+                ligne.addView(btnFut, new PredicateLayout.LayoutParams(10, 10));
             }
-            if (j != 0) {
-                tableau.addView(ligneElement);
-            }
-        }
-        tableau.invalidate();
-    }
-
-    @Override
-    public void onClick(View v) {
-        for (int i=0; i<btnsFut.size() ; i++) {
-            if (btnsFut.get(i).equals(v)) {
-                FragmentVueFut fragmentVueFut = new FragmentVueFut();
-                Bundle args = new Bundle();
-                args.putLong("id", futs.get(i).getId());
-                fragmentVueFut.setArguments(args);
-
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.onglet, fragmentVueFut);
-                transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_FADE));
-                transaction.addToBackStack(null).commit();
-            }
+            tableau.addView(ligne);
         }
     }
 

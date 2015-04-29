@@ -32,6 +32,8 @@
       <w>btns</w>
       <w>calendrier</w>
       <w>capacite</w>
+      <w>childh</w>
+      <w>childw</w>
       <w>choisi</w>
       <w>choisissez</w>
       <w>cliquer</w>
@@ -140,6 +142,8 @@
       <w>valider</w>
       <w>vide</w>
       <w>voulu</w>
+      <w>xpos</w>
+      <w>ypos</w>
       <w>états</w>
     </words>
   </dictionary>
