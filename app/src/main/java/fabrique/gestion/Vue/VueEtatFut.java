@@ -114,6 +114,10 @@ public class VueEtatFut extends TableLayout implements View.OnClickListener {
             txtEtatAjouter.getCurrentTextColor(),
             txtEtatAjouter.getDrawingCacheBackgroundColor(),
             cbActifAjouter.isChecked());
+
+        txtEtatAjouter.setTextColor(Color.BLACK);
+        txtEtatAjouter.setDrawingCacheBackgroundColor(Color.WHITE);
+        txtEtatAjouter.setBackgroundColor(Color.WHITE);
         afficher();
     }
 

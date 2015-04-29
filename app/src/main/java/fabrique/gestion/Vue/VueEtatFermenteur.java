@@ -114,6 +114,10 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
             txtEtatAjouter.getCurrentTextColor(),
             txtEtatAjouter.getDrawingCacheBackgroundColor(),
             cbActifAjouter.isChecked());
+
+        txtEtatAjouter.setTextColor(Color.BLACK);
+        txtEtatAjouter.setDrawingCacheBackgroundColor(Color.WHITE);
+        txtEtatAjouter.setBackgroundColor(Color.WHITE);
         afficher();
     }
 
