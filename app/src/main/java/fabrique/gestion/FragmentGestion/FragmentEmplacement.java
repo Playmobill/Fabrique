@@ -27,6 +27,7 @@ import fabrique.gestion.R;
 public class FragmentEmplacement extends FragmentAmeliore implements View.OnClickListener {
 
     private Context contexte;
+    private LayoutInflater inflater;
 
     private TableLayout tableau;
 
@@ -52,6 +53,7 @@ public class FragmentEmplacement extends FragmentAmeliore implements View.OnClic
         ((ActivityAccueil) getActivity()).setVue(this);
 
         contexte = container.getContext();
+        this.inflater = inflater;
 
         initialiser();
 
