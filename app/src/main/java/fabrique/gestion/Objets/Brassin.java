@@ -2,6 +2,10 @@ package fabrique.gestion.Objets;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 import fabrique.gestion.BDD.TableRecette;
 
@@ -73,7 +77,17 @@ public class Brassin extends Objet implements Comparable<Brassin> {
 
     public static float convertDensiteVersPourcentageAlcool(float densiteO, float densiteF){
         float differenceDensite = densiteO - densiteF;
-        return (((differenceDensite * constanteConversionPourcentageAlcool)/densiteF)/0.789f)*100;
+        float pourcentageAlcool = ((((differenceDensite * constanteConversionPourcentageAlcool)/densiteF)/0.789f)*100f)*1000f;
+        DecimalFormat formatResultat = new DecimalFormat("####");
+        formatResultat.setRoundingMode(RoundingMode.HALF_UP);
+        Log.i("AlcoolPr100" , formatResultat.format(pourcentageAlcool));
+        try {
+            pourcentageAlcool = Float.parseFloat(formatResultat.format(pourcentageAlcool))/1000f;
+        }
+        catch(NumberFormatException e){
+            pourcentageAlcool /= 1000f;
+        }
+        return pourcentageAlcool;
     }
 
     public String sauvegarde() {
