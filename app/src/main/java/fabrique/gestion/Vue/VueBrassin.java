@@ -30,6 +30,7 @@ import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
 import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.Objets.Brassin;
+import fabrique.gestion.Objets.DateToString;
 import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.Objets.ListeHistorique;
 import fabrique.gestion.Objets.Recette;
@@ -50,9 +51,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
     private Button btnModifier, btnValider, btnAnnuler;
 
     //DatePicker
-    protected int jour;
-    protected int mois;
-    protected int annee;
+    private long longDateCreation;
     private EditText editDateCreation;
 
     //Historique
@@ -73,13 +72,12 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
 
         this.brassin = brassin;
 
-        initialiser();
-
         LinearLayout ligne = new LinearLayout(contexte);
 
         tableauDescription = new TableLayout(getContext());
+        initialiser();
         ligne.addView(cadre(tableauDescription, " Description "));
-        afficherDescription();
+        afficher();
 
         tableauHistorique = new TableLayout(getContext());
         ligne.addView(cadre(tableauHistorique, " Historique "));
@@ -128,40 +126,8 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
     }
 
     private void initialiser() {
-        TableRow.LayoutParams margeCase = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        margeCase.setMargins(10, 0, 10, 0);
-
-        ligneAjouter = new TableRow(getContext());
-        LinearLayout sous_ligneAjouter = new LinearLayout(getContext());
-        ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueBrassin();
-        String[] tabListeHistorique = new String[listeHistoriques.size()+1];
-        tabListeHistorique[0] = "";
-        for (int i=0; i<listeHistoriques.size() ; i++) {
-            tabListeHistorique[i+1] = listeHistoriques.get(i).getTexte();
-        }
-        ajoutListeHistorique = new Spinner(getContext());
-        ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
-        adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
-        sous_ligneAjouter.addView(ajoutListeHistorique);
-        ajoutHistorique = new EditText(getContext());
-        sous_ligneAjouter.addView(ajoutHistorique);
-        ligneAjouter.addView(sous_ligneAjouter);
-        btnAjouterHistorique = new TextView(getContext());
-        SpannableString ajouter = new SpannableString("Ajouter");
-        ajouter.setSpan(new UnderlineSpan(), 0, ajouter.length(), 0);
-        btnAjouterHistorique.setText(ajouter);
-        btnAjouterHistorique.setOnClickListener(this);
-        ligneAjouter.addView(btnAjouterHistorique, margeCase);
-    }
-
-    private void afficherDescription() {
-        tableauDescription.removeAllViews();
-
-        TableRow.LayoutParams parametreLigne = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        TableRow.LayoutParams parametreElement = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        parametreElement.setMargins(10, 10, 10, 10);
+        TableRow.LayoutParams marge = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        marge.setMargins(10, 10, 10, 10);
 
         TableRow ligneNumeroDateCreation = new TableRow(getContext());
             LinearLayout layoutNumero = new LinearLayout(getContext());
@@ -170,23 +136,15 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
                 numero.setTypeface(null, Typeface.BOLD);
 
                 editNumero = new EditText(getContext());
-                editNumero.setText("" + brassin.getNumero());
                 editNumero.setInputType(InputType.TYPE_CLASS_NUMBER);
                 editNumero.setTypeface(null, Typeface.BOLD);
-                editNumero.setEnabled(false);
 
             LinearLayout layoutDateCreation = new LinearLayout(getContext());
                 TextView dateCreation = new TextView(getContext());
                 dateCreation.setText("Date de création ");
 
-                Calendar calendrier = Calendar.getInstance();
-                jour = calendrier.get(Calendar.DAY_OF_MONTH);
-                mois = calendrier.get(Calendar.MONTH);
-                annee = calendrier.get(Calendar.YEAR);
                 editDateCreation = new EditText(getContext());
-                editDateCreation.setText(jour + " / " + (mois + 1) + " / " + annee);
                 editDateCreation.setFocusable(false);
-                editDateCreation.setEnabled(false);
                 editDateCreation.setOnClickListener(this);
 
         TableRow ligneRecetteQuantite = new TableRow(getContext());
@@ -196,8 +154,8 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
 
                 listeRecetteActifs = TableRecette.instance(getContext()).recupererRecetteActif();
                 editRecette = new Spinner(getContext());
-                ArrayAdapter<String> adapteurRecette = new ArrayAdapter<>(getContext(), R.layout.spinner_style, TableRecette.instance(getContext()).recupererRecettesActifs());
-                adapteurRecette.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    ArrayAdapter<String> adapteurRecette = new ArrayAdapter<>(getContext(), R.layout.spinner_style, TableRecette.instance(getContext()).recupererRecettesActifs());
+                    adapteurRecette.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 editRecette.setAdapter(adapteurRecette);
                 editRecette.setEnabled(false);
                 indexRecette = -1;
@@ -220,9 +178,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
                 quantite.setText("Quantité : ");
 
                 editQuantite = new EditText(getContext());
-                editQuantite.setText("" + brassin.getQuantite());
                 editQuantite.setInputType(InputType.TYPE_CLASS_NUMBER);
-                editQuantite.setEnabled(false);
 
         LinearLayout ligneCommentaire = new LinearLayout(getContext());
             LinearLayout layoutCommentaire = new LinearLayout(getContext());
@@ -230,8 +186,6 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
                 commentaire.setText("Commentaire : ");
 
                 editCommentaire = new EditText(getContext());
-                editCommentaire.setText(brassin.getCommentaire());
-                editCommentaire.setEnabled(false);
 
         TableRow ligneDensite = new TableRow(getContext());
             LinearLayout layoutDensiteOriginale = new LinearLayout(getContext());
@@ -239,89 +193,149 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
                 densiteOriginale.setText("Densité originale : ");
 
                 editDensiteOriginale = new EditText(getContext());
-                editDensiteOriginale.setText("" + brassin.getDensiteOriginale());
                 editDensiteOriginale.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                editDensiteOriginale.setEnabled(false);
 
             LinearLayout layoutDensiteFinale = new LinearLayout(getContext());
                 TextView densiteFinale = new TextView(getContext());
                 densiteFinale.setText("Densité finale : ");
 
                 editDensiteFinale = new EditText(getContext());
-                editDensiteFinale.setText("" + brassin.getDensiteFinale());
                 editDensiteFinale.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                editDensiteFinale.setEnabled(false);
 
-        LinearLayout lignePourcentageAlcool = new LinearLayout(getContext());
+        TableRow lignePourcentageAlcool = new TableRow(getContext());
             LinearLayout layoutPourcentageAlcool = new LinearLayout(getContext());
                 TextView pourcentageAlcool = new TextView(getContext());
                 pourcentageAlcool.setText("%Alc/vol : ");
 
                 editPourcentageAlcool = new TextView(getContext());
-                editPourcentageAlcool.setText("" + brassin.getPourcentageAlcool());
 
-        LinearLayout ligneBouton = new LinearLayout(getContext());
-            layoutBouton = new TableRow(getContext());
-                btnModifier = new Button(getContext());
-                btnModifier.setText("Modifier");
-                btnModifier.setOnClickListener(this);
+        layoutBouton = new LinearLayout(getContext());
+            btnModifier = new Button(getContext());
+            btnModifier.setLayoutParams(marge);
+            btnModifier.setText("Modifier");
+            btnModifier.setOnClickListener(this);
 
-                btnValider = new Button(getContext());
-                btnValider.setText("Valider");
-                btnValider.setOnClickListener(this);
+            btnValider = new Button(getContext());
+            btnValider.setLayoutParams(marge);
+            btnValider.setText("Valider");
+            btnValider.setOnClickListener(this);
 
-                btnAnnuler = new Button(getContext());
-                btnAnnuler.setText("Annuler");
-                btnAnnuler.setOnClickListener(this);
+            btnAnnuler = new Button(getContext());
+            btnAnnuler.setLayoutParams(marge);
+            btnAnnuler.setText("Annuler");
+            btnAnnuler.setOnClickListener(this);
 
-        tableauDescription.addView(ligneNumeroDateCreation, parametreLigne);
-            ligneNumeroDateCreation.addView(layoutNumero);
-                layoutNumero.addView(numero, parametreElement);
-                layoutNumero.addView(editNumero, parametreElement);
-            ligneNumeroDateCreation.addView(layoutDateCreation);
-                layoutDateCreation.addView(dateCreation, parametreElement);
-                layoutDateCreation.addView(editDateCreation, parametreElement);
-        tableauDescription.addView(ligneRecetteQuantite, parametreLigne);
-            ligneRecetteQuantite.addView(layoutRecette);
-                layoutRecette.addView(recette, parametreElement);
-                layoutRecette.addView(editRecette, parametreElement);
-            ligneRecetteQuantite.addView(layoutQuantite);
-                layoutQuantite.addView(quantite, parametreElement);
-                layoutQuantite.addView(editQuantite, parametreElement);
-        tableauDescription.addView(ligneCommentaire, parametreLigne);
-            ligneCommentaire.addView(layoutCommentaire);
-                layoutCommentaire.addView(commentaire, parametreElement);
-                layoutCommentaire.addView(editCommentaire, parametreElement);
-        tableauDescription.addView(ligneDensite, parametreLigne);
-            ligneDensite.addView(layoutDensiteOriginale);
-                layoutDensiteOriginale.addView(densiteOriginale, parametreElement);
-                layoutDensiteOriginale.addView(editDensiteOriginale, parametreElement);
-            ligneDensite.addView(layoutDensiteFinale);
-                layoutDensiteFinale.addView(densiteFinale, parametreElement);
-                layoutDensiteFinale.addView(editDensiteFinale, parametreElement);
-        tableauDescription.addView(lignePourcentageAlcool, parametreLigne);
-            lignePourcentageAlcool.addView(layoutPourcentageAlcool);
-                lignePourcentageAlcool.addView(pourcentageAlcool, parametreElement);
-                lignePourcentageAlcool.addView(editPourcentageAlcool, parametreElement);
-        tableauDescription.addView(ligneBouton, parametreLigne);
-            ligneBouton.addView(layoutBouton);
-                layoutBouton.addView(btnModifier, parametreElement);
+        tableauDescription.addView(ligneNumeroDateCreation);
+            ligneNumeroDateCreation.addView(layoutNumero, marge);
+                layoutNumero.addView(numero);
+                layoutNumero.addView(editNumero);
+            ligneNumeroDateCreation.addView(layoutDateCreation, marge);
+                layoutDateCreation.addView(dateCreation);
+                layoutDateCreation.addView(editDateCreation);
+        tableauDescription.addView(ligneRecetteQuantite);
+            ligneRecetteQuantite.addView(layoutRecette, marge);
+                layoutRecette.addView(recette);
+                layoutRecette.addView(editRecette);
+            ligneRecetteQuantite.addView(layoutQuantite, marge);
+                layoutQuantite.addView(quantite);
+                layoutQuantite.addView(editQuantite);
+        tableauDescription.addView(ligneCommentaire);
+            ligneCommentaire.addView(layoutCommentaire, marge);
+                layoutCommentaire.addView(commentaire);
+                layoutCommentaire.addView(editCommentaire);
+        tableauDescription.addView(ligneDensite);
+            ligneDensite.addView(layoutDensiteOriginale, marge);
+                layoutDensiteOriginale.addView(densiteOriginale);
+                layoutDensiteOriginale.addView(editDensiteOriginale);
+            ligneDensite.addView(layoutDensiteFinale, marge);
+                layoutDensiteFinale.addView(densiteFinale);
+                layoutDensiteFinale.addView(editDensiteFinale);
+        tableauDescription.addView(lignePourcentageAlcool);
+            lignePourcentageAlcool.addView(layoutPourcentageAlcool, marge);
+                layoutPourcentageAlcool.addView(pourcentageAlcool);
+                layoutPourcentageAlcool.addView(editPourcentageAlcool);
+        tableauDescription.addView(layoutBouton);
+            layoutBouton.addView(btnModifier, marge);
+
+        ligneAjouter = new TableRow(getContext());
+            LinearLayout sous_ligneAjouter = new LinearLayout(getContext());
+            ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueBrassin();
+            String[] tabListeHistorique = new String[listeHistoriques.size()+1];
+            tabListeHistorique[0] = "";
+            for (int i=0; i<listeHistoriques.size() ; i++) {
+                tabListeHistorique[i+1] = listeHistoriques.get(i).getTexte();
+            }
+
+        TableRow.LayoutParams margeAjouter = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        margeAjouter.setMargins(10, 2, 10, 2);
+
+                ajoutListeHistorique = new Spinner(getContext());
+                    ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
+                    adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
+            sous_ligneAjouter.addView(ajoutListeHistorique);
+                ajoutHistorique = new EditText(getContext());
+            sous_ligneAjouter.addView(ajoutHistorique);
+        ligneAjouter.addView(sous_ligneAjouter);
+            btnAjouterHistorique = new TextView(getContext());
+                SpannableString ajouter = new SpannableString("Ajouter");
+                ajouter.setSpan(new UnderlineSpan(), 0, ajouter.length(), 0);
+            btnAjouterHistorique.setText(ajouter);
+            btnAjouterHistorique.setOnClickListener(this);
+        ligneAjouter.addView(btnAjouterHistorique, margeAjouter);
     }
 
-    private void afficherModifier() {
-        editNumero.setEnabled(true);
-        editDateCreation.setEnabled(true);
-        editRecette.setEnabled(true);
-        editQuantite.setEnabled(true);
-        editCommentaire.setEnabled(true);
-        editDensiteOriginale.setEnabled(true);
-        editDensiteFinale.setEnabled(true);
+    private void afficher() {
+        editNumero.setText("" + brassin.getNumero());
+        editNumero.setEnabled(false);
+
+        longDateCreation = brassin.getDateLong();
+        editDateCreation.setText(DateToString.dateToString(longDateCreation));
+        editDateCreation.setEnabled(false);
+
+        editRecette.setEnabled(false);
+        editRecette.setSelection(indexRecette);
+
+        editQuantite.setText("" + brassin.getQuantite());
+        editQuantite.setEnabled(false);
+
+        editCommentaire.setText(brassin.getCommentaire());
+        editCommentaire.setEnabled(false);
+
+        editDensiteOriginale.setText("" + brassin.getDensiteOriginale());
+        editDensiteOriginale.setEnabled(false);
+
+        editDensiteFinale.setText("" + brassin.getDensiteFinale());
+        editDensiteFinale.setEnabled(false);
+
+        editPourcentageAlcool.setText("" + brassin.getPourcentageAlcool());
+
         layoutBouton.removeAllViews();
+        layoutBouton.addView(btnModifier);
+    }
+
+    private void modifier() {
+        editNumero.setEnabled(true);
+
+        editDateCreation.setEnabled(true);
+
+        editRecette.setEnabled(true);
+
+        editQuantite.setEnabled(true);
+
+        editCommentaire.setEnabled(true);
+
+        editDensiteOriginale.setEnabled(true);
+
+        editDensiteFinale.setEnabled(true);
+
+        layoutBouton.removeAllViews();
+
         layoutBouton.addView(btnValider);
         layoutBouton.addView(btnAnnuler);
     }
 
-    private void modifier() {
+    private void valider() {
         String erreur = "";
 
         int numero = 0;
@@ -386,34 +400,20 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
 
         if (erreur.equals("")) {
             long recette = listeRecetteActifs.get(editRecette.getSelectedItemPosition()).getId();
-            long date = new GregorianCalendar(annee, mois, jour).getTimeInMillis();
             TableBrassin.instance(getContext()).modifier(
                     brassin.getId(),
                     numero,
-                    editCommentaire.getText().toString() + "",
-                    date,
+                    editCommentaire.getText().toString(),
+                    longDateCreation,
                     quantite,
                     recette,
                     densiteOriginale,
                     densiteFinale,
                     pourcentageAlcool);
-            indexRecette = (int)recette;
+            indexRecette = editRecette.getSelectedItemPosition();
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
         }
-    }
-
-    private void reafficherDescription() {
-        editNumero.setEnabled(false);
-        editDateCreation.setEnabled(false);
-        editRecette.setEnabled(false);
-        editRecette.setSelection(indexRecette-1);
-        editQuantite.setEnabled(false);
-        editCommentaire.setEnabled(false);
-        editDensiteOriginale.setEnabled(false);
-        editDensiteFinale.setEnabled(false);
-        layoutBouton.removeAllViews();
-        layoutBouton.addView(btnModifier);
     }
 
     private void afficherHistorique() {
@@ -421,7 +421,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
         margeTableau.setMargins(10, 0, 10, 0);
 
         tableauHistorique.removeAllViews();
-        tableauHistorique.addView(ligneAjouter, margeTableau);
+        tableauHistorique.addView(ligneAjouter);
         ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdBrassin(brassin.getId());
         for (int i=0; i<historiques.size() ; i++) {
             tableauHistorique.addView(new LigneHistorique(getContext(), this, historiques.get(i)), margeTableau);
@@ -431,20 +431,22 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
     @Override
     public void onClick(View v) {
         if (v.equals(btnModifier)) {
-            afficherModifier();
+            modifier();
         }
 
         else if (v.equals(btnValider)) {
-            modifier();
-            reafficherDescription();
+            valider();
+            afficher();
         }
 
         else if (v.equals(btnAnnuler)) {
-            reafficherDescription();
+            afficher();
         }
 
         else if (v.equals(editDateCreation)){
-            new DatePickerDialog(getContext(), this, annee, mois, jour).show();
+            Calendar calendrier = Calendar.getInstance();
+            calendrier.setTimeInMillis(longDateCreation);
+            new DatePickerDialog(getContext(), this, calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).show();
         }
 
         else if (v.equals(btnAjouterHistorique)) {
@@ -455,10 +457,8 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
 
     @Override
     public void onDateSet(DatePicker view, int annee, int mois, int jour) {
-        this.annee = annee;
-        this.mois = mois;
-        this.jour = jour;
-        editDateCreation.setText(jour + " / " + mois + " / " + annee);
+        longDateCreation = new GregorianCalendar(annee, mois, jour).getTimeInMillis();
+        editDateCreation.setText(DateToString.dateToString(longDateCreation));
     }
 
     @Override
