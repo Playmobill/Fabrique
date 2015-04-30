@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -35,7 +36,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
 
     private Context contexte;
 
-    private Button sauvegarde;
+    private Button sauvegarde, lecture;
 
     @Nullable
     @Override
@@ -57,41 +58,50 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
         return view;
     }
 
-    public void initialiserBouton() {
+    private void initialiserBouton() {
         sauvegarde = (Button)view.findViewById(R.id.sauvegarde);
         sauvegarde.setOnClickListener(this);
+
+        lecture = (Button)view.findViewById(R.id.lecture);
+        lecture.setOnClickListener(this);
+    }
+
+    private void sauvegarder() {
+        try {
+            Calendar calendrier = Calendar.getInstance();
+            calendrier.setTimeInMillis(System.currentTimeMillis());
+            int seconde = calendrier.get(Calendar.SECOND);
+            int minute = calendrier.get(Calendar.MINUTE);
+            int heure = calendrier.get(Calendar.HOUR_OF_DAY);
+            int jour = calendrier.get(Calendar.DAY_OF_MONTH);
+            int mois = calendrier.get(Calendar.MONTH);
+            int annee = calendrier.get(Calendar.YEAR);
+            File fichier = new File(Environment.getExternalStorageDirectory(), "Gestion_" + heure + "h_" + minute + "m_" + seconde + "s_" + jour + "j_" + mois + "m_" + annee + "a.txt");
+            fichier.createNewFile();
+            FileWriter filewriter = new FileWriter(fichier, false);
+            filewriter.write(TableEmplacement.instance(contexte).sauvegarde());
+            filewriter.write(TableRecette.instance(contexte).sauvegarde());
+            filewriter.write(TableBrassin.instance(contexte).sauvegarde());
+            filewriter.write(TableFermenteur.instance(contexte).sauvegarde());
+            filewriter.write(TableEtatFermenteur.instance(contexte).sauvegarde());
+            filewriter.write(TableCuve.instance(contexte).sauvegarde());
+            filewriter.write(TableEtatCuve.instance(contexte).sauvegarde());
+            filewriter.write(TableFut.instance(contexte).sauvegarde());
+            filewriter.write(TableHistorique.instance(contexte).sauvegarde());
+            filewriter.write(TableListeHistorique.instance(contexte).sauvegarde());
+            filewriter.write(TableGestion.instance(contexte).sauvegarde());
+            filewriter.close();
+        } catch (IOException e) {
+            Toast.makeText(contexte, "Erreur lors de la création du fichier de sauvegarde.", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public void onClick(View view) {
         if (view.equals(sauvegarde)) {
-            try {
-                Calendar calendrier = Calendar.getInstance();
-                calendrier.setTimeInMillis(System.currentTimeMillis());
-                int seconde = calendrier.get(Calendar.SECOND);
-                int minute = calendrier.get(Calendar.MINUTE);
-                int heure = calendrier.get(Calendar.HOUR_OF_DAY);
-                int jour = calendrier.get(Calendar.DAY_OF_MONTH);
-                int mois = calendrier.get(Calendar.MONTH);
-                int annee = calendrier.get(Calendar.YEAR);
-                File fichier = new File(Environment.getExternalStorageDirectory(), "Gestion_" + heure + "h_" + minute + "m_" + seconde + "s_" + jour + "j_" + mois + "m_" + annee + "a.txt");
-                fichier.createNewFile();
-                FileWriter filewriter = new FileWriter(fichier, false);
-                filewriter.write(TableEmplacement.instance(contexte).sauvegarde());
-                filewriter.write(TableRecette.instance(contexte).sauvegarde());
-                filewriter.write(TableBrassin.instance(contexte).sauvegarde());
-                filewriter.write(TableFermenteur.instance(contexte).sauvegarde());
-                filewriter.write(TableEtatFermenteur.instance(contexte).sauvegarde());
-                filewriter.write(TableCuve.instance(contexte).sauvegarde());
-                filewriter.write(TableEtatCuve.instance(contexte).sauvegarde());
-                filewriter.write(TableFut.instance(contexte).sauvegarde());
-                filewriter.write(TableHistorique.instance(contexte).sauvegarde());
-                filewriter.write(TableListeHistorique.instance(contexte).sauvegarde());
-                filewriter.write(TableGestion.instance(contexte).sauvegarde());
-                filewriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            sauvegarder();
+        } else if (view.equals(lecture)) {
+
         }
     }
 
