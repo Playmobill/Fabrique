@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.FragmentAmeliore;
-import fabrique.gestion.R;
 
 public class FragmentTempsInspectionDateLavageAcide extends FragmentAmeliore implements View.OnClickListener{
 

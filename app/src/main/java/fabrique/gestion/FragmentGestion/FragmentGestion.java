@@ -16,7 +16,7 @@ public class FragmentGestion extends FragmentAmeliore implements View.OnClickLis
 
     private View view;
 
-    private Button etat, listeHistorique, temps, emplacement;
+    private Button etat, listeHistorique, temps, emplacement, calendrier;
 
     @Nullable
     @Override
@@ -48,6 +48,9 @@ public class FragmentGestion extends FragmentAmeliore implements View.OnClickLis
 
         emplacement = (Button)view.findViewById(R.id.btnEmplacement);
         emplacement.setOnClickListener(this);
+
+        calendrier = (Button)view.findViewById(R.id.btnCalendrier);
+        calendrier.setOnClickListener(this);
     }
 
     @Override
@@ -73,6 +76,12 @@ public class FragmentGestion extends FragmentAmeliore implements View.OnClickLis
         else if (view.equals(emplacement)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.onglet, new FragmentEmplacement());
+            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
+            transaction.addToBackStack(null).commit();
+        }
+        else if (view.equals(calendrier)) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.onglet, new FragmentCalendrier());
             transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
             transaction.addToBackStack(null).commit();
         }
