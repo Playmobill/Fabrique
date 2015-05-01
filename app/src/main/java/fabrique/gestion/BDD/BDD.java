@@ -105,6 +105,13 @@ public class BDD extends SQLiteOpenHelper {
                                                 "elementConcerne INTEGER NOT NULL," +
                                                 "texte TEXT NOT NULL)";
 
+    private static String createurTableCalendrier = "CREATE TABLE IF NOT EXISTS Calendrier(" +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                                "dateEvenement INTEGER NOT NULL" +
+                                                "nomEvenement TEXT NOT NULL" +
+                                                "typeObjet INTEGER NOT NULL" +
+                                                "idObjet INTEGER NOT NULL)";
+
 
     public BDD(Context context, String name, SQLiteDatabase.CursorFactory factory) {
         super(context, name, factory, 1);
@@ -124,6 +131,7 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL(createurTableGestion);
         db.execSQL(createurTableHistorique);
         db.execSQL(createurTableListeHistorique);
+        db.execSQL(createurTableCalendrier);
 
         db.execSQL("INSERT INTO EtatFermenteur (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', " + Color.BLACK + ", " + Color.WHITE +", 1)");
         db.execSQL("INSERT INTO EtatCuve (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', " + Color.BLACK + ", " + Color.WHITE +", 1)");

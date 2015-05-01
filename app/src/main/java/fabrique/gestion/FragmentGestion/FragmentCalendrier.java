@@ -66,6 +66,7 @@ public class FragmentCalendrier extends FragmentAmeliore implements View.OnClick
             for (int j = 0; j < 8 && k<listeBtnJours.size(); j++) {
                 Log.i("Ajout", k + " dans " + i);
                 ligneJours[i].addView(listeBtnJours.get(k));
+                listeBtnJours.get(k).bouton.setOnClickListener(this);
                 k++;
             }
             calendrier.addView(ligneJours[i]);
@@ -85,6 +86,13 @@ public class FragmentCalendrier extends FragmentAmeliore implements View.OnClick
 
     @Override
     public void onClick(View v) {
-
+        for (int i = 0; i < listeBtnJours.size(); i++) {
+            if (v.equals(listeBtnJours.get(i).bouton)){
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.onglet, new FragmentJour());
+                transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
+                transaction.addToBackStack(null).commit();
+            }
+        }
     }
 }
