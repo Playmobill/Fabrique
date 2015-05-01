@@ -31,7 +31,7 @@ public class TableCalendrier extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            evenements.add(new Calendrier(tmp.getLong(0), tmp.getLong(1), tmp.getInt(2), tmp.getLong(3), tmp.getInt(4)));
+            evenements.add(new Calendrier(tmp.getLong(0), tmp.getLong(1), tmp.getString(2), tmp.getLong(3), tmp.getInt(4)));
         }
         Collections.sort(evenements);
     }
@@ -39,5 +39,9 @@ public class TableCalendrier extends Controle {
     @Override
     public String sauvegarde() {
         return null;
+    }
+
+    public ArrayList<Calendrier> getEvenements() {
+        return evenements;
     }
 }

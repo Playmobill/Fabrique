@@ -8,11 +8,11 @@ import java.util.Comparator;
 public class Calendrier extends Objet implements Comparable<Calendrier>{
 
     private long dateEvenement;
-    private int nomEvenement;
+    private String nomEvenement;
     private long typeObjet;
     private int idObjet;
 
-    public Calendrier(long id, long dateEvent, int nomEvent, long typeObjet, int idObjet) {
+    public Calendrier(long id, long dateEvent, String nomEvent, long typeObjet, int idObjet) {
         super(id);
         this.dateEvenement = dateEvent;
         this.nomEvenement = nomEvent;
@@ -28,5 +28,13 @@ public class Calendrier extends Objet implements Comparable<Calendrier>{
     @Override
     public int compareTo(Calendrier another) {
         return 0;
+    }
+
+    public long getDateEvenement() {
+        return dateEvenement;
+    }
+
+    public String getNomEvenement() {
+        return nomEvenement;
     }
 }
