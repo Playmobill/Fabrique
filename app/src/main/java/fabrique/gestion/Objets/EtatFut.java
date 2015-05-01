@@ -69,12 +69,12 @@ public class EtatFut extends Objet implements Comparable<EtatFut> {
     }
 
     public String sauvegarde() {
-        return ("<EtatFut>" +
-                    "<texte>" + texte + "<texte>" +
-                    "<historique>" + historique + "<historique>" +
-                    "<couleurTexte>" + couleurTexte + "<couleurTexte>" +
-                    "<couleurFond>" + couleurFond + "<couleurFond>" +
-                    "<actif>" + actif + "<actif>" +
-                "</EtatFut>");
+        return ("<O:EtatFut>" +
+                    "<E:texte>" + texte + "</E:texte>" +
+                    "<E:historique>" + historique + "</E:historique>" +
+                    "<E:couleurTexte>" + couleurTexte + "</E:couleurTexte>" +
+                    "<E:couleurFond>" + couleurFond + "</E:couleurFond>" +
+                    "<E:actif>" + actif + "</E:actif>" +
+                "</O:EtatFut>");
     }
 }

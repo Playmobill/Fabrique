@@ -139,11 +139,9 @@ public class TableCuve extends Controle{
 
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
-        texte.append("<Cuves>");
         for (int i=0; i<cuves.size(); i++) {
             texte.append(cuves.get(i).sauvegarde());
         }
-        texte.append("</Cuves>");
         return texte.toString();
     }
 }

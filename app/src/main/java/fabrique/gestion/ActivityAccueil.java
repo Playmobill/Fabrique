@@ -11,6 +11,7 @@ import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatCuve;
 import fabrique.gestion.BDD.TableEtatFermenteur;
+import fabrique.gestion.BDD.TableEtatFut;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.BDD.TableGestion;
@@ -85,17 +86,20 @@ public class ActivityAccueil extends FragmentActivity {
         progressDialog.setMessage("Brassins");
         TableBrassin.instance(this);
 
+        progressDialog.setMessage("États fermenteur");
+        TableEtatFermenteur.instance(this);
+
         progressDialog.setMessage("Fermenteurs");
         TableFermenteur.instance(this);
 
-        progressDialog.setMessage("États fermenteur");
-        TableEtatFermenteur.instance(this);
+        progressDialog.setMessage("États cuve");
+        TableEtatCuve.instance(this);
 
         progressDialog.setMessage("Cuves");
         TableCuve.instance(this);
 
-        progressDialog.setMessage("États cuve");
-        TableEtatCuve.instance(this);
+        progressDialog.setMessage("États fut");
+        TableEtatFut.instance(this);
 
         progressDialog.setMessage("Fûts");
         TableFut.instance(this);

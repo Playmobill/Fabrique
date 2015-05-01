@@ -93,13 +93,13 @@ public class Fut extends Objet implements Comparable<Fut> {
     }
 
     public String sauvegarde() {
-        return ("<Fut>" +
-                    "<numero>" + numero + "</numero>" +
-                    "<capacite>" + capacite + "</capacite>" +
-                    "<id_etat>" + id_etat + "</id_etat>" +
-                    "<dateEtat>" + dateEtat + "</dateEtat>" +
-                    "<id_brassin>" + id_brassin + "</id_brassin>" +
-                    "<dateInspection>" + dateInspection + "</dateInspection>" +
-                "</Fut>");
+        return ("<O:Fut>" +
+                    "<E:numero>" + numero + "</E:numero>" +
+                    "<E:capacite>" + capacite + "</E:capacite>" +
+                    "<E:id_etat>" + id_etat + "</E:id_etat>" +
+                    "<E:dateEtat>" + dateEtat + "</E:dateEtat>" +
+                    "<E:id_brassin>" + id_brassin + "</E:id_brassin>" +
+                    "<E:dateInspection>" + dateInspection + "</E:dateInspection>" +
+                "</O:Fut>");
     }
 }

@@ -42,11 +42,11 @@ public class Recette extends Objet implements Comparable<Recette> {
     }
 
     public String sauvegarde() {
-        return ("<Recette>" +
-                    "<nom>" + nom + "</nom>" +
-                    "<couleur>" + couleur + "</couleur>" +
-                    "<acronyme>" + acronyme + "</acronyme>" +
-                    "<actif>" + actif + "</actif>" +
-                "</Recette>");
+        return ("<O:Recette>" +
+                    "<E:nom>" + nom + "</E:nom>" +
+                    "<E:couleur>" + couleur + "</E:couleur>" +
+                    "<E:acronyme>" + acronyme + "</E:acronyme>" +
+                    "<E:actif>" + actif + "</E:actif>" +
+                "</O:Recette>");
     }
 }

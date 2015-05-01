@@ -61,13 +61,13 @@ public class Historique extends Objet implements Comparable<Historique> {
     }
 
     public String sauvegarde() {
-        return ("<Historique>" +
-                    "<texte>" + texte + "</texte>" +
-                    "<date>" + date + "</date>" +
-                    "<id_fermenteur>" + id_fermenteur + "</id_fermenteur>" +
-                    "<id_cuve>" + id_cuve + "</id_cuve>" +
-                    "<id_fut>" + id_fut + "</id_fut>" +
-                    "<id_brassin>" + id_brassin + "</id_brassin>" +
-                "</Historique>");
+        return ("<O:Historique>" +
+                    "<E:texte>" + texte + "</E:texte>" +
+                    "<E:date>" + date + "</E:date>" +
+                    "<E:id_fermenteur>" + id_fermenteur + "</E:id_fermenteur>" +
+                    "<E:id_cuve>" + id_cuve + "</E:id_cuve>" +
+                    "<E:id_fut>" + id_fut + "</E:id_fut>" +
+                    "<E:id_brassin>" + id_brassin + "</E:id_brassin>" +
+                "</O:Historique>");
     }
 }

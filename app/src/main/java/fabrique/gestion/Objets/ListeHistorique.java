@@ -35,9 +35,9 @@ public class ListeHistorique extends Objet implements Comparable<ListeHistorique
     }
 
     public String sauvegarde() {
-        return ("<ListeHistorique>" +
-                    "<elementConcerne>" + elementConcerne + "</elementConcerne>" +
-                    "<texte>" + texte + "</texte>" +
-                "</ListeHistorique>");
+        return ("<O:ListeHistorique>" +
+                    "<E:elementConcerne>" + elementConcerne + "</E:elementConcerne>" +
+                    "<E:texte>" + texte + "</E:texte>" +
+                "</O:ListeHistorique>");
     }
 }

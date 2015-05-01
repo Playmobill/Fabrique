@@ -69,12 +69,12 @@ public class EtatCuve extends Objet implements Comparable<EtatCuve> {
     }
 
     public String sauvegarde() {
-        return ("<EtatCuve>" +
-                    "<texte>" + texte + "<texte>" +
-                    "<historique>" + historique + "<historique>" +
-                    "<couleurTexte>" + couleurTexte + "<couleurTexte>" +
-                    "<couleurFond>" + couleurFond + "<couleurFond>" +
-                    "<actif>" + actif + "<actif>" +
-                "</EtatCuve>");
+        return ("<O:EtatCuve>" +
+                    "<E:texte>" + texte + "</E:texte>" +
+                    "<E:historique>" + historique + "</E:historique>" +
+                    "<E:couleurTexte>" + couleurTexte + "</E:couleurTexte>" +
+                    "<E:couleurFond>" + couleurFond + "</E:couleurFond>" +
+                    "<E:actif>" + actif + "</E:actif>" +
+                "</O:EtatCuve>");
     }
 }

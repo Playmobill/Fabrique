@@ -69,12 +69,12 @@ public class EtatFermenteur extends Objet implements Comparable<EtatFermenteur> 
     }
 
     public String sauvegarde() {
-        return ("<EtatFermenteur>" +
-                    "<texte>" + texte + "<texte>" +
-                    "<historique>" + historique + "<historique>" +
-                    "<couleurTexte>" + couleurTexte + "<couleurTexte>" +
-                    "<couleurFond>" + couleurFond + "<couleurFond>" +
-                    "<actif>" + actif + "<actif>" +
-                "</EtatFermenteur>");
+        return ("<O:EtatFermenteur>" +
+                    "<E:texte>" + texte + "</E:texte>" +
+                    "<E:historique>" + historique + "</E:historique>" +
+                    "<E:couleurTexte>" + couleurTexte + "</E:couleurTexte>" +
+                    "<E:couleurFond>" + couleurFond + "</E:couleurFond>" +
+                    "<E:actif>" + actif + "</E:actif>" +
+                "</O:EtatFermenteur>");
     }
 }

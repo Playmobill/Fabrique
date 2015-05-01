@@ -43,7 +43,7 @@ public class TableGestion extends Controle {
 
     public long avertissementInspectionBaril() { return avertissementInspectionBaril; }
 
-    public void modifier (long delaiLA, long avertLA, long delaiIB, long avertIB){
+    public void modifier(long delaiLA, long avertLA, long delaiIB, long avertIB){
         ContentValues valeur = new ContentValues();
         valeur.put("delaiLavageAcide", delaiLA);
         valeur.put("avertissementLavageAcide", avertLA);
@@ -58,12 +58,12 @@ public class TableGestion extends Controle {
     }
 
     public String sauvegarde() {
-        return ("<Gestion>" +
-                    "<delaiLavageAcide>" + delaiLavageAcide + "</delaiLavageAcide>" +
-                    "<avertissementLavageAcide>" + avertissementLavageAcide + "</avertissementLavageAcide>" +
-                    "<delaiInspectionBaril>" + delaiInspectionBaril + "</delaiInspectionBaril>" +
-                    "<avertissementInspectionBaril>" + avertissementInspectionBaril + "</avertissementInspectionBaril>" +
-                "</Gestion>");
+        return ("<O:Gestion>" +
+                    "<E:delaiLavageAcide>" + delaiLavageAcide + "</E:delaiLavageAcide>" +
+                    "<E:avertissementLavageAcide>" + avertissementLavageAcide + "</E:avertissementLavageAcide>" +
+                    "<E:delaiInspectionBaril>" + delaiInspectionBaril + "</E:delaiInspectionBaril>" +
+                    "<E:avertissementInspectionBaril>" + avertissementInspectionBaril + "</E:avertissementInspectionBaril>" +
+                "</O:Gestion>");
     }
 }
 

@@ -111,11 +111,9 @@ public class TableBrassin extends Controle {
 
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
-        texte.append("<Brassins>");
         for (int i=0; i<brassins.size(); i++) {
             texte.append(brassins.get(i).sauvegarde());
         }
-        texte.append("</Brassins>");
         return texte.toString();
     }
 }

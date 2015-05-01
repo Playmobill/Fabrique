@@ -109,11 +109,9 @@ public class TableEtatFut extends Controle {
 
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
-        texte.append("<Etats>");
         for (int i=0; i<etats.size(); i++) {
             texte.append(etats.get(i).sauvegarde());
         }
-        texte.append("</Etats>");
         return texte.toString();
     }
 }

@@ -91,15 +91,15 @@ public class Brassin extends Objet implements Comparable<Brassin> {
     }
 
     public String sauvegarde() {
-        return ("<Brassin>" +
-                    "<numero>" + numero + "</numero>" +
-                    "<commentaire>" + commentaire + "</commentaire>" +
-                    "<dateCreation>" + dateCreation + "</dateCreation>" +
-                    "<quantite>" + quantite + "</quantite>" +
-                    "<id_recette>" + id_recette + "</id_recette>" +
-                    "<densiteOriginale>" + densiteOriginale + "</densiteOriginale>" +
-                    "<densiteFinale>" + densiteFinale + "</densiteFinale>" +
-                    "<pourcentageAlcool>" + pourcentageAlcool + "</pourcentageAlcool>" +
-                "</Brassin>");
+        return ("<O:Brassin>" +
+                    "<E:numero>" + numero + "</E:numero>" +
+                    "<E:commentaire>" + commentaire + "</E:commentaire>" +
+                    "<E:dateCreation>" + dateCreation + "</E:dateCreation>" +
+                    "<E:quantite>" + quantite + "</E:quantite>" +
+                    "<E:id_recette>" + id_recette + "</E:id_recette>" +
+                    "<E:densiteOriginale>" + densiteOriginale + "</E:densiteOriginale>" +
+                    "<E:densiteFinale>" + densiteFinale + "</E:densiteFinale>" +
+                    "<E:pourcentageAlcool>" + pourcentageAlcool + "</E:pourcentageAlcool>" +
+                "</O:Brassin>");
     }
 }

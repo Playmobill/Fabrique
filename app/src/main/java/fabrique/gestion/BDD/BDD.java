@@ -105,12 +105,12 @@ public class BDD extends SQLiteOpenHelper {
                                                 "elementConcerne INTEGER NOT NULL," +
                                                 "texte TEXT NOT NULL)";
 
-    private static String createurTableCalendrier = "CREATE TABLE IF NOT EXISTS Calendrier (" +
+    private static String createurTableCalendrier = "CREATE TABLE IF NOT EXISTS Calendrier(" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "dateEvenement INTEGER NOT NULL," +
-                                                "nomEvenement TEXT NOT NULL," +
-                                                "typeObjet INTEGER NOT NULL," +
-                                                "idObjet INTEGER NOT NULL)"; //1=fermenteur ; 2=Cuve ; 3=Fut ; 4=Brassin
+                                                "dateEvenement INTEGER NOT NULL" +
+                                                "nomEvenement TEXT NOT NULL" +
+                                                "typeObjet INTEGER NOT NULL" +
+                                                "idObjet INTEGER NOT NULL)";
 
 
     public BDD(Context context, String name, SQLiteDatabase.CursorFactory factory) {
@@ -142,16 +142,6 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, actif) VALUES ('Goupil', 'Rousse', 'Gpl', 1)");
 
         db.execSQL("INSERT INTO Gestion (delaiLavageAcide, avertissementLavageAcide, delaiInspectionBaril, avertissementInspectionBaril) VALUES(1209600000, 604800000, 1209600000, 604800000)");
-
-        db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('SS', 1)");
-        db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('Ch.Froide', 1)");
-        db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('RC', 1)");
-
-        db.execSQL("INSERT INTO Calendrier (dateEvenement, nomEvenement, typeObjet, idObjet) VALUES (1430438400, 'Test Calendrier #1', 1, 1)");
-        db.execSQL("INSERT INTO Calendrier (dateEvenement, nomEvenement, typeObjet, idObjet) VALUES (1432512000, 'Test Calendrier #2', 1, 1)");
-        db.execSQL("INSERT INTO Calendrier (dateEvenement, nomEvenement, typeObjet, idObjet) VALUES (1431216000, 'Test Calendrier #3', 1, 1)");
-        db.execSQL("INSERT INTO Calendrier (dateEvenement, nomEvenement, typeObjet, idObjet) VALUES (1431216000, 'Test Calendrier #3bis', 1, 1)");
-
     }
 
     @Override

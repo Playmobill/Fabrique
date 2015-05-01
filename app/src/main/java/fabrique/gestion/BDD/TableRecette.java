@@ -111,11 +111,9 @@ public class TableRecette extends Controle {
 
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
-        texte.append("<Recettes>");
         for (int i=0; i<types.size(); i++) {
             texte.append(types.get(i).sauvegarde());
         }
-        texte.append("</Recettes>");
         return texte.toString();
     }
 }
