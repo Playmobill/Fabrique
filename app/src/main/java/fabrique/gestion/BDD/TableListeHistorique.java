@@ -103,13 +103,13 @@ public class TableListeHistorique extends Controle {
     }
 
     public ArrayList<ListeHistorique> listeHistoriqueFut() {
-        ArrayList<ListeHistorique> listeHistoriqueFut = new ArrayList<>();
+        ArrayList<ListeHistorique> listeHistoriqueListeHistorique = new ArrayList<>();
         for (int i=0; i<listeHistoriques.size() ; i++) {
             if (listeHistoriques.get(i).getElementConcerne() == 2) {
-                listeHistoriqueFut.add(listeHistoriques.get(i));
+                listeHistoriqueListeHistorique.add(listeHistoriques.get(i));
             }
         }
-        return listeHistoriqueFut;
+        return listeHistoriqueListeHistorique;
     }
 
     public ArrayList<ListeHistorique> listeHistoriqueBrassin() {
@@ -122,11 +122,46 @@ public class TableListeHistorique extends Controle {
         return listeHistoriqueBrassin;
     }
 
+    private ArrayList<ListeHistorique> trierParId(ArrayList<ListeHistorique> liste, int petitIndex, int grandIndex) {
+        int i = petitIndex;
+        int j = grandIndex;
+        // calculate pivot number, I am taking pivot as middle index number
+        ListeHistorique pivot = liste.get(petitIndex+(grandIndex-petitIndex)/2);
+        // Divide into two arrays
+        while (i <= j) {
+            while (liste.get(i).getId() < pivot.getId()) {
+                i++;
+            }
+            while (liste.get(j).getId() > pivot.getId()) {
+                j--;
+            }
+            if (i <= j) {
+                ListeHistorique temp = liste.get(i);
+                liste.set(i, liste.get(j));
+                liste.set(j, temp);
+                //move index to next position on both sides
+                i++;
+                j--;
+            }
+        }
+        // call recursively
+        if (petitIndex < j) {
+            liste = trierParId(liste, petitIndex, j);
+        }
+        if (i < grandIndex) {
+            liste = trierParId(liste, i, grandIndex);
+        }
+        return liste;
+    }
+
     @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
-        for (int i=0; i<listeHistoriques.size(); i++) {
-            texte.append(listeHistoriques.get(i).sauvegarde());
+        if (listeHistoriques.size() > 0) {
+            ArrayList<ListeHistorique> trierParId = trierParId(listeHistoriques, 0, listeHistoriques.size() - 1);
+            for (int i = 0; i < trierParId.size(); i++) {
+                texte.append(trierParId.get(i).sauvegarde());
+            }
         }
         return texte.toString();
     }

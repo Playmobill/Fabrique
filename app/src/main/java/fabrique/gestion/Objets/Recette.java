@@ -5,21 +5,31 @@ import android.support.annotation.NonNull;
 public class Recette extends Objet implements Comparable<Recette> {
 
     private String nom;
-    private String couleur;
     private String acronyme;
+    private String couleur;
+    private int couleurTexte;
+    private int couleurFond;
     private boolean actif;
 
-    public Recette(long id, String nom, String couleur, String acronyme, boolean actif){
+    public Recette(long id, String nom, String couleur, String acronyme, int couleurTexte, int couleurFond, boolean actif){
         super(id);
         this.nom = nom;
         this.couleur = couleur;
         this.acronyme = acronyme;
+        this.couleurTexte = couleurTexte;
+        this.couleurFond = couleurFond;
         this.actif = actif;
     }
 
     public String getNom() { return nom; }
     public String getCouleur() { return couleur; }
     public String getAcronyme() { return acronyme; }
+    public int getCouleurTexte() {
+        return couleurTexte;
+    }
+    public int getCouleurFond() {
+        return couleurFond;
+    }
     public boolean getActif() {
         return actif;
     }
@@ -27,6 +37,12 @@ public class Recette extends Objet implements Comparable<Recette> {
     public void setNom(String nom) { this.nom = nom; }
     public void setCouleur(String couleur) { this.couleur = couleur; }
     public void setAcronyme(String acronyme) { this.acronyme = acronyme; }
+    public void setCouleurTexte(int couleurTexte) {
+        this.couleurTexte = couleurTexte;
+    }
+    public void setCouleurFond(int couleurFond) {
+        this.couleurFond = couleurFond;
+    }
     public void setActif(boolean actif) {
         this.actif = actif;
     }
@@ -46,6 +62,8 @@ public class Recette extends Objet implements Comparable<Recette> {
                     "<E:nom>" + nom + "</E:nom>" +
                     "<E:couleur>" + couleur + "</E:couleur>" +
                     "<E:acronyme>" + acronyme + "</E:acronyme>" +
+                    "<E:couleurTexte>" + couleurTexte + "</E:couleurTexte>" +
+                    "<E:couleurFond>" + couleurFond + "</E:couleurFond>" +
                     "<E:actif>" + actif + "</E:actif>" +
                 "</O:Recette>");
     }

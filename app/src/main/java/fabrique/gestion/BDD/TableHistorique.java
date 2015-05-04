@@ -88,7 +88,7 @@ public class TableHistorique extends Controle {
     }
 
     public void supprimer(long id) {
-        if (accesBDD.delete(nomTable, "id = ?", new String[] {"" + id}) == 1) {
+        if (accesBDD.delete(nomTable, "id = ?", new String[]{"" + id}) == 1) {
             historiques.remove(recupererId(id));
             Collections.sort(historiques);
         }
@@ -138,11 +138,46 @@ public class TableHistorique extends Controle {
         return historiqueSelonBrassin;
     }
 
+    private ArrayList<Historique> trierParId(ArrayList<Historique> liste, int petitIndex, int grandIndex) {
+        int i = petitIndex;
+        int j = grandIndex;
+        // calculate pivot number, I am taking pivot as middle index number
+        Historique pivot = liste.get(petitIndex+(grandIndex-petitIndex)/2);
+        // Divide into two arrays
+        while (i <= j) {
+            while (liste.get(i).getId() < pivot.getId()) {
+                i++;
+            }
+            while (liste.get(j).getId() > pivot.getId()) {
+                j--;
+            }
+            if (i <= j) {
+                Historique temp = liste.get(i);
+                liste.set(i, liste.get(j));
+                liste.set(j, temp);
+                //move index to next position on both sides
+                i++;
+                j--;
+            }
+        }
+        // call recursively
+        if (petitIndex < j) {
+            liste = trierParId(liste, petitIndex, j);
+        }
+        if (i < grandIndex) {
+            liste = trierParId(liste, i, grandIndex);
+        }
+        return liste;
+    }
+
     @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
-        for (int i=0; i<historiques.size(); i++) {
-            texte.append(historiques.get(i).sauvegarde());
+        if (historiques.size() > 0) {
+            ArrayList<Historique> trierParId = trierParId(historiques, 0, historiques.size() - 1);
+            for (int i = 0; i < trierParId.size(); i++) {
+                texte.append(trierParId.get(i).sauvegarde());
+            }
         }
         return texte.toString();
     }

@@ -8,8 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.ScrollView;
 import android.widget.TableRow;
 
 import fabrique.gestion.ActivityAccueil;
@@ -37,16 +36,15 @@ public class FragmentListeRecette extends FragmentAmeliore implements AdapterVie
 
         contexte = container.getContext();
 
-        view = inflater.inflate(R.layout.activity_liste_recette, container, false);
+        PredicateLayout ligne = new PredicateLayout(contexte);
+        for (int i=0; i<TableRecette.instance(contexte).tailleListe(); i++) {
+            ligne.addView(new VueRecette(contexte, TableRecette.instance(contexte).recupererIndex(i)), new PredicateLayout.LayoutParams(10, 10));
+        }
 
-        Spinner liste = (Spinner)view.findViewById(R.id.liste);
-        TableRecette tableRecette = TableRecette.instance(contexte);
-        ArrayAdapter<String> adapteurRecette= new ArrayAdapter<>(contexte, R.layout.spinner_style, tableRecette.noms());
-        adapteurRecette.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        liste.setAdapter(adapteurRecette);
-        liste.setOnItemSelectedListener(this);
+        ScrollView layoutVerticalScroll = new ScrollView(contexte);
+        layoutVerticalScroll.addView(ligne);
 
-        return view;
+        return layoutVerticalScroll;
     }
 
     @Override

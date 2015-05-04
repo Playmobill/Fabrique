@@ -25,6 +25,7 @@ public abstract class Controle {
     public abstract String sauvegarde();
 
     public void supprimerToutesLaBdd() {
+        accesBDD.delete("sqlite_sequence", "name = ?", new String[] {nomTable});
         accesBDD.delete(nomTable, "1", null);
     }
 }

@@ -2,7 +2,6 @@ package fabrique.gestion.Vue;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,19 +12,18 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import fabrique.gestion.BDD.TableRecette;
+import fabrique.gestion.ColorPicker.ColorPickerDialog;
 import fabrique.gestion.Objets.Recette;
 
-/**
- * Created by thibaut on 09/04/15.
- */
 public class VueRecette extends TableLayout implements View.OnClickListener {
 
     private Recette recette;
 
-    private LinearLayout tableauDescription;
+    private LinearLayout tableauDescription, ligneBoutonCouleur;
     private EditText editNom, editAcronyme, editCouleur;
     private TableRow ligneBouton;
-    private Button btnModifier, btnValider, btnAnnuler;
+    private Button btnModifier, btnValider, btnAnnuler, couleurTexte, couleurFond;
+    private EditText couleurAffichage;
 
     public VueRecette(Context context) {
         super(context);
@@ -37,23 +35,13 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
         this.recette = recette;
 
         tableauDescription = new TableLayout(contexte);
-        addView(cadre(tableauDescription, " Recette ") );
+        addView(cadre(tableauDescription));
 
         afficherDescription();
     }
 
-    private RelativeLayout cadre(View view, String texteTitre) {
+    private RelativeLayout cadre(View view) {
         RelativeLayout contenant = new RelativeLayout(getContext());
-
-        LinearLayout contourTitre = new LinearLayout(getContext());
-        contourTitre.setBackgroundColor(Color.BLACK);
-        contourTitre.setPadding(1, 1, 1, 1);
-        RelativeLayout.LayoutParams parametreContourTitre = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreContourTitre.setMargins(10, 1, 0, 0);
-        TextView fondTitre = new TextView(getContext());
-        fondTitre.setText(texteTitre);
-        fondTitre.setTypeface(null, Typeface.BOLD);
-        fondTitre.setBackgroundColor(Color.WHITE);
 
         RelativeLayout contour = new RelativeLayout(getContext());
         contour.setBackgroundColor(Color.BLACK);
@@ -62,20 +50,10 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
         parametreContour.topMargin=15;
         parametreContour.leftMargin=5;
 
-        TextView titre = new TextView(getContext());
-        titre.setText(texteTitre);
-        titre.setTypeface(null, Typeface.BOLD);
-        titre.setBackgroundColor(Color.WHITE);
-        RelativeLayout.LayoutParams parametreTitre = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreTitre.setMargins(11, 2, 0, 0);
-
         view.setBackgroundColor(Color.WHITE);
 
-        contenant.addView(contourTitre, parametreContourTitre);
-        contourTitre.addView(fondTitre);
         contenant.addView(contour, parametreContour);
         contour.addView(view);
-        contenant.addView(titre, parametreTitre);
         return contenant;
     }
 
@@ -83,12 +61,12 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
         tableauDescription.removeAllViews();
 
         TableLayout.LayoutParams parametre = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
-        parametre.setMargins(10, 10, 10, 10);
+        parametre.setMargins(10, 0, 10, 0);
 
-        LinearLayout ligneID = new LinearLayout(getContext());
+        /*LinearLayout ligneID = new LinearLayout(getContext());
             TextView titre = new TextView(getContext());
-            titre.setText("Recette "+recette.getId());
-            titre.setTypeface(null, Typeface.BOLD);
+            titre.setText("Recette " + recette.getId());
+            titre.setTypeface(null, Typeface.BOLD);*/
 
         LinearLayout ligneNom = new LinearLayout(getContext());
             TextView txtNom = new TextView(getContext());
@@ -114,6 +92,16 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
             editCouleur.setText("" + recette.getCouleur());
             editCouleur.setEnabled(false);
 
+        couleurAffichage = new EditText(getContext());
+        couleurAffichage.setText("Couleur d'affichage");
+        couleurAffichage.setTextColor(recette.getCouleurTexte());
+        couleurAffichage.setDrawingCacheBackgroundColor(recette.getCouleurFond());
+        couleurAffichage.setBackgroundColor(recette.getCouleurFond());
+
+        couleurAffichage.setEnabled(false);
+
+        ligneBoutonCouleur = new TableRow(getContext());
+
         ligneBouton = new TableRow(getContext());
             btnModifier = new Button(getContext());
             btnModifier.setText("Modifier");
@@ -127,7 +115,15 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
             btnAnnuler.setText("Annuler");
             btnAnnuler.setOnClickListener(this);
 
-        ligneID.addView(titre);
+        couleurTexte = new Button(getContext());
+        couleurTexte.setText("Couleur du texte");
+        couleurTexte.setOnClickListener(this);
+
+        couleurFond = new Button(getContext());
+        couleurFond.setText("Couleur de fond");
+        couleurFond.setOnClickListener(this);
+
+        //ligneID.addView(titre);
         ligneNom.addView(txtNom);
         ligneNom.addView(editNom);
         ligneAcronyme.addView(txtAcronyme);
@@ -136,10 +132,12 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
         ligneCouleur.addView(editCouleur);
         ligneBouton.addView(btnModifier);
 
-        tableauDescription.addView(ligneID, parametre);
+        //tableauDescription.addView(ligneID, parametre);
         tableauDescription.addView(ligneNom, parametre);
         tableauDescription.addView(ligneAcronyme, parametre);
         tableauDescription.addView(ligneCouleur, parametre);
+        tableauDescription.addView(couleurAffichage);
+        tableauDescription.addView(ligneBoutonCouleur, parametre);
         tableauDescription.addView(ligneBouton, parametre);
     }
 
@@ -148,6 +146,9 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
         editAcronyme.setEnabled(true);
         editCouleur.setEnabled(true);
 
+        ligneBoutonCouleur.addView(couleurTexte);
+        ligneBoutonCouleur.addView(couleurFond);
+
         ligneBouton.removeAllViews();
 
         ligneBouton.addView(btnValider);
@@ -155,8 +156,16 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
     }
 
     private void validerDescription() {
-        TableRecette.instance(getContext()).modifier(getContext(), (int)recette.getId(), editNom.getText().toString(), editCouleur.getText().toString(), editAcronyme.getText().toString());
-        recette = TableRecette.instance(getContext()).recupererId((int)recette.getId());
+        TableRecette.instance(
+                getContext()).modifier(getContext(),
+                recette.getId(),
+                editNom.getText().toString(),
+                editCouleur.getText().toString(),
+                editAcronyme.getText().toString(),
+                couleurAffichage.getCurrentTextColor(),
+                couleurAffichage.getDrawingCacheBackgroundColor(),
+                recette.getActif());
+        recette = TableRecette.instance(getContext()).recupererId(recette.getId());
         reafficherDescription();
     }
 
@@ -169,6 +178,8 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
 
         editCouleur.setEnabled(false);
         editCouleur.setText("" + recette.getCouleur());
+
+        ligneBoutonCouleur.removeAllViews();
 
         ligneBouton.removeAllViews();
         btnModifier = new Button(getContext());
@@ -185,6 +196,12 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
             validerDescription();
         } else if (v.equals(btnAnnuler)) {
             reafficherDescription();
+        } else if (v.equals(couleurTexte)) {
+            ColorPickerDialog dialog = new ColorPickerDialog(getContext(), "Texte", couleurAffichage);
+            dialog.show();
+        } else if (v.equals(couleurFond)) {
+            ColorPickerDialog dialog = new ColorPickerDialog(getContext(), "Fond", couleurAffichage);
+            dialog.show();
         }
     }
 }
