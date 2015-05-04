@@ -64,6 +64,10 @@ public class TableBrassin extends Controle {
         }
     }
 
+    public int recupererIndexSelonId(long id) {
+        return brassins.indexOf(recupererId(id));
+    }
+
     public Brassin recupererId(long id) {
         for (int i=0; i<brassins.size() ; i++) {
             if (brassins.get(i).getId() == id) {
@@ -105,8 +109,99 @@ public class TableBrassin extends Controle {
         return numero;
     }
 
-    public ArrayList cloner(){
-        return new ArrayList(brassins);
+    public ArrayList<Brassin> trierParNumero(){
+        ArrayList<Brassin> result = new ArrayList<>();
+        int index;
+        long value;
+        for (int i = 0; i < brassins.size(); i++) {
+            index = -1;
+            value = brassins.size();
+            boolean possible;
+            for (int j = 0; j < brassins.size(); j++) {
+                possible=true;
+                for (int k = 0; k < result.size() && possible; k++) {
+                    if(result.get(k).getNumero() == brassins.get(j).getNumero()){
+                        possible = false;
+                    }
+                }
+                if((possible) && ((index<0) || (brassins.get(j).getNumero() < value))){
+                    index = j;
+                    value = brassins.get(index).getNumero();
+                }
+            }
+            if(index>=0 && index<brassins.size()) {
+                result.add(brassins.get(index));
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Brassin> trierParRecette() {
+        ArrayList<Brassin> result = new ArrayList<>();
+        int index;
+        long[] values = new long[2];
+        for (int i = 0; i < brassins.size(); i++) {
+            index = -1;
+            values[0] = -1;
+            values[1] = -1;
+            boolean possible;
+            for (int j = 0; j < brassins.size(); j++) {
+                possible=true;
+                for (int k = 0; k < result.size() && possible; k++) {
+                    if(result.get(k).getNumero() == brassins.get(j).getNumero()){
+                        possible = false;
+                    }
+                }
+                if((possible) && ((index<0) || (brassins.get(j).getId_recette() < values[0]))){
+                    index = j;
+                    values[0] = brassins.get(index).getId_recette();
+                    values[1] = brassins.get(index).getNumero();
+                }
+                else if((possible) && ((index<0) || (brassins.get(j).getId_recette() == values[0] && brassins.get(j).getNumero() < values[1]))){
+                    index = j;
+                    values[0] = brassins.get(index).getId_recette();
+                    values[1] = brassins.get(index).getNumero();
+                }
+            }
+            if(index>=0 && index<brassins.size()) {
+                result.add(brassins.get(index));
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Brassin> trierParDateCreation() {
+        ArrayList<Brassin> result = new ArrayList<>();
+        int index;
+        long[] values = new long[2];
+        for (int i = 0; i < brassins.size(); i++) {
+            index = -1;
+            values[0] = -1;
+            values[1] = -1;
+            boolean possible;
+            for (int j = 0; j < brassins.size(); j++) {
+                possible=true;
+                for (int k = 0; k < result.size() && possible; k++) {
+                    if(result.get(k).getNumero() == brassins.get(j).getNumero()){
+                        possible = false;
+                    }
+                }
+                if((possible) && ((index<0) || (brassins.get(j).getDateLong() > values[0]))){
+                    index = j;
+                    values[0] = brassins.get(index).getDateLong();
+                    values[1] = brassins.get(index).getNumero();
+                }
+                else if((possible) && ((index<0) || (brassins.get(j).getDateLong() == values[0] && brassins.get(j).getNumero() < values[1]))){
+                    index = j;
+                    values[0] = brassins.get(index).getDateLong();
+                    values[1] = brassins.get(index).getNumero();
+                }
+            }
+            if(index>=0 && index<brassins.size()) {
+                result.add(brassins.get(index));
+            }
+        }
+        return result;
     }
 
     public String sauvegarde() {
