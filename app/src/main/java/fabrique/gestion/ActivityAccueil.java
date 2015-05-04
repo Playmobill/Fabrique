@@ -76,7 +76,7 @@ public class ActivityAccueil extends FragmentActivity {
 
     private void chargerBDD() {
         ProgressDialog progressDialog = ProgressDialog.show(this, "Chargement de la base de données", "", true);
-
+        progressDialog.show();
         progressDialog.setMessage("Emplacements");
         TableEmplacement.instance(this);
 

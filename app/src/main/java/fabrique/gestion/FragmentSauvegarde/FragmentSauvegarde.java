@@ -1,6 +1,8 @@
 package fabrique.gestion.FragmentSauvegarde;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -130,7 +133,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
             int jour = calendrier.get(Calendar.DAY_OF_MONTH);
             int mois = calendrier.get(Calendar.MONTH) + 1;
             int annee = calendrier.get(Calendar.YEAR);
-            File fichier = new File(Environment.getExternalStorageDirectory(), "Gestion_" + annee + "a_" + mois + "m_" + jour + "j_" + heure + "h_" + minute + "m_" + seconde + "ms.txt");
+            File fichier = new File(Environment.getExternalStorageDirectory(), "Gestion_" + annee + "a_" + mois + "m_" + jour + "j_" + heure + "h_" + minute + "m_" + seconde + "ms.bak");
             fichier.createNewFile();
             FileWriter filewriter = new FileWriter(fichier, false);
                 filewriter.write(TableEmplacement.instance(contexte).sauvegarde());
@@ -150,6 +153,20 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
         } catch (IOException e) {
             Toast.makeText(contexte, "Erreur lors de la création du fichier de sauvegarde.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void supprimer() {
+        TableEmplacement.instance(contexte).supprimerToutesLaBdd();
+        TableRecette.instance(contexte).supprimerToutesLaBdd();
+        TableBrassin.instance(contexte).supprimerToutesLaBdd();
+        TableEtatFermenteur.instance(contexte).supprimerToutesLaBdd();
+        TableFermenteur.instance(contexte).supprimerToutesLaBdd();
+        TableEtatCuve.instance(contexte).supprimerToutesLaBdd();
+        TableCuve.instance(contexte).supprimerToutesLaBdd();
+        TableEtatFut.instance(contexte).supprimerToutesLaBdd();
+        TableFut.instance(contexte).supprimerToutesLaBdd();
+        TableHistorique.instance(contexte).supprimerToutesLaBdd();
+        TableListeHistorique.instance(contexte).supprimerToutesLaBdd();
     }
 
     private void charger() {
@@ -669,9 +686,29 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
             sauvegarder();
             afficherListeFichier();
         } else if (view.equals(charger)) {
-            sauvegarder();
             if (ligne != null) {
-                charger();
+                TextView texteView = new TextView(contexte);
+                texteView.setText("    Voulez-vous sauvegarder l'état actuel de l'application ?");
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(contexte);
+                dialogBuilder.setTitle("Lecture");
+                dialogBuilder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sauvegarder();
+                        supprimer();
+                        charger();
+                        afficherListeFichier();
+                    }
+                });
+                dialogBuilder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        supprimer();
+                        charger();
+                    }
+                });
+                dialogBuilder.setView(texteView);
+                dialogBuilder.show();
             }
         } else if (view.equals(envoi)) {
             if (ligne != null) {

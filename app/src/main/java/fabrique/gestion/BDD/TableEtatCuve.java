@@ -107,11 +107,18 @@ public class TableEtatCuve extends Controle {
         return listeEtatActif;
     }
 
+    @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
         for (int i=0; i<etats.size(); i++) {
             texte.append(etats.get(i).sauvegarde());
         }
         return texte.toString();
+    }
+
+    @Override
+    public void supprimerToutesLaBdd() {
+        super.supprimerToutesLaBdd();
+        etats.clear();
     }
 }

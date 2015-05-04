@@ -23,4 +23,8 @@ public abstract class Controle {
     }
 
     public abstract String sauvegarde();
+
+    public void supprimerToutesLaBdd() {
+        accesBDD.delete(nomTable, "1", null);
+    }
 }

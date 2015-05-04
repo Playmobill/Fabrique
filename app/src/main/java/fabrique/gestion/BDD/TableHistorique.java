@@ -138,11 +138,18 @@ public class TableHistorique extends Controle {
         return historiqueSelonBrassin;
     }
 
+    @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
         for (int i=0; i<historiques.size(); i++) {
             texte.append(historiques.get(i).sauvegarde());
         }
         return texte.toString();
+    }
+
+    @Override
+    public void supprimerToutesLaBdd() {
+        super.supprimerToutesLaBdd();
+        historiques.clear();
     }
 }

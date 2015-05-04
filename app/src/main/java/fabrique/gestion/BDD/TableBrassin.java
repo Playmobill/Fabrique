@@ -204,11 +204,18 @@ public class TableBrassin extends Controle {
         return result;
     }
 
+    @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
         for (int i=0; i<brassins.size(); i++) {
             texte.append(brassins.get(i).sauvegarde());
         }
         return texte.toString();
+    }
+
+    @Override
+    public void supprimerToutesLaBdd() {
+        super.supprimerToutesLaBdd();
+        brassins.clear();
     }
 }

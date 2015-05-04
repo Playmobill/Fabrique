@@ -345,11 +345,18 @@ public class TableFut extends Controle {
         return listeCuve;
     }
 
+    @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
         for (int i=0; i<futs.size(); i++) {
             texte.append(futs.get(i).sauvegarde());
         }
         return texte.toString();
+    }
+
+    @Override
+    public void supprimerToutesLaBdd() {
+        super.supprimerToutesLaBdd();
+        futs.clear();
     }
 }

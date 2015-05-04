@@ -109,11 +109,18 @@ public class TableRecette extends Controle {
         return numeroFermenteurs;
     }
 
+    @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
         for (int i=0; i<types.size(); i++) {
             texte.append(types.get(i).sauvegarde());
         }
         return texte.toString();
+    }
+
+    @Override
+    public void supprimerToutesLaBdd() {
+        super.supprimerToutesLaBdd();
+        types.clear();
     }
 }

@@ -135,11 +135,18 @@ public class TableFermenteur extends Controle {
         return listeCuve;
     }
 
+    @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
         for (int i=0; i<fermenteurs.size(); i++) {
             texte.append(fermenteurs.get(i).sauvegarde());
         }
         return texte.toString();
+    }
+
+    @Override
+    public void supprimerToutesLaBdd() {
+        super.supprimerToutesLaBdd();
+        fermenteurs.clear();
     }
 }

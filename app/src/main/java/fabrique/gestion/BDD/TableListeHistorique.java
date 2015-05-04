@@ -122,11 +122,18 @@ public class TableListeHistorique extends Controle {
         return listeHistoriqueBrassin;
     }
 
+    @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
         for (int i=0; i<listeHistoriques.size(); i++) {
             texte.append(listeHistoriques.get(i).sauvegarde());
         }
         return texte.toString();
+    }
+
+    @Override
+    public void supprimerToutesLaBdd() {
+        super.supprimerToutesLaBdd();
+        listeHistoriques.clear();
     }
 }

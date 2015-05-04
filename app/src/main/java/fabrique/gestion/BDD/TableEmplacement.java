@@ -92,11 +92,18 @@ public class TableEmplacement extends Controle {
         return emplacementsActif;
     }
 
+    @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
         for (int i=0; i<emplacements.size(); i++) {
             texte.append(emplacements.get(i).sauvegarde());
         }
         return texte.toString();
+    }
+
+    @Override
+    public void supprimerToutesLaBdd() {
+        super.supprimerToutesLaBdd();
+        emplacements.clear();
     }
 }
