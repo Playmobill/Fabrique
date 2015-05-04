@@ -92,11 +92,46 @@ public class TableEmplacement extends Controle {
         return emplacementsActif;
     }
 
+    private ArrayList<Emplacement> trierParId(ArrayList<Emplacement> liste, int petitIndex, int grandIndex) {
+        int i = petitIndex;
+        int j = grandIndex;
+        // calculate pivot number, I am taking pivot as middle index number
+        Emplacement pivot = liste.get(petitIndex+(grandIndex-petitIndex)/2);
+        // Divide into two arrays
+        while (i <= j) {
+            while (liste.get(i).getId() < pivot.getId()) {
+                i++;
+            }
+            while (liste.get(j).getId() > pivot.getId()) {
+                j--;
+            }
+            if (i <= j) {
+                Emplacement temp = liste.get(i);
+                liste.set(i, liste.get(j));
+                liste.set(j, temp);
+                //move index to next position on both sides
+                i++;
+                j--;
+            }
+        }
+        // call recursively
+        if (petitIndex < j) {
+            liste = trierParId(liste, petitIndex, j);
+        }
+        if (i < grandIndex) {
+            liste = trierParId(liste, i, grandIndex);
+        }
+        return liste;
+    }
+
     @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
-        for (int i=0; i<emplacements.size(); i++) {
-            texte.append(emplacements.get(i).sauvegarde());
+        if (emplacements.size() > 0) {
+            ArrayList<Emplacement> trierParId = trierParId(emplacements, 0, emplacements.size() - 1);
+            for (int i = 0; i < trierParId.size(); i++) {
+                texte.append(trierParId.get(i).sauvegarde());
+            }
         }
         return texte.toString();
     }

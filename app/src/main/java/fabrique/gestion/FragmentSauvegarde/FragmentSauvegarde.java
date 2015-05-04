@@ -149,7 +149,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                 filewriter.write(TableListeHistorique.instance(contexte).sauvegarde());
                 filewriter.write(TableGestion.instance(contexte).sauvegarde());
                 filewriter.close();
-            Toast.makeText(contexte, "Sauvegarde réussite dans le fichier : Gestion_" + annee + "a_" + mois + "m_" + jour + "j_" + heure + "h_" + minute + "m_" + seconde + "ms.txt", Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, "Sauvegarde réussite dans le fichier : Gestion_" + annee + "a_" + mois + "m_" + jour + "j_" + heure + "h_" + minute + "m_" + seconde + "ms.bak", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             Toast.makeText(contexte, "Erreur lors de la création du fichier de sauvegarde.", Toast.LENGTH_LONG).show();
         }

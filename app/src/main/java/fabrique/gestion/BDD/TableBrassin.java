@@ -204,11 +204,46 @@ public class TableBrassin extends Controle {
         return result;
     }
 
+    private ArrayList<Brassin> trierParId(ArrayList<Brassin> liste, int petitIndex, int grandIndex) {
+        int i = petitIndex;
+        int j = grandIndex;
+        // calculate pivot number, I am taking pivot as middle index number
+        Brassin pivot = liste.get(petitIndex+(grandIndex-petitIndex)/2);
+        // Divide into two arrays
+        while (i <= j) {
+            while (liste.get(i).getId() < pivot.getId()) {
+                i++;
+            }
+            while (liste.get(j).getId() > pivot.getId()) {
+                j--;
+            }
+            if (i <= j) {
+                Brassin temp = liste.get(i);
+                liste.set(i, liste.get(j));
+                liste.set(j, temp);
+                //move index to next position on both sides
+                i++;
+                j--;
+            }
+        }
+        // call recursively
+        if (petitIndex < j) {
+            liste = trierParId(liste, petitIndex, j);
+        }
+        if (i < grandIndex) {
+            liste = trierParId(liste, i, grandIndex);
+        }
+        return liste;
+    }
+
     @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
-        for (int i=0; i<brassins.size(); i++) {
-            texte.append(brassins.get(i).sauvegarde());
+        if (brassins.size() > 0) {
+            ArrayList<Brassin> trierParId = trierParId(brassins, 0, brassins.size() - 1);
+            for (int i = 0; i < trierParId.size(); i++) {
+                texte.append(trierParId.get(i).sauvegarde());
+            }
         }
         return texte.toString();
     }

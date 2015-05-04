@@ -135,11 +135,46 @@ public class TableFermenteur extends Controle {
         return listeCuve;
     }
 
+    private ArrayList<Fermenteur> trierParId(ArrayList<Fermenteur> liste, int petitIndex, int grandIndex) {
+        int i = petitIndex;
+        int j = grandIndex;
+        // calculate pivot number, I am taking pivot as middle index number
+        Fermenteur pivot = liste.get(petitIndex+(grandIndex-petitIndex)/2);
+        // Divide into two arrays
+        while (i <= j) {
+            while (liste.get(i).getId() < pivot.getId()) {
+                i++;
+            }
+            while (liste.get(j).getId() > pivot.getId()) {
+                j--;
+            }
+            if (i <= j) {
+                Fermenteur temp = liste.get(i);
+                liste.set(i, liste.get(j));
+                liste.set(j, temp);
+                //move index to next position on both sides
+                i++;
+                j--;
+            }
+        }
+        // call recursively
+        if (petitIndex < j) {
+            liste = trierParId(liste, petitIndex, j);
+        }
+        if (i < grandIndex) {
+            liste = trierParId(liste, i, grandIndex);
+        }
+        return liste;
+    }
+
     @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
-        for (int i=0; i<fermenteurs.size(); i++) {
-            texte.append(fermenteurs.get(i).sauvegarde());
+        if (fermenteurs.size() > 0) {
+            ArrayList<Fermenteur> trierParId = trierParId(fermenteurs, 0, fermenteurs.size() - 1);
+            for (int i = 0; i < trierParId.size(); i++) {
+                texte.append(trierParId.get(i).sauvegarde());
+            }
         }
         return texte.toString();
     }
