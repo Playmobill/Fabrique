@@ -12,6 +12,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import fabrique.gestion.BDD.TableRecette;
+import fabrique.gestion.ColorPicker.ColorPickerDialog;
 import fabrique.gestion.Objets.Recette;
 
 public class VueRecette extends TableLayout implements View.OnClickListener {
@@ -22,6 +23,7 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
     private EditText editNom, editAcronyme, editCouleur;
     private TableRow ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler, couleurTexte, couleurFond;
+    private EditText couleurAffichage;
 
     public VueRecette(Context context) {
         super(context);
@@ -33,7 +35,7 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
         this.recette = recette;
 
         tableauDescription = new TableLayout(contexte);
-        addView(cadre(tableauDescription) );
+        addView(cadre(tableauDescription));
 
         afficherDescription();
     }
@@ -90,6 +92,14 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
             editCouleur.setText("" + recette.getCouleur());
             editCouleur.setEnabled(false);
 
+        couleurAffichage = new EditText(getContext());
+        couleurAffichage.setText("Couleur d'affichage");
+        couleurAffichage.setTextColor(recette.getCouleurTexte());
+        couleurAffichage.setDrawingCacheBackgroundColor(recette.getCouleurFond());
+        couleurAffichage.setBackgroundColor(recette.getCouleurFond());
+
+        couleurAffichage.setEnabled(false);
+
         ligneBoutonCouleur = new TableRow(getContext());
 
         ligneBouton = new TableRow(getContext());
@@ -126,6 +136,7 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
         tableauDescription.addView(ligneNom, parametre);
         tableauDescription.addView(ligneAcronyme, parametre);
         tableauDescription.addView(ligneCouleur, parametre);
+        tableauDescription.addView(couleurAffichage);
         tableauDescription.addView(ligneBoutonCouleur, parametre);
         tableauDescription.addView(ligneBouton, parametre);
     }
@@ -151,8 +162,8 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
                 editNom.getText().toString(),
                 editCouleur.getText().toString(),
                 editAcronyme.getText().toString(),
-                recette.getCouleurTexte(),
-                recette.getCouleurFond(),
+                couleurAffichage.getCurrentTextColor(),
+                couleurAffichage.getDrawingCacheBackgroundColor(),
                 recette.getActif());
         recette = TableRecette.instance(getContext()).recupererId(recette.getId());
         reafficherDescription();
@@ -185,6 +196,12 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
             validerDescription();
         } else if (v.equals(btnAnnuler)) {
             reafficherDescription();
+        } else if (v.equals(couleurTexte)) {
+            ColorPickerDialog dialog = new ColorPickerDialog(getContext(), "Texte", couleurAffichage);
+            dialog.show();
+        } else if (v.equals(couleurFond)) {
+            ColorPickerDialog dialog = new ColorPickerDialog(getContext(), "Fond", couleurAffichage);
+            dialog.show();
         }
     }
 }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ScrollView;
 import android.widget.TableRow;
 
 import fabrique.gestion.ActivityAccueil;
@@ -40,7 +41,10 @@ public class FragmentListeRecette extends FragmentAmeliore implements AdapterVie
             ligne.addView(new VueRecette(contexte, TableRecette.instance(contexte).recupererIndex(i)), new PredicateLayout.LayoutParams(10, 10));
         }
 
-        return ligne;
+        ScrollView layoutVerticalScroll = new ScrollView(contexte);
+        layoutVerticalScroll.addView(ligne);
+
+        return layoutVerticalScroll;
     }
 
     @Override
