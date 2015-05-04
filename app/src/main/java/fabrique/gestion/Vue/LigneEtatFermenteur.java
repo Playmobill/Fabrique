@@ -47,7 +47,7 @@ public class LigneEtatFermenteur extends TableRow implements View.OnClickListene
         modifier.setOnClickListener(this);
 
         couleurTexte = new Button(getContext());
-        couleurTexte.setText("Couleur de texte");
+        couleurTexte.setText("Couleur du texte");
         couleurTexte.setOnClickListener(this);
 
         couleurFond = new Button(getContext());

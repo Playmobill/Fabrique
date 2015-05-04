@@ -28,20 +28,22 @@ public class TableRecette extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            types.add(new Recette(tmp.getLong(0), tmp.getString(1), tmp.getString(2), tmp.getString(3), tmp.getInt(4) == 1));
+            types.add(new Recette(tmp.getLong(0), tmp.getString(1), tmp.getString(2), tmp.getString(3), Integer.parseInt(tmp.getString(4)), Integer.parseInt(tmp.getString(5)), tmp.getInt(6) == 1));
         }
         Collections.sort(types);
     }
 
-    public long ajouter(String nom, String couleur, String acronyme, boolean actif) {
+    public long ajouter(String nom, String couleur, String acronyme, int couleurTexte, int couleurFond, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("nom", nom);
         valeur.put("couleur", couleur);
         valeur.put("acronyme", acronyme);
+        valeur.put("couleurTexte", couleurTexte);
+        valeur.put("couleurFond", couleurFond);
         valeur.put("actif", actif);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            types.add(new Recette(id, nom, couleur, acronyme, actif));
+            types.add(new Recette(id, nom, couleur, acronyme, couleurTexte, couleurFond, actif));
             Collections.sort(types);
         }
         return id;
@@ -51,15 +53,21 @@ public class TableRecette extends Controle {
         return types.size();
     }
 
-    public void modifier(Context contexte, int id, String nom, String couleur, String acronyme) {
+    public void modifier(Context contexte, long id, String nom, String couleur, String acronyme, int couleurTexte, int couleurFond, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("nom", nom);
         valeur.put("couleur", couleur);
         valeur.put("acronyme", acronyme);
+        valeur.put("couleurTexte", couleurTexte);
+        valeur.put("couleurFond", couleurFond);
+        valeur.put("actif", actif);
         if(accesBDD.update("Recette", valeur, "id = ?", new String[] {""+id}) == 1){
             TableRecette.instance(contexte).recupererId(id).setAcronyme(acronyme);
             TableRecette.instance(contexte).recupererId(id).setNom(nom);
             TableRecette.instance(contexte).recupererId(id).setCouleur(couleur);
+            TableRecette.instance(contexte).recupererId(id).setCouleurTexte(couleurTexte);
+            TableRecette.instance(contexte).recupererId(id).setCouleurFond(couleurFond);
+            TableRecette.instance(contexte).recupererId(id).setActif(actif);
             Collections.sort(types);
         }
     }

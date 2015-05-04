@@ -250,12 +250,24 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     }
                                 }
                             }
+                            //Si il n'y a que 6 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesRecette.size() == 6) && !corrompuRecette) {
+                                TableRecette.instance(contexte).ajouter(
+                                        textesRecette.get(0),
+                                        textesRecette.get(1),
+                                        textesRecette.get(2),
+                                        Integer.parseInt(textesRecette.get(3)),
+                                        Integer.parseInt(textesRecette.get(4)),
+                                        Boolean.parseBoolean(textesRecette.get(5)));
+                            }
                             //Si il n'y a que 4 elements et qu'il n 'y a pas de corruption detecte
                             if ((textesRecette.size() == 4) && !corrompuRecette) {
                                 TableRecette.instance(contexte).ajouter(
                                         textesRecette.get(0),
                                         textesRecette.get(1),
                                         textesRecette.get(2),
+                                        Color.BLACK,
+                                        Color.WHITE,
                                         Boolean.parseBoolean(textesRecette.get(3)));
                             }
                             break;

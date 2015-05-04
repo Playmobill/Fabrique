@@ -12,6 +12,8 @@ public class BDD extends SQLiteOpenHelper {
                                                 "nom TEXT NOT NULL," +
                                                 "couleur TEXT NOT NULL," +
                                                 "acronyme TEXT NOT NULL," +
+                                                "couleurTexte INTEGER NOT NULL," +
+                                                "couleurFond INTEGER NOT NULL," +
                                                 "actif INTEGER NOT NULL)";
 
     private static String createurTableEmplacement = "CREATE TABLE IF NOT EXISTS Emplacement (" +
@@ -133,13 +135,13 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL(createurTableListeHistorique);
         db.execSQL(createurTableCalendrier);
 
-        db.execSQL("INSERT INTO EtatFermenteur (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', " + Color.BLACK + ", " + Color.WHITE +", 1)");
-        db.execSQL("INSERT INTO EtatCuve (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', " + Color.BLACK + ", " + Color.WHITE +", 1)");
-        db.execSQL("INSERT INTO EtatFut (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', " + Color.BLACK + ", " + Color.WHITE +", 1)");
+        db.execSQL("INSERT INTO EtatFermenteur (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 1)");
+        db.execSQL("INSERT INTO EtatCuve (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 1)");
+        db.execSQL("INSERT INTO EtatFut (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 1)");
 
-        db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, actif) VALUES ('Riv. Blanche', 'Blanche', 'Rvb', 1)");
-        db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, actif) VALUES ('République', 'Blonde', 'Rpb', 1)");
-        db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, actif) VALUES ('Goupil', 'Rousse', 'Gpl', 1)");
+        db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, couleurTexte, couleurFond, actif) VALUES ('Riv. Blanche', 'Blanche', 'Rvb', "+Color.BLACK+", "+Color.WHITE +", 1)");
+        db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, couleurTexte, couleurFond, actif) VALUES ('République', 'Blonde', 'Rpb', "+Color.BLACK+", "+Color.WHITE+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, couleurTexte, couleurFond, actif) VALUES ('Goupil', 'Rousse', 'Gpl', "+Color.BLACK+", "+Color.WHITE+", 1)");
 
         db.execSQL("INSERT INTO Gestion (delaiLavageAcide, avertissementLavageAcide, delaiInspectionBaril, avertissementInspectionBaril) VALUES(1209600000, 604800000, 1209600000, 604800000)");
 

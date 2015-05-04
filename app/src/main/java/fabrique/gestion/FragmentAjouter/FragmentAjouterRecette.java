@@ -2,6 +2,7 @@ package fabrique.gestion.FragmentAjouter;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,8 +14,8 @@ import android.widget.Toast;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableRecette;
-import fabrique.gestion.R;
 import fabrique.gestion.FragmentAmeliore;
+import fabrique.gestion.R;
 
 public class FragmentAjouterRecette extends FragmentAmeliore implements View.OnClickListener{
 
@@ -66,7 +67,7 @@ public class FragmentAjouterRecette extends FragmentAmeliore implements View.OnC
             }
 
             if (erreur.equals("")) {
-                TableRecette.instance(contexte).ajouter(editNom.getText().toString(), editCouleur.getText().toString(), editAcronyme.getText().toString(), true);
+                TableRecette.instance(contexte).ajouter(editNom.getText().toString(), editCouleur.getText().toString(), editAcronyme.getText().toString(), Color.BLACK, Color.WHITE, true);
                 Toast.makeText(contexte, "Recette ajouté !", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
