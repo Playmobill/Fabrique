@@ -66,50 +66,50 @@ public class BDD extends SQLiteOpenHelper {
                                                 "id_brassin INTEGER)";
 
     private static String createurTableCuve = "CREATE TABLE IF NOT EXISTS Cuve (" +
-                                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "numero INTEGER NOT NULL," +
-                                                "capacite INTEGER NOT NULL," +
-                                                "id_emplacement INTEGER NOT NULL," +
-                                                "dateLavageAcide INTEGER NOT NULL," +
-                                                "id_etatCuve INTEGER NOT NULL," +
-                                                "dateEtat INTEGER NOT NULL," +
-                                                "commentaireEtat TEXT," +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                "numero INTEGER NOT NULL, " +
+                                                "capacite INTEGER NOT NULL, " +
+                                                "id_emplacement INTEGER NOT NULL, " +
+                                                "dateLavageAcide INTEGER NOT NULL, " +
+                                                "id_etatCuve INTEGER NOT NULL, " +
+                                                "dateEtat INTEGER NOT NULL, " +
+                                                "commentaireEtat TEXT, " +
                                                 "id_brassin INTEGER)";
 
     private static String createurTableFut = "CREATE TABLE IF NOT EXISTS Fut (" +
-                                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "numero INTEGER NOT NULL," +
-                                                "capacite INTEGER NOT NULL," +
-                                                "id_etatFut INTEGER NOT NULL," +
-                                                "dateEtat INTEGER NOT NULL," +
-                                                "id_brassin INTEGER," +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                "numero INTEGER NOT NULL, " +
+                                                "capacite INTEGER NOT NULL, " +
+                                                "id_etatFut INTEGER NOT NULL, " +
+                                                "dateEtat INTEGER NOT NULL, " +
+                                                "id_brassin INTEGER, " +
                                                 "dateInspection INTEGER NOT NULL)";
 
     private static String createurTableGestion = "CREATE TABLE IF NOT EXISTS Gestion (" +
-                                                "delaiLavageAcide INTEGER DEFAULT 1209600000," +
-                                                "avertissementLavageAcide INTEGER DEFAULT 604800000," +
-                                                "delaiInspectionBaril INTEGER DEFAULT 1209600000," +
+                                                "delaiLavageAcide INTEGER DEFAULT 1209600000, " +
+                                                "avertissementLavageAcide INTEGER DEFAULT 604800000, " +
+                                                "delaiInspectionBaril INTEGER DEFAULT 1209600000, " +
                                                 "avertissementInspectionBaril INTEGER DEFAULT 604800000)";
 
     private static String createurTableHistorique = "CREATE TABLE IF NOT EXISTS Historique (" +
-                                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "texte TEXT NOT NULL," +
-                                                "date INTEGER NOT NULL," +
-                                                "id_fermenteur INTEGER NOT NULL," +
-                                                "id_cuve INTEGER NOT NULL," +
-                                                "id_fut INTEGER NOT NULL," +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                "texte TEXT NOT NULL, " +
+                                                "date INTEGER NOT NULL, " +
+                                                "id_fermenteur INTEGER NOT NULL, " +
+                                                "id_cuve INTEGER NOT NULL, " +
+                                                "id_fut INTEGER NOT NULL, " +
                                                 "id_brassin INTEGER NOT NULL)";
 
     private static String createurTableListeHistorique = "CREATE TABLE IF NOT EXISTS ListeHistorique (" +
-                                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "elementConcerne INTEGER NOT NULL," +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                "elementConcerne INTEGER NOT NULL, " +
                                                 "texte TEXT NOT NULL)";
 
     private static String createurTableCalendrier = "CREATE TABLE IF NOT EXISTS Calendrier(" +
-                                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "dateEvenement INTEGER NOT NULL" +
-                                                "nomEvenement TEXT NOT NULL" +
-                                                "typeObjet INTEGER NOT NULL" +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                "dateEvenement INTEGER NOT NULL, " +
+                                                "nomEvenement TEXT NOT NULL, " +
+                                                "typeObjet INTEGER NOT NULL, " +
                                                 "idObjet INTEGER NOT NULL)";
 
 

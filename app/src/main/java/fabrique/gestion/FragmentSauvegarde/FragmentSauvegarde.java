@@ -102,14 +102,15 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
 
         tableau.removeAllViews();
         try {
-            for (File fichier : fichiers) {
-                if ((!fichier.isDirectory()) && (fichier.getName().contains("Gestion"))) {
-                    tableau.addView(new LigneSauvegarde(contexte, this, fichier), marge);
+            for (int i=fichiers.length-1; i>=0; i=i-1) {
+                if ((!fichiers[i].isDirectory()) && (fichiers[i].getName().contains("Gestion"))) {
+                    tableau.addView(new LigneSauvegarde(contexte, this, fichiers[i]), marge);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
+        ligne = null;
     }
 
     protected void actif(LigneSauvegarde ligne) {
@@ -668,6 +669,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
             sauvegarder();
             afficherListeFichier();
         } else if (view.equals(charger)) {
+            sauvegarder();
             if (ligne != null) {
                 charger();
             }
