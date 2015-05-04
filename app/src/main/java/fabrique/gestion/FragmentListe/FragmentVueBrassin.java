@@ -26,13 +26,10 @@ import fabrique.gestion.Vue.VueBrassin;
 public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private Context contexte;
-    private Brassin brassin;
     private int index;
 
-    private TextView txtActuel;
     private Button btnPrecedent, btnSuivant;
     private Spinner listebrassin;
-
 
     @Nullable
     @Override
@@ -47,7 +44,7 @@ public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClick
 
         contexte = container.getContext();
 
-        brassin = TableBrassin.instance(contexte).recupererId(getArguments().getLong("id"));
+        Brassin brassin = TableBrassin.instance(contexte).recupererId(getArguments().getLong("id"));
 
         LinearLayout layout = new LinearLayout(contexte);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -64,7 +61,7 @@ public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClick
                     btnPrecedent.setEnabled(false);
                     btnPrecedent.setOnClickListener(this);
                 ligneNavigation.addView(btnPrecedent);
-                    txtActuel = new TextView(contexte);
+                    TextView txtActuel = new TextView(contexte);
                 ligneNavigation.addView(txtActuel);
                     btnSuivant = new Button(contexte);
                     btnSuivant.setText(">");
