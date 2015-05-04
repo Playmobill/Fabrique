@@ -89,7 +89,7 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
             }
 
             if(erreur.equals("")) {
-                //Date avec seulement jour, mois annee
+                //Date avec seulement Jour, mois annee
                 Calendar calendrier = Calendar.getInstance();
                 calendrier.setTimeInMillis(System.currentTimeMillis());
                 long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();

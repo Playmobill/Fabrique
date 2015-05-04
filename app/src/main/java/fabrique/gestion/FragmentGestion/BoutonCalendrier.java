@@ -12,11 +12,12 @@ import android.widget.TextView;
 public class BoutonCalendrier extends RelativeLayout {
 
     protected Button bouton;
-    protected TextView jour;
+    protected int jour, mois, annee;
+    protected TextView textJour;
     protected TextView evenement;
     protected LayoutParams parametres;
 
-    public BoutonCalendrier(Context contexte, int jour_, int longueur, int hauteur, String evenement_) {
+    public BoutonCalendrier(Context contexte, int jour_, int mois_, int annee_, int longueur, int hauteur, String evenement_) {
         super(contexte);
 
         bouton = new Button(contexte);
@@ -27,11 +28,15 @@ public class BoutonCalendrier extends RelativeLayout {
         parametres.addRule(ALIGN_PARENT_LEFT);
         parametres.addRule(ALIGN_PARENT_TOP);
 
-        jour = new TextView(contexte);
-        jour.setText(""+jour_);
-        this.addView(jour);
-        jour.setLayoutParams(parametres);
-        jour.setPadding(10, 10, 0, 0);
+        jour = jour_;
+        mois = mois_;
+        annee = annee_;
+
+        textJour = new TextView(contexte);
+        textJour.setText("" + jour_);
+        this.addView(textJour);
+        textJour.setLayoutParams(parametres);
+        textJour.setPadding(10, 10, 0, 0);
 
         parametres = new LayoutParams(longueur, ViewGroup.LayoutParams.WRAP_CONTENT);
         parametres.addRule(ALIGN_PARENT_LEFT);

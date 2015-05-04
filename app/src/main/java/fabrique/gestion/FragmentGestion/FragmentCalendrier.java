@@ -78,11 +78,11 @@ public class FragmentCalendrier extends FragmentAmeliore implements View.OnClick
             evenement = "";
             for (int j = 0; j < evenements.size() && evenement.equals(""); j++) {
                 cal.setTimeInMillis(evenements.get(j).getDateEvenement()*1000);
-                if(cal.get(Calendar.YEAR) == annee && cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i){
+                if(cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i && cal.get(Calendar.YEAR) == annee){
                     evenement = evenements.get(j).getNomEvenement();
                 }
             }
-            listeBtnJours.add(new BoutonCalendrier(contexte, i, longueurBouton, hauteurBouton, evenement));
+            listeBtnJours.add(new BoutonCalendrier(contexte, i, mois, annee, longueurBouton, hauteurBouton, evenement));
         }
 
         int k = 0;
@@ -110,8 +110,15 @@ public class FragmentCalendrier extends FragmentAmeliore implements View.OnClick
     public void onClick(View v) {
         for (int i = 0; i < listeBtnJours.size(); i++) {
             if (v.equals(listeBtnJours.get(i).bouton)){
+                FragmentJour fragmentJour = new FragmentJour();
+                Bundle args = new Bundle();
+                args.putLong("jour", listeBtnJours.get(i).jour);
+                args.putLong("mois", listeBtnJours.get(i).mois);
+                args.putLong("annee", listeBtnJours.get(i).annee);
+                fragmentJour.setArguments(args);
+
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.onglet, new FragmentJour());
+                transaction.replace(R.id.onglet, fragmentJour);
                 transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
                 transaction.addToBackStack(null).commit();
             }

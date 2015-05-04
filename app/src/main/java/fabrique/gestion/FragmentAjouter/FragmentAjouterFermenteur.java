@@ -115,7 +115,7 @@ public class FragmentAjouterFermenteur extends FragmentAmeliore implements View.
             if (erreur.equals("")) {
                 long emplacement = emplacements.get(editEmplacement.getSelectedItemPosition()).getId();
 
-                //Date avec seulement jour, mois annee
+                //Date avec seulement Jour, mois annee
                 Calendar calendrier = Calendar.getInstance();
                 calendrier.setTimeInMillis(System.currentTimeMillis());
                 long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();

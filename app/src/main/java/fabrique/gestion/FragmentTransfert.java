@@ -140,7 +140,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                 }
                 Toast.makeText(contexte, "Brassin transféré !", Toast.LENGTH_LONG).show();
 
-                //Mise a jour du spinner du type d'origine
+                //Mise a Jour du spinner du type d'origine
                 ArrayAdapter<String> adapteurTypeOrigine= new ArrayAdapter<>(contexte, R.layout.spinner_style);
                 adapteurTypeOrigine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 if(TableFermenteur.instance(contexte).recupererNumerosFermenteurAvecBrassin().size()!=0) {
@@ -159,7 +159,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                 listeTypeOrigine.setOnItemSelectedListener(this);
                 //Fin MaJ type origine
 
-                //Mise a jour du spinner du tye de destination
+                //Mise a Jour du spinner du tye de destination
                 ArrayAdapter<String> adapteurTypeDestination= new ArrayAdapter<>(contexte, R.layout.spinner_style);
                 adapteurTypeDestination.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 if(TableFermenteur.instance(contexte).recupererNumerosFermenteurSansBrassin().size()!=0) {
