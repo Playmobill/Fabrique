@@ -170,9 +170,6 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
         ligneBoutonCouleur.removeAllViews();
 
         ligneBouton.removeAllViews();
-            btnModifier = new Button(getContext());
-            btnModifier.setText("Modifier");
-            btnModifier.setOnClickListener(this);
         ligneBouton.addView(btnModifier);
     }
 
@@ -185,7 +182,6 @@ public class VueRecette extends TableLayout implements View.OnClickListener {
         ligneBoutonCouleur.addView(couleurFond);
 
         ligneBouton.removeAllViews();
-
         ligneBouton.addView(btnValider);
         ligneBouton.addView(btnAnnuler);
     }

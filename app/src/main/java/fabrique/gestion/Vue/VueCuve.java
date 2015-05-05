@@ -76,16 +76,16 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
 
         this.cuve = cuve;
 
-        initialiser();
-
         TableRow ligne = new TableRow(contexte);
 
         tableauDescription = new TableLayout(contexte);
         ligne.addView(cadre(tableauDescription, " Description "));
-        afficherDescription();
 
         tableauHistorique = new TableLayout(getContext());
         ligne.addView(cadre(tableauHistorique, " Historique "));
+
+        initialiser();
+        afficher();
         afficherHistorique();
 
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(getContext());
@@ -144,6 +144,106 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
     }
 
     private void initialiser() {
+        LinearLayout.LayoutParams parametre = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        parametre.setMargins(10, 10, 10, 10);
+
+        LinearLayout ligneTitreLavageAcide = new LinearLayout(getContext());
+            LinearLayout layoutTitre = new LinearLayout(getContext());
+                TextView titre = new TextView(getContext());
+                titre.setText("Cuve ");
+                titre.setTypeface(null, Typeface.BOLD);
+
+                editTitre = new EditText(getContext());
+                editTitre.setInputType(InputType.TYPE_CLASS_NUMBER);
+                editTitre.setEnabled(false);
+
+        TextView dateLavageAcide = new TextView(getContext());
+            dateLavageAcide.setText("" + cuve.getDateLavageAcideToString());
+            if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
+                dateLavageAcide.setTextColor(Color.RED);
+            } else if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= (TableGestion.instance(getContext()).avertissementLavageAcide())) {
+                dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
+            } else {
+                dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
+            }
+
+        LinearLayout ligneCapaciteEmplacement = new LinearLayout(getContext());
+            LinearLayout layoutCapacite = new LinearLayout(getContext());
+                TextView capacite = new TextView(getContext());
+                capacite.setText("Capacité : ");
+
+                editCapacite = new EditText(getContext());
+                editCapacite.setInputType(InputType.TYPE_CLASS_NUMBER);
+                editCapacite.setEnabled(false);
+
+            LinearLayout layoutEmplacement = new LinearLayout(getContext());
+                TextView emplacement = new TextView(getContext());
+                emplacement.setText("Emplacement : ");
+
+                editEmplacement = new Spinner(getContext());
+                emplacements = TableEmplacement.instance(getContext()).recupererActifs();
+                    ArrayList<String> texteEmplacements = new ArrayList<>();
+                    for (int i=0; i<emplacements.size() ; i++) {
+                        texteEmplacements.add(emplacements.get(i).getTexte());
+                    }
+                    ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(getContext(), R.layout.spinner_style, texteEmplacements);
+                    adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                editEmplacement.setAdapter(adapteurEmplacement);
+                editEmplacement.setEnabled(false);
+                indexEmplacement = -1;
+                for (int i=0; i<emplacements.size() ; i++) {
+                    if (cuve.getEmplacement(getContext()).getId() == emplacements.get(i).getId()) {
+                        indexEmplacement = i;
+                    }
+                }
+                if (indexEmplacement == -1) {
+                    emplacements.add(cuve.getEmplacement(getContext()));
+                    adapteurEmplacement.add(TableEmplacement.instance(getContext()).recupererId(cuve.getEmplacement(getContext()).getId()).getTexte());
+                    editEmplacement.setSelection(adapteurEmplacement.getCount()-1);
+                }
+
+
+        LinearLayout ligneEtatDate = new LinearLayout(getContext());
+            TextView etat = new TextView(getContext());
+            etat.setText("État : " + cuve.getEtat(getContext()).getTexte());
+
+            TextView dateEtat = new TextView(getContext());
+            dateEtat.setText("Depuis le : " + cuve.getDateEtat());
+
+        ligneBouton = new LinearLayout(getContext());
+            btnModifier = new Button(getContext());
+            btnModifier.setText("Modifier");
+            btnModifier.setOnClickListener(this);
+            btnModifier.setLayoutParams(parametre);
+
+            btnValider = new Button(getContext());
+            btnValider.setText("Valider");
+            btnValider.setOnClickListener(this);
+            btnValider.setLayoutParams(parametre);
+
+            btnAnnuler = new Button(getContext());
+            btnAnnuler.setText("Annuler");
+            btnAnnuler.setOnClickListener(this);
+            btnAnnuler.setLayoutParams(parametre);
+
+
+        layoutTitre.addView(titre);
+                layoutTitre.addView(editTitre);
+            ligneTitreLavageAcide.addView(layoutTitre, parametre);
+            ligneTitreLavageAcide.addView(dateLavageAcide, parametre);
+        tableauDescription.addView(ligneTitreLavageAcide);
+                layoutCapacite.addView(capacite);
+                layoutCapacite.addView(editCapacite);
+            ligneCapaciteEmplacement.addView(layoutCapacite, parametre);
+                layoutEmplacement.addView(emplacement);
+                layoutEmplacement.addView(editEmplacement);
+            ligneCapaciteEmplacement.addView(layoutEmplacement, parametre);
+        tableauDescription.addView(ligneCapaciteEmplacement);
+            ligneEtatDate.addView(etat, parametre);
+            ligneEtatDate.addView(dateEtat, parametre);
+        tableauDescription.addView(ligneEtatDate);
+        tableauDescription.addView(ligneBouton);
+
         TableRow.LayoutParams margeCase = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
         margeCase.setMargins(10, 0, 10, 0);
 
@@ -171,112 +271,21 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         ligneAjouter.addView(btnAjouterHistorique, margeCase);
     }
 
-    private void afficherDescription() {
-        tableauDescription.removeAllViews();
+    private void afficher() {
+        editTitre.setText("" + cuve.getNumero());
+        editTitre.setEnabled(false);
 
-        LinearLayout.LayoutParams parametre = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        parametre.setMargins(10, 10, 10, 10);
+        editCapacite.setText("" + cuve.getCapacite());
+        editCapacite.setEnabled(false);
 
-        LinearLayout ligneTitreLavageAcide = new LinearLayout(getContext());
-            LinearLayout layoutTitre = new LinearLayout(getContext());
-                TextView titre = new TextView(getContext());
-                titre.setText("Cuve ");
-                titre.setTypeface(null, Typeface.BOLD);
+        editEmplacement.setSelection(indexEmplacement);
+        editEmplacement.setEnabled(false);
 
-                editTitre = new EditText(getContext());
-                editTitre.setText("" + cuve.getNumero());
-                editTitre.setInputType(InputType.TYPE_CLASS_NUMBER);
-                editTitre.setEnabled(false);
-
-            TextView dateLavageAcide = new TextView(getContext());
-            dateLavageAcide.setText("" + cuve.getDateLavageAcideToString());
-            if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
-                dateLavageAcide.setTextColor(Color.RED);
-            } else if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= (TableGestion.instance(getContext()).avertissementLavageAcide())) {
-                dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
-            } else {
-                dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
-            }
-
-        LinearLayout ligneCapaciteEmplacement = new LinearLayout(getContext());
-            LinearLayout layoutCapacite = new LinearLayout(getContext());
-                TextView capacite = new TextView(getContext());
-                capacite.setText("Capacité : ");
-
-                editCapacite = new EditText(getContext());
-                editCapacite.setText("" + cuve.getCapacite());
-                editCapacite.setInputType(InputType.TYPE_CLASS_NUMBER);
-                editCapacite.setEnabled(false);
-
-            LinearLayout layoutEmplacement = new LinearLayout(getContext());
-                TextView emplacement = new TextView(getContext());
-                emplacement.setText("Emplacement : ");
-
-                editEmplacement = new Spinner(getContext());
-                emplacements = TableEmplacement.instance(getContext()).recupererActifs();
-                ArrayList<String> texteEmplacements = new ArrayList<>();
-                for (int i=0; i<emplacements.size() ; i++) {
-                    texteEmplacements.add(emplacements.get(i).getTexte());
-                }
-                ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(getContext(), R.layout.spinner_style, texteEmplacements);
-                adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                editEmplacement.setAdapter(adapteurEmplacement);
-                editEmplacement.setEnabled(false);
-                indexEmplacement = -1;
-                for (int i=0; i<emplacements.size() ; i++) {
-                    if (cuve.getEmplacement(getContext()).getId() == emplacements.get(i).getId()) {
-                        indexEmplacement = i;
-                    }
-                }
-                if (indexEmplacement != -1) {
-                    editEmplacement.setSelection(indexEmplacement);
-                } else {
-                    emplacements.add(cuve.getEmplacement(getContext()));
-                    adapteurEmplacement.add(TableEmplacement.instance(getContext()).recupererId(cuve.getEmplacement(getContext()).getId()).getTexte());
-                    editEmplacement.setSelection(editEmplacement.getLastVisiblePosition());
-                }
-
-
-        LinearLayout ligneEtatDate = new LinearLayout(getContext());
-            TextView etat = new TextView(getContext());
-            etat.setText("État : " + cuve.getEtat(getContext()).getTexte());
-
-            TextView dateEtat = new TextView(getContext());
-            dateEtat.setText("Depuis le : " + cuve.getDateEtat());
-
-        ligneBouton = new LinearLayout(getContext());
-            btnModifier = new Button(getContext());
-            btnModifier.setText("Modifier");
-            btnModifier.setOnClickListener(this);
-
-            btnValider = new Button(getContext());
-            btnValider.setText("Valider");
-            btnValider.setOnClickListener(this);
-
-            btnAnnuler = new Button(getContext());
-            btnAnnuler.setText("Annuler");
-            btnAnnuler.setOnClickListener(this);
-
-                layoutTitre.addView(titre);
-                layoutTitre.addView(editTitre);
-            ligneTitreLavageAcide.addView(layoutTitre, parametre);
-            ligneTitreLavageAcide.addView(dateLavageAcide, parametre);
-        tableauDescription.addView(ligneTitreLavageAcide);
-                layoutCapacite.addView(capacite);
-                layoutCapacite.addView(editCapacite);
-            ligneCapaciteEmplacement.addView(layoutCapacite, parametre);
-                layoutEmplacement.addView(emplacement);
-                layoutEmplacement.addView(editEmplacement);
-            ligneCapaciteEmplacement.addView(layoutEmplacement, parametre);
-        tableauDescription.addView(ligneCapaciteEmplacement);
-            ligneEtatDate.addView(etat, parametre);
-            ligneEtatDate.addView(dateEtat, parametre);
-        tableauDescription.addView(ligneEtatDate);
-            ligneBouton.addView(btnModifier, parametre);
-        tableauDescription.addView(ligneBouton);
+        ligneBouton.removeAllViews();
+        ligneBouton.addView(btnModifier);
     }
 
-    private void modifierDescription() {
+    private void modifier() {
         editTitre.setEnabled(true);
         editEmplacement.setEnabled(true);
         editCapacite.setEnabled(true);
@@ -286,7 +295,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         ligneBouton.addView(btnAnnuler);
     }
 
-    private void validerDescription() {
+    private void valider() {
         String erreur = "";
         int numero = 0;
         if (editTitre.getText().toString().equals("")) {
@@ -311,24 +320,10 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         if (erreur.equals("")) {
             TableCuve.instance(getContext()).modifier(cuve.getId(), numero, capacite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin());
             indexEmplacement = editEmplacement.getSelectedItemPosition();
-            reafficherDescription();
+            afficher();
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
         }
-    }
-
-    private void reafficherDescription() {
-        editTitre.setEnabled(false);
-        editTitre.setText("" + cuve.getNumero());
-
-        editCapacite.setEnabled(false);
-        editCapacite.setText("" + cuve.getCapacite());
-
-        editEmplacement.setEnabled(false);
-        editEmplacement.setSelection(indexEmplacement);
-
-        ligneBouton.removeAllViews();
-        ligneBouton.addView(btnModifier);
     }
 
     private void changerBrassin() {
@@ -350,6 +345,18 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
 
         tableauBrassin.addView(listeBrassin);
         tableauBrassin.addView(btnChanger);
+    }
+
+    private void changer() {
+        TableCuve.instance(getContext()).modifier(cuve.getId(),
+                cuve.getNumero(),
+                cuve.getCapacite(),
+                cuve.getIdEmplacement(),
+                cuve.getDateLavageAcide(),
+                cuve.getIdEtat(),
+                cuve.getLongDateEtat(),
+                cuve.getCommentaireEtat(),
+                TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId());
     }
 
     private void changerEtat() {
@@ -392,24 +399,16 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.equals(btnModifier)) {
-            modifierDescription();
+            modifier();
         }
         else if (v.equals(btnValider)) {
-            validerDescription();
+            valider();
         }
         else if (v.equals(btnAnnuler)) {
-            reafficherDescription();
+            afficher();
         }
         else if (v.equals(btnChanger)) {
-            TableCuve.instance(getContext()).modifier(cuve.getId(),
-                    cuve.getNumero(),
-                    cuve.getCapacite(),
-                    cuve.getIdEmplacement(),
-                    cuve.getDateLavageAcide(),
-                    cuve.getIdEtat(),
-                    cuve.getLongDateEtat(),
-                    cuve.getCommentaireEtat(),
-                    TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId());
+            changer();
         }
         else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, cuve.getId(), -1, -1);
@@ -434,7 +433,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                         TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, cuve.getId(), -1, cuve.getIdBrassin());
                         afficherHistorique();
                     }
-                    afficherDescription();
+                    afficher();
                 }
             }
         }

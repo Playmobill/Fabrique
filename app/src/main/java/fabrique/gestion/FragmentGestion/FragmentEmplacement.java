@@ -92,12 +92,15 @@ public class FragmentEmplacement extends FragmentAmeliore implements View.OnClic
     public void afficher() {
         TableLayout.LayoutParams marge = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
         marge.setMargins(10, 0, 10, 0);
+
         tableau.removeAllViews();
+
         tableau.addView(ligneTitre, marge);
         ArrayList<Emplacement> emplacements = TableEmplacement.instance(contexte).recupererTous();
         for (int i=0; i< emplacements.size(); i++) {
             tableau.addView(new LigneEmplacement(contexte, this, emplacements.get(i)));
         }
+
         tableau.addView(ligneTitreAjouter, marge);
             texteAjouter.setText("");
             actifAjouter.setChecked(true);

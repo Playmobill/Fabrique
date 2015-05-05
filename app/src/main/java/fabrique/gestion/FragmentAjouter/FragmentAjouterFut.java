@@ -16,8 +16,8 @@ import java.util.GregorianCalendar;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableFut;
-import fabrique.gestion.R;
 import fabrique.gestion.FragmentAmeliore;
+import fabrique.gestion.R;
 
 public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClickListener {
 
@@ -60,55 +60,59 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
         return view;
     }
 
+    private void ajouter() {
+        String erreur = "";
+
+        int numero = 0;
+        if (editNumero.getText().toString().equals("")) {
+            erreur = erreur + "Le fût doit avoir un numéro.";
+        } else {
+            try {
+                numero = Integer.parseInt(editNumero.getText().toString());
+            } catch (NumberFormatException e) {
+                erreur = erreur + "Le numéro est trop grand.";
+            }
+        }
+
+        int capacite = 0;
+        try {
+            if (!editQuantite.getText().toString().equals("")) {
+                capacite = Integer.parseInt(editQuantite.getText().toString());
+            }
+        } catch (NumberFormatException e) {
+            if (!erreur.equals("")) {
+                erreur = erreur + "\n";
+            }
+            erreur = erreur + "La quantité est trop grande.";
+        }
+
+        if (erreur.equals("")) {
+            //Date avec seulement Jour, mois annee
+            Calendar calendrier = Calendar.getInstance();
+            calendrier.setTimeInMillis(System.currentTimeMillis());
+            long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
+            TableFut.instance(contexte).ajouter(numero, capacite, 1, date, -1, date);
+
+            Toast.makeText(contexte, "Fut ajouté !", Toast.LENGTH_LONG).show();
+
+            TableFut tableFut = TableFut.instance(contexte);
+            int numeroSuivant = 1;
+            for (int i=0; i<tableFut.tailleListe(); i++) {
+                if (tableFut.recupererIndex(i).getNumero() == numeroSuivant) {
+                    numeroSuivant = numeroSuivant + 1;
+                }
+            }
+            editNumero.setText("" + numeroSuivant);
+        } else {
+            Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         if (v.equals(btnAjouter)) {
-            String erreur = "";
-
-            int numero = 0;
-            if (editNumero.getText().toString().equals("")) {
-                erreur = erreur + "Le fût doit avoir un numéro.";
-            } else {
-                try {
-                    numero = Integer.parseInt(editNumero.getText().toString());
-                } catch (NumberFormatException e) {
-                    erreur = erreur + "Le numéro est trop grand.";
-                }
-            }
-
-            int capacite = 0;
-            try {
-                if (!editQuantite.getText().toString().equals("")) {
-                    capacite = Integer.parseInt(editQuantite.getText().toString());
-                }
-            } catch(NumberFormatException e) {
-                if (!erreur.equals("")) {
-                    erreur = erreur + "\n";
-                }
-                erreur = erreur + "La quantité est trop grande.";
-            }
-
-            if(erreur.equals("")) {
-                //Date avec seulement Jour, mois annee
-                Calendar calendrier = Calendar.getInstance();
-                calendrier.setTimeInMillis(System.currentTimeMillis());
-                long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
-
-                TableFut.instance(contexte).ajouter(numero, capacite, 1, date, -1, date);
-
-                Toast.makeText(contexte, "Fut ajouté !", Toast.LENGTH_LONG).show();
-
-                TableFut tableFut = TableFut.instance(contexte);
-                int numeroSuivant = 1;
-                for (int i=0; i<tableFut.tailleListe(); i++) {
-                    if (tableFut.recupererIndex(i).getNumero() == numeroSuivant) {
-                        numeroSuivant = numeroSuivant + 1;
-                    }
-                }
-                editNumero.setText("" + numeroSuivant);
-            } else {
-                Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
-            }
+            ajouter();
         }
     }
 

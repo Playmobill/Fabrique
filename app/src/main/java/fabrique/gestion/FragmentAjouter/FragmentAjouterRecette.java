@@ -58,12 +58,16 @@ public class FragmentAjouterRecette extends FragmentAmeliore implements View.OnC
         return view;
     }
 
+    private void ajouter() {
+        long typeBiere = TableTypeBiere.instance(contexte).recupererIndex(editTypeBiere.getSelectedItemPosition()).getId();
+        TableRecette.instance(contexte).ajouter(editNom.getText().toString(), editAcronyme.getText().toString(), typeBiere, Color.BLACK, Color.WHITE, true);
+        Toast.makeText(contexte, "Recette ajouté !", Toast.LENGTH_LONG).show();
+    }
+
     @Override
     public void onClick(View v) {
         if (v.equals(btnAjouter)) {
-            long typeBiere = TableTypeBiere.instance(contexte).recupererIndex(editTypeBiere.getSelectedItemPosition()).getId();
-            TableRecette.instance(contexte).ajouter(editNom.getText().toString(), editAcronyme.getText().toString(), typeBiere, Color.BLACK, Color.WHITE, true);
-            Toast.makeText(contexte, "Recette ajouté !", Toast.LENGTH_LONG).show();
+            ajouter();
         }
     }
 
