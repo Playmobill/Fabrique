@@ -22,7 +22,7 @@ public class Brassin extends Objet implements Comparable<Brassin> {
     private final static float constanteConversionPourcentageAlcool = 1.047f;
     //Pour un gramme de CO2 produit, il y a environ (à 3 décimales sures) 1.047 grammes d'ethanol produit.
 
-    public Brassin(long id, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool) {
+    public Brassin(long id, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale) {
         super(id);
         this.numero = numero;
         this.commentaire = commentaire;
@@ -31,7 +31,6 @@ public class Brassin extends Objet implements Comparable<Brassin> {
         this.id_recette = id_recette;
         this.densiteOriginale = densiteOriginale;
         this.densiteFinale = densiteFinale;
-        this.pourcentageAlcool = pourcentageAlcool;
     }
 
     public int getNumero() { return numero; }
@@ -54,9 +53,15 @@ public class Brassin extends Objet implements Comparable<Brassin> {
     public void setDateCreation(long dateCreation) { this.dateCreation = dateCreation; }
     public void setQuantite(int quantite) { this.quantite = quantite; }
     public void setId_recette(long id_recette) { this.id_recette = id_recette; }
-    public void setDensiteOriginale(float densiteOriginale) { this.densiteOriginale = densiteOriginale; }
-    public void setDensiteFinale(float densiteFinale) { this.densiteFinale = densiteFinale; }
-    public void setPourcentageAlcool() { pourcentageAlcool = convertDensiteVersPourcentageAlcool(densiteOriginale, densiteFinale); }
+    public void setDensiteOriginale(float densiteOriginale) {
+        this.densiteOriginale = densiteOriginale;
+        setPourcentageAlcool();
+    }
+    public void setDensiteFinale(float densiteFinale) {
+        this.densiteFinale = densiteFinale;
+        setPourcentageAlcool();
+    }
+    private void setPourcentageAlcool() { pourcentageAlcool = convertDensiteVersPourcentageAlcool(densiteOriginale, densiteFinale); }
 
     @Override
     public int compareTo(@NonNull Brassin brassin) {

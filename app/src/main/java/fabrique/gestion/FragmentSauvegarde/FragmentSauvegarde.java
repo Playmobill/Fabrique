@@ -255,7 +255,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                 TableRecette.instance(contexte).ajouter(
                                         textesRecette.get(0),
                                         textesRecette.get(1),
-                                        textesRecette.get(2),
+                                        Integer.parseInt(textesRecette.get(2)),
                                         Integer.parseInt(textesRecette.get(3)),
                                         Integer.parseInt(textesRecette.get(4)),
                                         Boolean.parseBoolean(textesRecette.get(5)));
@@ -265,7 +265,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                 TableRecette.instance(contexte).ajouter(
                                         textesRecette.get(0),
                                         textesRecette.get(1),
-                                        textesRecette.get(2),
+                                        -1,
                                         Color.BLACK,
                                         Color.WHITE,
                                         Boolean.parseBoolean(textesRecette.get(3)));
@@ -309,8 +309,18 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                         Integer.parseInt(textesBrassin.get(3)),
                                         Long.parseLong(textesBrassin.get(4)),
                                         Float.parseFloat(textesBrassin.get(5)),
-                                        Float.parseFloat(textesBrassin.get(6)),
-                                        Float.parseFloat(textesBrassin.get(7)));
+                                        Float.parseFloat(textesBrassin.get(6)));
+                            }
+                            //Si il n'y a que 7 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesBrassin.size() == 7) && !corrompuBrassin) {
+                                TableBrassin.instance(contexte).ajouter(
+                                        Integer.parseInt(textesBrassin.get(0)),
+                                        textesBrassin.get(1),
+                                        Long.parseLong(textesBrassin.get(2)),
+                                        Integer.parseInt(textesBrassin.get(3)),
+                                        Long.parseLong(textesBrassin.get(4)),
+                                        Float.parseFloat(textesBrassin.get(5)),
+                                        Float.parseFloat(textesBrassin.get(6)));
                             }
                             break;
 

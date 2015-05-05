@@ -20,7 +20,6 @@ import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.FragmentAmeliore;
-import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.R;
 
 public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnClickListener {
@@ -66,7 +65,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
 
         editRecette = (Spinner)view.findViewById(R.id.editRecette);
         TableRecette tableRecette = TableRecette.instance(contexte);
-        ArrayAdapter<String> adapteurRecette = new ArrayAdapter<>(contexte, R.layout.spinner_style, tableRecette.recupererRecettesActifs());
+        ArrayAdapter<String> adapteurRecette = new ArrayAdapter<>(contexte, R.layout.spinner_style, tableRecette.recupererNomRecettesActifs());
         adapteurRecette.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editRecette.setAdapter(adapteurRecette);
 
@@ -76,94 +75,84 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
         return view;
     }
 
+    private void ajouter() {
+        String erreur = "";
+
+        int numero = 0;
+        if (editNumero.getText().toString().equals("")) {
+            erreur = erreur + "Le brassin doit avoir un numéro.";
+        } else {
+            try {
+                numero = Integer.parseInt(editNumero.getText().toString());
+            } catch (NumberFormatException e) {
+                erreur = erreur + "Le numéro est trop grand.";
+            }
+        }
+
+        int quantite = 0;
+        try {
+            if (!editQuantite.getText().toString().equals("")) {
+                quantite = Integer.parseInt(editQuantite.getText().toString());
+            }
+        } catch(NumberFormatException e) {
+            if (!erreur.equals("")) {
+                erreur = erreur + "\n";
+            }
+            erreur = erreur + "La quantité est trop grande.";
+        }
+
+        float densiteOriginale = 0;
+        try {
+            if ((editDensiteOriginale.getText() != null) && (!editDensiteOriginale.getText().toString().equals(""))) {
+                densiteOriginale = Float.parseFloat(editDensiteOriginale.getText().toString());
+            }
+        } catch (NumberFormatException e) {
+            if (!erreur.equals("")) {
+                erreur = erreur + "\n";
+            }
+            erreur = erreur + "La densité originale est trop grande.";
+        }
+
+        float densiteFinale = 0;
+        try {
+            if ((editDensiteFinale.getText() != null) && (!editDensiteFinale.getText().toString().equals(""))) {
+                densiteFinale = Float.parseFloat(editDensiteFinale.getText().toString());
+            }
+        } catch (NumberFormatException e) {
+            if (!erreur.equals("")) {
+                erreur = erreur + "\n";
+            }
+            erreur = erreur + "La densité final est trop grande.";
+        }
+
+        if (erreur.equals("")) {
+            long recette = TableRecette.instance(contexte).recupererIndex(editRecette.getSelectedItemPosition()).getId();
+
+            //Date avec seulement Jour, mois annee
+            Calendar calendrier = Calendar.getInstance();
+            calendrier.setTimeInMillis(System.currentTimeMillis());
+            long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
+            TableBrassin.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale);
+            Toast.makeText(contexte, "Brassin ajouté !", Toast.LENGTH_LONG).show();
+            TableBrassin tableBrassin = TableBrassin.instance(contexte);
+
+            int max = 0;
+            for (int i=0; i<tableBrassin.tailleListe(); i=i+1) {
+                if (max < tableBrassin.recupererIndex(i).getNumero()) {
+                    max = tableBrassin.recupererIndex(i).getNumero();
+                }
+            }
+            editNumero.setText("" + (max+1));
+        } else {
+            Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         if (v.equals(btnAjouter)) {
-
-            String erreur = "";
-
-            int numero = 0;
-            if (editNumero.getText().toString().equals("")) {
-                erreur = erreur + "Le brassin doit avoir un numéro.";
-            } else {
-                try {
-                    numero = Integer.parseInt(editNumero.getText().toString());
-                } catch (NumberFormatException e) {
-                    erreur = erreur + "Le numéro est trop grand.";
-                }
-            }
-
-            int quantite = 0;
-            try {
-                if (!editQuantite.getText().toString().equals("")) {
-                    quantite = Integer.parseInt(editQuantite.getText().toString());
-                }
-            } catch(NumberFormatException e) {
-                if (!erreur.equals("")) {
-                    erreur = erreur + "\n";
-                }
-                erreur = erreur + "La quantité est trop grande.";
-            }
-
-            float densiteOriginale = 0;
-            try {
-                if ((editDensiteOriginale.getText() != null) && (!editDensiteOriginale.getText().toString().equals(""))) {
-                    densiteOriginale = Float.parseFloat(editDensiteOriginale.getText().toString());
-                }
-            } catch (NumberFormatException e) {
-                if (!erreur.equals("")) {
-                    erreur = erreur + "\n";
-                }
-                erreur = erreur + "La densité originale est trop grande.";
-            }
-
-            float densiteFinale = 0;
-            try {
-                if ((editDensiteFinale.getText() != null) && (!editDensiteFinale.getText().toString().equals(""))) {
-                    densiteFinale = Float.parseFloat(editDensiteFinale.getText().toString());
-                }
-            } catch (NumberFormatException e) {
-                if (!erreur.equals("")) {
-                    erreur = erreur + "\n";
-                }
-                erreur = erreur + "La densité final est trop grande.";
-            }
-
-            float pourcentageAlcool = 0;
-            try {
-                if ((editDensiteFinale.getText() != null) && (!editDensiteFinale.getText().toString().equals(""))
-                        && (editDensiteOriginale.getText() != null) && (!editDensiteOriginale.getText().toString().equals(""))) {
-                    pourcentageAlcool = Brassin.convertDensiteVersPourcentageAlcool(Float.parseFloat(editDensiteOriginale.getText().toString()), Float.parseFloat(editDensiteFinale.getText().toString()));
-                }
-            } catch (NumberFormatException e) {
-                if (!erreur.equals("")) {
-                    erreur = erreur + "\n";
-                }
-                erreur = erreur + "Le pourcentage d'alcool est trop grand.";
-            }
-
-            if (erreur.equals("")) {
-                long recette = TableRecette.instance(contexte).recupererIndex(editRecette.getSelectedItemPosition()).getId();
-
-                //Date avec seulement Jour, mois annee
-                Calendar calendrier = Calendar.getInstance();
-                calendrier.setTimeInMillis(System.currentTimeMillis());
-                long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
-
-                TableBrassin.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale, pourcentageAlcool);
-                Toast.makeText(contexte, "Brassin ajouté !", Toast.LENGTH_LONG).show();
-                TableBrassin tableBrassin = TableBrassin.instance(contexte);
-
-                int max = 0;
-                for (int i=0; i<tableBrassin.tailleListe(); i=i+1) {
-                    if (max < tableBrassin.recupererIndex(i).getNumero()) {
-                        max = tableBrassin.recupererIndex(i).getNumero();
-                    }
-                }
-                editNumero.setText("" + (max+1));
-            } else {
-                Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
-            }
+            ajouter();
         }
     }
 

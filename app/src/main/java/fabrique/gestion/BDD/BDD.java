@@ -7,23 +7,29 @@ import android.graphics.Color;
 
 public class BDD extends SQLiteOpenHelper {
 
+    private static String createurTableTypeBiere = "CREATE TABLE TypeBiere (" +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                                "nom TEXT," +
+                                                "couleur TEXT," +
+                                                "actif INTEGER NOT NULL)";
+
     private static String createurTableRecette = "CREATE TABLE Recette(" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "nom TEXT NOT NULL," +
-                                                "couleur TEXT NOT NULL," +
-                                                "acronyme TEXT NOT NULL," +
+                                                "nom TEXT," +
+                                                "acronyme TEXT," +
+                                                "id_typeBiere INTEGER NOT NULL," +
                                                 "couleurTexte INTEGER NOT NULL," +
                                                 "couleurFond INTEGER NOT NULL," +
                                                 "actif INTEGER NOT NULL)";
 
     private static String createurTableEmplacement = "CREATE TABLE IF NOT EXISTS Emplacement (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "texte TEXT NOT NULL," +
+                                                "texte TEXT," +
                                                 "actif INTEGER NOT NULL)";
 
     private static String createurTableEtatFermenteur = "CREATE TABLE IF NOT EXISTS EtatFermenteur (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "texte TEXT NOT NULL, " +
+                                                "texte TEXT, " +
                                                 "historique TEXT, " +
                                                 "couleurTexte INTEGER NOT NULL," +
                                                 "couleurFond INTEGER NOT NULL," +
@@ -32,7 +38,7 @@ public class BDD extends SQLiteOpenHelper {
 
     private static String createurTableEtatCuve = "CREATE TABLE IF NOT EXISTS EtatCuve (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "texte TEXT NOT NULL, " +
+                                                "texte TEXT, " +
                                                 "historique TEXT, " +
                                                 "couleurTexte INTEGER NOT NULL," +
                                                 "couleurFond INTEGER NOT NULL," +
@@ -40,7 +46,7 @@ public class BDD extends SQLiteOpenHelper {
 
     private static String createurTableEtatFut = "CREATE TABLE IF NOT EXISTS EtatFut (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                "texte TEXT NOT NULL, " +
+                                                "texte TEXT, " +
                                                 "historique TEXT, " +
                                                 "couleurTexte INTEGER NOT NULL," +
                                                 "couleurFond INTEGER NOT NULL," +
@@ -49,13 +55,12 @@ public class BDD extends SQLiteOpenHelper {
     private static String createurTableBrassin = "CREATE TABLE IF NOT EXISTS Brassin (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                                 "numero INTEGER NOT NULL," +
-                                                "commentaire TEXT NOT NULL," +
+                                                "commentaire TEXT," +
                                                 "dateCreation INTEGER NOT NULL," +
                                                 "quantite INTEGER NOT NULL," +
                                                 "id_recette INTEGER NOT NULL," +
                                                 "densiteOriginale REAL," +
-                                                "densiteFinale REAL," +
-                                                "pourcentageAlcool REAL)";
+                                                "densiteFinale REAL)";
 
     private static String createurTableFermenteur = "CREATE TABLE IF NOT EXISTS Fermenteur (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -95,7 +100,7 @@ public class BDD extends SQLiteOpenHelper {
 
     private static String createurTableHistorique = "CREATE TABLE IF NOT EXISTS Historique (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                                "texte TEXT NOT NULL, " +
+                                                "texte TEXT, " +
                                                 "date INTEGER NOT NULL, " +
                                                 "id_fermenteur INTEGER NOT NULL, " +
                                                 "id_cuve INTEGER NOT NULL, " +
@@ -105,7 +110,7 @@ public class BDD extends SQLiteOpenHelper {
     private static String createurTableListeHistorique = "CREATE TABLE IF NOT EXISTS ListeHistorique (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                 "elementConcerne INTEGER NOT NULL, " +
-                                                "texte TEXT NOT NULL)";
+                                                "texte TEXT)";
 
     private static String createurTableCalendrier = "CREATE TABLE IF NOT EXISTS Calendrier(" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -121,6 +126,7 @@ public class BDD extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL(createurTableTypeBiere);
         db.execSQL(createurTableRecette);
         db.execSQL(createurTableBrassin);
         db.execSQL(createurTableEmplacement);
@@ -138,10 +144,6 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO EtatFermenteur (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 1)");
         db.execSQL("INSERT INTO EtatCuve (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 1)");
         db.execSQL("INSERT INTO EtatFut (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 1)");
-
-        db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, couleurTexte, couleurFond, actif) VALUES ('Riv. Blanche', 'Blanche', 'Rvb', "+Color.BLACK+", "+Color.WHITE +", 1)");
-        db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, couleurTexte, couleurFond, actif) VALUES ('République', 'Blonde', 'Rpb', "+Color.BLACK+", "+Color.WHITE+", 1)");
-        db.execSQL("INSERT INTO Recette (nom, couleur, acronyme, couleurTexte, couleurFond, actif) VALUES ('Goupil', 'Rousse', 'Gpl', "+Color.BLACK+", "+Color.WHITE+", 1)");
 
         db.execSQL("INSERT INTO Gestion (delaiLavageAcide, avertissementLavageAcide, delaiInspectionBaril, avertissementInspectionBaril) VALUES(1209600000, 604800000, 1209600000, 604800000)");
 

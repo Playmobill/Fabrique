@@ -11,7 +11,7 @@ import fabrique.gestion.Objets.Recette;
 
 public class TableRecette extends Controle {
 
-    private ArrayList<Recette> types;
+    private ArrayList<Recette> recettes;
 
     private static TableRecette INSTANCE;
 
@@ -24,76 +24,77 @@ public class TableRecette extends Controle {
 
     private TableRecette(Context contexte){
         super(contexte, "Recette");
-        types = new ArrayList<>();
+        recettes = new ArrayList<>();
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            types.add(new Recette(tmp.getLong(0), tmp.getString(1), tmp.getString(2), tmp.getString(3), Integer.parseInt(tmp.getString(4)), Integer.parseInt(tmp.getString(5)), tmp.getInt(6) == 1));
+            recettes.add(new Recette(tmp.getLong(0), tmp.getString(1), tmp.getString(2), tmp.getLong(3), tmp.getInt(4), tmp.getInt(5), tmp.getInt(6) == 1));
         }
-        Collections.sort(types);
+        Collections.sort(recettes);
     }
 
-    public long ajouter(String nom, String couleur, String acronyme, int couleurTexte, int couleurFond, boolean actif) {
+    public long ajouter(String nom, String acronyme, long id_biere, int couleurTexte, int couleurFond, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("nom", nom);
-        valeur.put("couleur", couleur);
         valeur.put("acronyme", acronyme);
+        valeur.put("id_typeBiere", id_biere);
         valeur.put("couleurTexte", couleurTexte);
         valeur.put("couleurFond", couleurFond);
         valeur.put("actif", actif);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            types.add(new Recette(id, nom, couleur, acronyme, couleurTexte, couleurFond, actif));
-            Collections.sort(types);
+            recettes.add(new Recette(id, nom, acronyme, id_biere, couleurTexte, couleurFond, actif));
+            Collections.sort(recettes);
         }
         return id;
     }
 
     public int tailleListe() {
-        return types.size();
+        return recettes.size();
     }
 
-    public void modifier(Context contexte, long id, String nom, String couleur, String acronyme, int couleurTexte, int couleurFond, boolean actif) {
+    public void modifier(long id, String nom, String acronyme, long id_biere, int couleurTexte, int couleurFond, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("nom", nom);
-        valeur.put("couleur", couleur);
         valeur.put("acronyme", acronyme);
+        valeur.put("id_typeBiere", id_biere);
         valeur.put("couleurTexte", couleurTexte);
         valeur.put("couleurFond", couleurFond);
         valeur.put("actif", actif);
-        if(accesBDD.update("Recette", valeur, "id = ?", new String[] {""+id}) == 1){
-            TableRecette.instance(contexte).recupererId(id).setAcronyme(acronyme);
-            TableRecette.instance(contexte).recupererId(id).setNom(nom);
-            TableRecette.instance(contexte).recupererId(id).setCouleur(couleur);
-            TableRecette.instance(contexte).recupererId(id).setCouleurTexte(couleurTexte);
-            TableRecette.instance(contexte).recupererId(id).setCouleurFond(couleurFond);
-            TableRecette.instance(contexte).recupererId(id).setActif(actif);
-            Collections.sort(types);
+        if(accesBDD.update("Recette", valeur, "id = ?", new String[] {""+id}) == 1) {
+            Recette recette = recupererId(id);
+            recette.setNom(nom);
+            recette.setAcronyme(acronyme);
+            recette.setId_biere(id_biere);
+            recette.setCouleurTexte(couleurTexte);
+            recette.setCouleurFond(couleurFond);
+            recette.setActif(actif);
+            Collections.sort(recettes);
         }
     }
 
     public Recette recupererIndex(int index){
         try {
-            return types.get(index);
+            return recettes.get(index);
         } catch (Exception e) {
             return null;
         }
     }
 
     public Recette recupererId(long id) {
-        for (int i=0; i<types.size() ; i++) {
-            if (types.get(i).getId() == id) {
-                return types.get(i);
+        for (int i=0; i< recettes.size() ; i++) {
+            if (recettes.get(i).getId() == id) {
+                return recettes.get(i);
             }
         }
         return null;
     }
 
-    public ArrayList<String> recupererRecettesActifs() {
+    public ArrayList<String> recupererNomRecettesActifs() {
         ArrayList<String> listeEtatActif = new ArrayList<>();
-        for (int i=0; i<types.size(); i++) {
-            if (types.get(i).getActif()) {
-                listeEtatActif.add(types.get(i).getNom());
+        for (int i=0; i< recettes.size(); i++) {
+            if (recettes.get(i).getActif()) {
+                listeEtatActif.add(recettes.get(i).getNom());
             }
         }
         return listeEtatActif;
@@ -101,20 +102,12 @@ public class TableRecette extends Controle {
 
     public ArrayList<Recette> recupererRecetteActif() {
         ArrayList<Recette> listeRecetteActifs = new ArrayList<>();
-        for (int i=0; i<types.size(); i++) {
-            if (types.get(i).getActif()) {
-                listeRecetteActifs.add(types.get(i));
+        for (int i=0; i< recettes.size(); i++) {
+            if (recettes.get(i).getActif()) {
+                listeRecetteActifs.add(recettes.get(i));
             }
         }
         return listeRecetteActifs;
-    }
-
-    public String[] noms() {
-        String[] numeroFermenteurs = new String[types.size()];
-        for (int i=0; i<types.size() ; i++) {
-            numeroFermenteurs[i] = types.get(i).getNom() + "";
-        }
-        return numeroFermenteurs;
     }
 
     private ArrayList<Recette> trierParId(ArrayList<Recette> liste, int petitIndex, int grandIndex) {
@@ -152,8 +145,8 @@ public class TableRecette extends Controle {
     @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
-        if (types.size() > 0) {
-            ArrayList<Recette> trierParId = trierParId(types, 0, types.size() - 1);
+        if (recettes.size() > 0) {
+            ArrayList<Recette> trierParId = trierParId(recettes, 0, recettes.size() - 1);
             for (int i = 0; i < trierParId.size(); i++) {
                 texte.append(trierParId.get(i).sauvegarde());
             }
@@ -164,6 +157,6 @@ public class TableRecette extends Controle {
     @Override
     public void supprimerToutesLaBdd() {
         super.supprimerToutesLaBdd();
-        types.clear();
+        recettes.clear();
     }
 }

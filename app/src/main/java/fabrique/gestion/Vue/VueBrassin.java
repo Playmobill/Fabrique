@@ -154,12 +154,12 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
 
                 listeRecetteActifs = TableRecette.instance(getContext()).recupererRecetteActif();
                 editRecette = new Spinner(getContext());
-                    ArrayAdapter<String> adapteurRecette = new ArrayAdapter<>(getContext(), R.layout.spinner_style, TableRecette.instance(getContext()).recupererRecettesActifs());
+                    ArrayAdapter<String> adapteurRecette = new ArrayAdapter<>(getContext(), R.layout.spinner_style, TableRecette.instance(getContext()).recupererNomRecettesActifs());
                     adapteurRecette.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 editRecette.setAdapter(adapteurRecette);
                 editRecette.setEnabled(false);
                 indexRecette = -1;
-                ArrayList<String> recettes = TableRecette.instance(getContext()).recupererRecettesActifs();
+                ArrayList<String> recettes = TableRecette.instance(getContext()).recupererNomRecettesActifs();
                 for (int i=0; i<recettes.size() ; i++) {
                     if (brassin.getRecette(getContext()).getId() == TableRecette.instance(getContext()).recupererIndex(i).getId()) {
                         indexRecette = i;
@@ -408,8 +408,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
                     quantite,
                     recette,
                     densiteOriginale,
-                    densiteFinale,
-                    pourcentageAlcool);
+                    densiteFinale);
             indexRecette = editRecette.getSelectedItemPosition();
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();

@@ -8,12 +8,15 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableRecette;
+import fabrique.gestion.BDD.TableTypeBiere;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.R;
 
@@ -23,7 +26,8 @@ public class FragmentAjouterRecette extends FragmentAmeliore implements View.OnC
 
     private Button btnAjouter;
 
-    private EditText editNom, editAcronyme, editCouleur;
+    private EditText editNom, editAcronyme;
+    private Spinner editTypeBiere;
 
     @Nullable
     @Override
@@ -42,7 +46,11 @@ public class FragmentAjouterRecette extends FragmentAmeliore implements View.OnC
 
         editNom = (EditText)view.findViewById(R.id.editNom);
         editAcronyme = (EditText)view.findViewById(R.id.editAcronyme);
-        editCouleur = (EditText)view.findViewById(R.id.editCouleur);
+
+        editTypeBiere = (Spinner)view.findViewById(R.id.spinnerTypeBiere);
+            ArrayAdapter<String> adapteurRecette = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableTypeBiere.instance(contexte).recupererNomTypeBieresActifs());
+            adapteurRecette.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        editTypeBiere.setAdapter(adapteurRecette);
 
         btnAjouter = (Button)view.findViewById(R.id.btnAjouter);
         btnAjouter.setOnClickListener(this);
@@ -53,25 +61,9 @@ public class FragmentAjouterRecette extends FragmentAmeliore implements View.OnC
     @Override
     public void onClick(View v) {
         if (v.equals(btnAjouter)) {
-
-            String erreur = "";
-
-            if (editNom.getText().toString().equals("")) {
-                erreur = erreur + "La recette doit avoir un nom. ";
-            }
-            if (editAcronyme.getText().toString().equals("")) {
-                erreur = erreur + "La recette doit avoir un nom. ";
-            }
-            if (editCouleur.getText().toString().equals("")) {
-                erreur = erreur + "La recette doit avoir un nom. ";
-            }
-
-            if (erreur.equals("")) {
-                TableRecette.instance(contexte).ajouter(editNom.getText().toString(), editCouleur.getText().toString(), editAcronyme.getText().toString(), Color.BLACK, Color.WHITE, true);
-                Toast.makeText(contexte, "Recette ajouté !", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
-            }
+            long typeBiere = TableTypeBiere.instance(contexte).recupererIndex(editTypeBiere.getSelectedItemPosition()).getId();
+            TableRecette.instance(contexte).ajouter(editNom.getText().toString(), editAcronyme.getText().toString(), typeBiere, Color.BLACK, Color.WHITE, true);
+            Toast.makeText(contexte, "Recette ajouté !", Toast.LENGTH_LONG).show();
         }
     }
 

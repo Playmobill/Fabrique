@@ -32,7 +32,9 @@ public class BoutonRecette extends Button implements View.OnClickListener {
         StringBuilder texte = new StringBuilder();
         texte.append(recette.getNom()).append("\n");
         texte.append(recette.getAcronyme()).append("L").append("\n");
-        texte.append(recette.getCouleur());
+        if (recette.getTypeBiere(contexte) != null) {
+            texte.append(recette.getTypeBiere(contexte).getNom());
+        }
 
         //setTextColor(recette.getCouleurTexte());
         //setBackgroundColor(recette.getCouleurFond());

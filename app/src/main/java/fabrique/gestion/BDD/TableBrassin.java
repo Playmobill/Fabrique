@@ -29,12 +29,12 @@ public class TableBrassin extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            brassins.add(new Brassin(tmp.getLong(0), tmp.getInt(1), tmp.getString(2), tmp.getLong(3), tmp.getInt(4), tmp.getLong(5), tmp.getFloat(6), tmp.getFloat(7), tmp.getFloat(8)));
+            brassins.add(new Brassin(tmp.getLong(0), tmp.getInt(1), tmp.getString(2), tmp.getLong(3), tmp.getInt(4), tmp.getLong(5), tmp.getFloat(6), tmp.getFloat(7)));
         }
         Collections.sort(brassins);
     }
 
-    public long ajouter(int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
+    public long ajouter(int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("commentaire", commentaire);
@@ -43,10 +43,9 @@ public class TableBrassin extends Controle {
         valeur.put("id_recette", id_recette);
         valeur.put("densiteOriginale", densiteOriginale);
         valeur.put("densiteFinale", densiteFinale);
-        valeur.put("pourcentageAlcool", pourcentageAlcool);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            brassins.add(new Brassin(id, numero, commentaire, dateCreation, quantite, id_recette, densiteOriginale, densiteFinale, pourcentageAlcool));
+            brassins.add(new Brassin(id, numero, commentaire, dateCreation, quantite, id_recette, densiteOriginale, densiteFinale));
             Collections.sort(brassins);
         }
         return id;
@@ -77,7 +76,7 @@ public class TableBrassin extends Controle {
         return null;
     }
 
-    public void modifier(long id, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale, float pourcentageAlcool){
+    public void modifier(long id, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("commentaire", commentaire);
@@ -86,7 +85,6 @@ public class TableBrassin extends Controle {
         valeur.put("id_recette", id_recette);
         valeur.put("densiteOriginale", densiteOriginale);
         valeur.put("densiteFinale", densiteFinale);
-        valeur.put("pourcentageAlcool", pourcentageAlcool);
         if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
             Brassin brassin = recupererId(id);
             brassin.setNumero(numero);
@@ -96,7 +94,6 @@ public class TableBrassin extends Controle {
             brassin.setId_recette(id_recette);
             brassin.setDensiteOriginale(densiteOriginale);
             brassin.setDensiteFinale(densiteFinale);
-            brassin.setPourcentageAlcool();
             Collections.sort(brassins);
         }
     }
