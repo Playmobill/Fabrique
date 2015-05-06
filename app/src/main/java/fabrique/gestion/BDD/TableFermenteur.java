@@ -29,12 +29,12 @@ public class TableFermenteur extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            fermenteurs.add(new Fermenteur(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getLong(4), tmp.getInt(5), tmp.getLong(6), tmp.getLong(7)));
+            fermenteurs.add(new Fermenteur(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getLong(4), tmp.getInt(5), tmp.getLong(6), tmp.getLong(7), tmp.getInt(8) == 1));
         }
         Collections.sort(fermenteurs);
     }
 
-    public long ajouter(int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, long id_brassin) {
+    public long ajouter(int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, long id_brassin, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("capacite", capacite);
@@ -43,9 +43,10 @@ public class TableFermenteur extends Controle {
         valeur.put("id_etatFermenteur", id_etat);
         valeur.put("dateEtat", dateEtat);
         valeur.put("id_brassin", id_brassin);
+        valeur.put("actif", actif);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            fermenteurs.add(new Fermenteur(id, numero, capacite, id_emplacement, dateLavageAcide, id_etat, dateEtat, id_brassin));
+            fermenteurs.add(new Fermenteur(id, numero, capacite, id_emplacement, dateLavageAcide, id_etat, dateEtat, id_brassin, actif));
             Collections.sort(fermenteurs);
         }
         return id;
@@ -72,7 +73,7 @@ public class TableFermenteur extends Controle {
         return null;
     }
 
-    public void modifier(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, long id_brassin){
+    public void modifier(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, long id_brassin, boolean actif){
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("capacite", capacite);
@@ -81,6 +82,7 @@ public class TableFermenteur extends Controle {
         valeur.put("id_etatFermenteur", id_etat);
         valeur.put("dateEtat", dateEtat);
         valeur.put("id_brassin", id_brassin);
+        valeur.put("actif", actif);
         if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
             Fermenteur fermenteur = recupererId(id);
             fermenteur.setNumero(numero);
@@ -90,6 +92,7 @@ public class TableFermenteur extends Controle {
             fermenteur.setEtat(id_etat);
             fermenteur.setDateEtat(dateEtat);
             fermenteur.setBrassin(id_brassin);
+            fermenteur.setActif(actif);
             Collections.sort(fermenteurs);
         }
     }

@@ -27,6 +27,7 @@ public class BoutonBrassin extends RelativeLayout implements View.OnClickListene
 
     public BoutonBrassin(Context contexte, FragmentListeBrassin fragmentListeBrassin, Brassin brassin) {
         this(contexte);
+
         this.fragmentListeBrassin = fragmentListeBrassin;
         this.brassin=brassin;
 

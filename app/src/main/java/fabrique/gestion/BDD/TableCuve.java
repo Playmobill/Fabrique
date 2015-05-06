@@ -29,12 +29,12 @@ public class TableCuve extends Controle{
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            cuves.add(new Cuve(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getLong(4), tmp.getInt(5), tmp.getLong(6), tmp.getString(7), tmp.getLong(8)));
+            cuves.add(new Cuve(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getLong(4), tmp.getInt(5), tmp.getLong(6), tmp.getString(7), tmp.getLong(8), tmp.getInt(9) == 1));
         }
         Collections.sort(cuves);
     }
 
-    public long ajouter(int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, String commentaireEtat, long id_brassin) {
+    public long ajouter(int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, String commentaireEtat, long id_brassin, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("capacite", capacite);
@@ -44,9 +44,10 @@ public class TableCuve extends Controle{
         valeur.put("dateEtat", dateEtat);
         valeur.put("commentaireEtat", commentaireEtat);
         valeur.put("id_brassin", id_brassin);
+        valeur.put("actif", actif);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            cuves.add(new Cuve(id, numero, capacite, id_emplacement, dateLavageAcide, id_etat, dateEtat, commentaireEtat, id_brassin));
+            cuves.add(new Cuve(id, numero, capacite, id_emplacement, dateLavageAcide, id_etat, dateEtat, commentaireEtat, id_brassin, actif));
             Collections.sort(cuves);
         }
         return id;
@@ -73,7 +74,7 @@ public class TableCuve extends Controle{
         return null;
     }
 
-    public void modifier(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, String commentaireEtat, long id_brassin){
+    public void modifier(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, String commentaireEtat, long id_brassin, boolean actif){
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("capacite", capacite);
@@ -83,6 +84,7 @@ public class TableCuve extends Controle{
         valeur.put("dateEtat", dateEtat);
         valeur.put("commentaireEtat", commentaireEtat);
         valeur.put("id_brassin", id_brassin);
+        valeur.put("actif", actif);
         if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
             Cuve cuve = recupererId(id);
             cuve.setNumero(numero);
@@ -92,6 +94,7 @@ public class TableCuve extends Controle{
             cuve.setEtat(id_etat);
             cuve.setCommentaireEtat(commentaireEtat);
             cuve.setBrassin(id_brassin);
+            cuve.setActif(actif);
             Collections.sort(cuves);
         }
     }

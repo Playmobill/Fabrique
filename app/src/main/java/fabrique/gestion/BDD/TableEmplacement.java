@@ -92,6 +92,16 @@ public class TableEmplacement extends Controle {
         return emplacementsActif;
     }
 
+    public ArrayList<String> recupererTexteActifs() {
+        ArrayList<String> emplacementsActif = new ArrayList<>();
+        for (int i=0; i<emplacements.size(); i++) {
+            if (emplacements.get(i).getActif()) {
+                emplacementsActif.add(emplacements.get(i).getTexte());
+            }
+        }
+        return emplacementsActif;
+    }
+
     private ArrayList<Emplacement> trierParId(ArrayList<Emplacement> liste, int petitIndex, int grandIndex) {
         int i = petitIndex;
         int j = grandIndex;

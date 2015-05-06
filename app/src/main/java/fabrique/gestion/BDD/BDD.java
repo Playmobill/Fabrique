@@ -70,7 +70,8 @@ public class BDD extends SQLiteOpenHelper {
                                                 "dateLavageAcide INTEGER NOT NULL," +
                                                 "id_etatFermenteur INTEGER NOT NULL," +
                                                 "dateEtat INTEGER NOT NULL," +
-                                                "id_brassin INTEGER)";
+                                                "id_brassin INTEGER," +
+                                                "actif INTEGER NOT NULL)";
 
     private static String createurTableCuve = "CREATE TABLE IF NOT EXISTS Cuve (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -81,7 +82,8 @@ public class BDD extends SQLiteOpenHelper {
                                                 "id_etatCuve INTEGER NOT NULL, " +
                                                 "dateEtat INTEGER NOT NULL, " +
                                                 "commentaireEtat TEXT, " +
-                                                "id_brassin INTEGER)";
+                                                "id_brassin INTEGER," +
+                                                "actif INTEGER NOT NULL)";
 
     private static String createurTableFut = "CREATE TABLE IF NOT EXISTS Fut (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -90,7 +92,8 @@ public class BDD extends SQLiteOpenHelper {
                                                 "id_etatFut INTEGER NOT NULL, " +
                                                 "dateEtat INTEGER NOT NULL, " +
                                                 "id_brassin INTEGER, " +
-                                                "dateInspection INTEGER NOT NULL)";
+                                                "dateInspection INTEGER NOT NULL," +
+                                                "actif INTEGER NOT NULL)";
 
     private static String createurTableGestion = "CREATE TABLE IF NOT EXISTS Gestion (" +
                                                 "delaiLavageAcide INTEGER DEFAULT 1209600000, " +

@@ -14,16 +14,17 @@ public class Fut extends Objet implements Comparable<Fut> {
     private long dateEtat;
     private long id_brassin;
     private long dateInspection;
+    private boolean actif;
 
-    public Fut(long id, int numero, int capacite, long id_etat, long dateEtat, long id_brassin, long dateInspection) {
+    public Fut(long id, int numero, int capacite, long id_etat, long dateEtat, long id_brassin, long dateInspection, boolean actif) {
         super(id);
-
         this.numero = numero;
         this.capacite = capacite;
         this.id_etat = id_etat;
         this.dateEtat = dateEtat;
         this.id_brassin = id_brassin;
         this.dateInspection = dateInspection;
+        this.actif = actif;
     }
 
     public int getNumero() {
@@ -56,6 +57,9 @@ public class Fut extends Objet implements Comparable<Fut> {
     public long getDateInspectionToLong() {
         return dateInspection;
     }
+    public boolean getActif() {
+        return actif;
+    }
 
     public void setNumero(int numero) {
         this.numero = numero;
@@ -74,6 +78,9 @@ public class Fut extends Objet implements Comparable<Fut> {
     }
     public void setDateInspection(long dateInspection) {
         this.dateInspection = dateInspection;
+    }
+    public void setActif(boolean actif) {
+        this.actif = actif;
     }
 
     @Override
@@ -100,6 +107,7 @@ public class Fut extends Objet implements Comparable<Fut> {
                     "<E:dateEtat>" + dateEtat + "</E:dateEtat>" +
                     "<E:id_brassin>" + id_brassin + "</E:id_brassin>" +
                     "<E:dateInspection>" + dateInspection + "</E:dateInspection>" +
+                    "<E:actif>" + actif + "</E:actif>" +
                 "</O:Fut>");
     }
 }

@@ -113,12 +113,12 @@ public class FragmentAjouterFermenteur extends FragmentAmeliore implements View.
         if (erreur.equals("")) {
             long emplacement = emplacements.get(editEmplacement.getSelectedItemPosition()).getId();
 
-            //Date avec seulement Jour, mois annee
+            //Date avec seulement j0our, mois, annee
             Calendar calendrier = Calendar.getInstance();
             calendrier.setTimeInMillis(System.currentTimeMillis());
             long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
 
-            TableFermenteur.instance(contexte).ajouter(numero, capacite, emplacement, date, 1, date, -1);
+            TableFermenteur.instance(contexte).ajouter(numero, capacite, emplacement, date, 1, date, -1, true);
 
             Toast.makeText(contexte, "Fermenteur ajouté !", Toast.LENGTH_LONG).show();
 

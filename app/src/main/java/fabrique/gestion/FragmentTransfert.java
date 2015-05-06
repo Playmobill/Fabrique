@@ -113,30 +113,30 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                 if (listeTypeOrigine.getSelectedItem().equals("Fermenteur")) {
                     Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem()));
                     idBrassinTransfere = fermenteur.getIdBrassin();
-                    TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdEtat(), fermenteur.getDateEtatToLong(), -1);
+                    TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdEtat(), fermenteur.getDateEtatToLong(), -1, true);
                 }
                 else if (listeTypeOrigine.getSelectedItem().equals("Cuve")) {
                     Cuve cuve = TableCuve.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem()));
                     idBrassinTransfere = cuve.getIdBrassin();
-                    TableCuve.instance(contexte).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), -1);
+                    TableCuve.instance(contexte).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), -1, true);
                 }
                 else if (listeTypeOrigine.getSelectedItem().equals("Fût")) {
                     Fut fut = TableFut.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem()));
                     idBrassinTransfere = fut.getId_brassin();
-                    TableFut.instance(contexte).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getId_etat(), fut.getDateEtatToLong(), -1, fut.getDateInspectionToLong());
+                    TableFut.instance(contexte).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getId_etat(), fut.getDateEtatToLong(), -1, fut.getDateInspectionToLong(), true);
                 }
 
                 if(listeTypeDestination.getSelectedItem().equals("Fermenteur")){
                     Fermenteur fermenteurDest = TableFermenteur.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getSelectedItem()));
-                    TableFermenteur.instance(contexte).modifier(fermenteurDest.getId(), fermenteurDest.getNumero(), fermenteurDest.getCapacite(), fermenteurDest.getIdEmplacement(), fermenteurDest.getDateLavageAcideToLong(), fermenteurDest.getIdEtat(), fermenteurDest.getDateEtatToLong(), idBrassinTransfere);
+                    TableFermenteur.instance(contexte).modifier(fermenteurDest.getId(), fermenteurDest.getNumero(), fermenteurDest.getCapacite(), fermenteurDest.getIdEmplacement(), fermenteurDest.getDateLavageAcideToLong(), fermenteurDest.getIdEtat(), fermenteurDest.getDateEtatToLong(), idBrassinTransfere, true);
                 }
                 else if(listeTypeDestination.getSelectedItem().equals("Fût")){
                     Fut futDest = TableFut.instance(contexte).recupererId(Long.parseLong((String) listeDestination.getSelectedItem()));
-                    TableFut.instance(contexte).modifier(futDest.getId(), futDest.getNumero(), futDest.getCapacite(), futDest.getId_etat(), futDest.getDateEtatToLong(), idBrassinTransfere, futDest.getDateInspectionToLong());
+                    TableFut.instance(contexte).modifier(futDest.getId(), futDest.getNumero(), futDest.getCapacite(), futDest.getId_etat(), futDest.getDateEtatToLong(), idBrassinTransfere, futDest.getDateInspectionToLong(), true);
                 }
                 else if(listeTypeDestination.getSelectedItem().equals("Cuve")){
                     Cuve cuveDest = TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getSelectedItem()));
-                    TableCuve.instance(contexte).modifier(cuveDest.getId(), cuveDest.getNumero(), cuveDest.getCapacite(), cuveDest.getIdEmplacement(), cuveDest.getDateLavageAcide(), cuveDest.getIdEtat(), cuveDest.getLongDateEtat(), cuveDest.getCommentaireEtat(), idBrassinTransfere);
+                    TableCuve.instance(contexte).modifier(cuveDest.getId(), cuveDest.getNumero(), cuveDest.getCapacite(), cuveDest.getIdEmplacement(), cuveDest.getDateLavageAcide(), cuveDest.getIdEtat(), cuveDest.getLongDateEtat(), cuveDest.getCommentaireEtat(), idBrassinTransfere, true);
                 }
                 Toast.makeText(contexte, "Brassin transféré !", Toast.LENGTH_LONG).show();
 

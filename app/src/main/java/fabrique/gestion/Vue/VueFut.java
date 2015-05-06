@@ -141,7 +141,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
     }
 
     private void initialiser() {
-        TableRow.LayoutParams parametre = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TableLayout.LayoutParams parametre = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
         parametre.setMargins(10, 10, 10, 10);
 
         TableRow ligneTitreInspection = new TableRow(getContext());
@@ -276,7 +276,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite,fut.getId_etat(), fut.getDateEtatToLong(), fut.getId_brassin(), fut.getDateInspectionToLong());
+            TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite,fut.getId_etat(), fut.getDateEtatToLong(), fut.getId_brassin(), fut.getDateInspectionToLong(), true);
             afficher();
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
@@ -355,7 +355,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
                     fut.getId_etat(),
                     fut.getDateEtatToLong(),
                     TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId(),
-                    fut.getDateInspectionToLong());
+                    fut.getDateInspectionToLong(), true);
         } else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, fut.getId(), -1);
             afficherHistorique();
@@ -368,7 +368,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
                             listeEtat.get(i).getId(),
                             System.currentTimeMillis(),
                             fut.getId_brassin(),
-                            fut.getDateInspectionToLong());
+                            fut.getDateInspectionToLong(), true);
                     String texte = listeEtat.get(i).getHistorique();
                     if ((texte != null) && (!texte.equals(""))) {
                         TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, -1, fut.getId(), fut.getId_brassin());

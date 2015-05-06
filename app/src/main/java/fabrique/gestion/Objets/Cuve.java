@@ -17,8 +17,9 @@ public class Cuve extends Objet implements Comparable<Cuve> {
     private long dateEtat;
     private String commentaireEtat;
     private long id_brassin;
+    private boolean actif;
 
-    public Cuve(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, String commentaireEtat, long id_brassin){
+    public Cuve(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, String commentaireEtat, long id_brassin, boolean actif){
         super(id);
         this.numero = numero;
         this.capacite = capacite;
@@ -28,6 +29,7 @@ public class Cuve extends Objet implements Comparable<Cuve> {
         this.dateEtat = dateEtat;
         this.commentaireEtat = commentaireEtat;
         this.id_brassin = id_brassin;
+        this.actif = actif;
     }
 
     public int getNumero() {
@@ -79,6 +81,9 @@ public class Cuve extends Objet implements Comparable<Cuve> {
     public Brassin getBrassin(Context contexte) {
         return TableBrassin.instance(contexte).recupererId(id_brassin);
     }
+    public Boolean getActif() {
+        return actif;
+    }
 
     public void setNumero(int numero) {
         this.numero = numero;
@@ -101,6 +106,9 @@ public class Cuve extends Objet implements Comparable<Cuve> {
     }
     public void setBrassin(long id_brassin) {
         this.id_brassin = id_brassin;
+    }
+    public void setActif(boolean actif) {
+        this.actif = actif;
     }
 
     @Override
@@ -129,6 +137,7 @@ public class Cuve extends Objet implements Comparable<Cuve> {
                     "<E:dateEtat>" + dateEtat + "</E:dateEtat>" +
                     "<E:commentaireEtat>" + commentaireEtat + "</E:commentaireEtat>" +
                     "<E:id_brassin>" + id_brassin + "</E:id_brassin>" +
+                    "<E:actif>" + actif + "</E:actif>" +
                 "</O:Cuve>");
     }
 }

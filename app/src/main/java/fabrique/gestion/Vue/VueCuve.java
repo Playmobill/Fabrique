@@ -318,7 +318,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableCuve.instance(getContext()).modifier(cuve.getId(), numero, capacite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin());
+            TableCuve.instance(getContext()).modifier(cuve.getId(), numero, capacite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin(), true);
             indexEmplacement = editEmplacement.getSelectedItemPosition();
             afficher();
         } else {
@@ -356,7 +356,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                 cuve.getIdEtat(),
                 cuve.getLongDateEtat(),
                 cuve.getCommentaireEtat(),
-                TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId());
+                TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId(), true);
     }
 
     private void changerEtat() {
@@ -427,7 +427,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                             listeEtat.get(i).getId(),
                             System.currentTimeMillis(),
                             cuve.getCommentaireEtat(),
-                            cuve.getIdBrassin());
+                            cuve.getIdBrassin(), true);
                     String texte = listeEtat.get(i).getHistorique();
                     if ((texte != null) && (!texte.equals(""))) {
                         TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, cuve.getId(), -1, cuve.getIdBrassin());

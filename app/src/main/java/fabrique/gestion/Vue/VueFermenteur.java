@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,15 +23,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import fabrique.gestion.BDD.TableBrassin;
-import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatFermenteur;
+import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
-import fabrique.gestion.Objets.Fermenteur;
 import fabrique.gestion.Objets.Emplacement;
 import fabrique.gestion.Objets.EtatFermenteur;
+import fabrique.gestion.Objets.Fermenteur;
 import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.Objets.ListeHistorique;
 import fabrique.gestion.R;
@@ -40,12 +41,12 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     private Fermenteur fermenteur;
 
     //Description
-    private LinearLayout tableauDescription;
+    private TableLayout tableauDescription;
     private Spinner editEmplacement;
     private ArrayList<Emplacement> emplacements;
     private int indexEmplacement;
     private EditText editTitre, editCapacite;
-    private LinearLayout ligneBouton;
+    private TableRow ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler;
 
     //Changer Brassin
@@ -144,107 +145,110 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     }
 
     private void initialiser() {
-        LinearLayout.LayoutParams parametre = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        TableRow.LayoutParams parametre = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
         parametre.setMargins(10, 10, 10, 10);
 
-        LinearLayout ligneTitreLavageAcide = new LinearLayout(getContext());
-        LinearLayout layoutTitre = new LinearLayout(getContext());
-        TextView titre = new TextView(getContext());
-        titre.setText("Fermenteur ");
-        titre.setTypeface(null, Typeface.BOLD);
+            TableRow ligneTitreLavageAcide = new TableRow(getContext());
+                LinearLayout layoutTitre = new LinearLayout(getContext());
+                layoutTitre.setGravity(Gravity.CENTER_VERTICAL);
+                    TextView titre = new TextView(getContext());
+                    titre.setText("Fermenteur ");
+                    titre.setTypeface(null, Typeface.BOLD);
+                layoutTitre.addView(titre);
 
-        editTitre = new EditText(getContext());
-        editTitre.setInputType(InputType.TYPE_CLASS_NUMBER);
-        editTitre.setEnabled(false);
+                    editTitre = new EditText(getContext());
+                    editTitre.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    editTitre.setEnabled(false);
+                layoutTitre.addView(editTitre);
+            ligneTitreLavageAcide.addView(layoutTitre, parametre);
 
-        TextView dateLavageAcide = new TextView(getContext());
-        dateLavageAcide.setText("" + fermenteur.getDateLavageAcide());
-        if ((System.currentTimeMillis() - fermenteur.getDateLavageAcideToLong()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
-            dateLavageAcide.setTextColor(Color.RED);
-        } else if ((System.currentTimeMillis() - fermenteur.getDateLavageAcideToLong()) >= (TableGestion.instance(getContext()).avertissementLavageAcide())) {
-            dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
-        } else {
-            dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
-        }
-
-        LinearLayout ligneCapaciteEmplacement = new LinearLayout(getContext());
-        LinearLayout layoutCapacite = new LinearLayout(getContext());
-        TextView capacite = new TextView(getContext());
-        capacite.setText("Capacité : ");
-
-        editCapacite = new EditText(getContext());
-        editCapacite.setInputType(InputType.TYPE_CLASS_NUMBER);
-        editCapacite.setEnabled(false);
-
-        LinearLayout layoutEmplacement = new LinearLayout(getContext());
-            TextView emplacement = new TextView(getContext());
-            emplacement.setText("Emplacement : ");
-
-            editEmplacement = new Spinner(getContext());
-            emplacements = TableEmplacement.instance(getContext()).recupererActifs();
-            ArrayList<String> texteEmplacements = new ArrayList<>();
-            for (int i=0; i<emplacements.size() ; i++) {
-                texteEmplacements.add(emplacements.get(i).getTexte());
-            }
-            ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(getContext(), R.layout.spinner_style, texteEmplacements);
-            adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            editEmplacement.setAdapter(adapteurEmplacement);
-            editEmplacement.setEnabled(false);
-            indexEmplacement = -1;
-            for (int i=0; i<emplacements.size() ; i++) {
-                if (fermenteur.getEmplacement(getContext()).getId() == emplacements.get(i).getId()) {
-                    indexEmplacement = i;
-                }
-            }
-            if (indexEmplacement == -1) {
-                emplacements.add(fermenteur.getEmplacement(getContext()));
-                adapteurEmplacement.add(TableEmplacement.instance(getContext()).recupererId(fermenteur.getEmplacement(getContext()).getId()).getTexte());
-                editEmplacement.setSelection(adapteurEmplacement.getCount()-1);
-            }
-
-
-        LinearLayout ligneEtatDate = new LinearLayout(getContext());
-        TextView etat = new TextView(getContext());
-        etat.setText("État : " + fermenteur.getEtat(getContext()).getTexte());
-
-        TextView dateEtat = new TextView(getContext());
-        dateEtat.setText("Depuis le : " + fermenteur.getDateEtat());
-
-        ligneBouton = new LinearLayout(getContext());
-            btnModifier = new Button(getContext());
-            btnModifier.setText("Modifier");
-            btnModifier.setOnClickListener(this);
-            btnModifier.setLayoutParams(parametre);
-
-            btnValider = new Button(getContext());
-            btnValider.setText("Valider");
-            btnValider.setOnClickListener(this);
-            btnValider.setLayoutParams(parametre);
-
-            btnAnnuler = new Button(getContext());
-            btnAnnuler.setText("Annuler");
-            btnAnnuler.setOnClickListener(this);
-            btnAnnuler.setLayoutParams(parametre);
-
-        layoutTitre.addView(titre);
-        layoutTitre.addView(editTitre);
-        ligneTitreLavageAcide.addView(layoutTitre, parametre);
-        ligneTitreLavageAcide.addView(dateLavageAcide, parametre);
+                LinearLayout layoutDateLavageAcide = new LinearLayout(getContext());
+                layoutDateLavageAcide.setGravity(Gravity.CENTER_VERTICAL);
+                    TextView dateLavageAcide = new TextView(getContext());
+                    dateLavageAcide.setGravity(Gravity.CENTER_VERTICAL);
+                    dateLavageAcide.setText("" + fermenteur.getDateLavageAcide());
+                    if ((System.currentTimeMillis() - fermenteur.getDateLavageAcideToLong()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
+                        dateLavageAcide.setTextColor(Color.RED);
+                    } else if ((System.currentTimeMillis() - fermenteur.getDateLavageAcideToLong()) >= (TableGestion.instance(getContext()).avertissementLavageAcide())) {
+                        dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
+                    } else {
+                        dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
+                    }
+                layoutDateLavageAcide.addView(dateLavageAcide);
+            ligneTitreLavageAcide.addView(layoutDateLavageAcide, parametre);
         tableauDescription.addView(ligneTitreLavageAcide);
-        layoutCapacite.addView(capacite);
-        layoutCapacite.addView(editCapacite);
-        ligneCapaciteEmplacement.addView(layoutCapacite, parametre);
-        layoutEmplacement.addView(emplacement);
-        layoutEmplacement.addView(editEmplacement);
-        ligneCapaciteEmplacement.addView(layoutEmplacement, parametre);
+
+            TableRow ligneCapaciteEmplacement = new TableRow(getContext());
+                LinearLayout layoutCapacite = new LinearLayout(getContext());
+                layoutCapacite.setGravity(Gravity.CENTER_VERTICAL);
+                    TextView capacite = new TextView(getContext());
+                    capacite.setText("Capacité : ");
+                layoutCapacite.addView(capacite);
+
+                    editCapacite = new EditText(getContext());
+                    editCapacite.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    editCapacite.setEnabled(false);
+                layoutCapacite.addView(editCapacite);
+            ligneCapaciteEmplacement.addView(layoutCapacite, parametre);
+
+                LinearLayout layoutEmplacement = new LinearLayout(getContext());
+                layoutEmplacement.setGravity(Gravity.CENTER_VERTICAL);
+                    TextView emplacement = new TextView(getContext());
+                    emplacement.setText("Emplacement : ");
+                layoutEmplacement.addView(emplacement);
+                    editEmplacement = new Spinner(getContext());
+                        emplacements = TableEmplacement.instance(getContext()).recupererActifs();
+                        ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(getContext(), R.layout.spinner_style, TableEmplacement.instance(getContext()).recupererTexteActifs());
+                        adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    editEmplacement.setAdapter(adapteurEmplacement);
+                    editEmplacement.setEnabled(false);
+                    indexEmplacement = -1;
+                    for (int i=0; i<emplacements.size() ; i++) {
+                        if (fermenteur.getEmplacement(getContext()).getId() == emplacements.get(i).getId()) {
+                            indexEmplacement = i;
+                        }
+                    }
+                    if (indexEmplacement == -1) {
+                        emplacements.add(fermenteur.getEmplacement(getContext()));
+                        adapteurEmplacement.add(TableEmplacement.instance(getContext()).recupererId(fermenteur.getEmplacement(getContext()).getId()).getTexte());
+                        editEmplacement.setSelection(adapteurEmplacement.getCount()-1);
+                    }
+                layoutEmplacement.addView(editEmplacement);
+            ligneCapaciteEmplacement.addView(layoutEmplacement, parametre);
         tableauDescription.addView(ligneCapaciteEmplacement);
-        ligneEtatDate.addView(etat, parametre);
-        ligneEtatDate.addView(dateEtat, parametre);
+
+
+            TableRow ligneEtatDate = new TableRow(getContext());
+                TextView etat = new TextView(getContext());
+                etat.setGravity(Gravity.CENTER_VERTICAL);
+                etat.setText("État : " + fermenteur.getEtat(getContext()).getTexte());
+            ligneEtatDate.addView(etat, parametre);
+                TextView dateEtat = new TextView(getContext());
+                dateEtat.setGravity(Gravity.CENTER_VERTICAL);
+                dateEtat.setText("Depuis le : " + fermenteur.getDateEtat());
+            ligneEtatDate.addView(dateEtat, parametre);
         tableauDescription.addView(ligneEtatDate);
+
+            ligneBouton = new TableRow(getContext());
+                btnModifier = new Button(getContext());
+                btnModifier.setText("Modifier");
+                btnModifier.setOnClickListener(this);
+                btnModifier.setLayoutParams(parametre);
         tableauDescription.addView(ligneBouton);
 
-        TableRow.LayoutParams margeCase = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        margeCase.setMargins(10, 0, 10, 0);
+                btnValider = new Button(getContext());
+                btnValider.setText("Valider");
+                btnValider.setOnClickListener(this);
+                btnValider.setLayoutParams(parametre);
+
+                btnAnnuler = new Button(getContext());
+                btnAnnuler.setText("Annuler");
+                btnAnnuler.setOnClickListener(this);
+                btnAnnuler.setLayoutParams(parametre);
+
+        TableRow.LayoutParams margeHistorique = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        margeHistorique.setMargins(10, 0, 10, 0);
 
         ligneAjouter = new TableRow(getContext());
         LinearLayout sous_ligneAjouter = new LinearLayout(getContext());
@@ -267,7 +271,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         ajouter.setSpan(new UnderlineSpan(), 0, ajouter.length(), 0);
         btnAjouterHistorique.setText(ajouter);
         btnAjouterHistorique.setOnClickListener(this);
-        ligneAjouter.addView(btnAjouterHistorique, margeCase);
+        ligneAjouter.addView(btnAjouterHistorique, margeHistorique);
     }
 
     private void afficher() {
@@ -317,7 +321,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdEtat(), fermenteur.getDateEtatToLong(), fermenteur.getIdBrassin());
+            TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdEtat(), fermenteur.getDateEtatToLong(), fermenteur.getIdBrassin(), true);
             indexEmplacement = editEmplacement.getSelectedItemPosition();
             afficher();
         } else {
@@ -354,7 +358,8 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 fermenteur.getDateLavageAcideToLong(),
                 fermenteur.getIdEtat(),
                 fermenteur.getDateEtatToLong(),
-                TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId());
+                TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId(),
+                true);
     }
 
     private void changerEtat() {
@@ -424,7 +429,8 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                             fermenteur.getDateLavageAcideToLong(),
                             listeEtat.get(i).getId(),
                             System.currentTimeMillis(),
-                            fermenteur.getIdBrassin());
+                            fermenteur.getIdBrassin(),
+                            true);
                     String texte = listeEtat.get(i).getHistorique();
                     if ((texte != null) && (!texte.equals(""))) {
                         TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, fermenteur.getId(), -1, fermenteur.getIdBrassin());

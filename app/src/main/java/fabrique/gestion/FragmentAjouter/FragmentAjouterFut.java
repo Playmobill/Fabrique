@@ -87,12 +87,12 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
         }
 
         if (erreur.equals("")) {
-            //Date avec seulement Jour, mois annee
+            //Date avec seulement jour, mois, annee
             Calendar calendrier = Calendar.getInstance();
             calendrier.setTimeInMillis(System.currentTimeMillis());
             long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
 
-            TableFut.instance(contexte).ajouter(numero, capacite, 1, date, -1, date);
+            TableFut.instance(contexte).ajouter(numero, capacite, 1, date, -1, date, true);
 
             Toast.makeText(contexte, "Fut ajouté !", Toast.LENGTH_LONG).show();
 

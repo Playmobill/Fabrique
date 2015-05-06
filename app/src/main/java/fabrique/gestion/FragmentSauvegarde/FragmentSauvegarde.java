@@ -400,7 +400,19 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                         Long.parseLong(textesFermenteur.get(3)),
                                         Long.parseLong(textesFermenteur.get(4)),
                                         Long.parseLong(textesFermenteur.get(5)),
-                                        Long.parseLong(textesFermenteur.get(6)));
+                                        Long.parseLong(textesFermenteur.get(6)), true);
+                            }
+                            //Si il n'y a que 8 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesFermenteur.size() == 8) && !corrompuFermenteur) {
+                                TableFermenteur.instance(contexte).ajouter(
+                                        Integer.parseInt(textesFermenteur.get(0)),
+                                        Integer.parseInt(textesFermenteur.get(1)),
+                                        Long.parseLong(textesFermenteur.get(2)),
+                                        Long.parseLong(textesFermenteur.get(3)),
+                                        Long.parseLong(textesFermenteur.get(4)),
+                                        Long.parseLong(textesFermenteur.get(5)),
+                                        Long.parseLong(textesFermenteur.get(6)),
+                                        Boolean.parseBoolean(textesFermenteur.get(7)));
                             }
                             break;
 
@@ -481,7 +493,20 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                         Long.parseLong(textesCuve.get(4)),
                                         Long.parseLong(textesCuve.get(5)),
                                         textesCuve.get(6),
-                                        Long.parseLong(textesCuve.get(7)));
+                                        Long.parseLong(textesCuve.get(7)), true);
+                            }
+                            //Si il n'y a que 9 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesCuve.size() == 9) && !corrompuCuve) {
+                                TableCuve.instance(contexte).ajouter(
+                                        Integer.parseInt(textesCuve.get(0)),
+                                        Integer.parseInt(textesCuve.get(1)),
+                                        Long.parseLong(textesCuve.get(2)),
+                                        Long.parseLong(textesCuve.get(3)),
+                                        Long.parseLong(textesCuve.get(4)),
+                                        Long.parseLong(textesCuve.get(5)),
+                                        textesCuve.get(6),
+                                        Long.parseLong(textesCuve.get(7)),
+                                        Boolean.parseBoolean(textesCuve.get(8)));
                             }
                             break;
 
@@ -560,7 +585,18 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                         Long.parseLong(textesFut.get(2)),
                                         Long.parseLong(textesFut.get(3)),
                                         Long.parseLong(textesFut.get(4)),
-                                        Long.parseLong(textesFut.get(5)));
+                                        Long.parseLong(textesFut.get(5)), true);
+                            }
+                            //Si il n'y a que 7 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesFut.size() == 7) && !corrompuFut) {
+                                TableFut.instance(contexte).ajouter(
+                                        Integer.parseInt(textesFut.get(0)),
+                                        Integer.parseInt(textesFut.get(1)),
+                                        Long.parseLong(textesFut.get(2)),
+                                        Long.parseLong(textesFut.get(3)),
+                                        Long.parseLong(textesFut.get(4)),
+                                        Long.parseLong(textesFut.get(5)),
+                                        Boolean.parseBoolean(textesFut.get(6)));
                             }
                             break;
 
@@ -581,7 +617,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     }
                                     textesHistorique.add(texteHistorique);
                                 }
-                                texteFut = analyseur.getText();
+                                texteHistorique = analyseur.getText();
                                 if ((eventType == XmlPullParser.START_TAG) && (analyseur.getName().charAt(0) == 'O')) {
                                     corrompuHistorique = true;
                                 } else {
@@ -695,7 +731,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
     private void envoyer() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_SUBJECT, "Sauvegarde de l'application \"Gestion de Brasserie\"");
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"alex11du88@gmail.com"});
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{""});
         intent.putExtra(Intent.EXTRA_TEXT, "En pièce jointe, le fichier de sauvegarde de l'application \"Gestion de Brasserie\"");
         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(ligne.getFichier()));
         intent.setType("text/plain");

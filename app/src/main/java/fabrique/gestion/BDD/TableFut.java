@@ -30,14 +30,12 @@ public class TableFut extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            futs.add(new Fut(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getLong(3), tmp.getLong(4), tmp.getLong(5), tmp.getLong(6)));
-
-            modifier(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getLong(3), tmp.getLong(4), tmp.getLong(5), tmp.getLong(6));
+            futs.add(new Fut(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getLong(3), tmp.getLong(4), tmp.getLong(5), tmp.getLong(6), tmp.getInt(7) == 1));
         }
         Collections.sort(futs);
     }
 
-    public long ajouter(int numero, int capacite, long id_etat, long dateEtat, long id_brassin, long dateInspection) {
+    public long ajouter(int numero, int capacite, long id_etat, long dateEtat, long id_brassin, long dateInspection, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("capacite", capacite);
@@ -45,9 +43,10 @@ public class TableFut extends Controle {
         valeur.put("dateEtat", dateEtat);
         valeur.put("id_brassin", id_brassin);
         valeur.put("dateInspection", dateInspection);
+        valeur.put("actif", actif);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            futs.add(new Fut(id, numero, capacite, id_etat, dateEtat, id_brassin, dateInspection));
+            futs.add(new Fut(id, numero, capacite, id_etat, dateEtat, id_brassin, dateInspection, actif));
             Collections.sort(futs);
         }
         return id;
@@ -74,7 +73,7 @@ public class TableFut extends Controle {
         return null;
     }
 
-    public void modifier(long id, int numero, int capacite, long id_etat, long dateEtat, long id_brassin, long dateInspection){
+    public void modifier(long id, int numero, int capacite, long id_etat, long dateEtat, long id_brassin, long dateInspection, boolean actif){
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("capacite", capacite);
@@ -82,6 +81,7 @@ public class TableFut extends Controle {
         valeur.put("dateEtat", dateEtat);
         valeur.put("id_brassin", id_brassin);
         valeur.put("dateInspection", dateInspection);
+        valeur.put("actif", actif);
         if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
             Fut fut = recupererId(id);
             fut.setNumero(numero);
@@ -90,6 +90,7 @@ public class TableFut extends Controle {
             fut.setDateEtat(dateEtat);
             fut.setBrassin(id_brassin);
             fut.setDateInspection(dateInspection);
+            fut.setActif(actif);
             Collections.sort(futs);
         }
     }
