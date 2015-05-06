@@ -13,20 +13,20 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:text="Avril 2015"/>
+            android:id="@+id/moisPrecedent"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Mai 2015"/>
+            android:id="@+id/moisActuel"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:text="Juin 2015"/>
+            android:id="@+id/moisSuivant"/>
 
     </RelativeLayout>
 

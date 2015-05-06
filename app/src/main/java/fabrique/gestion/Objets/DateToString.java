@@ -40,6 +40,7 @@ public class DateToString {
 
     public static String moisToString(int mois) {
         switch (mois) {
+            case(-1) : return "Dec";
             case(0) : return "Jan";
             case(1) : return "Fev";
             case(2) : return "Mar";
@@ -52,6 +53,7 @@ public class DateToString {
             case(9) : return "Oct";
             case(10) : return "Nov";
             case(11) : return "Dec";
+            case(12) : return "Jan";
             default : return null;
         }
     }
