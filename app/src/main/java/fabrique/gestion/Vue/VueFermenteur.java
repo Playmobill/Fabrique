@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -46,6 +47,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     private ArrayList<Emplacement> emplacements;
     private int indexEmplacement;
     private EditText editTitre, editCapacite;
+    private CheckBox editActif;
     private TableRow ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler;
 
@@ -159,7 +161,6 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
 
                     editTitre = new EditText(getContext());
                     editTitre.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    editTitre.setEnabled(false);
                 layoutTitre.addView(editTitre);
             ligneTitreLavageAcide.addView(layoutTitre, parametre);
 
@@ -188,7 +189,6 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
 
                     editCapacite = new EditText(getContext());
                     editCapacite.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    editCapacite.setEnabled(false);
                 layoutCapacite.addView(editCapacite);
             ligneCapaciteEmplacement.addView(layoutCapacite, parametre);
 
@@ -202,7 +202,6 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                         ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(getContext(), R.layout.spinner_style, TableEmplacement.instance(getContext()).recupererTexteActifs());
                         adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     editEmplacement.setAdapter(adapteurEmplacement);
-                    editEmplacement.setEnabled(false);
                     indexEmplacement = -1;
                     for (int i=0; i<emplacements.size() ; i++) {
                         if (fermenteur.getEmplacement(getContext()).getId() == emplacements.get(i).getId()) {
@@ -229,6 +228,16 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 dateEtat.setText("Depuis le : " + fermenteur.getDateEtat());
             ligneEtatDate.addView(dateEtat, parametre);
         tableauDescription.addView(ligneEtatDate);
+
+            TableRow ligneActif = new TableRow(getContext());
+                TextView actif = new TextView(getContext());
+                actif.setGravity(Gravity.CENTER_VERTICAL);
+                actif.setText("Actif : ");
+            ligneActif.addView(actif, parametre);
+                    editActif = new CheckBox(getContext());
+                    editActif.setGravity(Gravity.CENTER_VERTICAL);
+            ligneActif.addView(editActif, parametre);
+        tableauDescription.addView(ligneActif);
 
             ligneBouton = new TableRow(getContext());
                 btnModifier = new Button(getContext());
@@ -284,6 +293,9 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         editEmplacement.setSelection(indexEmplacement);
         editEmplacement.setEnabled(false);
 
+        editActif.setChecked(fermenteur.getActif());
+        editActif.setEnabled(false);
+
         ligneBouton.removeAllViews();
         ligneBouton.addView(btnModifier);
     }
@@ -292,6 +304,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         editTitre.setEnabled(true);
         editEmplacement.setEnabled(true);
         editCapacite.setEnabled(true);
+        editActif.setEnabled(true);
 
         ligneBouton.removeAllViews();
         ligneBouton.addView(btnValider);
@@ -321,7 +334,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdEtat(), fermenteur.getDateEtatToLong(), fermenteur.getIdBrassin(), true);
+            TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int) editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdEtat(), fermenteur.getDateEtatToLong(), fermenteur.getIdBrassin(), editActif.isChecked());
             indexEmplacement = editEmplacement.getSelectedItemPosition();
             afficher();
         } else {

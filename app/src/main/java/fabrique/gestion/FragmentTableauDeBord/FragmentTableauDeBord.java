@@ -12,10 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.FragmentAmeliore;
+import fabrique.gestion.Objets.Cuve;
+import fabrique.gestion.Objets.Fermenteur;
 import fabrique.gestion.Widget.BoutonCuve;
 import fabrique.gestion.Widget.BoutonFermenteur;
 
@@ -70,9 +74,9 @@ public class FragmentTableauDeBord extends FragmentAmeliore {
         LinearLayout.LayoutParams parametreFermenteur = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parametreFermenteur.setMargins(10, 10, 10, 10);
 
-        TableFermenteur tableFermenteur = TableFermenteur.instance(contexte);
-        for (int i=0; i<tableFermenteur.tailleListe(); i=i+1) {
-            BoutonFermenteur boutonFermenteur = new BoutonFermenteur(contexte, this, tableFermenteur.recupererIndex(i));
+        ArrayList<Fermenteur> listeFermenteur = TableFermenteur.instance(contexte).recupererFermenteursActifs();
+        for (int i=0; i<listeFermenteur.size(); i=i+1) {
+            BoutonFermenteur boutonFermenteur = new BoutonFermenteur(contexte, this, listeFermenteur.get(i));
             ligne.addView(boutonFermenteur, parametreFermenteur);
         }
 
@@ -89,9 +93,9 @@ public class FragmentTableauDeBord extends FragmentAmeliore {
         LinearLayout.LayoutParams parametreCuve = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         parametreCuve.setMargins(10, 10, 10, 10);
 
-        TableCuve tableCuve = TableCuve.instance(contexte);
-        for (int i=0; i<tableCuve.tailleListe(); i=i+1) {
-            BoutonCuve boutonCuve = new BoutonCuve(contexte, this, tableCuve.recupererIndex(i));
+        ArrayList<Cuve> listeCuve = TableCuve.instance(contexte).recupererCuvesActifs();
+        for (int i=0; i<listeCuve.size(); i=i+1) {
+            BoutonCuve boutonCuve = new BoutonCuve(contexte, this, listeCuve.get(i));
             ligne.addView(boutonCuve, parametreCuve);
         }
 

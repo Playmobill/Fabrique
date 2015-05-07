@@ -105,37 +105,48 @@ public class TableFermenteur extends Controle {
         return numeroFermenteurs;
     }
 
+    public ArrayList<Fermenteur> recupererFermenteursActifs() {
+        ArrayList<Fermenteur> listeFermenteur = new ArrayList<>();
+
+        for (int i=0; i<fermenteurs.size(); i++) {
+            if (fermenteurs.get(i).getActif()) {
+                listeFermenteur.add(fermenteurs.get(i));
+            }
+        }
+        return listeFermenteur;
+    }
+
     public ArrayList<Fermenteur> recupererFermenteurAvecBrassin() {
-        ArrayList<Fermenteur> listeCuve = new ArrayList<>();
+        ArrayList<Fermenteur> listeFermenteur = new ArrayList<>();
 
         for (int i=0; i<fermenteurs.size(); i++) {
             if (fermenteurs.get(i).getIdBrassin() != -1) {
-                listeCuve.add(fermenteurs.get(i));
+                listeFermenteur.add(fermenteurs.get(i));
             }
         }
-        return listeCuve;
+        return listeFermenteur;
     }
 
     public ArrayList<String> recupererNumerosFermenteurAvecBrassin() {
-        ArrayList<String> listeCuve = new ArrayList<>();
+        ArrayList<String> listeFermenteur = new ArrayList<>();
 
         for (int i=0; i<fermenteurs.size(); i++) {
             if (fermenteurs.get(i).getIdBrassin() != -1) {
-                listeCuve.add(Integer.toString(fermenteurs.get(i).getNumero()));
+                listeFermenteur.add(Integer.toString(fermenteurs.get(i).getNumero()));
             }
         }
-        return listeCuve;
+        return listeFermenteur;
     }
 
     public ArrayList<String> recupererNumerosFermenteurSansBrassin() {
-        ArrayList<String> listeCuve = new ArrayList<>();
+        ArrayList<String> listeFermenteur = new ArrayList<>();
 
         for (int i=0; i<fermenteurs.size(); i++) {
             if (fermenteurs.get(i).getIdBrassin() == -1) {
-                listeCuve.add(Integer.toString(fermenteurs.get(i).getNumero()));
+                listeFermenteur.add(Integer.toString(fermenteurs.get(i).getNumero()));
             }
         }
-        return listeCuve;
+        return listeFermenteur;
     }
 
     private ArrayList<Fermenteur> trierParId(ArrayList<Fermenteur> liste, int petitIndex, int grandIndex) {

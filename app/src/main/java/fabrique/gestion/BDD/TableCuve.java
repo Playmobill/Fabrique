@@ -100,11 +100,22 @@ public class TableCuve extends Controle{
     }
 
     public String[] numeros() {
-        String[] numeroFermenteurs = new String[cuves.size()];
+        String[] numeroCuves = new String[cuves.size()];
         for (int i=0; i<cuves.size() ; i++) {
-            numeroFermenteurs[i] = cuves.get(i).getNumero() + "";
+            numeroCuves[i] = cuves.get(i).getNumero() + "";
         }
-        return numeroFermenteurs;
+        return numeroCuves;
+    }
+
+    public ArrayList<Cuve> recupererCuvesActifs() {
+        ArrayList<Cuve> listeCuve = new ArrayList<>();
+
+        for (int i=0; i<cuves.size(); i++) {
+            if (cuves.get(i).getActif()) {
+                listeCuve.add(cuves.get(i));
+            }
+        }
+        return listeCuve;
     }
 
     public ArrayList<Cuve> recupererCuveAvecBrassin() {

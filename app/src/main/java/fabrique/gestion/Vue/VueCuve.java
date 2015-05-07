@@ -6,9 +6,11 @@ import android.graphics.Typeface;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -22,15 +24,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import fabrique.gestion.BDD.TableBrassin;
-import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatCuve;
+import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
-import fabrique.gestion.Objets.Cuve;
 import fabrique.gestion.Objets.Emplacement;
 import fabrique.gestion.Objets.EtatCuve;
+import fabrique.gestion.Objets.Cuve;
 import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.Objets.ListeHistorique;
 import fabrique.gestion.R;
@@ -40,12 +42,13 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
     private Cuve cuve;
 
     //Description
-    private LinearLayout tableauDescription;
+    private TableLayout tableauDescription;
     private Spinner editEmplacement;
     private ArrayList<Emplacement> emplacements;
     private int indexEmplacement;
     private EditText editTitre, editCapacite;
-    private LinearLayout ligneBouton;
+    private CheckBox editActif;
+    private TableRow ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler;
 
     //Changer Brassin
@@ -136,139 +139,148 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         view.setBackgroundColor(Color.WHITE);
 
         contenant.addView(contourTitre, parametreContourTitre);
-            contourTitre.addView(fondTitre);
+        contourTitre.addView(fondTitre);
         contenant.addView(contour, parametreContour);
-            contour.addView(view);
+        contour.addView(view);
         contenant.addView(titre, parametreTitre);
         return contenant;
     }
 
     private void initialiser() {
-        LinearLayout.LayoutParams parametre = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        TableRow.LayoutParams parametre = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
         parametre.setMargins(10, 10, 10, 10);
 
-        LinearLayout ligneTitreLavageAcide = new LinearLayout(getContext());
-            LinearLayout layoutTitre = new LinearLayout(getContext());
-                TextView titre = new TextView(getContext());
-                titre.setText("Cuve ");
-                titre.setTypeface(null, Typeface.BOLD);
-
-                editTitre = new EditText(getContext());
-                editTitre.setInputType(InputType.TYPE_CLASS_NUMBER);
-                editTitre.setEnabled(false);
-
-        TextView dateLavageAcide = new TextView(getContext());
-            dateLavageAcide.setText("" + cuve.getDateLavageAcideToString());
-            if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
-                dateLavageAcide.setTextColor(Color.RED);
-            } else if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= (TableGestion.instance(getContext()).avertissementLavageAcide())) {
-                dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
-            } else {
-                dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
-            }
-
-        LinearLayout ligneCapaciteEmplacement = new LinearLayout(getContext());
-            LinearLayout layoutCapacite = new LinearLayout(getContext());
-                TextView capacite = new TextView(getContext());
-                capacite.setText("Capacité : ");
-
-                editCapacite = new EditText(getContext());
-                editCapacite.setInputType(InputType.TYPE_CLASS_NUMBER);
-                editCapacite.setEnabled(false);
-
-            LinearLayout layoutEmplacement = new LinearLayout(getContext());
-                TextView emplacement = new TextView(getContext());
-                emplacement.setText("Emplacement : ");
-
-                editEmplacement = new Spinner(getContext());
-                emplacements = TableEmplacement.instance(getContext()).recupererActifs();
-                    ArrayList<String> texteEmplacements = new ArrayList<>();
-                    for (int i=0; i<emplacements.size() ; i++) {
-                        texteEmplacements.add(emplacements.get(i).getTexte());
-                    }
-                    ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(getContext(), R.layout.spinner_style, texteEmplacements);
-                    adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                editEmplacement.setAdapter(adapteurEmplacement);
-                editEmplacement.setEnabled(false);
-                indexEmplacement = -1;
-                for (int i=0; i<emplacements.size() ; i++) {
-                    if (cuve.getEmplacement(getContext()).getId() == emplacements.get(i).getId()) {
-                        indexEmplacement = i;
-                    }
-                }
-                if (indexEmplacement == -1) {
-                    emplacements.add(cuve.getEmplacement(getContext()));
-                    adapteurEmplacement.add(TableEmplacement.instance(getContext()).recupererId(cuve.getEmplacement(getContext()).getId()).getTexte());
-                    editEmplacement.setSelection(adapteurEmplacement.getCount()-1);
-                }
-
-
-        LinearLayout ligneEtatDate = new LinearLayout(getContext());
-            TextView etat = new TextView(getContext());
-            etat.setText("État : " + cuve.getEtat(getContext()).getTexte());
-
-            TextView dateEtat = new TextView(getContext());
-            dateEtat.setText("Depuis le : " + cuve.getDateEtat());
-
-        ligneBouton = new LinearLayout(getContext());
-            btnModifier = new Button(getContext());
-            btnModifier.setText("Modifier");
-            btnModifier.setOnClickListener(this);
-            btnModifier.setLayoutParams(parametre);
-
-            btnValider = new Button(getContext());
-            btnValider.setText("Valider");
-            btnValider.setOnClickListener(this);
-            btnValider.setLayoutParams(parametre);
-
-            btnAnnuler = new Button(getContext());
-            btnAnnuler.setText("Annuler");
-            btnAnnuler.setOnClickListener(this);
-            btnAnnuler.setLayoutParams(parametre);
-
-
+        TableRow ligneTitreLavageAcide = new TableRow(getContext());
+        LinearLayout layoutTitre = new LinearLayout(getContext());
+        layoutTitre.setGravity(Gravity.CENTER_VERTICAL);
+        TextView titre = new TextView(getContext());
+        titre.setText("Cuve ");
+        titre.setTypeface(null, Typeface.BOLD);
         layoutTitre.addView(titre);
-                layoutTitre.addView(editTitre);
-            ligneTitreLavageAcide.addView(layoutTitre, parametre);
-            ligneTitreLavageAcide.addView(dateLavageAcide, parametre);
+
+        editTitre = new EditText(getContext());
+        editTitre.setInputType(InputType.TYPE_CLASS_NUMBER);
+        layoutTitre.addView(editTitre);
+        ligneTitreLavageAcide.addView(layoutTitre, parametre);
+
+        LinearLayout layoutDateLavageAcide = new LinearLayout(getContext());
+        layoutDateLavageAcide.setGravity(Gravity.CENTER_VERTICAL);
+        TextView dateLavageAcide = new TextView(getContext());
+        dateLavageAcide.setGravity(Gravity.CENTER_VERTICAL);
+        dateLavageAcide.setText("" + cuve.getDateLavageAcideToString());
+        if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
+            dateLavageAcide.setTextColor(Color.RED);
+        } else if ((System.currentTimeMillis() - cuve.getDateLavageAcide()) >= (TableGestion.instance(getContext()).avertissementLavageAcide())) {
+            dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
+        } else {
+            dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
+        }
+        layoutDateLavageAcide.addView(dateLavageAcide);
+        ligneTitreLavageAcide.addView(layoutDateLavageAcide, parametre);
         tableauDescription.addView(ligneTitreLavageAcide);
-                layoutCapacite.addView(capacite);
-                layoutCapacite.addView(editCapacite);
-            ligneCapaciteEmplacement.addView(layoutCapacite, parametre);
-                layoutEmplacement.addView(emplacement);
-                layoutEmplacement.addView(editEmplacement);
-            ligneCapaciteEmplacement.addView(layoutEmplacement, parametre);
+
+        TableRow ligneCapaciteEmplacement = new TableRow(getContext());
+        LinearLayout layoutCapacite = new LinearLayout(getContext());
+        layoutCapacite.setGravity(Gravity.CENTER_VERTICAL);
+        TextView capacite = new TextView(getContext());
+        capacite.setText("Capacité : ");
+        layoutCapacite.addView(capacite);
+
+        editCapacite = new EditText(getContext());
+        editCapacite.setInputType(InputType.TYPE_CLASS_NUMBER);
+        layoutCapacite.addView(editCapacite);
+        ligneCapaciteEmplacement.addView(layoutCapacite, parametre);
+
+        LinearLayout layoutEmplacement = new LinearLayout(getContext());
+        layoutEmplacement.setGravity(Gravity.CENTER_VERTICAL);
+        TextView emplacement = new TextView(getContext());
+        emplacement.setText("Emplacement : ");
+        layoutEmplacement.addView(emplacement);
+        editEmplacement = new Spinner(getContext());
+        emplacements = TableEmplacement.instance(getContext()).recupererActifs();
+        ArrayAdapter<String> adapteurEmplacement = new ArrayAdapter<>(getContext(), R.layout.spinner_style, TableEmplacement.instance(getContext()).recupererTexteActifs());
+        adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        editEmplacement.setAdapter(adapteurEmplacement);
+        indexEmplacement = -1;
+        for (int i=0; i<emplacements.size() ; i++) {
+            if (cuve.getEmplacement(getContext()).getId() == emplacements.get(i).getId()) {
+                indexEmplacement = i;
+            }
+        }
+        if (indexEmplacement == -1) {
+            emplacements.add(cuve.getEmplacement(getContext()));
+            adapteurEmplacement.add(TableEmplacement.instance(getContext()).recupererId(cuve.getEmplacement(getContext()).getId()).getTexte());
+            editEmplacement.setSelection(adapteurEmplacement.getCount()-1);
+        }
+        layoutEmplacement.addView(editEmplacement);
+        ligneCapaciteEmplacement.addView(layoutEmplacement, parametre);
         tableauDescription.addView(ligneCapaciteEmplacement);
-            ligneEtatDate.addView(etat, parametre);
-            ligneEtatDate.addView(dateEtat, parametre);
+
+
+        TableRow ligneEtatDate = new TableRow(getContext());
+        TextView etat = new TextView(getContext());
+        etat.setGravity(Gravity.CENTER_VERTICAL);
+        etat.setText("État : " + cuve.getEtat(getContext()).getTexte());
+        ligneEtatDate.addView(etat, parametre);
+        TextView dateEtat = new TextView(getContext());
+        dateEtat.setGravity(Gravity.CENTER_VERTICAL);
+        dateEtat.setText("Depuis le : " + cuve.getDateEtat());
+        ligneEtatDate.addView(dateEtat, parametre);
         tableauDescription.addView(ligneEtatDate);
+
+        TableRow ligneActif = new TableRow(getContext());
+        TextView actif = new TextView(getContext());
+        actif.setGravity(Gravity.CENTER_VERTICAL);
+        actif.setText("Actif : ");
+        ligneActif.addView(actif, parametre);
+        editActif = new CheckBox(getContext());
+        editActif.setGravity(Gravity.CENTER_VERTICAL);
+        ligneActif.addView(editActif, parametre);
+        tableauDescription.addView(ligneActif);
+
+        ligneBouton = new TableRow(getContext());
+        btnModifier = new Button(getContext());
+        btnModifier.setText("Modifier");
+        btnModifier.setOnClickListener(this);
+        btnModifier.setLayoutParams(parametre);
         tableauDescription.addView(ligneBouton);
 
-        TableRow.LayoutParams margeCase = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        margeCase.setMargins(10, 0, 10, 0);
+        btnValider = new Button(getContext());
+        btnValider.setText("Valider");
+        btnValider.setOnClickListener(this);
+        btnValider.setLayoutParams(parametre);
+
+        btnAnnuler = new Button(getContext());
+        btnAnnuler.setText("Annuler");
+        btnAnnuler.setOnClickListener(this);
+        btnAnnuler.setLayoutParams(parametre);
+
+        TableRow.LayoutParams margeHistorique = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        margeHistorique.setMargins(10, 0, 10, 0);
 
         ligneAjouter = new TableRow(getContext());
-            LinearLayout sous_ligneAjouter = new LinearLayout(getContext());
-                ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueCuve();
-                String[] tabListeHistorique = new String[listeHistoriques.size()+1];
-                tabListeHistorique[0] = "";
-                for (int i=0; i<listeHistoriques.size() ; i++) {
-                    tabListeHistorique[i+1] = listeHistoriques.get(i).getTexte();
-                }
-                ajoutListeHistorique = new Spinner(getContext());
-                    ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
-                    adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
-            sous_ligneAjouter.addView(ajoutListeHistorique);
-                ajoutHistorique = new EditText(getContext());
-            sous_ligneAjouter.addView(ajoutHistorique);
+        LinearLayout sous_ligneAjouter = new LinearLayout(getContext());
+        ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueCuve();
+        String[] tabListeHistorique = new String[listeHistoriques.size()+1];
+        tabListeHistorique[0] = "";
+        for (int i=0; i<listeHistoriques.size() ; i++) {
+            tabListeHistorique[i+1] = listeHistoriques.get(i).getTexte();
+        }
+        ajoutListeHistorique = new Spinner(getContext());
+        ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
+        adapteurAjoutListeHistorique.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
+        sous_ligneAjouter.addView(ajoutListeHistorique);
+        ajoutHistorique = new EditText(getContext());
+        sous_ligneAjouter.addView(ajoutHistorique);
         ligneAjouter.addView(sous_ligneAjouter);
-            btnAjouterHistorique = new TextView(getContext());
-                SpannableString ajouter = new SpannableString("Ajouter");
-                ajouter.setSpan(new UnderlineSpan(), 0, ajouter.length(), 0);
-            btnAjouterHistorique.setText(ajouter);
-            btnAjouterHistorique.setOnClickListener(this);
-        ligneAjouter.addView(btnAjouterHistorique, margeCase);
+        btnAjouterHistorique = new TextView(getContext());
+        SpannableString ajouter = new SpannableString("Ajouter");
+        ajouter.setSpan(new UnderlineSpan(), 0, ajouter.length(), 0);
+        btnAjouterHistorique.setText(ajouter);
+        btnAjouterHistorique.setOnClickListener(this);
+        ligneAjouter.addView(btnAjouterHistorique, margeHistorique);
     }
 
     private void afficher() {
@@ -281,6 +293,9 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         editEmplacement.setSelection(indexEmplacement);
         editEmplacement.setEnabled(false);
 
+        editActif.setChecked(cuve.getActif());
+        editActif.setEnabled(false);
+
         ligneBouton.removeAllViews();
         ligneBouton.addView(btnModifier);
     }
@@ -289,6 +304,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         editTitre.setEnabled(true);
         editEmplacement.setEnabled(true);
         editCapacite.setEnabled(true);
+        editActif.setEnabled(true);
 
         ligneBouton.removeAllViews();
         ligneBouton.addView(btnValider);
@@ -318,7 +334,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableCuve.instance(getContext()).modifier(cuve.getId(), numero, capacite, emplacements.get((int)editEmplacement.getSelectedItemId()).getId(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin(), true);
+            TableCuve.instance(getContext()).modifier(cuve.getId(), numero, capacite, emplacements.get((int) editEmplacement.getSelectedItemId()).getId(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin(), editActif.isChecked());
             indexEmplacement = editEmplacement.getSelectedItemPosition();
             afficher();
         } else {
@@ -356,7 +372,8 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                 cuve.getIdEtat(),
                 cuve.getLongDateEtat(),
                 cuve.getCommentaireEtat(),
-                TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId(), true);
+                TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId(),
+                true);
     }
 
     private void changerEtat() {
@@ -427,7 +444,8 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                             listeEtat.get(i).getId(),
                             System.currentTimeMillis(),
                             cuve.getCommentaireEtat(),
-                            cuve.getIdBrassin(), true);
+                            cuve.getIdBrassin(),
+                            true);
                     String texte = listeEtat.get(i).getHistorique();
                     if ((texte != null) && (!texte.equals(""))) {
                         TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, cuve.getId(), -1, cuve.getIdBrassin());
