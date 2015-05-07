@@ -28,7 +28,7 @@ public class TableEtatFermenteur extends Controle {
         etats = new ArrayList<>();
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            etats.add(new EtatFermenteur(tmp.getLong(0), tmp.getString(1), tmp.getString(2), tmp.getInt(3), tmp.getInt(4), tmp.getInt(5) == 1));
+            etats.add(new EtatFermenteur(tmp.getLong(0), tmp.getString(1), tmp.getString(2), tmp.getInt(3), tmp.getInt(4), tmp.getInt(8) == 1));
         }
         Collections.sort(etats);
     }

@@ -33,6 +33,9 @@ public class BDD extends SQLiteOpenHelper {
                                                 "historique TEXT, " +
                                                 "couleurTexte INTEGER NOT NULL," +
                                                 "couleurFond INTEGER NOT NULL," +
+                                                "avecBrassin INTEGER NOT NULL," +
+                                                "id_etatPrecedent INTEGER," +
+                                                "id_etatSuivant INTEGER," +
                                                 "actif INTEGER NOT NULL)";
 
 
@@ -42,6 +45,9 @@ public class BDD extends SQLiteOpenHelper {
                                                 "historique TEXT, " +
                                                 "couleurTexte INTEGER NOT NULL," +
                                                 "couleurFond INTEGER NOT NULL," +
+                                                "avecBrassin INTEGER NOT NULL," +
+                                                "id_etatPrecedent INTEGER," +
+                                                "id_etatSuivant INTEGER," +
                                                 "actif INTEGER NOT NULL)";
 
     private static String createurTableEtatFut = "CREATE TABLE IF NOT EXISTS EtatFut (" +
@@ -50,6 +56,9 @@ public class BDD extends SQLiteOpenHelper {
                                                 "historique TEXT, " +
                                                 "couleurTexte INTEGER NOT NULL," +
                                                 "couleurFond INTEGER NOT NULL," +
+                                                "avecBrassin INTEGER NOT NULL," +
+                                                "id_etatPrecedent INTEGER," +
+                                                "id_etatSuivant INTEGER," +
                                                 "actif INTEGER NOT NULL)";
 
     private static String createurTableBrassin = "CREATE TABLE IF NOT EXISTS Brassin (" +
@@ -144,9 +153,9 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL(createurTableListeHistorique);
         db.execSQL(createurTableCalendrier);
 
-        db.execSQL("INSERT INTO EtatFermenteur (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 1)");
-        db.execSQL("INSERT INTO EtatCuve (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 1)");
-        db.execSQL("INSERT INTO EtatFut (texte, historique, couleurTexte, couleurFond, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 1)");
+        db.execSQL("INSERT INTO EtatFermenteur (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 0, 1)");
+        db.execSQL("INSERT INTO EtatCuve (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 0, 1)");
+        db.execSQL("INSERT INTO EtatFut (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 0, 1)");
 
         db.execSQL("INSERT INTO Gestion (delaiLavageAcide, avertissementLavageAcide, delaiInspectionBaril, avertissementInspectionBaril) VALUES(1209600000, 604800000, 1209600000, 604800000)");
 
