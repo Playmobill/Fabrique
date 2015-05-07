@@ -61,24 +61,24 @@ public class LigneTypeBiere extends TableRow implements View.OnClickListener {
 
     private void afficher() {
         removeAllViews();
-        nom.setText(typeBiere.getNom());
+            nom.setText(typeBiere.getNom());
         addView(nom, marge);
-        couleur.setText(typeBiere.getCouleur());
+            couleur.setText(typeBiere.getCouleur());
         addView(couleur, marge);
-        actif.setChecked(typeBiere.getActif());
-        actif.setEnabled(false);
-        addView(actif);
+            actif.setChecked(typeBiere.getActif());
+            actif.setEnabled(false);
+        addView(actif, marge);
         addView(modifier);
     }
 
     private void modifier() {
         removeAllViews();
-        editNom.setText(typeBiere.getNom());
+            editNom.setText(typeBiere.getNom());
         addView(editNom, marge);
-        editCouleur.setText(typeBiere.getCouleur());
+            editCouleur.setText(typeBiere.getCouleur());
         addView(editCouleur, marge);
-        actif.setEnabled(true);
-        addView(actif);
+            actif.setEnabled(true);
+        addView(actif, marge);
         addView(valider);
         addView(annuler);
     }

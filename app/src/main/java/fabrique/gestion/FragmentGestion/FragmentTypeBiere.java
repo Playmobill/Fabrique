@@ -28,12 +28,12 @@ public class FragmentTypeBiere extends FragmentAmeliore implements View.OnClickL
     private TableLayout tableau;
 
     //Titre
-    private TableRow ligneTitre;
+    private TableRow ligneTitre, ligneNomColonne;
 
     //Ajouter
-    private TableRow ligneTitreAjouter;
+    private TableRow ligneTitreAjouter, ligneNomColonneAjouter;
     private TableRow ligneAjouter;
-    private CheckBox actifAjouter;
+    private CheckBox cbActifAjouter;
     private Button ajouter;
     private EditText texteNomAjouter, texteCouleurAjouter;
 
@@ -61,27 +61,58 @@ public class FragmentTypeBiere extends FragmentAmeliore implements View.OnClickL
     }
 
     private void initialiser() {
+        TableRow.LayoutParams marge = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        marge.setMargins(10, 0, 10, 0);
+
         ligneTitre = new TableRow(contexte);
-        TextView titre = new TextView(contexte);
-        titre.setText("Types de bières :");
-        titre.setTypeface(null, Typeface.BOLD);
+            TextView titre = new TextView(contexte);
+            titre.setText("Types de bières :");
+            titre.setTypeface(null, Typeface.BOLD);
         ligneTitre.addView(titre);
 
+        ligneNomColonne = new TableRow(contexte);
+            TextView nom = new TextView(contexte);
+            nom.setText("Nom");
+            nom.setTypeface(null, Typeface.BOLD);
+        ligneNomColonne.addView(nom, marge);
+            TextView couleur = new TextView(contexte);
+            couleur.setText("Couleur");
+            couleur.setTypeface(null, Typeface.BOLD);
+        ligneNomColonne.addView(couleur, marge);
+            TextView actif = new TextView(contexte);
+            actif.setText("Actif");
+            actif.setTypeface(null, Typeface.BOLD);
+        ligneNomColonne.addView(actif, marge);
+
         ligneTitreAjouter = new TableRow(contexte);
-        TextView titreAjouter = new TextView(contexte);
-        titreAjouter.setText("Ajouter un type de bière :");
-        titreAjouter.setTypeface(null, Typeface.BOLD);
+            TextView titreAjouter = new TextView(contexte);
+            titreAjouter.setText("Ajouter un type de bière :");
+            titreAjouter.setTypeface(null, Typeface.BOLD);
         ligneTitreAjouter.addView(titreAjouter);
+
+        ligneNomColonneAjouter = new TableRow(contexte);
+            TextView nomAjouter = new TextView(contexte);
+            nomAjouter.setText("Nom");
+            nomAjouter.setTypeface(null, Typeface.BOLD);
+        ligneNomColonneAjouter.addView(nomAjouter, marge);
+            TextView couleurAjouter = new TextView(contexte);
+            couleurAjouter.setText("Couleur");
+            couleurAjouter.setTypeface(null, Typeface.BOLD);
+        ligneNomColonneAjouter.addView(couleurAjouter, marge);
+            TextView actifAjouter = new TextView(contexte);
+            actifAjouter.setText("Actif");
+            actifAjouter.setTypeface(null, Typeface.BOLD);
+        ligneNomColonneAjouter.addView(actifAjouter, marge);
 
         ligneAjouter = new TableRow(contexte);
             texteNomAjouter = new EditText(contexte);
         ligneAjouter.addView(texteNomAjouter);
             texteCouleurAjouter = new EditText(contexte);
         ligneAjouter.addView(texteCouleurAjouter);
-            actifAjouter = new CheckBox(contexte);
-            actifAjouter.setChecked(true);
-            actifAjouter.setEnabled(true);
-        ligneAjouter.addView(actifAjouter);
+            cbActifAjouter = new CheckBox(contexte);
+            cbActifAjouter.setChecked(true);
+            cbActifAjouter.setEnabled(true);
+        ligneAjouter.addView(cbActifAjouter);
             ajouter = new Button(contexte);
             ajouter.setText("Ajouter");
             ajouter.setOnClickListener(this);
@@ -93,19 +124,21 @@ public class FragmentTypeBiere extends FragmentAmeliore implements View.OnClickL
         marge.setMargins(10, 0, 10, 0);
         tableau.removeAllViews();
         tableau.addView(ligneTitre, marge);
+        tableau.addView(ligneNomColonne, marge);
         TableTypeBiere tableTypeBiere = TableTypeBiere.instance(contexte);
         for (int i=0; i< tableTypeBiere.tailleListe(); i++) {
             tableau.addView(new LigneTypeBiere(contexte, this, tableTypeBiere.recupererIndex(i)));
         }
         tableau.addView(ligneTitreAjouter, marge);
+        tableau.addView(ligneNomColonneAjouter, marge);
         texteNomAjouter.setText("");
-        actifAjouter.setChecked(true);
-        actifAjouter.setEnabled(true);
+        cbActifAjouter.setChecked(true);
+        cbActifAjouter.setEnabled(true);
         tableau.addView(ligneAjouter, marge);
     }
 
     private void ajouter() {
-        TableTypeBiere.instance(contexte).ajouter(texteNomAjouter.getText().toString(), texteCouleurAjouter.getText().toString(), actifAjouter.isChecked());
+        TableTypeBiere.instance(contexte).ajouter(texteNomAjouter.getText().toString(), texteCouleurAjouter.getText().toString(), cbActifAjouter.isChecked());
         afficher();
     }
 
