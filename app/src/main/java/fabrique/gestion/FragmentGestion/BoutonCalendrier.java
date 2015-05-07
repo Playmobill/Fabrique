@@ -38,13 +38,12 @@ public class BoutonCalendrier extends RelativeLayout {
         textJour.setLayoutParams(parametres);
         textJour.setPadding(10, 10, 0, 0);
 
-        parametres = new LayoutParams(longueur, ViewGroup.LayoutParams.WRAP_CONTENT);
-        parametres.addRule(ALIGN_PARENT_LEFT);
-        parametres.addRule(CENTER_VERTICAL);
-
         evenement = new TextView(contexte);
         evenement.setText(evenement_);
         this.addView(evenement);
+        parametres = new LayoutParams(longueur,(int)evenement.getTextSize()+2 );
+        parametres.addRule(ALIGN_PARENT_LEFT);
+        parametres.addRule(CENTER_VERTICAL);
         evenement.setLayoutParams(parametres);
         evenement.setPadding(10,0,10,0);
     }
