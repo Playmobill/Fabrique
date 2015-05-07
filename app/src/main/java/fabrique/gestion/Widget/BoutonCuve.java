@@ -2,7 +2,6 @@ package fabrique.gestion.Widget;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import fabrique.gestion.FragmentTableauDeBord.FragmentTableauDeBord;
 import fabrique.gestion.FragmentTableauDeBord.FragmentVueCuve;
 import fabrique.gestion.Objets.Cuve;
-import fabrique.gestion.Objets.EtatCuve;
 import fabrique.gestion.R;
 
 public class BoutonCuve extends Button implements View.OnClickListener {
@@ -35,32 +33,22 @@ public class BoutonCuve extends Button implements View.OnClickListener {
 
         setGravity(Gravity.CENTER);
 
-        EtatCuve etat = cuve.getEtat(contexte);
-
-        StringBuilder texteEtat = new StringBuilder();
-        int couleurTexte = Color.BLACK;
-        int couleurFond = Color.WHITE;
-        if (etat != null) {
-            texteEtat.append(etat.getTexte());
-            couleurTexte = etat.getCouleurTexte();
-            couleurFond = etat.getCouleurFond();
-        }
         StringBuilder texte = new StringBuilder();
         texte.append("C").append(cuve.getNumero()).append("\n");
         texte.append(cuve.getCapacite()).append("L").append("\n");
         texte.append(cuve.getEmplacement(contexte).getTexte()).append("\n");
-        texte.append(texteEtat).append("\n");
+        texte.append(cuve.getEtat(contexte).getTexte()).append("\n");
         if (cuve.getBrassin(contexte) != null) {
-            texte.append(cuve.getBrassin(contexte).getNumero());
+            texte.append(cuve.getBrassin(contexte).getRecette(contexte).getAcronyme()).append(" / ").append(cuve.getBrassin(contexte).getNumero());
+            setTextColor(cuve.getBrassin(contexte).getRecette(contexte).getCouleurTexte());
+            setBackgroundColor(cuve.getBrassin(contexte).getRecette(contexte).getCouleurFond());
+        } else {
+            setTextColor(cuve.getEtat(contexte).getCouleurTexte());
+            setBackgroundColor(cuve.getEtat(contexte).getCouleurFond());
         }
-        texte.append("\n");
-        /*texte.append(cuve.getCommentaireEtat()).append("\n");
-        texte.append("depuis ").append(cuve.getDureeEtat()).append("\n");*/
-        texte.append(cuve.getDateEtat());
+        texte.append("\n").append(cuve.getDateEtat());
 
         setText(texte.toString());
-        setTextColor(couleurTexte);
-        setBackgroundColor(couleurFond);
     }
 
     @Override

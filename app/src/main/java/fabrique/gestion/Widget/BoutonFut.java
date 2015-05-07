@@ -2,7 +2,6 @@ package fabrique.gestion.Widget;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.Button;
 
 import fabrique.gestion.FragmentListe.FragmentListeFut;
 import fabrique.gestion.FragmentListe.FragmentVueFut;
-import fabrique.gestion.Objets.EtatFut;
 import fabrique.gestion.Objets.Fut;
 import fabrique.gestion.R;
 
@@ -35,28 +33,21 @@ public class BoutonFut extends Button implements View.OnClickListener {
 
         setGravity(Gravity.CENTER);
 
-        EtatFut etat = fut.getEtat(contexte);
-
-        StringBuilder texteEtat = new StringBuilder();
-        int couleurTexte = Color.BLACK;
-        int couleurFond = Color.WHITE;
-        if (etat != null) {
-            texteEtat.append(etat.getTexte());
-            couleurTexte = etat.getCouleurTexte();
-            couleurFond = etat.getCouleurFond();
-        }
         StringBuilder texte = new StringBuilder();
         texte.append(fut.getNumero()).append("\n");
         texte.append(fut.getCapacite()).append("L").append("\n");
-        texte.append(texteEtat.toString()).append("\n");
+        texte.append(fut.getEtat(contexte).getTexte()).append("\n");
         if (fut.getBrassin(contexte) != null) {
-            texte.append(fut.getBrassin(contexte).getNumero());
+            texte.append(fut.getBrassin(contexte).getRecette(contexte).getAcronyme()).append(" / ").append(fut.getBrassin(contexte).getNumero());
+            setTextColor(fut.getBrassin(contexte).getRecette(contexte).getCouleurTexte());
+            setBackgroundColor(fut.getBrassin(contexte).getRecette(contexte).getCouleurFond());
+        } else {
+            setTextColor(fut.getEtat(contexte).getCouleurTexte());
+            setBackgroundColor(fut.getEtat(contexte).getCouleurFond());
         }
         texte.append("\n").append(fut.getDateEtat());
 
         setText(texte.toString());
-        setTextColor(couleurTexte);
-        setBackgroundColor(couleurFond);
     }
 
     @Override

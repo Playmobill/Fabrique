@@ -71,8 +71,6 @@ public class VueFut extends TableLayout implements View.OnClickListener {
 
         this.fut = fut;
 
-        initialiser();
-
         TableRow ligne = new TableRow(contexte);
 
         tableauDescription = new TableLayout(contexte);

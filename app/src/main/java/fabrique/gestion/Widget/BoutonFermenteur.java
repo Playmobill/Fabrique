@@ -2,7 +2,6 @@ package fabrique.gestion.Widget;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -11,7 +10,6 @@ import android.widget.Button;
 
 import fabrique.gestion.FragmentTableauDeBord.FragmentTableauDeBord;
 import fabrique.gestion.FragmentTableauDeBord.FragmentVueFermenteur;
-import fabrique.gestion.Objets.EtatFermenteur;
 import fabrique.gestion.Objets.Fermenteur;
 import fabrique.gestion.R;
 
@@ -35,29 +33,22 @@ public class BoutonFermenteur extends Button implements View.OnClickListener {
 
         setGravity(Gravity.CENTER);
 
-        EtatFermenteur etat = fermenteur.getEtat(contexte);
-
-        StringBuilder texteEtat = new StringBuilder();
-        int couleurTexte = Color.BLACK;
-        int couleurFond = Color.WHITE;
-        if (etat != null) {
-            texteEtat.append(etat.getTexte());
-            couleurTexte = etat.getCouleurTexte();
-            couleurFond = etat.getCouleurFond();
-        }
         StringBuilder texte = new StringBuilder();
         texte.append("F").append(fermenteur.getNumero()).append("\n");
         texte.append(fermenteur.getCapacite()).append("L").append("\n");
         texte.append(fermenteur.getEmplacement(contexte).getTexte()).append("\n");
-        texte.append(texteEtat.toString()).append("\n");
+        texte.append(fermenteur.getEtat(contexte).getTexte()).append("\n");
         if (fermenteur.getBrassin(contexte) != null) {
-            texte.append(fermenteur.getBrassin(contexte).getNumero());
+            texte.append(fermenteur.getBrassin(contexte).getRecette(contexte).getAcronyme()).append(" / ").append(fermenteur.getBrassin(contexte).getNumero());
+            setTextColor(fermenteur.getBrassin(contexte).getRecette(contexte).getCouleurTexte());
+            setBackgroundColor(fermenteur.getBrassin(contexte).getRecette(contexte).getCouleurFond());
+        } else {
+            setTextColor(fermenteur.getEtat(contexte).getCouleurTexte());
+            setBackgroundColor(fermenteur.getEtat(contexte).getCouleurFond());
         }
         texte.append("\n").append(fermenteur.getDateEtat());
 
         setText(texte.toString());
-        setTextColor(couleurTexte);
-        setBackgroundColor(couleurFond);
     }
 
     @Override
