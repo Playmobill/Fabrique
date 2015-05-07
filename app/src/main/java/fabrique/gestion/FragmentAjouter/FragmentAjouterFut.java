@@ -4,11 +4,14 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -19,13 +22,17 @@ import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.R;
 
-public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClickListener {
+public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private Context contexte;
 
     private Button btnAjouter;
 
-    private EditText editNumero, editQuantite;
+    private EditText editNumero;
+
+    private Spinner spinnerCapacite;
+    private EditText editCapacite;
+    private int capacite;
 
     @Nullable
     @Override
@@ -52,7 +59,11 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
         }
         editNumero.setText("" + numero);
 
-        editQuantite = (EditText)view.findViewById(R.id.editQuantite);
+        spinnerCapacite = (Spinner)view.findViewById(R.id.spinnerCapacite);
+        spinnerCapacite.setOnItemSelectedListener(this);
+
+        editCapacite = (EditText)view.findViewById(R.id.editCapacite);
+        editCapacite.setEnabled(true);
 
         btnAjouter = (Button)view.findViewById(R.id.btnAjouter);
         btnAjouter.setOnClickListener(this);
@@ -74,16 +85,18 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
             }
         }
 
-        int capacite = 0;
-        try {
-            if (!editQuantite.getText().toString().equals("")) {
-                capacite = Integer.parseInt(editQuantite.getText().toString());
+        if (spinnerCapacite.getSelectedItemPosition() == 4) {
+            capacite = 0;
+            try {
+                if (!editCapacite.getText().toString().equals("")) {
+                    capacite = Integer.parseInt(editCapacite.getText().toString());
+                }
+            } catch (NumberFormatException e) {
+                if (!erreur.equals("")) {
+                    erreur = erreur + "\n";
+                }
+                erreur = erreur + "La quantité est trop grande.";
             }
-        } catch (NumberFormatException e) {
-            if (!erreur.equals("")) {
-                erreur = erreur + "\n";
-            }
-            erreur = erreur + "La quantité est trop grande.";
         }
 
         if (erreur.equals("")) {
@@ -123,4 +136,27 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
         transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
         transaction.addToBackStack(null).commit();
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.i("AjouterFut", "id = " + id + " / position = " + position);
+        if(id == 0) {
+            capacite = 20;
+            editCapacite.setVisibility(View.INVISIBLE);
+        } else if(id == 1) {
+            capacite = 30;
+            editCapacite.setVisibility(View.INVISIBLE);
+        } else if(id == 2) {
+            capacite = 50;
+            editCapacite.setVisibility(View.INVISIBLE);
+        } else if(id == 3) {
+            capacite = 58;
+            editCapacite.setVisibility(View.INVISIBLE);
+        } else if(id == 4) {
+            editCapacite.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {}
 }

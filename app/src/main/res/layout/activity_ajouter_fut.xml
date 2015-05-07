@@ -10,7 +10,7 @@
         android:padding="20dp">
 
         <TableRow
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
 
@@ -18,45 +18,72 @@
                 android:text="Nouveau fût"
                 android:id="@+id/txtTitre"
                 android:textStyle="bold"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
 
             <TextView
                 android:id="@+id/txtNumero"
                 android:text="Numéro voulu"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
 
             <EditText
                 android:inputType="number"
                 android:id="@+id/editNumero"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
 
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
 
             <TextView
                 android:id="@+id/txtQuantite"
                 android:text="Quantité (Litre)"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
 
-            <EditText
-                android:inputType="number"
-                android:id="@+id/editQuantite"
-                android:layout_weight="1" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="left"
+                android:layout_weight="1">
+
+                <Spinner
+                    android:id="@+id/spinnerCapacite"
+                    android:drawSelectorOnTop="true"
+                    android:entries="@array/array_taille_fut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left" />
+
+                <EditText
+                    android:inputType="number"
+                    android:id="@+id/editCapacite"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left" />
+            </LinearLayout>
 
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
 
@@ -66,7 +93,9 @@
                 android:layout_weight="1"
                 android:textAllCaps="false"
                 android:textColor="@color/noir"
-                android:background="@color/blanc" />
+                android:background="@color/blanc"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
 
         </TableRow>
 
