@@ -114,6 +114,9 @@ public class FragmentEmplacement extends FragmentAmeliore implements View.OnClic
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onClick(View v) {
         if (v.equals(ajouter)) {
             ajouter();

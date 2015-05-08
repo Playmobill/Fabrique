@@ -21,7 +21,6 @@ import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.FragmentAmeliore;
-import fabrique.gestion.Objets.Fermenteur;
 import fabrique.gestion.R;
 
 public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnClickListener {
@@ -168,6 +167,9 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
         }
     }
+
+    @Override
+    public void invalidate() {}
 
     @Override
     public void onClick(View v) {

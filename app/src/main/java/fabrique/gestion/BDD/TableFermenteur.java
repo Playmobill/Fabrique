@@ -181,6 +181,12 @@ public class TableFermenteur extends Controle {
         return liste;
     }
 
+    public void supprimer(long id) {
+        if (accesBDD.delete(nomTable, "id = ?", new String[] {""+id}) == 1) {
+            fermenteurs.remove(recupererId(id));
+        }
+    }
+
     @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();

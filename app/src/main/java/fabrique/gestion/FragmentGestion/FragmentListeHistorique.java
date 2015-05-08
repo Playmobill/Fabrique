@@ -148,6 +148,9 @@ public class FragmentListeHistorique extends FragmentAmeliore implements View.On
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onClick(View v) {
         if (v.equals(btnAjouter)) {
             ajouter();

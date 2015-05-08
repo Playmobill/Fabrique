@@ -6,9 +6,11 @@ import android.graphics.Typeface;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -40,6 +42,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
     //Description
     private LinearLayout tableauDescription;
     private EditText editTitre, editCapacite;
+    private CheckBox editActif;
     private TableRow ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler;
 
@@ -139,7 +142,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
     }
 
     private void initialiser() {
-        TableLayout.LayoutParams parametre = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams parametre = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
         parametre.setMargins(10, 10, 10, 10);
 
         TableRow ligneTitreInspection = new TableRow(getContext());
@@ -178,6 +181,15 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         TextView dateEtat = new TextView(getContext());
         dateEtat.setText("Depuis le : " + fut.getDateEtat());
 
+        TableRow ligneActif = new TableRow(getContext());
+        TextView actif = new TextView(getContext());
+        actif.setGravity(Gravity.CENTER_VERTICAL);
+        actif.setText("Actif : ");
+        ligneActif.addView(actif, parametre);
+        editActif = new CheckBox(getContext());
+        editActif.setGravity(Gravity.CENTER_VERTICAL);
+        ligneActif.addView(editActif, parametre);
+
         ligneBouton = new TableRow(getContext());
         btnModifier = new Button(getContext());
         btnModifier.setText("Modifier");
@@ -203,6 +215,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         ligneEtatDate.addView(etat, parametre);
         ligneEtatDate.addView(dateEtat, parametre);
         tableauDescription.addView(ligneEtatDate);
+        tableauDescription.addView(ligneActif);
         ligneBouton.addView(btnModifier, parametre);
         tableauDescription.addView(ligneBouton);
 
@@ -238,6 +251,8 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         editTitre.setText("" + fut.getNumero());
         editCapacite.setEnabled(false);
         editCapacite.setText("" + fut.getCapacite());
+        editActif.setChecked(fut.getActif());
+        editActif.setEnabled(false);
         ligneBouton.removeAllViews();
         ligneBouton.addView(btnModifier);
     }
@@ -245,7 +260,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
     private void modifier() {
         editTitre.setEnabled(true);
         editCapacite.setEnabled(true);
-
+        editActif.setEnabled(true);
         ligneBouton.removeAllViews();
         ligneBouton.addView(btnValider);
         ligneBouton.addView(btnAnnuler);
@@ -274,7 +289,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite,fut.getId_etat(), fut.getDateEtatToLong(), fut.getId_brassin(), fut.getDateInspectionToLong(), true);
+            TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite,fut.getId_etat(), fut.getDateEtatToLong(), fut.getId_brassin(), fut.getDateInspectionToLong(), editActif.isChecked());
             afficher();
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
@@ -353,7 +368,8 @@ public class VueFut extends TableLayout implements View.OnClickListener {
                     fut.getId_etat(),
                     fut.getDateEtatToLong(),
                     TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId(),
-                    fut.getDateInspectionToLong(), true);
+                    fut.getDateInspectionToLong(),
+                    fut.getActif());
         } else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, fut.getId(), -1);
             afficherHistorique();
@@ -366,7 +382,8 @@ public class VueFut extends TableLayout implements View.OnClickListener {
                             listeEtat.get(i).getId(),
                             System.currentTimeMillis(),
                             fut.getId_brassin(),
-                            fut.getDateInspectionToLong(), true);
+                            fut.getDateInspectionToLong(),
+                            fut.getActif());
                     String texte = listeEtat.get(i).getHistorique();
                     if ((texte != null) && (!texte.equals(""))) {
                         TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, -1, fut.getId(), fut.getId_brassin());

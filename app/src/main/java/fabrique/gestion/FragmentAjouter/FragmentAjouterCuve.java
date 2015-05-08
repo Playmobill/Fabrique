@@ -136,6 +136,9 @@ public class FragmentAjouterCuve extends FragmentAmeliore implements View.OnClic
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onClick(View v) {
         if (v.equals(btnAjouter)) {
             ajouter();

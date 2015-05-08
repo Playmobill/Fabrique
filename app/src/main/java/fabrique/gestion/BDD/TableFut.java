@@ -16,8 +16,8 @@ public class TableFut extends Controle {
 
     private static TableFut INSTANCE;
 
-    public static TableFut instance(Context contexte){
-        if(INSTANCE == null){
+    public static TableFut instance(Context contexte) {
+        if (INSTANCE == null) {
             INSTANCE = new TableFut(contexte);
         }
         return INSTANCE;
@@ -103,10 +103,32 @@ public class TableFut extends Controle {
         return numeroFuts;
     }
 
+    public ArrayList<Fut> recupererFutActifs() {
+        ArrayList<Fut> listeFut = new ArrayList<>();
+
+        for (int i=0; i<futs.size(); i++) {
+            if (futs.get(i).getActif()) {
+                listeFut.add(futs.get(i));
+            }
+        }
+        return listeFut;
+    }
+
+    public ArrayList<Fut> recupererFutNonActifs() {
+        ArrayList<Fut> listeFut = new ArrayList<>();
+
+        for (int i=0; i<futs.size(); i++) {
+            if (!futs.get(i).getActif()) {
+                listeFut.add(futs.get(i));
+            }
+        }
+        return listeFut;
+    }
+
     public ArrayList<ArrayList<Fut>> recupererSelonBrassin(Context contexte) {
         ArrayList<ArrayList<Fut>> listeListeFutSelonBrassin = new ArrayList<>();
 
-        ArrayList<Fut> cloneFuts = (ArrayList<Fut>)futs.clone();
+        ArrayList<Fut> cloneFuts = recupererFutActifs();
         while(cloneFuts.size()!=0) {
             long id = cloneFuts.get(0).getId_brassin();
             ArrayList<Fut> listeFutDeMemeBrassin = new ArrayList<>();
@@ -181,7 +203,7 @@ public class TableFut extends Controle {
     public ArrayList<ArrayList<Fut>> recupererSelonRecette(Context contexte) {
         ArrayList<ArrayList<Fut>> listeListeFutSelonRecette = new ArrayList<>();
 
-        ArrayList<Fut> cloneFuts = (ArrayList<Fut>)futs.clone();
+        ArrayList<Fut> cloneFuts = recupererFutActifs();
         while(cloneFuts.size() != 0) {
             Brassin brassin = cloneFuts.get(0).getBrassin(contexte);
             long id_recette = -1;
@@ -265,7 +287,7 @@ public class TableFut extends Controle {
     public ArrayList<ArrayList<Fut>> recupererSelonEtat() {
         ArrayList<ArrayList<Fut>> listeListeFutSelonEtat = new ArrayList<>();
 
-        ArrayList<Fut> cloneFuts = (ArrayList<Fut>)futs.clone();
+        ArrayList<Fut> cloneFuts = recupererFutActifs();
         while(cloneFuts.size()!=0) {
             long id = cloneFuts.get(0).getId_etat();
             ArrayList<Fut> listeFutDeMemeEtat = new ArrayList<>();

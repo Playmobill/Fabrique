@@ -107,5 +107,8 @@ public class FragmentTableauDeBord extends FragmentAmeliore {
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onBackPressed() {}
 }

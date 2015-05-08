@@ -56,6 +56,9 @@ public class FragmentEtat extends FragmentAmeliore {
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, new FragmentGestion());

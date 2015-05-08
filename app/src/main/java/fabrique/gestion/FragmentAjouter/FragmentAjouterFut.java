@@ -4,7 +4,6 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,6 +122,9 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onClick(View v) {
         if (v.equals(btnAjouter)) {
             ajouter();
@@ -139,7 +141,6 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.i("AjouterFut", "id = " + id + " / position = " + position);
         if(id == 0) {
             capacite = 20;
             editCapacite.setVisibility(View.INVISIBLE);

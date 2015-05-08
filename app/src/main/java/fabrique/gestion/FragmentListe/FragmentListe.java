@@ -54,6 +54,9 @@ public class FragmentListe extends FragmentAmeliore implements View.OnClickListe
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onClick(View view) {
         if (view.equals(fermenteur)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();

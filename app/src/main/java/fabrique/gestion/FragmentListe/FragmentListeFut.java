@@ -87,13 +87,26 @@ public class FragmentListeFut extends FragmentAmeliore implements AdapterView.On
     private void affichageSelonNumero() {
         tableau.removeAllViews();
 
-        TableFut tableFut = TableFut.instance(contexte);
-            PredicateLayout ligne = new PredicateLayout(contexte);
-            for (int i=0; i<tableFut.tailleListe(); i++) {
-                BoutonFut btnFut = new BoutonFut(contexte, this, tableFut.recupererIndex(i));
-                ligne.addView(btnFut, new PredicateLayout.LayoutParams(10, 10));
+        ArrayList<Fut> listeFutActif = TableFut.instance(contexte).recupererFutActifs();
+            PredicateLayout ligneActif = new PredicateLayout(contexte);
+            for (int i=0; i<listeFutActif.size(); i++) {
+                BoutonFut btnFut = new BoutonFut(contexte, this, listeFutActif.get(i));
+                ligneActif.addView(btnFut, new PredicateLayout.LayoutParams(10, 10));
             }
-        tableau.addView(ligne);
+        tableau.addView(ligneActif);
+
+            TableRow ligneTitre = new TableRow(contexte);
+                TextView titre = new TextView(contexte);
+                titre.setText("Désactiver");
+            ligneTitre.addView(titre, marge);
+        tableau.addView(ligneTitre);
+        ArrayList<Fut> listeFutNonActif = TableFut.instance(contexte).recupererFutNonActifs();
+            PredicateLayout ligneNonActif = new PredicateLayout(contexte);
+            for (int i=0; i<listeFutNonActif.size(); i++) {
+                BoutonFut btnFut = new BoutonFut(contexte, this, listeFutNonActif.get(i));
+                ligneNonActif.addView(btnFut, new PredicateLayout.LayoutParams(10, 10));
+            }
+        tableau.addView(ligneNonActif);
     }
 
     private void affichageSelonBrassin() {
@@ -121,6 +134,19 @@ public class FragmentListeFut extends FragmentAmeliore implements AdapterView.On
             }
             tableau.addView(ligne);
         }
+
+            TableRow ligneTitre = new TableRow(contexte);
+                TextView titre = new TextView(contexte);
+                titre.setText("Désactiver");
+            ligneTitre.addView(titre, marge);
+        tableau.addView(ligneTitre);
+        ArrayList<Fut> listeFutNonActif = TableFut.instance(contexte).recupererFutNonActifs();
+            PredicateLayout ligneNonActif = new PredicateLayout(contexte);
+            for (int i=0; i<listeFutNonActif.size(); i++) {
+                BoutonFut btnFut = new BoutonFut(contexte, this, listeFutNonActif.get(i));
+                ligneNonActif.addView(btnFut, new PredicateLayout.LayoutParams(10, 10));
+            }
+        tableau.addView(ligneNonActif);
     }
 
     private void affichageSelonRecette() {
@@ -147,6 +173,19 @@ public class FragmentListeFut extends FragmentAmeliore implements AdapterView.On
             }
             tableau.addView(ligne);
         }
+
+            TableRow ligneTitre = new TableRow(contexte);
+                TextView titre = new TextView(contexte);
+                titre.setText("Désactiver");
+            ligneTitre.addView(titre, marge);
+        tableau.addView(ligneTitre);
+        ArrayList<Fut> listeFutNonActif = TableFut.instance(contexte).recupererFutNonActifs();
+            PredicateLayout ligneNonActif = new PredicateLayout(contexte);
+            for (int i=0; i<listeFutNonActif.size(); i++) {
+                BoutonFut btnFut = new BoutonFut(contexte, this, listeFutNonActif.get(i));
+                ligneNonActif.addView(btnFut, new PredicateLayout.LayoutParams(10, 10));
+            }
+        tableau.addView(ligneNonActif);
     }
 
     private void affichageSelonEtat() {
@@ -168,7 +207,23 @@ public class FragmentListeFut extends FragmentAmeliore implements AdapterView.On
             }
             tableau.addView(ligne);
         }
+
+            TableRow ligneTitre = new TableRow(contexte);
+                TextView titre = new TextView(contexte);
+                titre.setText("Désactiver");
+            ligneTitre.addView(titre, marge);
+        tableau.addView(ligneTitre);
+        ArrayList<Fut> listeFutNonActif = TableFut.instance(contexte).recupererFutNonActifs();
+            PredicateLayout ligneNonActif = new PredicateLayout(contexte);
+            for (int i=0; i<listeFutNonActif.size(); i++) {
+                BoutonFut btnFut = new BoutonFut(contexte, this, listeFutNonActif.get(i));
+                ligneNonActif.addView(btnFut, new PredicateLayout.LayoutParams(10, 10));
+            }
+        tableau.addView(ligneNonActif);
     }
+
+    @Override
+    public void invalidate() {}
 
     @Override
     public void onBackPressed() {

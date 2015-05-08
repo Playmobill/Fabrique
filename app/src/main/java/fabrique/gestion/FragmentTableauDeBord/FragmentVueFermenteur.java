@@ -42,7 +42,7 @@ public class FragmentVueFermenteur extends FragmentAmeliore {
             if (fermenteur.getBrassin(contexte) != null) {
                 layout.addView(new VueBrassin(contexte, fermenteur.getBrassin(contexte)));
             }
-            layout.addView(new VueFermenteur(contexte, fermenteur));
+            layout.addView(new VueFermenteur(contexte, this, fermenteur));
         } else {
             TextView txtErreur = new TextView(contexte);
             txtErreur.setText("Aucun fermenteur sélectionné");
@@ -56,10 +56,18 @@ public class FragmentVueFermenteur extends FragmentAmeliore {
     }
 
     @Override
+    public void invalidate() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.onglet, new FragmentTableauDeBord());
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
+        transaction.addToBackStack(null).commit();
+    }
+
+    @Override
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, new FragmentTableauDeBord());
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
         transaction.addToBackStack(null).commit();
     }
 }
