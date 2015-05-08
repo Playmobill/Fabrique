@@ -18,8 +18,10 @@ import java.util.GregorianCalendar;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.FragmentAmeliore;
+import fabrique.gestion.Objets.Fermenteur;
 import fabrique.gestion.R;
 
 public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnClickListener {
@@ -31,7 +33,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
     private EditText editNumero, editCommentaire, editQuantite,
             editDensiteOriginale, editDensiteFinale;
 
-    private Spinner editRecette;
+    private Spinner editRecette, editFermenteur;
 
     @Nullable
     @Override
@@ -68,6 +70,12 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
         ArrayAdapter<String> adapteurRecette = new ArrayAdapter<>(contexte, R.layout.spinner_style, tableRecette.recupererNomRecettesActifs());
         adapteurRecette.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editRecette.setAdapter(adapteurRecette);
+
+        editFermenteur = (Spinner)view.findViewById(R.id.editFermenteur);
+        TableFermenteur tableFermenteur = TableFermenteur.instance(contexte);
+        ArrayAdapter<String> adapteurFermenteur = new ArrayAdapter<>(contexte, R.layout.spinner_style, tableFermenteur.recupererNumerosFermenteurSansBrassin());
+        adapteurFermenteur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        editFermenteur.setAdapter(adapteurFermenteur);
 
         btnAjouter = (Button)view.findViewById(R.id.btnAjouter);
         btnAjouter.setOnClickListener(this);
@@ -125,6 +133,8 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             erreur = erreur + "La densité final est trop grande.";
         }
 
+
+
         if (erreur.equals("")) {
             long recette = TableRecette.instance(contexte).recupererIndex(editRecette.getSelectedItemPosition()).getId();
 
@@ -134,6 +144,9 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
 
             TableBrassin.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale);
+
+            //Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId();
+
             Toast.makeText(contexte, "Brassin ajouté !", Toast.LENGTH_LONG).show();
             TableBrassin tableBrassin = TableBrassin.instance(contexte);
 

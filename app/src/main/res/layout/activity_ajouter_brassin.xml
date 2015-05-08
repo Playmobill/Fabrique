@@ -87,7 +87,6 @@
 
             <Spinner
                 android:id="@+id/editRecette"
-                style="@style/Widget.AppCompat.Spinner"
                 android:layout_weight="1" />
 
         </TableRow>
@@ -124,6 +123,23 @@
             <EditText
                 android:inputType="numberDecimal"
                 android:id="@+id/editDensiteFinale"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/txtFermenteur"
+                android:text="Fermenteur"
+                android:textColor="@color/noir"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/editFermenteur"
                 android:layout_weight="1" />
 
         </TableRow>
