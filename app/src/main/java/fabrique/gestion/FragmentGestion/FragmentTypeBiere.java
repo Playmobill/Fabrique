@@ -143,6 +143,9 @@ public class FragmentTypeBiere extends FragmentAmeliore implements View.OnClickL
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onClick(View v) {
         if (v.equals(ajouter)) {
             ajouter();

@@ -6,4 +6,6 @@ public abstract class FragmentAmeliore extends Fragment {
 
     public abstract void onBackPressed();
 
+    public abstract void invalidate();
+
 }

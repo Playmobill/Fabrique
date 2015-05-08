@@ -102,6 +102,9 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onBackPressed() {}
 
     @Override

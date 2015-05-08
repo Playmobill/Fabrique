@@ -30,6 +30,7 @@ import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
+import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Objets.Emplacement;
 import fabrique.gestion.Objets.EtatFermenteur;
 import fabrique.gestion.Objets.Fermenteur;
@@ -334,9 +335,14 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int) editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdEtat(), fermenteur.getDateEtatToLong(), fermenteur.getIdBrassin(), editActif.isChecked());
-            indexEmplacement = editEmplacement.getSelectedItemPosition();
-            afficher();
+            if ((!editActif.isChecked()) && (TableHistorique.instance(getContext()).recupererSelonIdFermenteur(fermenteur.getId()).size() == 0)) {
+                TableFermenteur.instance(getContext()).supprimer(fermenteur.getId());
+                ((FragmentAmeliore)getParent()).invalidate();
+            } else {
+                TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int) editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdEtat(), fermenteur.getDateEtatToLong(), fermenteur.getIdBrassin(), editActif.isChecked());
+                indexEmplacement = editEmplacement.getSelectedItemPosition();
+                afficher();
+            }
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
         }

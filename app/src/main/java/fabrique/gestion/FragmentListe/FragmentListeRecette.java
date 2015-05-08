@@ -48,6 +48,9 @@ public class FragmentListeRecette extends FragmentAmeliore implements AdapterVie
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, new FragmentListe());

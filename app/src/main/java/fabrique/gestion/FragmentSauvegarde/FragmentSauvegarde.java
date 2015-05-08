@@ -739,6 +739,9 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onClick(View view) {
         if (view.equals(sauvegarde)) {
             sauvegarder();

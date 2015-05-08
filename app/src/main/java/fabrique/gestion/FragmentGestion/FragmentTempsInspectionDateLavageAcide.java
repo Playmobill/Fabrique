@@ -81,6 +81,9 @@ public class FragmentTempsInspectionDateLavageAcide extends FragmentAmeliore imp
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, new FragmentGestion());

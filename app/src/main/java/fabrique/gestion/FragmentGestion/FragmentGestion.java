@@ -57,6 +57,9 @@ public class FragmentGestion extends FragmentAmeliore implements View.OnClickLis
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onClick(View view) {
         if (view.equals(etat)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();

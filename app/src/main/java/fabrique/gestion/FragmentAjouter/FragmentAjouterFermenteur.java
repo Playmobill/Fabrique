@@ -136,6 +136,9 @@ public class FragmentAjouterFermenteur extends FragmentAmeliore implements View.
     }
 
     @Override
+    public void invalidate() {}
+
+    @Override
     public void onClick(View v) {
         if (v.equals(btnAjouter)) {
             ajouter();

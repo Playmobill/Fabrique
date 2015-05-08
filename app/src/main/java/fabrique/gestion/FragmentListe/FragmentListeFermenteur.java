@@ -25,6 +25,8 @@ public class FragmentListeFermenteur extends FragmentAmeliore implements OnItemS
 
     private View view;
 
+    private Spinner liste;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class FragmentListeFermenteur extends FragmentAmeliore implements OnItemS
 
         view = inflater.inflate(R.layout.activity_liste_fermenteur, container, false);
 
-        Spinner liste = (Spinner)view.findViewById(R.id.liste);
+        liste = (Spinner)view.findViewById(R.id.liste);
         TableFermenteur tableFermenteur = TableFermenteur.instance(contexte);
         ArrayAdapter<String> adapteurFermenteur = new ArrayAdapter<>(contexte, R.layout.spinner_style, tableFermenteur.numeros());
         adapteurFermenteur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -67,4 +69,12 @@ public class FragmentListeFermenteur extends FragmentAmeliore implements OnItemS
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {}
+
+    @Override
+    public void invalidate() {
+        TableFermenteur tableFermenteur = TableFermenteur.instance(contexte);
+        ArrayAdapter<String> adapteurFermenteur = new ArrayAdapter<>(contexte, R.layout.spinner_style, tableFermenteur.numeros());
+        adapteurFermenteur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        liste.setAdapter(adapteurFermenteur);
+    }
 }
