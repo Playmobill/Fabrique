@@ -130,7 +130,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             if (!erreur.equals("")) {
                 erreur = erreur + "\n";
             }
-            erreur = erreur + "La densité final est trop grande.";
+            erreur = erreur + "La densité finale est trop grande.";
         }
 
 
@@ -143,9 +143,10 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             calendrier.setTimeInMillis(System.currentTimeMillis());
             long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
 
-            TableBrassin.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale);
+            long id_brassin = TableBrassin.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale);
 
-            //Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId();
+            Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(Long.parseLong(editFermenteur.getItemAtPosition(editFermenteur.getSelectedItemPosition()).toString()));
+            TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdEtat(), fermenteur.getDateEtatToLong(), id_brassin, fermenteur.getActif());
 
             Toast.makeText(contexte, "Brassin ajouté !", Toast.LENGTH_LONG).show();
             TableBrassin tableBrassin = TableBrassin.instance(contexte);
@@ -157,6 +158,12 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
                 }
             }
             editNumero.setText("" + (max+1));
+
+            TableFermenteur tableFermenteur = TableFermenteur.instance(contexte);
+            ArrayAdapter<String> adapteurFermenteur = new ArrayAdapter<>(contexte, R.layout.spinner_style, tableFermenteur.recupererNumerosFermenteurSansBrassin());
+            adapteurFermenteur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            editFermenteur.setAdapter(adapteurFermenteur);
+
         } else {
             Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
         }

@@ -39,7 +39,7 @@ public class BoutonFermenteur extends Button implements View.OnClickListener {
         texte.append(fermenteur.getEmplacement(contexte).getTexte()).append("\n");
         texte.append(fermenteur.getEtat(contexte).getTexte()).append("\n");
         if (fermenteur.getBrassin(contexte) != null) {
-            texte.append(fermenteur.getBrassin(contexte).getRecette(contexte).getAcronyme()).append(" / ").append(fermenteur.getBrassin(contexte).getNumero());
+            texte.append(fermenteur.getBrassin(contexte).getRecette(contexte).getAcronyme()).append(" #").append(fermenteur.getBrassin(contexte).getNumero());
             setTextColor(fermenteur.getBrassin(contexte).getRecette(contexte).getCouleurTexte());
             setBackgroundColor(fermenteur.getBrassin(contexte).getRecette(contexte).getCouleurFond());
         } else {

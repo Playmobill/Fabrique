@@ -39,7 +39,7 @@ public class BoutonCuve extends Button implements View.OnClickListener {
         texte.append(cuve.getEmplacement(contexte).getTexte()).append("\n");
         texte.append(cuve.getEtat(contexte).getTexte()).append("\n");
         if (cuve.getBrassin(contexte) != null) {
-            texte.append(cuve.getBrassin(contexte).getRecette(contexte).getAcronyme()).append(" / ").append(cuve.getBrassin(contexte).getNumero());
+            texte.append(cuve.getBrassin(contexte).getRecette(contexte).getAcronyme()).append(" #").append(cuve.getBrassin(contexte).getNumero());
             setTextColor(cuve.getBrassin(contexte).getRecette(contexte).getCouleurTexte());
             setBackgroundColor(cuve.getBrassin(contexte).getRecette(contexte).getCouleurFond());
         } else {

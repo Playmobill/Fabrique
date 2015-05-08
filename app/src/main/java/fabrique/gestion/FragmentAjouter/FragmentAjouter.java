@@ -1,20 +1,25 @@
 package fabrique.gestion.FragmentAjouter;
 
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import fabrique.gestion.ActivityAccueil;
+import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.R;
 import fabrique.gestion.FragmentAmeliore;
 
 public class FragmentAjouter extends FragmentAmeliore implements View.OnClickListener {
 
     private View view;
+
+    private Context contexte;
 
     private Button fermenteur, cuve, fut, brassin, recette;
 
@@ -29,6 +34,7 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
 
         ((ActivityAccueil) getActivity()).setVue(this);
 
+        contexte = container.getContext();
         view = inflater.inflate(R.layout.activity_ajouter, container, false);
 
         initialiserBouton();
@@ -74,10 +80,15 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
             transaction.addToBackStack(null).commit();
         }
         else if (view.equals(brassin)) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.onglet, new FragmentAjouterBrassin());
-            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
-            transaction.addToBackStack(null).commit();
+            if(TableFermenteur.instance(contexte).recupererNumerosFermenteurSansBrassin().isEmpty()) {
+                Toast.makeText(contexte, "Il n'y a pas de fermenteur libre pouvant accueillir un nouveau brassin.", Toast.LENGTH_LONG).show();
+            }
+            else{
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.onglet, new FragmentAjouterBrassin());
+                transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
+                transaction.addToBackStack(null).commit();
+            }
         }
         else if (view.equals(recette)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
