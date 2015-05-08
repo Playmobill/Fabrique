@@ -118,10 +118,10 @@ public class TableFermenteur extends Controle {
 
     public ArrayList<Fermenteur> recupererFermenteurAvecBrassin() {
         ArrayList<Fermenteur> listeFermenteur = new ArrayList<>();
-
-        for (int i=0; i<fermenteurs.size(); i++) {
-            if (fermenteurs.get(i).getIdBrassin() != -1) {
-                listeFermenteur.add(fermenteurs.get(i));
+        ArrayList<Fermenteur> listeFermenteurActif = recupererFermenteursActifs();
+        for (int i=0; i<listeFermenteurActif.size(); i++) {
+            if (listeFermenteurActif.get(i).getIdBrassin() != -1) {
+                listeFermenteur.add(listeFermenteurActif.get(i));
             }
         }
         return listeFermenteur;
@@ -129,10 +129,10 @@ public class TableFermenteur extends Controle {
 
     public ArrayList<String> recupererNumerosFermenteurAvecBrassin() {
         ArrayList<String> listeFermenteur = new ArrayList<>();
-
-        for (int i=0; i<fermenteurs.size(); i++) {
-            if (fermenteurs.get(i).getIdBrassin() != -1) {
-                listeFermenteur.add(Integer.toString(fermenteurs.get(i).getNumero()));
+        ArrayList<Fermenteur> listeFermenteurActif = recupererFermenteursActifs();
+        for (int i=0; i<listeFermenteurActif.size(); i++) {
+            if (listeFermenteurActif.get(i).getIdBrassin() != -1) {
+                listeFermenteur.add(listeFermenteurActif.get(i).getNumero()+"");
             }
         }
         return listeFermenteur;
@@ -140,10 +140,10 @@ public class TableFermenteur extends Controle {
 
     public ArrayList<String> recupererNumerosFermenteurSansBrassin() {
         ArrayList<String> listeFermenteur = new ArrayList<>();
-
-        for (int i=0; i<fermenteurs.size(); i++) {
-            if (fermenteurs.get(i).getIdBrassin() == -1) {
-                listeFermenteur.add(Integer.toString(fermenteurs.get(i).getNumero()));
+        ArrayList<Fermenteur> listeFermenteurActif = recupererFermenteursActifs();
+        for (int i=0; i<listeFermenteurActif.size(); i++) {
+            if (listeFermenteurActif.get(i).getIdBrassin() != -1) {
+                listeFermenteur.add(listeFermenteurActif.get(i).getNumero()+"");
             }
         }
         return listeFermenteur;

@@ -24,21 +24,23 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatCuve;
-import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
+import fabrique.gestion.FragmentAmeliore;
+import fabrique.gestion.Objets.Cuve;
 import fabrique.gestion.Objets.Emplacement;
 import fabrique.gestion.Objets.EtatCuve;
-import fabrique.gestion.Objets.Cuve;
 import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.Objets.ListeHistorique;
 import fabrique.gestion.R;
 
 public class VueCuve extends TableLayout implements View.OnClickListener {
 
+    private FragmentAmeliore parent;
     private Cuve cuve;
 
     //Description
@@ -74,9 +76,10 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         super(contexte);
     }
 
-    public VueCuve(Context contexte, Cuve cuve) {
+    public VueCuve(Context contexte, FragmentAmeliore parent, Cuve cuve) {
         super(contexte);
 
+        this.parent = parent;
         this.cuve = cuve;
 
         TableRow ligne = new TableRow(contexte);
@@ -334,9 +337,14 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableCuve.instance(getContext()).modifier(cuve.getId(), numero, capacite, emplacements.get((int) editEmplacement.getSelectedItemId()).getId(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin(), editActif.isChecked());
-            indexEmplacement = editEmplacement.getSelectedItemPosition();
-            afficher();
+            if ((!editActif.isChecked()) && (TableHistorique.instance(getContext()).recupererSelonIdCuve(cuve.getId()).size() == 0)) {
+                TableCuve.instance(getContext()).supprimer(cuve.getId());
+                parent.invalidate();
+            } else {
+                TableCuve.instance(getContext()).modifier(cuve.getId(), numero, capacite, emplacements.get((int) editEmplacement.getSelectedItemId()).getId(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin(), editActif.isChecked());
+                indexEmplacement = editEmplacement.getSelectedItemPosition();
+                afficher();
+            }
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
         }

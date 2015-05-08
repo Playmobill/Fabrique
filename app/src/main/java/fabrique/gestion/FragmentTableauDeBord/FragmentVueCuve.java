@@ -42,7 +42,7 @@ public class FragmentVueCuve extends FragmentAmeliore {
             if (cuve.getBrassin(contexte) != null) {
                 layout.addView(new VueBrassin(contexte, cuve.getBrassin(contexte)));
             }
-            layout.addView(new VueCuve(contexte, cuve));
+            layout.addView(new VueCuve(contexte, this, cuve));
         } else {
             TextView txtErreur = new TextView(contexte);
             txtErreur.setText("Aucune cuve sélectionnée");

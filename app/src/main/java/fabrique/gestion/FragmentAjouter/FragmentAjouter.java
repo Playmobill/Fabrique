@@ -10,10 +10,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableFermenteur;
-import fabrique.gestion.R;
+import fabrique.gestion.BDD.TableRecette;
+import fabrique.gestion.BDD.TableTypeBiere;
 import fabrique.gestion.FragmentAmeliore;
+import fabrique.gestion.R;
 
 public class FragmentAjouter extends FragmentAmeliore implements View.OnClickListener {
 
@@ -83,10 +87,14 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
             transaction.addToBackStack(null).commit();
         }
         else if (view.equals(brassin)) {
-            if(TableFermenteur.instance(contexte).recupererNumerosFermenteurSansBrassin().isEmpty()) {
-                Toast.makeText(contexte, "Il n'y a pas de fermenteur libre pouvant accueillir un nouveau brassin.", Toast.LENGTH_LONG).show();
+            if (TableFermenteur.instance(contexte).recupererNumerosFermenteurSansBrassin().isEmpty()) {
+                Toast.makeText(contexte, "Il n'y a pas de fermenteur actif libre pouvant accueillir un nouveau brassin.", Toast.LENGTH_LONG).show();
             }
-            else{
+            else if (TableRecette.instance(contexte).recupererNomRecettesActifs().isEmpty()) {
+                Toast.makeText(contexte, "Il faut avoir au moins UNE recette ACTIF pour pouvoir ajouter un brassin.", Toast.LENGTH_LONG).show();
+                onBackPressed();
+            }
+            else {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.onglet, new FragmentAjouterBrassin());
                 transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
@@ -94,10 +102,16 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
             }
         }
         else if (view.equals(recette)) {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.onglet, new FragmentAjouterRecette());
-            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
-            transaction.addToBackStack(null).commit();
+            ArrayList<String> listeTypeBiere = TableTypeBiere.instance(contexte).recupererNomTypeBieresActifs();
+            if (listeTypeBiere.size() == 0) {
+                Toast.makeText(contexte, "Il faut avoir au moins UN type de bière ACTIF pour pouvoir ajouter une recette.", Toast.LENGTH_LONG).show();
+                onBackPressed();
+            } else {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.onglet, new FragmentAjouterRecette());
+                transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
+                transaction.addToBackStack(null).commit();
+            }
         }
     }
 

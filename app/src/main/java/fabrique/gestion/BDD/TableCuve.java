@@ -120,10 +120,10 @@ public class TableCuve extends Controle{
 
     public ArrayList<Cuve> recupererCuveAvecBrassin() {
         ArrayList<Cuve> listeCuve = new ArrayList<>();
-
-        for (int i=0; i<cuves.size(); i++) {
-            if (cuves.get(i).getIdBrassin() != -1) {
-                listeCuve.add(cuves.get(i));
+        ArrayList<Cuve> listeCuveActive = recupererCuvesActifs();
+        for (int i=0; i<listeCuveActive.size(); i++) {
+            if (listeCuveActive.get(i).getIdBrassin() != -1) {
+                listeCuve.add(listeCuveActive.get(i));
             }
         }
         return listeCuve;
@@ -131,10 +131,10 @@ public class TableCuve extends Controle{
 
     public ArrayList<String> recupererNumerosCuveAvecBrassin() {
         ArrayList<String> listeCuve = new ArrayList<>();
-
-        for (int i=0; i<cuves.size(); i++) {
-            if (cuves.get(i).getIdBrassin() != -1) {
-                listeCuve.add(Integer.toString(cuves.get(i).getNumero()));
+        ArrayList<Cuve> listeCuveActive = recupererCuvesActifs();
+        for (int i=0; i<listeCuveActive.size(); i++) {
+            if (listeCuveActive.get(i).getIdBrassin() != -1) {
+                listeCuve.add(listeCuveActive.get(i).getNumero()+"");
             }
         }
         return listeCuve;
@@ -142,10 +142,10 @@ public class TableCuve extends Controle{
 
     public ArrayList<String> recupererNumerosCuveSansBrassin() {
         ArrayList<String> listeCuve = new ArrayList<>();
-
-        for (int i=0; i<cuves.size(); i++) {
-            if (cuves.get(i).getIdBrassin() == -1) {
-                listeCuve.add(Integer.toString(cuves.get(i).getNumero()));
+        ArrayList<Cuve> listeCuveActive = recupererCuvesActifs();
+        for (int i=0; i<listeCuveActive.size(); i++) {
+            if (listeCuveActive.get(i).getIdBrassin() != -1) {
+                listeCuve.add(listeCuveActive.get(i).getNumero()+"");
             }
         }
         return listeCuve;
@@ -181,6 +181,12 @@ public class TableCuve extends Controle{
             liste = trierParId(liste, i, grandIndex);
         }
         return liste;
+    }
+
+    public void supprimer(long id) {
+        if (accesBDD.delete(nomTable, "id = ?", new String[] {""+id}) == 1) {
+            cuves.remove(recupererId(id));
+        }
     }
 
     @Override

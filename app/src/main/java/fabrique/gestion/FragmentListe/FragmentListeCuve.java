@@ -15,8 +15,8 @@ import android.widget.TableRow;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableCuve;
-import fabrique.gestion.R;
 import fabrique.gestion.FragmentAmeliore;
+import fabrique.gestion.R;
 import fabrique.gestion.Vue.VueCuve;
 
 public class FragmentListeCuve extends FragmentAmeliore implements OnItemSelectedListener {
@@ -24,6 +24,8 @@ public class FragmentListeCuve extends FragmentAmeliore implements OnItemSelecte
     private Context contexte;
 
     private View view;
+
+    private Spinner liste;
 
     @Nullable
     @Override
@@ -40,7 +42,7 @@ public class FragmentListeCuve extends FragmentAmeliore implements OnItemSelecte
 
         view = inflater.inflate(R.layout.activity_liste_cuve, container, false);
 
-        Spinner liste = (Spinner)view.findViewById(R.id.liste);
+        liste = (Spinner)view.findViewById(R.id.liste);
         TableCuve tableCuve = TableCuve.instance(contexte);
         ArrayAdapter<String> adapteurCuve = new ArrayAdapter<>(contexte, R.layout.spinner_style, tableCuve.numeros());
         adapteurCuve.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -51,7 +53,15 @@ public class FragmentListeCuve extends FragmentAmeliore implements OnItemSelecte
     }
 
     @Override
-    public void invalidate() {}
+    public void invalidate() {
+        TableCuve tableCuve = TableCuve.instance(contexte);
+        ArrayAdapter<String> adapteurCuve = new ArrayAdapter<>(contexte, R.layout.spinner_style, tableCuve.numeros());
+        adapteurCuve.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        liste.setAdapter(adapteurCuve);
+        TableRow ligne = (TableRow)this.view.findViewById(R.id.ligne);
+        ligne.removeAllViews();
+        liste.setSelection(0);
+    }
 
     @Override
     public void onBackPressed() {
@@ -65,7 +75,7 @@ public class FragmentListeCuve extends FragmentAmeliore implements OnItemSelecte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         TableRow ligne = (TableRow)this.view.findViewById(R.id.ligne);
         ligne.removeAllViews();
-        ligne.addView(new VueCuve(contexte, TableCuve.instance(contexte).recupererIndex((int)id)));
+        ligne.addView(new VueCuve(contexte, this, TableCuve.instance(contexte).recupererIndex((int)id)));
     }
 
     @Override

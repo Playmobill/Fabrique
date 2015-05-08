@@ -66,8 +66,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
         editDensiteFinale = (EditText)view.findViewById(R.id.editDensiteFinale);
 
         editRecette = (Spinner)view.findViewById(R.id.editRecette);
-        TableRecette tableRecette = TableRecette.instance(contexte);
-        ArrayAdapter<String> adapteurRecette = new ArrayAdapter<>(contexte, R.layout.spinner_style, tableRecette.recupererNomRecettesActifs());
+        ArrayAdapter<String> adapteurRecette = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableRecette.instance(contexte).recupererNomRecettesActifs());
         adapteurRecette.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editRecette.setAdapter(adapteurRecette);
 
