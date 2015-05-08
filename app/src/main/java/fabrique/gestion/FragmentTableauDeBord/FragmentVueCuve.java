@@ -55,13 +55,18 @@ public class FragmentVueCuve extends FragmentAmeliore {
     }
 
     @Override
-    public void invalidate() {}
+    public void invalidate() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.onglet, new FragmentTableauDeBord());
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
+        transaction.addToBackStack(null).commit();
+    }
 
     @Override
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.onglet, new FragmentTableauDeBord());
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
         transaction.addToBackStack(null).commit();
     }
 }

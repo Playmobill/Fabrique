@@ -40,6 +40,7 @@ import fabrique.gestion.R;
 
 public class VueFermenteur extends TableLayout implements View.OnClickListener {
 
+    private FragmentAmeliore parent;
     private Fermenteur fermenteur;
 
     //Description
@@ -75,9 +76,10 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         super(contexte);
     }
 
-    public VueFermenteur(Context contexte, Fermenteur fermenteur) {
+    public VueFermenteur(Context contexte, FragmentAmeliore parent, Fermenteur fermenteur) {
         super(contexte);
 
+        this.parent = parent;
         this.fermenteur = fermenteur;
 
         TableRow ligne = new TableRow(contexte);
@@ -337,7 +339,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         if (erreur.equals("")) {
             if ((!editActif.isChecked()) && (TableHistorique.instance(getContext()).recupererSelonIdFermenteur(fermenteur.getId()).size() == 0)) {
                 TableFermenteur.instance(getContext()).supprimer(fermenteur.getId());
-                ((FragmentAmeliore)getParent()).invalidate();
+                parent.invalidate();
             } else {
                 TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int) editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdEtat(), fermenteur.getDateEtatToLong(), fermenteur.getIdBrassin(), editActif.isChecked());
                 indexEmplacement = editEmplacement.getSelectedItemPosition();
@@ -433,7 +435,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
             changer();
         }
         else if (v.equals(btnAjouterHistorique)) {
-            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, fermenteur.getId(), -1, -1);
+            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), fermenteur.getId(), -1, -1, -1);
             afficherHistorique();
         }
         else {

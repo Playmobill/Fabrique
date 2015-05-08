@@ -64,7 +64,7 @@ public class FragmentListeFermenteur extends FragmentAmeliore implements OnItemS
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         TableRow ligne = (TableRow)this.view.findViewById(R.id.ligne);
         ligne.removeAllViews();
-        ligne.addView(new VueFermenteur(contexte, TableFermenteur.instance(contexte).recupererIndex((int)id)));
+        ligne.addView(new VueFermenteur(contexte, this, TableFermenteur.instance(contexte).recupererIndex((int)id)));
     }
 
     @Override
@@ -76,5 +76,8 @@ public class FragmentListeFermenteur extends FragmentAmeliore implements OnItemS
         ArrayAdapter<String> adapteurFermenteur = new ArrayAdapter<>(contexte, R.layout.spinner_style, tableFermenteur.numeros());
         adapteurFermenteur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         liste.setAdapter(adapteurFermenteur);
+        TableRow ligne = (TableRow)this.view.findViewById(R.id.ligne);
+        ligne.removeAllViews();
+        liste.setSelection(0);
     }
 }
