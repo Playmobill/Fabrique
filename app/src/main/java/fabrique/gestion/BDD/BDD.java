@@ -34,8 +34,6 @@ public class BDD extends SQLiteOpenHelper {
                                                 "couleurTexte INTEGER NOT NULL," +
                                                 "couleurFond INTEGER NOT NULL," +
                                                 "avecBrassin INTEGER NOT NULL," +
-                                                "id_etatPrecedent INTEGER," +
-                                                "id_etatSuivant INTEGER," +
                                                 "actif INTEGER NOT NULL)";
 
 
@@ -46,8 +44,6 @@ public class BDD extends SQLiteOpenHelper {
                                                 "couleurTexte INTEGER NOT NULL," +
                                                 "couleurFond INTEGER NOT NULL," +
                                                 "avecBrassin INTEGER NOT NULL," +
-                                                "id_etatPrecedent INTEGER," +
-                                                "id_etatSuivant INTEGER," +
                                                 "actif INTEGER NOT NULL)";
 
     private static String createurTableEtatFut = "CREATE TABLE IF NOT EXISTS EtatFut (" +
@@ -57,8 +53,6 @@ public class BDD extends SQLiteOpenHelper {
                                                 "couleurTexte INTEGER NOT NULL," +
                                                 "couleurFond INTEGER NOT NULL," +
                                                 "avecBrassin INTEGER NOT NULL," +
-                                                "id_etatPrecedent INTEGER," +
-                                                "id_etatSuivant INTEGER," +
                                                 "actif INTEGER NOT NULL)";
 
     private static String createurTableBrassin = "CREATE TABLE IF NOT EXISTS Brassin (" +
@@ -124,13 +118,33 @@ public class BDD extends SQLiteOpenHelper {
                                                 "elementConcerne INTEGER NOT NULL, " +
                                                 "texte TEXT)";
 
-    private static String createurTableCalendrier = "CREATE TABLE IF NOT EXISTS Calendrier(" +
+    private static String createurTableCalendrier = "CREATE TABLE IF NOT EXISTS Calendrier (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                 "dateEvenement INTEGER NOT NULL, " +
                                                 "nomEvenement TEXT NOT NULL, " +
                                                 "typeObjet INTEGER NOT NULL, " +
                                                 "idObjet INTEGER NOT NULL)";
 
+    private static String createurCheminBrassinFermenteur = "CREATE TABLE IF NOT EXISTS CheminBrassinFermenteur (" +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                "id_noeudPrecedent INTEGER NOT NULL, " +
+                                                "id_etat INTEGER NOT NULL, " +
+                                                "id_noeudAvecBrassin INTEGER, " +
+                                                "id_noeudSansBrassin INTEGER)";
+
+    private static String createurCheminBrassinCuve = "CREATE TABLE IF NOT EXISTS CheminBrassinCuve (" +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                "id_noeudPrecedent INTEGER NOT NULL, " +
+                                                "id_etat INTEGER NOT NULL, " +
+                                                "id_noeudAvecBrassin INTEGER, " +
+                                                "id_noeudSansBrassin INTEGER)";
+
+    private static String createurCheminBrassinFut = "CREATE TABLE IF NOT EXISTS CheminBrassinFut (" +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                "id_noeudPrecedent INTEGER NOT NULL, " +
+                                                "id_etat INTEGER NOT NULL, " +
+                                                "id_noeudAvecBrassin INTEGER, " +
+                                                "id_noeudSansBrassin INTEGER)";
 
     public BDD(Context context, String name, SQLiteDatabase.CursorFactory factory) {
         super(context, name, factory, 1);
@@ -152,6 +166,9 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL(createurTableHistorique);
         db.execSQL(createurTableListeHistorique);
         db.execSQL(createurTableCalendrier);
+        db.execSQL(createurCheminBrassinFermenteur);
+        db.execSQL(createurCheminBrassinCuve);
+        db.execSQL(createurCheminBrassinFut);
 
         db.execSQL("INSERT INTO EtatFermenteur (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 0, 1)");
         db.execSQL("INSERT INTO EtatFermenteur (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Fermentation', '', "+Color.BLACK+", "+Color.WHITE+", 1, 1)");

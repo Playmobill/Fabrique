@@ -10,13 +10,14 @@ import android.widget.Button;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.FragmentAmeliore;
+import fabrique.gestion.FragmentGestion.chemin.FragmentChemin;
 import fabrique.gestion.R;
 
 public class FragmentGestion extends FragmentAmeliore implements View.OnClickListener {
 
     private View view;
 
-    private Button etat, listeHistorique, temps, emplacement, calendrier, typeBiere;
+    private Button etat, listeHistorique, temps, emplacement, calendrier, typeBiere, chemin;
 
     @Nullable
     @Override
@@ -54,6 +55,9 @@ public class FragmentGestion extends FragmentAmeliore implements View.OnClickLis
 
         typeBiere = (Button)view.findViewById(R.id.btnTypeBiere);
         typeBiere.setOnClickListener(this);
+
+        chemin = (Button)view.findViewById(R.id.btnChemin);
+        chemin.setOnClickListener(this);
     }
 
     @Override
@@ -94,6 +98,12 @@ public class FragmentGestion extends FragmentAmeliore implements View.OnClickLis
         else if (view.equals(typeBiere)) {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.onglet, new FragmentTypeBiere());
+            transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
+            transaction.addToBackStack(null).commit();
+        }
+        else if (view.equals(chemin)) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.onglet, new FragmentChemin());
             transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
             transaction.addToBackStack(null).commit();
         }

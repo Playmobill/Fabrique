@@ -26,7 +26,6 @@ public class BoutonFut extends Button implements View.OnClickListener {
         this(contexte);
 
         this.fragmentListeFut = fragmentListeFut;
-
         this.fut = fut;
 
         setOnClickListener(this);
