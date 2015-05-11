@@ -1,5 +1,6 @@
 package fabrique.gestion.FragmentGestion.chemin;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -8,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,11 +19,20 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableCheminBrassinCuve;
 import fabrique.gestion.BDD.TableCheminBrassinFermenteur;
 import fabrique.gestion.BDD.TableCheminBrassinFut;
+import fabrique.gestion.BDD.TableEtatCuve;
+import fabrique.gestion.BDD.TableEtatFermenteur;
+import fabrique.gestion.BDD.TableEtatFut;
 import fabrique.gestion.FragmentAmeliore;
+import fabrique.gestion.FragmentGestion.FragmentGestion;
+import fabrique.gestion.Objets.EtatCuve;
+import fabrique.gestion.Objets.EtatFermenteur;
+import fabrique.gestion.Objets.EtatFut;
 import fabrique.gestion.Objets.NoeudCuve;
 import fabrique.gestion.Objets.NoeudFermenteur;
 import fabrique.gestion.Objets.NoeudFut;
@@ -45,16 +57,26 @@ public class FragmentChemin extends FragmentAmeliore {
         ((ActivityAccueil) getActivity()).setVue(this);
 
         contexte = container.getContext();
+        HorizontalScrollView horizontalScrollView = new HorizontalScrollView(contexte);
+            ScrollView verticalScrollView = new ScrollView(contexte);
+                LinearLayout ensemble = new LinearLayout(contexte);
+                    LinearLayout ligneChemin = new LinearLayout(contexte);
+                    ligneChemin.setOrientation(LinearLayout.VERTICAL);
+                    ligneChemin.addView(cadre(dansLeFermenteur(), " Dans le fermenteur "));
+                    ligneChemin.addView(cadre(dansLaCuve(), " Dans la cuve "));
+                    ligneChemin.addView(cadre(dansLeFut(), " Dans le fût "));
+                ensemble.addView(ligneChemin);
+                    LinearLayout ligneEtat = new LinearLayout(contexte);
+                    ligneEtat.setOrientation(LinearLayout.VERTICAL);
+                    ligneEtat.addView(cadre(listeEtatFermenteur(), " Liste des états du fermenteur "));
+                    ligneEtat.addView(cadre(listeEtatCuve(), " Liste des états de la cuve "));
+                    ligneEtat.addView(cadre(listeEtatFut(), " Liste des états du fût "));
+                ensemble.addView(ligneEtat);
+            verticalScrollView.addView(ensemble);
+        horizontalScrollView.addView(verticalScrollView);
 
-        ScrollView scroll = new ScrollView(contexte);
-            LinearLayout ligne = new LinearLayout(contexte);
-            ligne.setOrientation(LinearLayout.VERTICAL);
-            ligne.addView(cadre(dansLeFermenteur(), "Dans le fermenteur"));
-            ligne.addView(cadre(dansLaCuve(), "Dans la cuve"));
-            ligne.addView(cadre(dansLeFut(), "Dans le fût"));
-        scroll.addView(ligne);
 
-        return scroll;
+        return horizontalScrollView;
     }
 
     private RelativeLayout cadre(View view, String texteTitre) {
@@ -178,9 +200,129 @@ public class FragmentChemin extends FragmentAmeliore {
         return tableau;
     }
 
+    private LinearLayout listeEtatFermenteur() {
+        LinearLayout ligne = new LinearLayout(contexte);
+        LinearLayout.LayoutParams marge = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        marge.setMargins(10, 10, 10, 10);
+        ligne.addView(listeEtatFermenteurAvecBrassin(), marge);
+        ligne.addView(listeEtatFermenteurSansBrassin(), marge);
+        return ligne;
+    }
+
+    private LinearLayout listeEtatFermenteurAvecBrassin() {
+        LinearLayout ligne = new LinearLayout(contexte);
+        ligne.setOrientation(LinearLayout.VERTICAL);
+            TextView texteAvecBrassin = new TextView(contexte);
+            texteAvecBrassin.setText("État du fermenteur avec brassin");
+        ligne.addView(texteAvecBrassin);
+        ArrayList<EtatFermenteur> listeEtat = TableEtatFermenteur.instance(contexte).recupererListeEtatActifs();
+        for (int i=0; i<listeEtat.size(); i++) {
+                Button texte = new Button(contexte);
+                texte.setText(listeEtat.get(i).getTexte());
+            ligne.addView(texte);
+        }
+        return ligne;
+    }
+
+    private LinearLayout listeEtatFermenteurSansBrassin() {
+        LinearLayout ligne = new LinearLayout(contexte);
+        ligne.setOrientation(LinearLayout.VERTICAL);
+            TextView texteSansBrassin = new TextView(contexte);
+            texteSansBrassin.setText("État du fermenteur sans brassin");
+        ligne.addView(texteSansBrassin);
+        ArrayList<EtatFermenteur> listeEtat = TableEtatFermenteur.instance(contexte).recupererListeEtatActifs();
+        for (int i=0; i<listeEtat.size(); i++) {
+                Button texte = new Button(contexte);
+                texte.setText(listeEtat.get(i).getTexte());
+            ligne.addView(texte);
+        }
+        return ligne;
+    }
+
+    private LinearLayout listeEtatCuve() {
+        LinearLayout ligne = new LinearLayout(contexte);
+        LinearLayout.LayoutParams marge = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        marge.setMargins(10, 10, 10, 10);
+        ligne.addView(listeEtatCuveAvecBrassin(), marge);
+        ligne.addView(listeEtatCuveSansBrassin(), marge);
+        return ligne;
+    }
+
+    private LinearLayout listeEtatCuveAvecBrassin() {
+        LinearLayout ligne = new LinearLayout(contexte);
+        ligne.setOrientation(LinearLayout.VERTICAL);
+        TextView texteAvecBrassin = new TextView(contexte);
+        texteAvecBrassin.setText("État de la cuve avec brassin");
+        ligne.addView(texteAvecBrassin);
+        ArrayList<EtatCuve> listeEtat = TableEtatCuve.instance(contexte).recupererListeEtatActifs();
+        for (int i=0; i<listeEtat.size(); i++) {
+            Button texte = new Button(contexte);
+            texte.setText(listeEtat.get(i).getTexte());
+            ligne.addView(texte);
+        }
+        return ligne;
+    }
+
+    private LinearLayout listeEtatCuveSansBrassin() {
+        LinearLayout ligne = new LinearLayout(contexte);
+        ligne.setOrientation(LinearLayout.VERTICAL);
+        TextView texteSansBrassin = new TextView(contexte);
+        texteSansBrassin.setText("État de la cuve sans brassin");
+        ligne.addView(texteSansBrassin);
+        ArrayList<EtatCuve> listeEtat = TableEtatCuve.instance(contexte).recupererListeEtatActifs();
+        for (int i=0; i<listeEtat.size(); i++) {
+            Button texte = new Button(contexte);
+            texte.setText(listeEtat.get(i).getTexte());
+            ligne.addView(texte);
+        }
+        return ligne;
+    }
+
+    private LinearLayout listeEtatFut() {
+        LinearLayout ligne = new LinearLayout(contexte);
+        LinearLayout.LayoutParams marge = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        marge.setMargins(10, 10, 10, 10);
+        ligne.addView(listeEtatFutAvecBrassin(), marge);
+        ligne.addView(listeEtatFutSansBrassin(), marge);
+        return ligne;
+    }
+
+    private LinearLayout listeEtatFutAvecBrassin() {
+        LinearLayout ligne = new LinearLayout(contexte);
+        ligne.setOrientation(LinearLayout.VERTICAL);
+        TextView texteAvecBrassin = new TextView(contexte);
+        texteAvecBrassin.setText("État du fût avec brassin");
+        ligne.addView(texteAvecBrassin);
+        ArrayList<EtatFut> listeEtat = TableEtatFut.instance(contexte).recupererListeEtatActifs();
+        for (int i=0; i<listeEtat.size(); i++) {
+            Button texte = new Button(contexte);
+            texte.setText(listeEtat.get(i).getTexte());
+            ligne.addView(texte);
+        }
+        return ligne;
+    }
+
+    private LinearLayout listeEtatFutSansBrassin() {
+        LinearLayout ligne = new LinearLayout(contexte);
+        ligne.setOrientation(LinearLayout.VERTICAL);
+        TextView texteSansBrassin = new TextView(contexte);
+        texteSansBrassin.setText("État du fût sans brassin");
+        ligne.addView(texteSansBrassin);
+        ArrayList<EtatFut> listeEtat = TableEtatFut.instance(contexte).recupererListeEtatActifs();
+        for (int i=0; i<listeEtat.size(); i++) {
+            Button texte = new Button(contexte);
+            texte.setText(listeEtat.get(i).getTexte());
+            ligne.addView(texte);
+        }
+        return ligne;
+    }
+
     @Override
     public void onBackPressed() {
-
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.onglet, new FragmentGestion());
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
+        transaction.addToBackStack(null).commit();
     }
 
     @Override
