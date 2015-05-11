@@ -144,7 +144,7 @@ public class TableCuve extends Controle{
         ArrayList<String> listeCuve = new ArrayList<>();
         ArrayList<Cuve> listeCuveActive = recupererCuvesActifs();
         for (int i=0; i<listeCuveActive.size(); i++) {
-            if (listeCuveActive.get(i).getIdBrassin() != -1) {
+            if (listeCuveActive.get(i).getIdBrassin() == -1) {
                 listeCuve.add(listeCuveActive.get(i).getNumero()+"");
             }
         }

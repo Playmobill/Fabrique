@@ -66,10 +66,6 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
             adapteurTypeOrigine.add("Cuve");
             listeTypeOrigineVide = false;
         }
-        if(TableFut.instance(contexte).recupererNumeroFutAvecBrassin().size()!=0) {
-            adapteurTypeOrigine.add("Fût");
-            listeTypeOrigineVide = false;
-        }
         listeTypeOrigine.setAdapter(adapteurTypeOrigine);
         listeTypeOrigine.setOnItemSelectedListener(this);
 
@@ -78,10 +74,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
         listeTypeDestination = (Spinner)view.findViewById(R.id.listeTypeDestination);
         ArrayAdapter<String> adapteurTypeDestination= new ArrayAdapter<>(contexte, R.layout.spinner_style);
         adapteurTypeDestination.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        if(TableFermenteur.instance(contexte).recupererNumerosFermenteurSansBrassin().size()!=0) {
-            adapteurTypeDestination.add("Fermenteur");
-            listeTypeDestinationVide = false;
-        }
+
         if(TableCuve.instance(contexte).recupererNumerosCuveSansBrassin().size()!=0) {
             adapteurTypeDestination.add("Cuve");
             listeTypeDestinationVide = false;
@@ -123,17 +116,9 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                     idBrassinTransfere = cuve.getIdBrassin();
                     TableCuve.instance(contexte).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), -1, true);
                 }
-                else if (listeTypeOrigine.getSelectedItem().equals("Fût")) {
-                    Fut fut = TableFut.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem()));
-                    idBrassinTransfere = fut.getId_brassin();
-                    TableFut.instance(contexte).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getId_etat(), fut.getDateEtatToLong(), -1, fut.getDateInspectionToLong(), true);
-                }
 
-                if(listeTypeDestination.getSelectedItem().equals("Fermenteur")){
-                    Fermenteur fermenteurDest = TableFermenteur.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getSelectedItem()));
-                    TableFermenteur.instance(contexte).modifier(fermenteurDest.getId(), fermenteurDest.getNumero(), fermenteurDest.getCapacite(), fermenteurDest.getIdEmplacement(), fermenteurDest.getDateLavageAcideToLong(), fermenteurDest.getIdEtat(), fermenteurDest.getDateEtatToLong(), idBrassinTransfere, true);
-                }
-                else if(listeTypeDestination.getSelectedItem().equals("Fût")){
+
+                if(listeTypeDestination.getSelectedItem().equals("Fût")){
                     Fut futDest = TableFut.instance(contexte).recupererId(Long.parseLong((String) listeDestination.getSelectedItem()));
                     TableFut.instance(contexte).modifier(futDest.getId(), futDest.getNumero(), futDest.getCapacite(), futDest.getId_etat(), futDest.getDateEtatToLong(), idBrassinTransfere, futDest.getDateInspectionToLong(), true);
                 }
@@ -154,10 +139,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                     adapteurTypeOrigine.add("Cuve");
                     listeTypeOrigineVide = false;
                 }
-                if(TableFut.instance(contexte).recupererNumeroFutAvecBrassin().size()!=0) {
-                    adapteurTypeOrigine.add("Fût");
-                    listeTypeOrigineVide = false;
-                }
+
                 listeTypeOrigine.setAdapter(adapteurTypeOrigine);
                 listeTypeOrigine.setOnItemSelectedListener(this);
                 //Fin MaJ type origine
@@ -165,10 +147,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                 //Mise a Jour du spinner du tye de destination
                 ArrayAdapter<String> adapteurTypeDestination= new ArrayAdapter<>(contexte, R.layout.spinner_style);
                 adapteurTypeDestination.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                if(TableFermenteur.instance(contexte).recupererNumerosFermenteurSansBrassin().size()!=0) {
-                    adapteurTypeDestination.add("Fermenteur");
-                    listeTypeDestinationVide = false;
-                }
+
                 if(TableCuve.instance(contexte).recupererNumerosCuveSansBrassin().size()!=0) {
                     adapteurTypeDestination.add("Cuve");
                     listeTypeDestinationVide = false;
@@ -195,10 +174,6 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                 if(listeTypeOrigine.getItemAtPosition(listeTypeOrigine.getSelectedItemPosition()).equals("Fermenteur") && TableFermenteur.instance(contexte).recupererId(Long.parseLong((String)listeOrigine.getItemAtPosition(position))).getBrassin(contexte)!=null) {
                     vueOrigine.addView(new VueBrassinSimple(contexte, TableFermenteur.instance(contexte).recupererId(Long.parseLong((String)listeOrigine.getItemAtPosition(position))).getBrassin(contexte)));
                 }
-                else if(listeTypeOrigine.getItemAtPosition(listeTypeOrigine.getSelectedItemPosition()).equals("Fût") && TableFut.instance(contexte).recupererId(Long.parseLong((String)listeOrigine.getItemAtPosition(position))).getBrassin(contexte) !=null) {
-                    vueOrigine.addView(new VueBrassinSimple(contexte, TableFut.instance(contexte).recupererId(Long.parseLong((String)listeOrigine.getItemAtPosition(position))).getBrassin(contexte)));
-
-                }
                 else if(listeTypeOrigine.getItemAtPosition(listeTypeOrigine.getSelectedItemPosition()).equals("Cuve") && TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeOrigine.getItemAtPosition(position))).getBrassin(contexte)!=null) {
                     vueOrigine.addView(new VueBrassinSimple(contexte, TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeOrigine.getItemAtPosition(position))).getBrassin(contexte)));
                 }
@@ -207,10 +182,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
         if(parent.equals(listeDestination)){
             vueDestination.removeAllViews();
             if (!listeTypeDestinationVide){
-                if (listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Fermenteur")){
-                    vueDestination.addView(new VueFermenteurSimple(contexte, TableFermenteur.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getItemAtPosition(position)))));
-                }
-                else if (listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Cuve")){
+                if (listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Cuve")){
                     vueDestination.addView(new VueCuveSimple(contexte, TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getItemAtPosition(position)))));
                 }
                 else if (listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Fût")){
@@ -221,9 +193,6 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
             ArrayAdapter<String> adapteurOrigine;
             if (listeTypeOrigine.getItemAtPosition(position).equals("Cuve")){
                 adapteurOrigine = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableCuve.instance(contexte).recupererNumerosCuveAvecBrassin());
-            }
-            else if (listeTypeOrigine.getItemAtPosition(position).equals("Fût")){
-                adapteurOrigine = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableFut.instance(contexte).recupererNumeroFutAvecBrassin());
             }
             else if (listeTypeOrigine.getItemAtPosition(position).equals("Fermenteur")){
                 adapteurOrigine = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableFermenteur.instance(contexte).recupererNumerosFermenteurAvecBrassin());
@@ -243,10 +212,6 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
             }
             else if (listeTypeDestination.getItemAtPosition(position).equals("Fût")){
                 adapteurDestination = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableFut.instance(contexte).recupererNumeroFutSansBrassin());
-            }
-            else if (listeTypeDestination.getItemAtPosition(position).equals("Fermenteur")){
-                adapteurDestination = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableFermenteur.instance(contexte).recupererNumerosFermenteurSansBrassin());
-
             }
             else {
                 adapteurDestination = new ArrayAdapter<>(contexte, R.layout.spinner_style);
