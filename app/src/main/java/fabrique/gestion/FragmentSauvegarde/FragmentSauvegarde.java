@@ -352,14 +352,15 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     }
                                 }
                             }
-                            //Si il n'y a que 5 elements et qu'il n 'y a pas de corruption detecte
-                            if ((textesEtatFermenteur.size() == 5) && !corrompuEtatFermenteur) {
+                            //Si il n'y a que 6 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesEtatFermenteur.size() == 6) && !corrompuEtatFermenteur) {
                                 TableEtatFermenteur.instance(contexte).ajouter(
                                         textesEtatFermenteur.get(0),
                                         textesEtatFermenteur.get(1),
                                         Integer.parseInt(textesEtatFermenteur.get(2)),
                                         Integer.parseInt(textesEtatFermenteur.get(3)),
-                                        Boolean.parseBoolean(textesEtatFermenteur.get(4)));
+                                        Boolean.parseBoolean(textesEtatFermenteur.get(4)),
+                                        Boolean.parseBoolean(textesEtatFermenteur.get(5)));
                             }
                             break;
 
@@ -444,14 +445,15 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     }
                                 }
                             }
-                            //Si il n'y a que 5 elements et qu'il n 'y a pas de corruption detecte
-                            if ((textesEtatCuve.size() == 5) && !corrompuEtatCuve) {
+                            //Si il n'y a que 6 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesEtatCuve.size() == 6) && !corrompuEtatCuve) {
                                 TableEtatCuve.instance(contexte).ajouter(
                                         textesEtatCuve.get(0),
                                         textesEtatCuve.get(1),
                                         Integer.parseInt(textesEtatCuve.get(2)),
                                         Integer.parseInt(textesEtatCuve.get(3)),
-                                        Boolean.parseBoolean(textesEtatCuve.get(4)));
+                                        Boolean.parseBoolean(textesEtatCuve.get(4)),
+                                        Boolean.parseBoolean(textesEtatCuve.get(5)));
                             }
                             break;
 
@@ -545,7 +547,8 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                         textesEtatFut.get(1),
                                         Integer.parseInt(textesEtatFut.get(2)),
                                         Integer.parseInt(textesEtatFut.get(3)),
-                                        Boolean.parseBoolean(textesEtatFut.get(4)));
+                                        Boolean.parseBoolean(textesEtatFut.get(4)),
+                                        Boolean.parseBoolean(textesEtatFut.get(5)));
                             }
                             break;
 

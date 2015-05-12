@@ -24,7 +24,7 @@ public class VueEtatCuve extends TableLayout implements View.OnClickListener {
     //Ajouter
     private TableRow ligneAjouter;
     private Button btnCouleurTexteAjouter, btnCouleurFondAjouter, btnAjouter;
-    private CheckBox cbActifAjouter;
+    private CheckBox cbAvecBrassinAjouter, cbActifAjouter;
     private EditText txtEtatAjouter, txtHistoriqueAjouter;
 
     public VueEtatCuve(Context contexte) {
@@ -64,6 +64,9 @@ public class VueEtatCuve extends TableLayout implements View.OnClickListener {
         ligneAjouter.addView(txtEtatAjouter, marge);
             txtHistoriqueAjouter = new EditText(getContext());
         ligneAjouter.addView(txtHistoriqueAjouter);
+            cbAvecBrassinAjouter = new CheckBox(getContext());
+            cbAvecBrassinAjouter.setEnabled(true);
+        ligneAjouter.addView(cbAvecBrassinAjouter, marge);
             cbActifAjouter = new CheckBox(getContext());
             cbActifAjouter.setEnabled(true);
         ligneAjouter.addView(cbActifAjouter, marge);
@@ -113,6 +116,7 @@ public class VueEtatCuve extends TableLayout implements View.OnClickListener {
             txtHistoriqueAjouter.getText().toString(),
             txtEtatAjouter.getCurrentTextColor(),
             txtEtatAjouter.getDrawingCacheBackgroundColor(),
+            cbAvecBrassinAjouter.isChecked(),
             cbActifAjouter.isChecked());
 
         txtEtatAjouter.setTextColor(Color.BLACK);

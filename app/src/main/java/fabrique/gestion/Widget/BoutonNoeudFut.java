@@ -13,7 +13,6 @@ public class BoutonNoeudFut extends Button implements View.OnClickListener {
     private FragmentChemin fragmentChemin;
 
     private NoeudFut noeudPrecedent;
-    private NoeudFut noeudActuel;
 
     public BoutonNoeudFut(Context contexte) {
         super(contexte);
@@ -24,7 +23,6 @@ public class BoutonNoeudFut extends Button implements View.OnClickListener {
 
         this.fragmentChemin = fragmentChemin;
         this.noeudPrecedent = noeudPrecedent;
-        this.noeudActuel = noeudActuel;
 
         setOnClickListener(this);
 
@@ -39,6 +37,10 @@ public class BoutonNoeudFut extends Button implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        if (noeudPrecedent == null) {
+            fragmentChemin.ajouterFut(-1);
+        } else {
+            fragmentChemin.ajouterFut(noeudPrecedent.getId());
+        }
     }
 }

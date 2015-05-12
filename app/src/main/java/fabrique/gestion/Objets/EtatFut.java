@@ -8,6 +8,7 @@ public class EtatFut extends Objet implements Comparable<EtatFut> {
     private String historique;
     private int couleurTexte;
     private int couleurFond;
+    private boolean avecBrassin;
     private boolean actif;
 
     public String getTexte() { return texte; }
@@ -19,6 +20,9 @@ public class EtatFut extends Objet implements Comparable<EtatFut> {
     }
     public int getCouleurFond() {
         return couleurFond;
+    }
+    public boolean getAvecBrassin() {
+        return avecBrassin;
     }
     public boolean getActif() {
         return actif;
@@ -34,16 +38,20 @@ public class EtatFut extends Objet implements Comparable<EtatFut> {
     public void setCouleurFond(int couleurFond) {
         this.couleurFond = couleurFond;
     }
+    public void setAvecBrassin(boolean avecBrassin) {
+        this.avecBrassin = avecBrassin;
+    }
     public void setActif(boolean actif) {
         this.actif = actif;
     }
 
-    public EtatFut(long id, String texte, String historique, int couleurTexte, int couleurFond, boolean actif){
+    public EtatFut(long id, String texte, String historique, int couleurTexte, int couleurFond, boolean avecBrassin, boolean actif){
         super(id);
         this.texte = texte;
         this.historique = historique;
         this.couleurTexte = couleurTexte;
         this.couleurFond = couleurFond;
+        this.avecBrassin = avecBrassin;
         this.actif = actif;
     }
 

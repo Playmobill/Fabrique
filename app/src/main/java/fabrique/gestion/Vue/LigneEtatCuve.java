@@ -18,7 +18,7 @@ public class LigneEtatCuve extends TableRow implements View.OnClickListener {
     private EtatCuve etatCuve;
 
     private EditText txtEtat, txtHistorique;
-    private CheckBox cbActif;
+    private CheckBox cbAvecBrassin, cbActif;
     private Button modifier, couleurTexte, couleurFond, valider, annuler;
 
     public LigneEtatCuve(Context contexte) {
@@ -39,6 +39,8 @@ public class LigneEtatCuve extends TableRow implements View.OnClickListener {
         txtEtat = new EditText(getContext());
 
         txtHistorique = new EditText(getContext());
+
+        cbAvecBrassin = new CheckBox(getContext());
 
         cbActif = new CheckBox(getContext());
 
@@ -76,6 +78,9 @@ public class LigneEtatCuve extends TableRow implements View.OnClickListener {
             txtHistorique.setText(etatCuve.getHistorique());
             txtHistorique.setEnabled(false);
         addView(txtHistorique);
+            cbAvecBrassin.setChecked(etatCuve.getAvecBrassin());
+            cbAvecBrassin.setEnabled(false);
+        addView(cbAvecBrassin, marge);
             cbActif.setChecked(etatCuve.getActif());
             cbActif.setEnabled(false);
         addView(cbActif, marge);
@@ -90,6 +95,8 @@ public class LigneEtatCuve extends TableRow implements View.OnClickListener {
         addView(txtEtat, marge);
             txtHistorique.setEnabled(true);
         addView(txtHistorique);
+            cbAvecBrassin.setEnabled(true);
+        addView(cbAvecBrassin, marge);
             cbActif.setEnabled(true);
         addView(cbActif, marge);
         addView(couleurTexte);
@@ -105,6 +112,7 @@ public class LigneEtatCuve extends TableRow implements View.OnClickListener {
                 txtHistorique.getText().toString(),
                 txtEtat.getCurrentTextColor(),
                 txtEtat.getDrawingCacheBackgroundColor(),
+                cbAvecBrassin.isChecked(),
                 cbActif.isChecked());
         parent.afficher();
     }

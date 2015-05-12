@@ -18,7 +18,7 @@ public class LigneEtatFermenteur extends TableRow implements View.OnClickListene
     private EtatFermenteur etatFermenteur;
 
     private EditText txtEtat, txtHistorique;
-    private CheckBox cbActif;
+    private CheckBox cbAvecBrassin, cbActif;
     private Button modifier, couleurTexte, couleurFond, valider, annuler;
 
     public LigneEtatFermenteur(Context contexte) {
@@ -39,6 +39,8 @@ public class LigneEtatFermenteur extends TableRow implements View.OnClickListene
         txtEtat = new EditText(getContext());
 
         txtHistorique = new EditText(getContext());
+
+        cbAvecBrassin = new CheckBox(getContext());
 
         cbActif = new CheckBox(getContext());
 
@@ -67,17 +69,20 @@ public class LigneEtatFermenteur extends TableRow implements View.OnClickListene
         TableRow.LayoutParams marge = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         marge.setMargins(10, 1, 10, 1);
         removeAllViews();
-            txtEtat.setText(etatFermenteur.getTexte());
-            txtEtat.setTextColor(etatFermenteur.getCouleurTexte());
-            txtEtat.setDrawingCacheBackgroundColor(etatFermenteur.getCouleurFond());
-            txtEtat.setBackgroundColor(etatFermenteur.getCouleurFond());
-            txtEtat.setEnabled(false);
+        txtEtat.setText(etatFermenteur.getTexte());
+        txtEtat.setTextColor(etatFermenteur.getCouleurTexte());
+        txtEtat.setDrawingCacheBackgroundColor(etatFermenteur.getCouleurFond());
+        txtEtat.setBackgroundColor(etatFermenteur.getCouleurFond());
+        txtEtat.setEnabled(false);
         addView(txtEtat, marge);
-            txtHistorique.setText(etatFermenteur.getHistorique());
-            txtHistorique.setEnabled(false);
+        txtHistorique.setText(etatFermenteur.getHistorique());
+        txtHistorique.setEnabled(false);
         addView(txtHistorique);
-            cbActif.setChecked(etatFermenteur.getActif());
-            cbActif.setEnabled(false);
+        cbAvecBrassin.setChecked(etatFermenteur.getAvecBrassin());
+        cbAvecBrassin.setEnabled(false);
+        addView(cbAvecBrassin, marge);
+        cbActif.setChecked(etatFermenteur.getActif());
+        cbActif.setEnabled(false);
         addView(cbActif, marge);
         addView(modifier);
     }
@@ -86,11 +91,13 @@ public class LigneEtatFermenteur extends TableRow implements View.OnClickListene
         TableRow.LayoutParams marge = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         marge.setMargins(10, 1, 10, 1);
         removeAllViews();
-            txtEtat.setEnabled(true);
+        txtEtat.setEnabled(true);
         addView(txtEtat, marge);
-            txtHistorique.setEnabled(true);
+        txtHistorique.setEnabled(true);
         addView(txtHistorique);
-            cbActif.setEnabled(true);
+        cbAvecBrassin.setEnabled(true);
+        addView(cbAvecBrassin, marge);
+        cbActif.setEnabled(true);
         addView(cbActif, marge);
         addView(couleurTexte);
         addView(couleurFond);
@@ -105,6 +112,7 @@ public class LigneEtatFermenteur extends TableRow implements View.OnClickListene
                 txtHistorique.getText().toString(),
                 txtEtat.getCurrentTextColor(),
                 txtEtat.getDrawingCacheBackgroundColor(),
+                cbAvecBrassin.isChecked(),
                 cbActif.isChecked());
         parent.afficher();
     }

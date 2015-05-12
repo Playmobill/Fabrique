@@ -24,7 +24,7 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
     //Ajouter
     private TableRow ligneAjouter;
     private Button btnCouleurTexteAjouter, btnCouleurFondAjouter, btnAjouter;
-    private CheckBox cbActifAjouter;
+    private CheckBox cbAvecBrassinAjouter, cbActifAjouter;
     private EditText txtEtatAjouter, txtHistoriqueAjouter;
 
     public VueEtatFermenteur(Context contexte) {
@@ -38,46 +38,49 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
         marge.setMargins(10, 1, 10, 1);
 
         ligneTitre = new TableRow(getContext());
-            TextView txtTitre = new TextView(getContext());
-            txtTitre.setText("État pour un fermenteur");
-            txtTitre.setTypeface(null, Typeface.BOLD);
+        TextView txtTitre = new TextView(getContext());
+        txtTitre.setText("État pour un fermenteur");
+        txtTitre.setTypeface(null, Typeface.BOLD);
         ligneTitre.addView(txtTitre, marge);
         ligneEnTete = new TableRow(getContext());
-            TextView txtEtat = new TextView(getContext());
-            txtEtat.setText("État");
-            txtEtat.setTypeface(null, Typeface.BOLD);
+        TextView txtEtat = new TextView(getContext());
+        txtEtat.setText("État");
+        txtEtat.setTypeface(null, Typeface.BOLD);
         ligneEnTete.addView(txtEtat, marge);
-            TextView txtHistorique = new TextView(getContext());
-            txtHistorique.setText("Historique");
-            txtHistorique.setTypeface(null, Typeface.BOLD);
+        TextView txtHistorique = new TextView(getContext());
+        txtHistorique.setText("Historique");
+        txtHistorique.setTypeface(null, Typeface.BOLD);
         ligneEnTete.addView(txtHistorique, marge);
-            TextView txtActif = new TextView(getContext());
-            txtActif.setText("Actif");
-            txtActif.setTypeface(null, Typeface.BOLD);
+        TextView txtActif = new TextView(getContext());
+        txtActif.setText("Actif");
+        txtActif.setTypeface(null, Typeface.BOLD);
         ligneEnTete.addView(txtActif, marge);
 
         ligneAjouter = new TableRow(getContext());
-            txtEtatAjouter = new EditText(getContext());
-            txtEtatAjouter.setTextColor(Color.BLACK);
-            txtEtatAjouter.setDrawingCacheBackgroundColor(Color.WHITE);
-            txtEtatAjouter.setBackgroundColor(Color.WHITE);
+        txtEtatAjouter = new EditText(getContext());
+        txtEtatAjouter.setTextColor(Color.BLACK);
+        txtEtatAjouter.setDrawingCacheBackgroundColor(Color.WHITE);
+        txtEtatAjouter.setBackgroundColor(Color.WHITE);
         ligneAjouter.addView(txtEtatAjouter, marge);
-            txtHistoriqueAjouter = new EditText(getContext());
+        txtHistoriqueAjouter = new EditText(getContext());
         ligneAjouter.addView(txtHistoriqueAjouter);
-            cbActifAjouter = new CheckBox(getContext());
-            cbActifAjouter.setEnabled(true);
+        cbAvecBrassinAjouter = new CheckBox(getContext());
+        cbAvecBrassinAjouter.setEnabled(true);
+        ligneAjouter.addView(cbAvecBrassinAjouter, marge);
+        cbActifAjouter = new CheckBox(getContext());
+        cbActifAjouter.setEnabled(true);
         ligneAjouter.addView(cbActifAjouter, marge);
-            btnCouleurTexteAjouter = new Button(getContext());
-            btnCouleurTexteAjouter.setText("Couleur de texte");
-            btnCouleurTexteAjouter.setOnClickListener(this);
+        btnCouleurTexteAjouter = new Button(getContext());
+        btnCouleurTexteAjouter.setText("Couleur de texte");
+        btnCouleurTexteAjouter.setOnClickListener(this);
         ligneAjouter.addView(btnCouleurTexteAjouter);
-            btnCouleurFondAjouter = new Button(getContext());
-            btnCouleurFondAjouter.setText("Couleur de fond");
-            btnCouleurFondAjouter.setOnClickListener(this);
+        btnCouleurFondAjouter = new Button(getContext());
+        btnCouleurFondAjouter.setText("Couleur de fond");
+        btnCouleurFondAjouter.setOnClickListener(this);
         ligneAjouter.addView(btnCouleurFondAjouter);
-            btnAjouter = new Button(getContext());
-            btnAjouter.setText("Ajouter");
-            btnAjouter.setOnClickListener(this);
+        btnAjouter = new Button(getContext());
+        btnAjouter.setText("Ajouter");
+        btnAjouter.setOnClickListener(this);
         ligneAjouter.addView(btnAjouter);
     }
 
@@ -109,11 +112,12 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
     private void ajouter() {
         TableEtatFermenteur tableEtatFermenteur = TableEtatFermenteur.instance(getContext());
         tableEtatFermenteur.ajouter(
-            txtEtatAjouter.getText().toString(),
-            txtHistoriqueAjouter.getText().toString(),
-            txtEtatAjouter.getCurrentTextColor(),
-            txtEtatAjouter.getDrawingCacheBackgroundColor(),
-            cbActifAjouter.isChecked());
+                txtEtatAjouter.getText().toString(),
+                txtHistoriqueAjouter.getText().toString(),
+                txtEtatAjouter.getCurrentTextColor(),
+                txtEtatAjouter.getDrawingCacheBackgroundColor(),
+                cbAvecBrassinAjouter.isChecked(),
+                cbActifAjouter.isChecked());
 
         txtEtatAjouter.setTextColor(Color.BLACK);
         txtEtatAjouter.setDrawingCacheBackgroundColor(Color.WHITE);

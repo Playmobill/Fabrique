@@ -18,7 +18,7 @@ public class LigneEtatFut extends TableRow implements View.OnClickListener {
     private EtatFut etatFut;
 
     private EditText txtEtat, txtHistorique;
-    private CheckBox cbActif;
+    private CheckBox cbAvecBrassin, cbActif;
     private Button modifier, couleurTexte, couleurFond, valider, annuler;
 
     public LigneEtatFut(Context contexte) {
@@ -39,6 +39,8 @@ public class LigneEtatFut extends TableRow implements View.OnClickListener {
         txtEtat = new EditText(getContext());
 
         txtHistorique = new EditText(getContext());
+
+        cbAvecBrassin = new CheckBox(getContext());
 
         cbActif = new CheckBox(getContext());
 
@@ -67,17 +69,20 @@ public class LigneEtatFut extends TableRow implements View.OnClickListener {
         TableRow.LayoutParams marge = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         marge.setMargins(10, 1, 10, 1);
         removeAllViews();
-            txtEtat.setText(etatFut.getTexte());
-            txtEtat.setTextColor(etatFut.getCouleurTexte());
-            txtEtat.setDrawingCacheBackgroundColor(etatFut.getCouleurFond());
-            txtEtat.setBackgroundColor(etatFut.getCouleurFond());
-            txtEtat.setEnabled(false);
+        txtEtat.setText(etatFut.getTexte());
+        txtEtat.setTextColor(etatFut.getCouleurTexte());
+        txtEtat.setDrawingCacheBackgroundColor(etatFut.getCouleurFond());
+        txtEtat.setBackgroundColor(etatFut.getCouleurFond());
+        txtEtat.setEnabled(false);
         addView(txtEtat, marge);
-            txtHistorique.setText(etatFut.getHistorique());
-            txtHistorique.setEnabled(false);
+        txtHistorique.setText(etatFut.getHistorique());
+        txtHistorique.setEnabled(false);
         addView(txtHistorique);
-            cbActif.setChecked(etatFut.getActif());
-            cbActif.setEnabled(false);
+        cbAvecBrassin.setChecked(etatFut.getAvecBrassin());
+        cbAvecBrassin.setEnabled(false);
+        addView(cbAvecBrassin, marge);
+        cbActif.setChecked(etatFut.getActif());
+        cbActif.setEnabled(false);
         addView(cbActif, marge);
         addView(modifier);
     }
@@ -86,11 +91,13 @@ public class LigneEtatFut extends TableRow implements View.OnClickListener {
         TableRow.LayoutParams marge = new TableRow.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         marge.setMargins(10, 1, 10, 1);
         removeAllViews();
-            txtEtat.setEnabled(true);
+        txtEtat.setEnabled(true);
         addView(txtEtat, marge);
-            txtHistorique.setEnabled(true);
+        txtHistorique.setEnabled(true);
         addView(txtHistorique);
-            cbActif.setEnabled(true);
+        cbAvecBrassin.setEnabled(true);
+        addView(cbAvecBrassin, marge);
+        cbActif.setEnabled(true);
         addView(cbActif, marge);
         addView(couleurTexte);
         addView(couleurFond);
@@ -100,12 +107,13 @@ public class LigneEtatFut extends TableRow implements View.OnClickListener {
 
     private void valider() {
         TableEtatFut.instance(getContext()).modifier(
-            etatFut.getId(),
-            txtEtat.getText().toString(),
-            txtHistorique.getText().toString(),
-            txtEtat.getCurrentTextColor(),
-            txtEtat.getDrawingCacheBackgroundColor(),
-            cbActif.isChecked());
+                etatFut.getId(),
+                txtEtat.getText().toString(),
+                txtHistorique.getText().toString(),
+                txtEtat.getCurrentTextColor(),
+                txtEtat.getDrawingCacheBackgroundColor(),
+                cbAvecBrassin.isChecked(),
+                cbActif.isChecked());
         parent.afficher();
     }
 

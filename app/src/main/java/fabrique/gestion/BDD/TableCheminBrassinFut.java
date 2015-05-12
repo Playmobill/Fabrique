@@ -36,6 +36,7 @@ public class TableCheminBrassinFut extends Controle  {
     public long ajouter(long id_etat, long id_noeudPrecedent, long id_noeudAvecBrassin, long id_noeudSansBrassin) {
         ContentValues valeur = new ContentValues();
         valeur.put("id_etat", id_etat);
+        valeur.put("id_noeudPrecedent", id_noeudPrecedent);
         valeur.put("id_noeudAvecBrassin", id_noeudAvecBrassin);
         valeur.put("id_noeudSansBrassin", id_noeudSansBrassin);
         long id = accesBDD.insert(nomTable, null, valeur);
@@ -46,6 +47,17 @@ public class TableCheminBrassinFut extends Controle  {
         return id;
     }
 
+    public void modifier(long id, long id_noeudAvecBrassin, long id_noeudSansBrassin) {
+        ContentValues valeur = new ContentValues();
+        valeur.put("id_noeudAvecBrassin", id_noeudAvecBrassin);
+        valeur.put("id_noeudSansBrassin", id_noeudSansBrassin);
+        if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
+            NoeudFut noeud = recupererId(id);
+            noeud.setId_noeudAvecBrassin(id_noeudAvecBrassin);
+            noeud.setId_noeudSansBrassin(id_noeudSansBrassin);
+        }
+    }
+    
     public int tailleListe() {
         return noeuds.size();
     }

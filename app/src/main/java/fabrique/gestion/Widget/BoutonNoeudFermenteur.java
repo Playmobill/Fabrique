@@ -13,7 +13,6 @@ public class BoutonNoeudFermenteur extends Button implements View.OnClickListene
     private FragmentChemin fragmentChemin;
 
     private NoeudFermenteur noeudPrecedent;
-    private NoeudFermenteur noeudActuel;
 
     public BoutonNoeudFermenteur(Context contexte) {
         super(contexte);
@@ -24,7 +23,6 @@ public class BoutonNoeudFermenteur extends Button implements View.OnClickListene
 
         this.fragmentChemin = fragmentChemin;
         this.noeudPrecedent = noeudPrecedent;
-        this.noeudActuel = noeudActuel;
 
         setOnClickListener(this);
 
@@ -39,6 +37,10 @@ public class BoutonNoeudFermenteur extends Button implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-
+        if (noeudPrecedent == null) {
+            fragmentChemin.ajouterFermenteur(-1);
+        } else {
+            fragmentChemin.ajouterFermenteur(noeudPrecedent.getId());
+        }
     }
 }

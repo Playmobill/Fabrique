@@ -30,8 +30,16 @@ public class BoutonEtatFermenteur extends Button implements View.OnClickListener
         setText(etat.getTexte());
     }
 
+    public EtatFermenteur getEtat() {
+        return etat;
+    }
+
     @Override
     public void onClick(View v) {
-
+        if (etat.getAvecBrassin()) {
+            fragmentChemin.setBtnEtatFermenteurAvecBrassin(this);
+        } else {
+            fragmentChemin.setBtnEtatFermenteurSansBrassin(this);
+        }
     }
 }

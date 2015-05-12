@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,6 +36,9 @@ import fabrique.gestion.Objets.NoeudCuve;
 import fabrique.gestion.Objets.NoeudFermenteur;
 import fabrique.gestion.Objets.NoeudFut;
 import fabrique.gestion.R;
+import fabrique.gestion.Widget.BoutonEtatCuve;
+import fabrique.gestion.Widget.BoutonEtatFermenteur;
+import fabrique.gestion.Widget.BoutonEtatFut;
 import fabrique.gestion.Widget.BoutonNoeudCuve;
 import fabrique.gestion.Widget.BoutonNoeudFermenteur;
 import fabrique.gestion.Widget.BoutonNoeudFut;
@@ -44,6 +46,16 @@ import fabrique.gestion.Widget.BoutonNoeudFut;
 public class FragmentChemin extends FragmentAmeliore {
 
     private Context contexte;
+
+    private LinearLayout ligneChemin, ligneEtat;
+
+    private BoutonNoeudFermenteur btnAjouterEtatFermenteurAvecBrassin;
+    private BoutonNoeudCuve btnAjouterEtatCuveAvecBrassin;
+    private BoutonNoeudFut btnAjouterEtatFutAvecBrassin;
+
+    private BoutonEtatFermenteur btnEtatFermenteurAvecBrassin, btnEtatFermenteurSansBrassin;
+    private BoutonEtatCuve btnEtatCuveAvecBrassin, btnEtatCuveSansBrassin;
+    private BoutonEtatFut btnEtatFutAvecBrassin, btnEtatFutSansBrassin;
 
     @Nullable
     @Override
@@ -57,26 +69,39 @@ public class FragmentChemin extends FragmentAmeliore {
         ((ActivityAccueil) getActivity()).setVue(this);
 
         contexte = container.getContext();
+
+        ViewGroup.LayoutParams parametre = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+        LinearLayout.LayoutParams marge = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        marge.setMargins(10, 10, 10, 10);
+
         HorizontalScrollView horizontalScrollView = new HorizontalScrollView(contexte);
             ScrollView verticalScrollView = new ScrollView(contexte);
                 LinearLayout ensemble = new LinearLayout(contexte);
-                    LinearLayout ligneChemin = new LinearLayout(contexte);
+                    ligneChemin = new LinearLayout(contexte);
                     ligneChemin.setOrientation(LinearLayout.VERTICAL);
-                    ligneChemin.addView(cadre(dansLeFermenteur(), " Dans le fermenteur "));
-                    ligneChemin.addView(cadre(dansLaCuve(), " Dans la cuve "));
-                    ligneChemin.addView(cadre(dansLeFut(), " Dans le fût "));
-                ensemble.addView(ligneChemin);
-                    LinearLayout ligneEtat = new LinearLayout(contexte);
+                ensemble.addView(ligneChemin, marge);
+                    ligneEtat = new LinearLayout(contexte);
                     ligneEtat.setOrientation(LinearLayout.VERTICAL);
-                    ligneEtat.addView(cadre(listeEtatFermenteur(), " Liste des états du fermenteur "));
-                    ligneEtat.addView(cadre(listeEtatCuve(), " Liste des états de la cuve "));
-                    ligneEtat.addView(cadre(listeEtatFut(), " Liste des états du fût "));
-                ensemble.addView(ligneEtat);
+                ensemble.addView(ligneEtat, marge);
             verticalScrollView.addView(ensemble);
-        horizontalScrollView.addView(verticalScrollView);
+        horizontalScrollView.addView(verticalScrollView, parametre);
 
+        afficher();
 
         return horizontalScrollView;
+    }
+
+    private void afficher() {
+        ligneChemin.removeAllViews();
+        ligneChemin.addView(cadre(dansLeFermenteur(), " Dans le fermenteur "));
+        ligneChemin.addView(cadre(dansLaCuve(), " Dans la cuve "));
+        ligneChemin.addView(cadre(dansLeFut(), " Dans le fût "));
+
+        ligneEtat.removeAllViews();
+        ligneEtat.addView(cadre(listeEtatFermenteur(), " Liste des états du fermenteur "));
+        ligneEtat.addView(cadre(listeEtatCuve(), " Liste des états de la cuve "));
+        ligneEtat.addView(cadre(listeEtatFut(), " Liste des états du fût "));
     }
 
     private RelativeLayout cadre(View view, String texteTitre) {
@@ -138,10 +163,18 @@ public class FragmentChemin extends FragmentAmeliore {
             noeudActuel = noeudActuel.getNoeudAvecBrassin(contexte);
         }
             TableRow ligneAjouterAvecBrassin = new TableRow(contexte);
-            ligneAjouterAvecBrassin.addView(new BoutonNoeudFermenteur(contexte, this, noeudPrecedent, null));
+            btnAjouterEtatFermenteurAvecBrassin = new BoutonNoeudFermenteur(contexte, this, noeudPrecedent, null);
+            ligneAjouterAvecBrassin.addView(btnAjouterEtatFermenteurAvecBrassin);
         tableau.addView(ligneAjouterAvecBrassin);
 
         return tableau;
+    }
+
+    public void ajouterFermenteur(long id_noeudPrecedent) {
+        if (btnEtatFermenteurAvecBrassin != null) {
+            TableCheminBrassinFermenteur.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinFermenteur.instance(contexte).ajouter(btnEtatFermenteurAvecBrassin.getEtat().getId(), id_noeudPrecedent, -1, -1), -1);
+            afficher();
+        }
     }
 
     private TableLayout dansLaCuve() {
@@ -166,10 +199,18 @@ public class FragmentChemin extends FragmentAmeliore {
             noeudActuel = noeudActuel.getNoeudAvecBrassin(contexte);
         }
         TableRow ligneAjouterAvecBrassin = new TableRow(contexte);
-        ligneAjouterAvecBrassin.addView(new BoutonNoeudCuve(contexte, this, noeudPrecedent, null));
+        btnAjouterEtatCuveAvecBrassin = new BoutonNoeudCuve(contexte, this, noeudPrecedent, null);
+        ligneAjouterAvecBrassin.addView(btnAjouterEtatCuveAvecBrassin);
         tableau.addView(ligneAjouterAvecBrassin);
 
         return tableau;
+    }
+
+    public void ajouterCuve(long id_noeudPrecedent) {
+        if (btnEtatCuveAvecBrassin != null) {
+            TableCheminBrassinCuve.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinCuve.instance(contexte).ajouter(btnEtatCuveAvecBrassin.getEtat().getId(), id_noeudPrecedent, -1, -1), -1);
+            afficher();
+        }
     }
 
     private TableLayout dansLeFut() {
@@ -194,10 +235,18 @@ public class FragmentChemin extends FragmentAmeliore {
             noeudActuel = noeudActuel.getNoeudAvecBrassin(contexte);
         }
         TableRow ligneAjouterAvecBrassin = new TableRow(contexte);
-        ligneAjouterAvecBrassin.addView(new BoutonNoeudFut(contexte, this, noeudPrecedent, null));
+        btnAjouterEtatFutAvecBrassin = new BoutonNoeudFut(contexte, this, noeudPrecedent, null);
+        ligneAjouterAvecBrassin.addView(btnAjouterEtatFutAvecBrassin);
         tableau.addView(ligneAjouterAvecBrassin);
 
         return tableau;
+    }
+
+    public void ajouterFut(long id_noeudPrecedent) {
+        if (btnEtatFermenteurAvecBrassin != null) {
+            TableCheminBrassinFut.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinFut.instance(contexte).ajouter(btnEtatFutAvecBrassin.getEtat().getId(), id_noeudPrecedent, -1, -1), -1);
+            afficher();
+        }
     }
 
     private LinearLayout listeEtatFermenteur() {
@@ -215,13 +264,15 @@ public class FragmentChemin extends FragmentAmeliore {
             TextView texteAvecBrassin = new TextView(contexte);
             texteAvecBrassin.setText("État du fermenteur avec brassin");
         ligne.addView(texteAvecBrassin);
-        ArrayList<EtatFermenteur> listeEtat = TableEtatFermenteur.instance(contexte).recupererListeEtatActifs();
+        ArrayList<EtatFermenteur> listeEtat = TableEtatFermenteur.instance(contexte).recupererListeEtatsActifsAvecBrassin();
         for (int i=0; i<listeEtat.size(); i++) {
-                Button texte = new Button(contexte);
-                texte.setText(listeEtat.get(i).getTexte());
-            ligne.addView(texte);
+            ligne.addView(new BoutonEtatFermenteur(contexte, this, listeEtat.get(i)));
         }
         return ligne;
+    }
+
+    public void setBtnEtatFermenteurAvecBrassin(BoutonEtatFermenteur btnEtatFermenteurAvecBrassin) {
+        this.btnEtatFermenteurAvecBrassin = btnEtatFermenteurAvecBrassin;
     }
 
     private LinearLayout listeEtatFermenteurSansBrassin() {
@@ -230,13 +281,15 @@ public class FragmentChemin extends FragmentAmeliore {
             TextView texteSansBrassin = new TextView(contexte);
             texteSansBrassin.setText("État du fermenteur sans brassin");
         ligne.addView(texteSansBrassin);
-        ArrayList<EtatFermenteur> listeEtat = TableEtatFermenteur.instance(contexte).recupererListeEtatActifs();
+        ArrayList<EtatFermenteur> listeEtat = TableEtatFermenteur.instance(contexte).recupererListeEtatsActifsSansBrassin();
         for (int i=0; i<listeEtat.size(); i++) {
-                Button texte = new Button(contexte);
-                texte.setText(listeEtat.get(i).getTexte());
-            ligne.addView(texte);
+            ligne.addView(new BoutonEtatFermenteur(contexte, this, listeEtat.get(i)));
         }
         return ligne;
+    }
+
+    public void setBtnEtatFermenteurSansBrassin(BoutonEtatFermenteur btnEtatFermenteurSansBrassin) {
+        this.btnEtatFermenteurSansBrassin = btnEtatFermenteurSansBrassin;
     }
 
     private LinearLayout listeEtatCuve() {
@@ -254,13 +307,15 @@ public class FragmentChemin extends FragmentAmeliore {
         TextView texteAvecBrassin = new TextView(contexte);
         texteAvecBrassin.setText("État de la cuve avec brassin");
         ligne.addView(texteAvecBrassin);
-        ArrayList<EtatCuve> listeEtat = TableEtatCuve.instance(contexte).recupererListeEtatActifs();
+        ArrayList<EtatCuve> listeEtat = TableEtatCuve.instance(contexte).recupererListeEtatsActifsAvecBrassin();
         for (int i=0; i<listeEtat.size(); i++) {
-            Button texte = new Button(contexte);
-            texte.setText(listeEtat.get(i).getTexte());
-            ligne.addView(texte);
+            ligne.addView(new BoutonEtatCuve(contexte, this, listeEtat.get(i)));
         }
         return ligne;
+    }
+
+    public void setBtnEtatCuveAvecBrassin(BoutonEtatCuve btnEtatCuveAvecBrassin) {
+        this.btnEtatCuveAvecBrassin = btnEtatCuveAvecBrassin;
     }
 
     private LinearLayout listeEtatCuveSansBrassin() {
@@ -269,13 +324,15 @@ public class FragmentChemin extends FragmentAmeliore {
         TextView texteSansBrassin = new TextView(contexte);
         texteSansBrassin.setText("État de la cuve sans brassin");
         ligne.addView(texteSansBrassin);
-        ArrayList<EtatCuve> listeEtat = TableEtatCuve.instance(contexte).recupererListeEtatActifs();
+        ArrayList<EtatCuve> listeEtat = TableEtatCuve.instance(contexte).recupererListeEtatsActifsSansBrassin();
         for (int i=0; i<listeEtat.size(); i++) {
-            Button texte = new Button(contexte);
-            texte.setText(listeEtat.get(i).getTexte());
-            ligne.addView(texte);
+            ligne.addView(new BoutonEtatCuve(contexte, this, listeEtat.get(i)));
         }
         return ligne;
+    }
+
+    public void setBtnEtatCuveSansBrassin(BoutonEtatCuve btnEtatCuveSansBrassin) {
+        this.btnEtatCuveSansBrassin = btnEtatCuveSansBrassin;
     }
 
     private LinearLayout listeEtatFut() {
@@ -293,13 +350,15 @@ public class FragmentChemin extends FragmentAmeliore {
         TextView texteAvecBrassin = new TextView(contexte);
         texteAvecBrassin.setText("État du fût avec brassin");
         ligne.addView(texteAvecBrassin);
-        ArrayList<EtatFut> listeEtat = TableEtatFut.instance(contexte).recupererListeEtatActifs();
+        ArrayList<EtatFut> listeEtat = TableEtatFut.instance(contexte).recupererListeEtatsActifsAvecBrassin();
         for (int i=0; i<listeEtat.size(); i++) {
-            Button texte = new Button(contexte);
-            texte.setText(listeEtat.get(i).getTexte());
-            ligne.addView(texte);
+            ligne.addView(new BoutonEtatFut(contexte, this, listeEtat.get(i)));
         }
         return ligne;
+    }
+
+    public void setBtnEtatFutAvecBrassin(BoutonEtatFut btnEtatFutAvecBrassin) {
+        this.btnEtatFutAvecBrassin = btnEtatFutAvecBrassin;
     }
 
     private LinearLayout listeEtatFutSansBrassin() {
@@ -308,13 +367,15 @@ public class FragmentChemin extends FragmentAmeliore {
         TextView texteSansBrassin = new TextView(contexte);
         texteSansBrassin.setText("État du fût sans brassin");
         ligne.addView(texteSansBrassin);
-        ArrayList<EtatFut> listeEtat = TableEtatFut.instance(contexte).recupererListeEtatActifs();
+        ArrayList<EtatFut> listeEtat = TableEtatFut.instance(contexte).recupererListeEtatsActifsSansBrassin();
         for (int i=0; i<listeEtat.size(); i++) {
-            Button texte = new Button(contexte);
-            texte.setText(listeEtat.get(i).getTexte());
-            ligne.addView(texte);
+            ligne.addView(new BoutonEtatFut(contexte, this, listeEtat.get(i)));
         }
         return ligne;
+    }
+
+    public void setBtnEtatFutSansBrassin(BoutonEtatFut btnEtatFutSansBrassin) {
+        this.btnEtatFutSansBrassin = btnEtatFutSansBrassin;
     }
 
     @Override

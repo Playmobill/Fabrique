@@ -13,7 +13,6 @@ public class BoutonNoeudCuve extends Button implements View.OnClickListener {
     private FragmentChemin fragmentChemin;
 
     private NoeudCuve noeudPrecedent;
-    private NoeudCuve noeudActuel;
 
     public BoutonNoeudCuve(Context contexte) {
         super(contexte);
@@ -21,10 +20,8 @@ public class BoutonNoeudCuve extends Button implements View.OnClickListener {
 
     public BoutonNoeudCuve(Context contexte, FragmentChemin fragmentChemin, NoeudCuve noeudPrecedent, NoeudCuve noeudActuel) {
         super(contexte);
-
         this.fragmentChemin = fragmentChemin;
         this.noeudPrecedent = noeudPrecedent;
-        this.noeudActuel = noeudActuel;
 
         setOnClickListener(this);
 
@@ -39,6 +36,10 @@ public class BoutonNoeudCuve extends Button implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        if (noeudPrecedent == null) {
+            fragmentChemin.ajouterCuve(-1);
+        } else {
+            fragmentChemin.ajouterCuve(noeudPrecedent.getId());
+        }
     }
 }
