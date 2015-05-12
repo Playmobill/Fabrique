@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import fabrique.gestion.BDD.TableCuve;
@@ -30,8 +31,9 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
 
     private View view;
 
-    private Spinner listeTypeOrigine, listeOrigine, listeTypeDestination, listeDestination;
-    private boolean listeTypeOrigineVide, listeTypeDestinationVide;
+    private Spinner listeTypeOrigine, listeOrigine, listeDestination;
+    private TextView listeTypeDestination;
+    private boolean listeTypeOrigineVide;
     private LinearLayout vueOrigine, vueDestination;
     private Button transferer;
 
@@ -53,7 +55,6 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
         transferer.setOnClickListener(this);
 
         listeTypeOrigineVide = true;
-        listeTypeDestinationVide = true;
 
         listeTypeOrigine = (Spinner)view.findViewById(R.id.listeTypeOrigine);
         ArrayAdapter<String> adapteurTypeOrigine= new ArrayAdapter<>(contexte, R.layout.spinner_style);
@@ -71,22 +72,20 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
 
         listeOrigine = (Spinner)view.findViewById(R.id.listeOrigine);
 
-        listeTypeDestination = (Spinner)view.findViewById(R.id.listeTypeDestination);
-        ArrayAdapter<String> adapteurTypeDestination= new ArrayAdapter<>(contexte, R.layout.spinner_style);
-        adapteurTypeDestination.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        if(TableCuve.instance(contexte).recupererNumerosCuveSansBrassin().size()!=0) {
-            adapteurTypeDestination.add("Cuve");
-            listeTypeDestinationVide = false;
-        }
-        if(TableFut.instance(contexte).recupererNumeroFutSansBrassin().size()!=0) {
-            adapteurTypeDestination.add("Fût");
-            listeTypeDestinationVide = false;
-        }
-        listeTypeDestination.setAdapter(adapteurTypeDestination);
-        listeTypeDestination.setOnItemSelectedListener(this);
-
         listeDestination = (Spinner)view.findViewById(R.id.listeDestination);
+
+        listeTypeDestination = (TextView)view.findViewById(R.id.listeTypeDestination);
+        if(listeTypeOrigine.getSelectedItem() != null && listeTypeOrigine.getSelectedItem().equals("Fermenteur")){
+            listeTypeDestination.setText("Cuve");
+        }
+        else if(listeTypeOrigine.getSelectedItem() != null && listeTypeOrigine.getSelectedItem().equals("Cuve")){
+            listeTypeDestination.setText("Fût");
+        }
+        else{
+            listeTypeDestination.setText("Aucune destination disponible");
+            listeDestination.setVisibility(View.INVISIBLE);
+        }
+
 
         vueOrigine = (LinearLayout)view.findViewById(R.id.vueOrigine);
         vueDestination = (LinearLayout)view.findViewById(R.id.vueDestination);
@@ -103,7 +102,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
     @Override
     public void onClick(View v) {
         if(v.equals(transferer)) {
-            if (listeTypeOrigine.getSelectedItem() != null && !(listeTypeOrigine.getSelectedItem().equals("")) && listeTypeDestination.getSelectedItem() != null &&  !(listeTypeDestination.getSelectedItem().equals(""))) {
+            if (listeTypeOrigine.getSelectedItem() != null && !(listeTypeOrigine.getSelectedItem().equals("")) && listeTypeDestination != null &&  !(listeTypeDestination.getText().toString().equals(""))) {
                 long idBrassinTransfere = -1;
 
                 if (listeTypeOrigine.getSelectedItem().equals("Fermenteur")) {
@@ -117,12 +116,11 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                     TableCuve.instance(contexte).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getIdEtat(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), -1, true);
                 }
 
-
-                if(listeTypeDestination.getSelectedItem().equals("Fût")){
+                if(listeTypeDestination.getText().toString().equals("Fût")){
                     Fut futDest = TableFut.instance(contexte).recupererId(Long.parseLong((String) listeDestination.getSelectedItem()));
                     TableFut.instance(contexte).modifier(futDest.getId(), futDest.getNumero(), futDest.getCapacite(), futDest.getId_etat(), futDest.getDateEtatToLong(), idBrassinTransfere, futDest.getDateInspectionToLong(), true);
                 }
-                else if(listeTypeDestination.getSelectedItem().equals("Cuve")){
+                else if(listeTypeDestination.getText().toString().equals("Cuve")){
                     Cuve cuveDest = TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getSelectedItem()));
                     TableCuve.instance(contexte).modifier(cuveDest.getId(), cuveDest.getNumero(), cuveDest.getCapacite(), cuveDest.getIdEmplacement(), cuveDest.getDateLavageAcide(), cuveDest.getIdEtat(), cuveDest.getLongDateEtat(), cuveDest.getCommentaireEtat(), idBrassinTransfere, true);
                 }
@@ -139,25 +137,36 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                     adapteurTypeOrigine.add("Cuve");
                     listeTypeOrigineVide = false;
                 }
+                if(TableFermenteur.instance(contexte).recupererNumerosFermenteurAvecBrassin().size()<=0 && TableCuve.instance(contexte).recupererNumerosCuveAvecBrassin().size()<=0){
+                    listeTypeOrigineVide = true;
+                    vueOrigine.removeAllViews();
+                }
+
+                if(listeTypeOrigineVide){
+                    ArrayAdapter<String> adapteurOrigine;
+                    adapteurOrigine = new ArrayAdapter<>(contexte, R.layout.spinner_style);
+                    adapteurOrigine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    listeOrigine.setAdapter(adapteurOrigine);
+                    listeOrigine.setOnItemSelectedListener(this);
+                }
 
                 listeTypeOrigine.setAdapter(adapteurTypeOrigine);
                 listeTypeOrigine.setOnItemSelectedListener(this);
                 //Fin MaJ type origine
 
-                //Mise a Jour du spinner du tye de destination
-                ArrayAdapter<String> adapteurTypeDestination= new ArrayAdapter<>(contexte, R.layout.spinner_style);
-                adapteurTypeDestination.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                //Mise a Jour du spinner du type de destination
 
-                if(TableCuve.instance(contexte).recupererNumerosCuveSansBrassin().size()!=0) {
-                    adapteurTypeDestination.add("Cuve");
-                    listeTypeDestinationVide = false;
+                if(listeTypeOrigine.getSelectedItem() != null && listeTypeOrigine.getSelectedItem().equals("Fermenteur")){
+                    listeTypeDestination.setText("Cuve");
                 }
-                if(TableFut.instance(contexte).recupererNumeroFutSansBrassin().size()!=0) {
-                    adapteurTypeDestination.add("Fût");
-                    listeTypeDestinationVide = false;
+                else if(listeTypeOrigine.getSelectedItem() != null && listeTypeOrigine.getSelectedItem().equals("Cuve")){
+                    listeTypeDestination.setText("Fût");
                 }
-                listeTypeDestination.setAdapter(adapteurTypeDestination);
-                listeTypeDestination.setOnItemSelectedListener(this);
+                else{
+                    listeTypeDestination.setText("Aucune destination disponible");
+                    listeDestination.setVisibility(View.INVISIBLE);
+                    vueDestination.removeAllViews();
+                }
                 //Fin MaJ type destination
             }
             else{
@@ -181,22 +190,48 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
         }
         if(parent.equals(listeDestination)){
             vueDestination.removeAllViews();
-            if (!listeTypeDestinationVide){
-                if (listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Cuve")){
-                    vueDestination.addView(new VueCuveSimple(contexte, TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getItemAtPosition(position)))));
-                }
-                else if (listeTypeDestination.getItemAtPosition(listeTypeDestination.getSelectedItemPosition()).equals("Fût")){
-                    vueDestination.addView(new VueFutSimple(contexte, TableFut.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getItemAtPosition(position)))));
-                }}
+            if (listeTypeDestination.getText().toString().equals("Cuve")){
+                vueDestination.addView(new VueCuveSimple(contexte, TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getItemAtPosition(position)))));
+            }
+            else if (listeTypeDestination.getText().toString().equals("Fût")){
+                vueDestination.addView(new VueFutSimple(contexte, TableFut.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getItemAtPosition(position)))));
+            }
         }
         if (parent.equals(listeTypeOrigine)){
-            ArrayAdapter<String> adapteurOrigine;
+            ArrayAdapter<String> adapteurOrigine, adapteurDestination;
             if (listeTypeOrigine.getItemAtPosition(position).equals("Cuve")){
                 adapteurOrigine = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableCuve.instance(contexte).recupererNumerosCuveAvecBrassin());
+                if(TableFut.instance(contexte).recupererNumeroFutSansBrassin().size()!=0){
+                    listeTypeDestination.setText("Fût");
+                    listeDestination.setVisibility(View.VISIBLE);
+
+                    adapteurDestination = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableFut.instance(contexte).recupererNumeroFutSansBrassin());
+                    adapteurDestination.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    listeDestination.setAdapter(adapteurDestination);
+                    listeDestination.setOnItemSelectedListener(this);
+                }
+                else{
+                    listeTypeDestination.setText("Aucune destination disponible");
+                    listeDestination.setVisibility(View.INVISIBLE);
+                    vueDestination.removeAllViews();
+                }
             }
             else if (listeTypeOrigine.getItemAtPosition(position).equals("Fermenteur")){
                 adapteurOrigine = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableFermenteur.instance(contexte).recupererNumerosFermenteurAvecBrassin());
+                if(TableCuve.instance(contexte).recupererNumerosCuveSansBrassin().size()!=0){
+                    listeTypeDestination.setText("Cuve");
+                    listeDestination.setVisibility(View.VISIBLE);
 
+                    adapteurDestination = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableCuve.instance(contexte).recupererNumerosCuveSansBrassin());
+                    adapteurDestination.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    listeDestination.setAdapter(adapteurDestination);
+                    listeDestination.setOnItemSelectedListener(this);
+                }
+                else{
+                    listeTypeDestination.setText("Aucune destination disponible");
+                    listeDestination.setVisibility(View.INVISIBLE);
+                    vueDestination.removeAllViews();
+                }
             }
             else {
                 adapteurOrigine = new ArrayAdapter<>(contexte, R.layout.spinner_style);
@@ -204,21 +239,6 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
             adapteurOrigine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             listeOrigine.setAdapter(adapteurOrigine);
             listeOrigine.setOnItemSelectedListener(this);
-        }
-        if (parent.equals(listeTypeDestination)){
-            ArrayAdapter<String> adapteurDestination;
-            if (listeTypeDestination.getItemAtPosition(position).equals("Cuve")){
-                adapteurDestination = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableCuve.instance(contexte).recupererNumerosCuveSansBrassin());
-            }
-            else if (listeTypeDestination.getItemAtPosition(position).equals("Fût")){
-                adapteurDestination = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableFut.instance(contexte).recupererNumeroFutSansBrassin());
-            }
-            else {
-                adapteurDestination = new ArrayAdapter<>(contexte, R.layout.spinner_style);
-            }
-            adapteurDestination.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            listeDestination.setAdapter(adapteurDestination);
-            listeDestination.setOnItemSelectedListener(this);
         }
     }
 

@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Spinner
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/listeTypeDestination"
