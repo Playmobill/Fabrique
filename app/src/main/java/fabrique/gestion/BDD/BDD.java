@@ -191,6 +191,35 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Calendrier (dateEvenement, nomEvenement, typeObjet, idObjet) VALUES (1431216000, 'Test Calendrier #3', 1, 1)");
         db.execSQL("INSERT INTO Calendrier (dateEvenement, nomEvenement, typeObjet, idObjet) VALUES (1431216000, 'Test Calendrier #3bis', 1, 1)");
 
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Ale Blonde', 'Blonde', 1)");
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Blanche Belge', 'Blanche', 1)");
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Mild', 'Rousse', 1)");
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Stout à l avoine', 'Noire', 1)");
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Pale Ale Américaine', 'Blonde', 1)");
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Ale Ambrée Américaine', 'Rousse', 1)");
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Stout Américaine', 'Noire', 1)");
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Bière de Noël', 'Rousse', 1)");
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Pilsener Bohémienne', 'Blonde', 1)");
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Indian Pale Ale', 'Rousse', 1)");
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Porter', 'Noire', 1)");
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Stout Impérial', 'Noire', 1)");
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Double IPA', 'Rousse', 1)");
+        db.execSQL("INSERT INTO TypeBiere (nom, couleur, actif) VALUES ('Foreign Extra Stout', 'Noire', 1)");
+
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('République', 'Rep', 1, "+Color.argb(255,255,255,255)+", "+Color.argb(255,130,120,80)+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Rivière Blanche', 'Riv', 2, "+Color.argb(255,0,0,0)+", "+Color.argb(255,215,210,190)+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Goupil', 'Gou', 3, "+Color.argb(255,255,255,255)+", "+Color.argb(255,115,65,45)+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Caltor', 'Cal', 4, "+Color.argb(255,255,255,255)+", "+Color.argb(255,30,30,30)+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Franquelin', 'Fra', 5, "+Color.argb(255,255,255,255)+", "+Color.argb(255,130,120,80)+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Salamagone', 'Sal', 6, "+Color.argb(255,255,255,255)+", "+Color.argb(255,115,65,45)+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Métisse', 'Met', 7, "+Color.argb(255,255,255,255)+", "+Color.argb(255,30,30,30)+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Pain d épices', 'Pai', 8, "+Color.argb(255,255,255,255)+", "+Color.argb(255,115,65,45)+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Matane Pilsen', 'Rep', 9, "+Color.argb(255,255,255,255)+", "+Color.argb(255,130,120,80)+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Gros Chars', 'Gro', 10, "+Color.argb(255,255,255,255)+", "+Color.argb(255,115,65,45)+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Misère noire', 'Mis', 11, "+Color.argb(255,255,255,255)+", "+Color.argb(255,30,30,30)+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Kaliningrad', 'Kal', 12, "+Color.argb(255,255,255,255)+", "+Color.argb(255,30,30,30)+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Dame de Pique', 'Dam', 13, "+Color.argb(255,255,255,255)+", "+Color.argb(255,115,65,45)+", 1)");
+        db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Duplessis', 'Dup', 14, "+Color.argb(255,255,255,255)+", "+Color.argb(255,30,30,30)+", 1)");
     }
 
     @Override
