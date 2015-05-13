@@ -2,7 +2,6 @@ package fabrique.gestion.FragmentAjouter;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import android.widget.Toast;
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.BDD.TableTypeBiere;
+import fabrique.gestion.ColorPicker.ColorPickerDialog;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.R;
 
@@ -24,10 +24,11 @@ public class FragmentAjouterRecette extends FragmentAmeliore implements View.OnC
 
     private Context contexte;
 
-    private Button btnAjouter;
+    private Button btnAjouter, couleurTexte, couleurFond;
 
     private EditText editNom, editAcronyme;
     private Spinner editTypeBiere;
+    private EditText couleurAffichage;
 
     @Nullable
     @Override
@@ -52,6 +53,14 @@ public class FragmentAjouterRecette extends FragmentAmeliore implements View.OnC
             adapteurRecette.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editTypeBiere.setAdapter(adapteurRecette);
 
+        couleurAffichage = (EditText)view.findViewById(R.id.couleurAffichage);
+
+        couleurTexte = (Button)view.findViewById(R.id.couleurTexte);
+        couleurTexte.setOnClickListener(this);
+
+        couleurFond = (Button)view.findViewById(R.id.couleurFond);
+        couleurFond.setOnClickListener(this);
+
         btnAjouter = (Button)view.findViewById(R.id.btnAjouter);
         btnAjouter.setOnClickListener(this);
 
@@ -60,7 +69,13 @@ public class FragmentAjouterRecette extends FragmentAmeliore implements View.OnC
 
     private void ajouter() {
         long typeBiere = TableTypeBiere.instance(contexte).recupererIndex(editTypeBiere.getSelectedItemPosition()).getId();
-        TableRecette.instance(contexte).ajouter(editNom.getText().toString(), editAcronyme.getText().toString(), typeBiere, Color.BLACK, Color.WHITE, true);
+        TableRecette.instance(contexte).ajouter(
+                editNom.getText().toString(),
+                editAcronyme.getText().toString(),
+                typeBiere,
+                couleurAffichage.getCurrentTextColor(),
+                couleurAffichage.getDrawingCacheBackgroundColor(),
+                true);
         Toast.makeText(contexte, "Recette ajouté !", Toast.LENGTH_LONG).show();
     }
 
@@ -71,6 +86,12 @@ public class FragmentAjouterRecette extends FragmentAmeliore implements View.OnC
     public void onClick(View v) {
         if (v.equals(btnAjouter)) {
             ajouter();
+        } else if (v.equals(couleurTexte)) {
+            ColorPickerDialog dialog = new ColorPickerDialog(contexte, "Texte", couleurAffichage);
+            dialog.show();
+        } else if (v.equals(couleurFond)) {
+            ColorPickerDialog dialog = new ColorPickerDialog(contexte, "Fond", couleurAffichage);
+            dialog.show();
         }
     }
 
