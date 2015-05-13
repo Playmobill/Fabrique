@@ -149,7 +149,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             long id_brassin = TableBrassin.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale);
 
             Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(Long.parseLong(editFermenteur.getItemAtPosition(editFermenteur.getSelectedItemPosition()).toString()));
-            TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), 2, fermenteur.getDateEtatToLong(), id_brassin, fermenteur.getActif());
+            TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), 2, date, id_brassin, fermenteur.getActif());
 
             Toast.makeText(contexte, "Brassin ajouté !", Toast.LENGTH_LONG).show();
             TableBrassin tableBrassin = TableBrassin.instance(contexte);

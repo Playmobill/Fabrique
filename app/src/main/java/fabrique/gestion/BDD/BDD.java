@@ -170,6 +170,10 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL(createurCheminBrassinCuve);
         db.execSQL(createurCheminBrassinFut);
 
+        db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('RdC', 1)");
+        db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('Sous-sol', 1)");
+        db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('Ch. Froide', 1)");
+
         db.execSQL("INSERT INTO EtatFermenteur (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 0, 1)");
         db.execSQL("INSERT INTO EtatFermenteur (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Fermentation', '', "+Color.BLACK+", "+Color.WHITE+", 1, 1)");
         db.execSQL("INSERT INTO EtatFermenteur (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Lavé', '', "+Color.BLACK+", "+Color.WHITE+", 0, 1)");
