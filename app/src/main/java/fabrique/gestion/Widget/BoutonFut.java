@@ -37,7 +37,7 @@ public class BoutonFut extends Button implements View.OnClickListener {
         texte.append(fut.getCapacite()).append("L").append("\n");
         texte.append(fut.getEtat(contexte).getTexte()).append("\n");
         if (fut.getBrassin(contexte) != null) {
-            texte.append(fut.getBrassin(contexte).getRecette(contexte).getAcronyme()).append(" / ").append(fut.getBrassin(contexte).getNumero());
+            texte.append(fut.getBrassin(contexte).getRecette(contexte).getAcronyme()).append(" #").append(fut.getBrassin(contexte).getNumero());
             setTextColor(fut.getBrassin(contexte).getRecette(contexte).getCouleurTexte());
             setBackgroundColor(fut.getBrassin(contexte).getRecette(contexte).getCouleurFond());
         } else {
@@ -61,4 +61,5 @@ public class BoutonFut extends Button implements View.OnClickListener {
         transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
         transaction.addToBackStack(null).commit();
     }
+
 }
