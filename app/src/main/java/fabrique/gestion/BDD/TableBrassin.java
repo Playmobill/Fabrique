@@ -76,6 +76,15 @@ public class TableBrassin extends Controle {
         return null;
     }
 
+    public Brassin recupererNumero(int numero) {
+        for (int i=0; i<brassins.size() ; i++) {
+            if (brassins.get(i).getNumero() == numero) {
+                return brassins.get(i);
+            }
+        }
+        return null;
+    }
+
     public void modifier(long id, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);

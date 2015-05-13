@@ -4,17 +4,17 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableBrassin;
@@ -23,13 +23,13 @@ import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.R;
 import fabrique.gestion.Vue.VueBrassin;
 
-public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClickListener{
 
     private Context contexte;
     private int index;
 
-    private Button btnPrecedent, btnSuivant;
-    private Spinner listebrassin;
+    private Button btnPrecedent, btnSuivant, btnRecherche;
+    private EditText editRechercheBrassin;
 
     @Nullable
     @Override
@@ -69,22 +69,20 @@ public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClick
                     btnSuivant.setOnClickListener(this);
                 ligneNavigation.addView(btnSuivant);
             ligneEnTete.addView(ligneNavigation);
-                LinearLayout ligneSpinner = new LinearLayout(contexte);
-                ligneSpinner.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayout ligneRecherche = new LinearLayout(contexte);
+                ligneRecherche.setOrientation(LinearLayout.HORIZONTAL);
                     RelativeLayout.LayoutParams parametreLigneSpinner = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                     parametreLigneSpinner.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
                     parametreLigneSpinner.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-                ligneSpinner.setLayoutParams(parametreLigneSpinner);
-                    TextView txtListeBrassin = new TextView(contexte);
-                    txtListeBrassin.setText("Brassin : ");
-                ligneSpinner.addView(txtListeBrassin);
-                    listebrassin = new Spinner(contexte);
-                        ArrayAdapter<String> listeBrassinAdapter = new ArrayAdapter<>(contexte, R.layout.spinner_style, TableBrassin.instance(contexte).numeros());
-                        listeBrassinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    listebrassin.setAdapter(listeBrassinAdapter);
-                    listebrassin.setOnItemSelectedListener(this);
-                ligneSpinner.addView(listebrassin);
-            ligneEnTete.addView(ligneSpinner);
+                ligneRecherche.setLayoutParams(parametreLigneSpinner);
+                    editRechercheBrassin = new EditText(contexte);
+                    editRechercheBrassin.setInputType(InputType.TYPE_CLASS_NUMBER);
+                ligneRecherche.addView(editRechercheBrassin);
+                    btnRecherche = new Button(contexte);
+                    btnRecherche.setText("rechercher ...");
+                    btnRecherche.setOnClickListener(this);
+                ligneRecherche.addView(btnRecherche);
+            ligneEnTete.addView(ligneRecherche);
         layout.addView(ligneEnTete, parametreLigneSpinner);
 
         if (brassin != null) {
@@ -96,7 +94,7 @@ public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClick
             if (index < TableBrassin.instance(contexte).tailleListe()-1) {
                 btnSuivant.setEnabled(true);
             }
-            listebrassin.setSelection(index);
+            editRechercheBrassin.setSelection(index);
             layout.addView(new VueBrassin(contexte, brassin));
         } else {
             index = -1;
@@ -136,19 +134,16 @@ public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClick
     @Override
     public void onClick(View v) {
         if (v.equals(btnPrecedent)) {
-            navigation(TableBrassin.instance(contexte).recupererIndex(index - 1).getId());
+            navigation(TableBrassin.instance(contexte).recupererIndex(index-1).getId());
         } else if (v.equals(btnSuivant)) {
             navigation(TableBrassin.instance(contexte).recupererIndex(index+1).getId());
+        } else if (v.equals(btnRecherche)) {
+            Brassin brassin = TableBrassin.instance(contexte).recupererNumero(Integer.parseInt(editRechercheBrassin.getText().toString()));
+            if (brassin != null) {
+                navigation(brassin.getId());
+            } else {
+                Toast.makeText(contexte, "Le brassin n'a pas été trouvé.", Toast.LENGTH_LONG).show();
+            }
         }
     }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (id != index) {
-            navigation(TableBrassin.instance(contexte).recupererIndex(listebrassin.getSelectedItemPosition()).getId());
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {}
 }
