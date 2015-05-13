@@ -1,18 +1,20 @@
 package fabrique.gestion.Widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableRow;
 
-import fabrique.gestion.FragmentGestion.chemin.FragmentChemin;
+import fabrique.gestion.FragmentGestion.FragmentChemin;
 import fabrique.gestion.Objets.NoeudFut;
 
 public class BoutonNoeudFut extends Button implements View.OnClickListener {
 
     private FragmentChemin fragmentChemin;
 
-    private NoeudFut noeudPrecedent;
+    private NoeudFut noeudPrecedent, noeudActuel;
 
     public BoutonNoeudFut(Context contexte) {
         super(contexte);
@@ -23,7 +25,12 @@ public class BoutonNoeudFut extends Button implements View.OnClickListener {
 
         this.fragmentChemin = fragmentChemin;
         this.noeudPrecedent = noeudPrecedent;
+        this.noeudActuel = noeudActuel;
 
+        TableRow.LayoutParams parametre = new TableRow.LayoutParams();
+        parametre.setMargins(5, 5, 5, 5);
+        setLayoutParams(parametre);
+        setBackgroundColor(Color.LTGRAY);
         setOnClickListener(this);
 
         setGravity(Gravity.CENTER);
@@ -35,12 +42,21 @@ public class BoutonNoeudFut extends Button implements View.OnClickListener {
         }
     }
 
+    public NoeudFut getNoeudActif() {
+        return noeudActuel;
+    }
+
     @Override
     public void onClick(View v) {
-        if (noeudPrecedent == null) {
-            fragmentChemin.ajouterFut(-1);
-        } else {
-            fragmentChemin.ajouterFut(noeudPrecedent.getId());
+        if (noeudActuel != null) {
+            fragmentChemin.setBtnEtatFutAvecBrassinSelectionne(this);
+        }
+        else {
+            if (noeudPrecedent == null) {
+                fragmentChemin.ajouterFut(-1);
+            } else {
+                fragmentChemin.ajouterFut(noeudPrecedent.getId());
+            }
         }
     }
 }

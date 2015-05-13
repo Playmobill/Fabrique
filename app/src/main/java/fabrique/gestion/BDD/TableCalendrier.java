@@ -38,10 +38,22 @@ public class TableCalendrier extends Controle {
 
     @Override
     public String sauvegarde() {
-        return null;
+        StringBuilder texte = new StringBuilder();
+        if (evenements.size() > 0) {
+            for (int i = 0; i < evenements.size(); i++) {
+                texte.append(evenements.get(i).sauvegarde());
+            }
+        }
+        return texte.toString();
     }
 
     public ArrayList<Calendrier> getEvenements() {
         return evenements;
+    }
+
+    @Override
+    public void supprimerToutesLaBdd() {
+        super.supprimerToutesLaBdd();
+        evenements.clear();
     }
 }

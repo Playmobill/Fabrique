@@ -72,6 +72,7 @@ public class Recette extends Objet implements Comparable<Recette> {
         return ("<O:Recette>" +
                     "<E:nom>" + nom + "</E:nom>" +
                     "<E:acronyme>" + acronyme + "</E:acronyme>" +
+                    "<E:id_biere>" + id_biere + "</E:id_biere>" +
                     "<E:couleurTexte>" + couleurTexte + "</E:couleurTexte>" +
                     "<E:couleurFond>" + couleurFond + "</E:couleurFond>" +
                     "<E:actif>" + actif + "</E:actif>" +

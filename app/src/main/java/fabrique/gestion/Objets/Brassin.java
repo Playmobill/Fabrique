@@ -31,6 +31,7 @@ public class Brassin extends Objet implements Comparable<Brassin> {
         this.id_recette = id_recette;
         this.densiteOriginale = densiteOriginale;
         this.densiteFinale = densiteFinale;
+        setPourcentageAlcool();
     }
 
     public int getNumero() { return numero; }
@@ -102,7 +103,6 @@ public class Brassin extends Objet implements Comparable<Brassin> {
                     "<E:id_recette>" + id_recette + "</E:id_recette>" +
                     "<E:densiteOriginale>" + densiteOriginale + "</E:densiteOriginale>" +
                     "<E:densiteFinale>" + densiteFinale + "</E:densiteFinale>" +
-                    "<E:pourcentageAlcool>" + pourcentageAlcool + "</E:pourcentageAlcool>" +
                 "</O:Brassin>");
     }
 }

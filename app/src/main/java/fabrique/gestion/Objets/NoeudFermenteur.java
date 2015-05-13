@@ -65,6 +65,11 @@ public class NoeudFermenteur extends Objet implements Comparable<NoeudFermenteur
 
     @Override
     public String sauvegarde() {
-        return null;
+        return ("<O:NoeudFermenteur>" +
+                    "<E:id_noeudPrecedent>" + id_noeudPrecedent + "</E:id_noeudPrecedent>" +
+                    "<E:id_etat>" + id_etat + "</E:id_etat>" +
+                    "<E:id_noeudAvecBrassin>" + id_noeudAvecBrassin + "</E:id_noeudAvecBrassin>" +
+                    "<E:id_noeudSansBrassin>" + id_noeudSansBrassin + "</E:id_noeudSansBrassin>" +
+                "</O:NoeudFermenteur>");
     }
 }

@@ -1,12 +1,13 @@
 package fabrique.gestion.Widget;
 
 import android.content.Context;
-import android.util.Log;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableRow;
 
-import fabrique.gestion.FragmentGestion.chemin.FragmentChemin;
+import fabrique.gestion.FragmentGestion.FragmentChemin;
 import fabrique.gestion.Objets.EtatCuve;
 
 public class BoutonEtatCuve extends Button implements View.OnClickListener {
@@ -24,6 +25,10 @@ public class BoutonEtatCuve extends Button implements View.OnClickListener {
         this.fragmentChemin = fragmentChemin;
         this.etat = etat;
 
+        TableRow.LayoutParams parametre = new TableRow.LayoutParams();
+        parametre.setMargins(5, 5, 5, 5);
+        setLayoutParams(parametre);
+        setBackgroundColor(Color.LTGRAY);
         setOnClickListener(this);
 
         setGravity(Gravity.CENTER);
@@ -37,7 +42,6 @@ public class BoutonEtatCuve extends Button implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Log.i("BoutonEtatCuve", etat.getTexte());
         if (etat.getAvecBrassin()) {
             fragmentChemin.setBtnEtatCuveAvecBrassin(this);
         } else {

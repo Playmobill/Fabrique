@@ -1,4 +1,4 @@
-package fabrique.gestion.FragmentGestion.chemin;
+package fabrique.gestion.FragmentGestion;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,7 +29,6 @@ import fabrique.gestion.BDD.TableEtatCuve;
 import fabrique.gestion.BDD.TableEtatFermenteur;
 import fabrique.gestion.BDD.TableEtatFut;
 import fabrique.gestion.FragmentAmeliore;
-import fabrique.gestion.FragmentGestion.FragmentGestion;
 import fabrique.gestion.Objets.EtatCuve;
 import fabrique.gestion.Objets.EtatFermenteur;
 import fabrique.gestion.Objets.EtatFut;
@@ -43,15 +43,17 @@ import fabrique.gestion.Widget.BoutonNoeudCuve;
 import fabrique.gestion.Widget.BoutonNoeudFermenteur;
 import fabrique.gestion.Widget.BoutonNoeudFut;
 
-public class FragmentChemin extends FragmentAmeliore {
+public class FragmentChemin extends FragmentAmeliore implements View.OnClickListener {
 
     private Context contexte;
 
-    private LinearLayout ligneChemin, ligneEtat;
+    private LinearLayout ligneChemin;
 
-    private BoutonNoeudFermenteur btnAjouterEtatFermenteurAvecBrassin;
-    private BoutonNoeudCuve btnAjouterEtatCuveAvecBrassin;
-    private BoutonNoeudFut btnAjouterEtatFutAvecBrassin;
+    private Button btnSupprimerEtatFermenteurAvecBrassin, btnSupprimerEtatCuveAvecBrassin, btnSupprimerEtatFutAvecBrassin;
+
+    private BoutonNoeudFermenteur btnEtatFermenteurAvecBrassinSelectionne, btnAjouterEtatFermenteurAvecBrassin;
+    private BoutonNoeudCuve btnEtatCuveAvecBrassinSelectionne, btnAjouterEtatCuveAvecBrassin;
+    private BoutonNoeudFut btnEtatFutAvecBrassinSelectionne, btnAjouterEtatFutAvecBrassin;
 
     private BoutonEtatFermenteur btnEtatFermenteurAvecBrassin, btnEtatFermenteurSansBrassin;
     private BoutonEtatCuve btnEtatCuveAvecBrassin, btnEtatCuveSansBrassin;
@@ -70,7 +72,7 @@ public class FragmentChemin extends FragmentAmeliore {
 
         contexte = container.getContext();
 
-        ViewGroup.LayoutParams parametre = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams parametre = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
         LinearLayout.LayoutParams marge = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         marge.setMargins(10, 10, 10, 10);
@@ -78,14 +80,30 @@ public class FragmentChemin extends FragmentAmeliore {
         HorizontalScrollView horizontalScrollView = new HorizontalScrollView(contexte);
             ScrollView verticalScrollView = new ScrollView(contexte);
                 LinearLayout ensemble = new LinearLayout(contexte);
+                ensemble.setLayoutParams(parametre);
                     ligneChemin = new LinearLayout(contexte);
                     ligneChemin.setOrientation(LinearLayout.VERTICAL);
                 ensemble.addView(ligneChemin, marge);
-                    ligneEtat = new LinearLayout(contexte);
+                    LinearLayout ligneEtat = new LinearLayout(contexte);
                     ligneEtat.setOrientation(LinearLayout.VERTICAL);
+                    ligneEtat.addView(cadre(listeEtatFermenteur(), " Liste des états du fermenteur "));
+                        btnSupprimerEtatFermenteurAvecBrassin = new Button(contexte);
+                        btnSupprimerEtatFermenteurAvecBrassin.setText("Supprimer l'état du fermenteur sélectionné");
+                        btnSupprimerEtatFermenteurAvecBrassin.setOnClickListener(this);
+                    ligneEtat.addView(btnSupprimerEtatFermenteurAvecBrassin);
+                    ligneEtat.addView(cadre(listeEtatCuve(), " Liste des états de la cuve "));
+                        btnSupprimerEtatCuveAvecBrassin = new Button(contexte);
+                        btnSupprimerEtatCuveAvecBrassin.setText("Supprimer l'état de la cuve sélectionnée");
+                        btnSupprimerEtatCuveAvecBrassin.setOnClickListener(this);
+                    ligneEtat.addView(btnSupprimerEtatCuveAvecBrassin);
+                    ligneEtat.addView(cadre(listeEtatFut(), " Liste des états du fût "));
+                        btnSupprimerEtatFutAvecBrassin = new Button(contexte);
+                        btnSupprimerEtatFutAvecBrassin.setText("Supprimer l'état du fût sélectionné");
+                        btnSupprimerEtatFutAvecBrassin.setOnClickListener(this);
+                    ligneEtat.addView(btnSupprimerEtatFutAvecBrassin);
                 ensemble.addView(ligneEtat, marge);
             verticalScrollView.addView(ensemble);
-        horizontalScrollView.addView(verticalScrollView, parametre);
+        horizontalScrollView.addView(verticalScrollView);
 
         afficher();
 
@@ -97,11 +115,6 @@ public class FragmentChemin extends FragmentAmeliore {
         ligneChemin.addView(cadre(dansLeFermenteur(), " Dans le fermenteur "));
         ligneChemin.addView(cadre(dansLaCuve(), " Dans la cuve "));
         ligneChemin.addView(cadre(dansLeFut(), " Dans le fût "));
-
-        ligneEtat.removeAllViews();
-        ligneEtat.addView(cadre(listeEtatFermenteur(), " Liste des états du fermenteur "));
-        ligneEtat.addView(cadre(listeEtatCuve(), " Liste des états de la cuve "));
-        ligneEtat.addView(cadre(listeEtatFut(), " Liste des états du fût "));
     }
 
     private RelativeLayout cadre(View view, String texteTitre) {
@@ -170,9 +183,25 @@ public class FragmentChemin extends FragmentAmeliore {
         return tableau;
     }
 
+    public void setBtnEtatFermenteurAvecBrassinSelectionne(BoutonNoeudFermenteur btnEtatFermenteurAvecBrassinSelectionne) {
+        if (this.btnEtatFermenteurAvecBrassinSelectionne != null) {
+            this.btnEtatFermenteurAvecBrassinSelectionne.setBackgroundColor(Color.LTGRAY);
+            if ((this.btnEtatFermenteurAvecBrassinSelectionne != null) && (this.btnEtatFermenteurAvecBrassinSelectionne.equals(btnEtatFermenteurAvecBrassinSelectionne))) {
+                btnEtatFermenteurAvecBrassinSelectionne.setBackgroundColor(Color.LTGRAY);
+                this.btnEtatFermenteurAvecBrassinSelectionne = null;
+            } else {
+                this.btnEtatFermenteurAvecBrassinSelectionne = btnEtatFermenteurAvecBrassinSelectionne;
+                this.btnEtatFermenteurAvecBrassinSelectionne.setBackgroundColor(Color.RED);
+            }
+        } else {
+            this.btnEtatFermenteurAvecBrassinSelectionne = btnEtatFermenteurAvecBrassinSelectionne;
+            this.btnEtatFermenteurAvecBrassinSelectionne.setBackgroundColor(Color.RED);
+        }
+    }
+
     public void ajouterFermenteur(long id_noeudPrecedent) {
         if (btnEtatFermenteurAvecBrassin != null) {
-            TableCheminBrassinFermenteur.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinFermenteur.instance(contexte).ajouter(btnEtatFermenteurAvecBrassin.getEtat().getId(), id_noeudPrecedent, -1, -1), -1);
+            TableCheminBrassinFermenteur.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinFermenteur.instance(contexte).ajouter(id_noeudPrecedent, btnEtatFermenteurAvecBrassin.getEtat().getId(), -1, -1), -1);
             afficher();
         }
     }
@@ -206,9 +235,25 @@ public class FragmentChemin extends FragmentAmeliore {
         return tableau;
     }
 
+    public void setBtnEtatCuveAvecBrassinSelectionne(BoutonNoeudCuve btnEtatCuveAvecBrassinSelectionne) {
+        if (this.btnEtatCuveAvecBrassinSelectionne != null) {
+            this.btnEtatCuveAvecBrassinSelectionne.setBackgroundColor(Color.LTGRAY);
+            if (this.btnEtatCuveAvecBrassinSelectionne.equals(btnEtatCuveAvecBrassinSelectionne)) {
+                btnEtatCuveAvecBrassinSelectionne.setBackgroundColor(Color.LTGRAY);
+                this.btnEtatCuveAvecBrassinSelectionne = null;
+            } else {
+                this.btnEtatCuveAvecBrassinSelectionne = btnEtatCuveAvecBrassinSelectionne;
+                this.btnEtatCuveAvecBrassinSelectionne.setBackgroundColor(Color.RED);
+            }
+        } else {
+            this.btnEtatCuveAvecBrassinSelectionne = btnEtatCuveAvecBrassinSelectionne;
+            this.btnEtatCuveAvecBrassinSelectionne.setBackgroundColor(Color.RED);
+        }
+    }
+
     public void ajouterCuve(long id_noeudPrecedent) {
         if (btnEtatCuveAvecBrassin != null) {
-            TableCheminBrassinCuve.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinCuve.instance(contexte).ajouter(btnEtatCuveAvecBrassin.getEtat().getId(), id_noeudPrecedent, -1, -1), -1);
+            TableCheminBrassinCuve.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinCuve.instance(contexte).ajouter(id_noeudPrecedent, btnEtatCuveAvecBrassin.getEtat().getId(), -1, -1), -1);
             afficher();
         }
     }
@@ -242,9 +287,25 @@ public class FragmentChemin extends FragmentAmeliore {
         return tableau;
     }
 
+    public void setBtnEtatFutAvecBrassinSelectionne(BoutonNoeudFut btnEtatFutAvecBrassinSelectionne) {
+        if (this.btnEtatFutAvecBrassinSelectionne != null) {
+            this.btnEtatFutAvecBrassinSelectionne.setBackgroundColor(Color.LTGRAY);
+            if (this.btnEtatFutAvecBrassinSelectionne.equals(btnEtatFutAvecBrassinSelectionne)) {
+                btnEtatFutAvecBrassinSelectionne.setBackgroundColor(Color.LTGRAY);
+                this.btnEtatFutAvecBrassinSelectionne = null;
+            } else {
+                this.btnEtatFutAvecBrassinSelectionne = btnEtatFutAvecBrassinSelectionne;
+                this.btnEtatFutAvecBrassinSelectionne.setBackgroundColor(Color.RED);
+            }
+        } else {
+            this.btnEtatFutAvecBrassinSelectionne = btnEtatFutAvecBrassinSelectionne;
+            this.btnEtatFutAvecBrassinSelectionne.setBackgroundColor(Color.RED);
+        }
+    }
+
     public void ajouterFut(long id_noeudPrecedent) {
         if (btnEtatFermenteurAvecBrassin != null) {
-            TableCheminBrassinFut.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinFut.instance(contexte).ajouter(btnEtatFutAvecBrassin.getEtat().getId(), id_noeudPrecedent, -1, -1), -1);
+            TableCheminBrassinFut.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinFut.instance(contexte).ajouter(id_noeudPrecedent, btnEtatFutAvecBrassin.getEtat().getId(), -1, -1), -1);
             afficher();
         }
     }
@@ -272,7 +333,19 @@ public class FragmentChemin extends FragmentAmeliore {
     }
 
     public void setBtnEtatFermenteurAvecBrassin(BoutonEtatFermenteur btnEtatFermenteurAvecBrassin) {
-        this.btnEtatFermenteurAvecBrassin = btnEtatFermenteurAvecBrassin;
+        if (this.btnEtatFermenteurAvecBrassin != null) {
+            this.btnEtatFermenteurAvecBrassin.setBackgroundColor(Color.LTGRAY);
+            if (this.btnEtatFermenteurAvecBrassin.equals(btnEtatFermenteurAvecBrassin)) {
+                btnEtatFermenteurAvecBrassin.setBackgroundColor(Color.LTGRAY);
+                this.btnEtatFermenteurAvecBrassin = null;
+            } else {
+                this.btnEtatFermenteurAvecBrassin = btnEtatFermenteurAvecBrassin;
+                this.btnEtatFermenteurAvecBrassin.setBackgroundColor(Color.RED);
+            }
+        } else {
+            this.btnEtatFermenteurAvecBrassin = btnEtatFermenteurAvecBrassin;
+            this.btnEtatFermenteurAvecBrassin.setBackgroundColor(Color.RED);
+        }
     }
 
     private LinearLayout listeEtatFermenteurSansBrassin() {
@@ -315,7 +388,19 @@ public class FragmentChemin extends FragmentAmeliore {
     }
 
     public void setBtnEtatCuveAvecBrassin(BoutonEtatCuve btnEtatCuveAvecBrassin) {
-        this.btnEtatCuveAvecBrassin = btnEtatCuveAvecBrassin;
+        if (this.btnEtatCuveAvecBrassin != null) {
+            this.btnEtatCuveAvecBrassin.setBackgroundColor(Color.LTGRAY);
+            if (this.btnEtatCuveAvecBrassin.equals(btnEtatCuveAvecBrassin)) {
+                btnEtatCuveAvecBrassin.setBackgroundColor(Color.LTGRAY);
+                this.btnEtatCuveAvecBrassin = null;
+            } else {
+                this.btnEtatCuveAvecBrassin = btnEtatCuveAvecBrassin;
+                this.btnEtatCuveAvecBrassin.setBackgroundColor(Color.RED);
+            }
+        } else {
+            this.btnEtatCuveAvecBrassin = btnEtatCuveAvecBrassin;
+            this.btnEtatCuveAvecBrassin.setBackgroundColor(Color.RED);
+        }
     }
 
     private LinearLayout listeEtatCuveSansBrassin() {
@@ -358,7 +443,19 @@ public class FragmentChemin extends FragmentAmeliore {
     }
 
     public void setBtnEtatFutAvecBrassin(BoutonEtatFut btnEtatFutAvecBrassin) {
-        this.btnEtatFutAvecBrassin = btnEtatFutAvecBrassin;
+        if (this.btnEtatFutAvecBrassin != null) {
+            this.btnEtatFutAvecBrassin.setBackgroundColor(Color.LTGRAY);
+            if (this.btnEtatFutAvecBrassin.equals(btnEtatFutAvecBrassin)) {
+                btnEtatFutAvecBrassin.setBackgroundColor(Color.LTGRAY);
+                this.btnEtatFutAvecBrassin = null;
+            } else {
+                this.btnEtatFutAvecBrassin = btnEtatFutAvecBrassin;
+                this.btnEtatFutAvecBrassin.setBackgroundColor(Color.RED);
+            }
+        } else {
+            this.btnEtatFutAvecBrassin = btnEtatFutAvecBrassin;
+            this.btnEtatFutAvecBrassin.setBackgroundColor(Color.RED);
+        }
     }
 
     private LinearLayout listeEtatFutSansBrassin() {
@@ -376,6 +473,20 @@ public class FragmentChemin extends FragmentAmeliore {
 
     public void setBtnEtatFutSansBrassin(BoutonEtatFut btnEtatFutSansBrassin) {
         this.btnEtatFutSansBrassin = btnEtatFutSansBrassin;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if ((btnEtatFermenteurAvecBrassinSelectionne != null) && (v.equals(btnSupprimerEtatFermenteurAvecBrassin))) {
+            TableCheminBrassinFermenteur.instance(contexte).supprimer(btnEtatFermenteurAvecBrassinSelectionne.getNoeudActif().getId());
+            afficher();
+        } else if ((btnEtatCuveAvecBrassinSelectionne != null) && (v.equals(btnSupprimerEtatCuveAvecBrassin))) {
+            TableCheminBrassinCuve.instance(contexte).supprimer(btnEtatCuveAvecBrassinSelectionne.getNoeudActif().getId());
+            afficher();
+        } else if ((btnEtatFutAvecBrassinSelectionne != null) && (v.equals(btnSupprimerEtatFutAvecBrassin))) {
+            TableCheminBrassinFut.instance(contexte).supprimer(btnEtatFutAvecBrassinSelectionne.getNoeudActif().getId());
+            afficher();
+        }
     }
 
     @Override

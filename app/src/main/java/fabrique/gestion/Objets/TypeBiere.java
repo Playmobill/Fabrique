@@ -47,9 +47,10 @@ public class TypeBiere extends Objet implements Comparable<TypeBiere> {
 
     @Override
     public String sauvegarde() {
-        return ("<O:Recette>" +
+        return ("<O:TypeBiere>" +
                     "<E:nom>" + nom + "</E:nom>" +
                     "<E:couleur>" + couleur + "</E:couleur>" +
-                "</O:Recette>");
+                    "<E:actif>" + actif + "</E:actif>" +
+                "</O:TypeBiere>");
     }
 }

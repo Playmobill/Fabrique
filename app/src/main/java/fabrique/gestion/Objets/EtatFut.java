@@ -82,6 +82,7 @@ public class EtatFut extends Objet implements Comparable<EtatFut> {
                     "<E:historique>" + historique + "</E:historique>" +
                     "<E:couleurTexte>" + couleurTexte + "</E:couleurTexte>" +
                     "<E:couleurFond>" + couleurFond + "</E:couleurFond>" +
+                    "<E:avecBrassin>" + avecBrassin + "</E:avecBrassin>" +
                     "<E:actif>" + actif + "</E:actif>" +
                 "</O:EtatFut>");
     }
