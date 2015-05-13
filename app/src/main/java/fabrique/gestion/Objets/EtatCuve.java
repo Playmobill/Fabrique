@@ -82,7 +82,7 @@ public class EtatCuve extends Objet implements Comparable<EtatCuve> {
                     "<E:historique>" + historique + "</E:historique>" +
                     "<E:couleurTexte>" + couleurTexte + "</E:couleurTexte>" +
                     "<E:couleurFond>" + couleurFond + "</E:couleurFond>" +
-                    "<E:actif>" + actif + "</E:actif>" +
+                    "<E:avecBrassin>" + avecBrassin + "</E:avecBrassin>" +
                     "<E:actif>" + actif + "</E:actif>" +
                 "</O:EtatCuve>");
     }

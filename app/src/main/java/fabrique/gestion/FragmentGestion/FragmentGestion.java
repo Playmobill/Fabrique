@@ -10,7 +10,6 @@ import android.widget.Button;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.FragmentAmeliore;
-import fabrique.gestion.FragmentGestion.chemin.FragmentChemin;
 import fabrique.gestion.R;
 
 public class FragmentGestion extends FragmentAmeliore implements View.OnClickListener {

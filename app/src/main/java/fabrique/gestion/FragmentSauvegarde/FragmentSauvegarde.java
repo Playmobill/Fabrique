@@ -30,6 +30,10 @@ import java.util.Calendar;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableCalendrier;
+import fabrique.gestion.BDD.TableCheminBrassinCuve;
+import fabrique.gestion.BDD.TableCheminBrassinFermenteur;
+import fabrique.gestion.BDD.TableCheminBrassinFut;
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatCuve;
@@ -41,6 +45,7 @@ import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
 import fabrique.gestion.BDD.TableRecette;
+import fabrique.gestion.BDD.TableTypeBiere;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.R;
 
@@ -137,6 +142,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
             fichier.createNewFile();
             FileWriter filewriter = new FileWriter(fichier, false);
                 filewriter.write(TableEmplacement.instance(contexte).sauvegarde());
+                filewriter.write(TableTypeBiere.instance(contexte).sauvegarde());
                 filewriter.write(TableRecette.instance(contexte).sauvegarde());
                 filewriter.write(TableBrassin.instance(contexte).sauvegarde());
                 filewriter.write(TableEtatFermenteur.instance(contexte).sauvegarde());
@@ -148,6 +154,10 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                 filewriter.write(TableHistorique.instance(contexte).sauvegarde());
                 filewriter.write(TableListeHistorique.instance(contexte).sauvegarde());
                 filewriter.write(TableGestion.instance(contexte).sauvegarde());
+                filewriter.write(TableCheminBrassinFermenteur.instance(contexte).sauvegarde());
+                filewriter.write(TableCheminBrassinCuve.instance(contexte).sauvegarde());
+                filewriter.write(TableCheminBrassinFut.instance(contexte).sauvegarde());
+                filewriter.write(TableCalendrier.instance(contexte).sauvegarde());
                 filewriter.close();
             Toast.makeText(contexte, "Sauvegarde réussite dans le fichier : Gestion_" + annee + "a_" + mois + "m_" + jour + "j_" + heure + "h_" + minute + "m_" + seconde + "ms.bak", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
@@ -172,7 +182,6 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
     private void charger() {
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            //factory.setNamespaceAware(true);
             XmlPullParser analyseur = factory.newPullParser();
 
             analyseur.setInput(new FileReader(ligne.getFichier()));
@@ -216,9 +225,50 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                             }
                             //Si il n'y a que 2 elements et qu'il n 'y a pas de corruption detecte
                             if ((textesEmplacement.size() == 2) && !corrompuEmplacement) {
-                                TableEmplacement.instance(contexte).ajouter(
-                                        textesEmplacement.get(0),
-                                        Boolean.parseBoolean(textesEmplacement.get(1)));
+                                try {
+                                    TableEmplacement.instance(contexte).ajouter(
+                                            textesEmplacement.get(0),
+                                            Boolean.parseBoolean(textesEmplacement.get(1)));
+                                } catch (Exception e) {}
+                            }
+                            break;
+
+                        case ("O:TypeBiere") :
+                            eventType = analyseur.next();
+                            boolean corrompuTypeBiere = false;
+                            ArrayList<String> textesTypeBiere = new ArrayList<>();
+                            String nomBaliseTypeBiere = analyseur.getName();
+                            if (nomBaliseTypeBiere == null) {
+                                nomBaliseTypeBiere = "";
+                            }
+                            String texteTypeBiere = analyseur.getText();
+                            //Tant qu'il ne trouve pas la balise de fin de "TypeBiere" ou tant qu'il ne trouve pas une balise de debut contenant 'O' (donc debut d'un objet)
+                            while (!((eventType == XmlPullParser.END_TAG) && (nomBaliseTypeBiere.equals("O:TypeBiere"))) && !corrompuTypeBiere) {
+                                if ((eventType == XmlPullParser.END_TAG) && (nomBaliseTypeBiere.charAt(0) == 'E')) {
+                                    if (texteTypeBiere == null) {
+                                        texteTypeBiere = "";
+                                    }
+                                    textesTypeBiere.add(texteTypeBiere);
+                                }
+                                texteTypeBiere = analyseur.getText();
+                                if ((eventType == XmlPullParser.START_TAG) && (analyseur.getName().charAt(0) == 'O')) {
+                                    corrompuTypeBiere = true;
+                                } else {
+                                    eventType = analyseur.next();
+                                    nomBaliseTypeBiere = analyseur.getName();
+                                    if (nomBaliseTypeBiere == null) {
+                                        nomBaliseTypeBiere = "";
+                                    }
+                                }
+                            }
+                            //Si il n'y a que 3 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesTypeBiere.size() == 3) && !corrompuTypeBiere) {
+                                try {
+                                    TableTypeBiere.instance(contexte).ajouter(
+                                            textesTypeBiere.get(0),
+                                            textesTypeBiere.get(1),
+                                            Boolean.parseBoolean(textesTypeBiere.get(2)));
+                                } catch (Exception e) {}
                             }
                             break;
 
@@ -252,23 +302,15 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                             }
                             //Si il n'y a que 6 elements et qu'il n 'y a pas de corruption detecte
                             if ((textesRecette.size() == 6) && !corrompuRecette) {
-                                TableRecette.instance(contexte).ajouter(
-                                        textesRecette.get(0),
-                                        textesRecette.get(1),
-                                        Integer.parseInt(textesRecette.get(2)),
-                                        Integer.parseInt(textesRecette.get(3)),
-                                        Integer.parseInt(textesRecette.get(4)),
-                                        Boolean.parseBoolean(textesRecette.get(5)));
-                            }
-                            //Si il n'y a que 4 elements et qu'il n 'y a pas de corruption detecte
-                            if ((textesRecette.size() == 4) && !corrompuRecette) {
-                                TableRecette.instance(contexte).ajouter(
-                                        textesRecette.get(0),
-                                        textesRecette.get(1),
-                                        -1,
-                                        Color.BLACK,
-                                        Color.WHITE,
-                                        Boolean.parseBoolean(textesRecette.get(3)));
+                                try {
+                                    TableRecette.instance(contexte).ajouter(
+                                            textesRecette.get(0),
+                                            textesRecette.get(1),
+                                            Integer.parseInt(textesRecette.get(2)),
+                                            Integer.parseInt(textesRecette.get(3)),
+                                            Integer.parseInt(textesRecette.get(4)),
+                                            Boolean.parseBoolean(textesRecette.get(5)));
+                                } catch (Exception e) {}
                             }
                             break;
 
@@ -300,27 +342,18 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     }
                                 }
                             }
-                            //Si il n'y a que 8 elements et qu'il n 'y a pas de corruption detecte
-                            if ((textesBrassin.size() == 8) && !corrompuBrassin) {
-                                TableBrassin.instance(contexte).ajouter(
-                                        Integer.parseInt(textesBrassin.get(0)),
-                                        textesBrassin.get(1),
-                                        Long.parseLong(textesBrassin.get(2)),
-                                        Integer.parseInt(textesBrassin.get(3)),
-                                        Long.parseLong(textesBrassin.get(4)),
-                                        Float.parseFloat(textesBrassin.get(5)),
-                                        Float.parseFloat(textesBrassin.get(6)));
-                            }
                             //Si il n'y a que 7 elements et qu'il n 'y a pas de corruption detecte
                             if ((textesBrassin.size() == 7) && !corrompuBrassin) {
-                                TableBrassin.instance(contexte).ajouter(
-                                        Integer.parseInt(textesBrassin.get(0)),
-                                        textesBrassin.get(1),
-                                        Long.parseLong(textesBrassin.get(2)),
-                                        Integer.parseInt(textesBrassin.get(3)),
-                                        Long.parseLong(textesBrassin.get(4)),
-                                        Float.parseFloat(textesBrassin.get(5)),
-                                        Float.parseFloat(textesBrassin.get(6)));
+                                try {
+                                    TableBrassin.instance(contexte).ajouter(
+                                            Integer.parseInt(textesBrassin.get(0)),
+                                            textesBrassin.get(1),
+                                            Long.parseLong(textesBrassin.get(2)),
+                                            Integer.parseInt(textesBrassin.get(3)),
+                                            Long.parseLong(textesBrassin.get(4)),
+                                            Float.parseFloat(textesBrassin.get(5)),
+                                            Float.parseFloat(textesBrassin.get(6)));
+                                } catch (Exception e) {}
                             }
                             break;
 
@@ -354,13 +387,15 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                             }
                             //Si il n'y a que 6 elements et qu'il n 'y a pas de corruption detecte
                             if ((textesEtatFermenteur.size() == 6) && !corrompuEtatFermenteur) {
-                                TableEtatFermenteur.instance(contexte).ajouter(
-                                        textesEtatFermenteur.get(0),
-                                        textesEtatFermenteur.get(1),
-                                        Integer.parseInt(textesEtatFermenteur.get(2)),
-                                        Integer.parseInt(textesEtatFermenteur.get(3)),
-                                        Boolean.parseBoolean(textesEtatFermenteur.get(4)),
-                                        Boolean.parseBoolean(textesEtatFermenteur.get(5)));
+                                try {
+                                    TableEtatFermenteur.instance(contexte).ajouter(
+                                            textesEtatFermenteur.get(0),
+                                            textesEtatFermenteur.get(1),
+                                            Integer.parseInt(textesEtatFermenteur.get(2)),
+                                            Integer.parseInt(textesEtatFermenteur.get(3)),
+                                            Boolean.parseBoolean(textesEtatFermenteur.get(4)),
+                                            Boolean.parseBoolean(textesEtatFermenteur.get(5)));
+                                } catch (Exception e) {}
                             }
                             break;
 
@@ -392,28 +427,19 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     }
                                 }
                             }
-                            //Si il n'y a que 7 elements et qu'il n 'y a pas de corruption detecte
-                            if ((textesFermenteur.size() == 7) && !corrompuFermenteur) {
-                                TableFermenteur.instance(contexte).ajouter(
-                                        Integer.parseInt(textesFermenteur.get(0)),
-                                        Integer.parseInt(textesFermenteur.get(1)),
-                                        Long.parseLong(textesFermenteur.get(2)),
-                                        Long.parseLong(textesFermenteur.get(3)),
-                                        Long.parseLong(textesFermenteur.get(4)),
-                                        Long.parseLong(textesFermenteur.get(5)),
-                                        Long.parseLong(textesFermenteur.get(6)), true);
-                            }
                             //Si il n'y a que 8 elements et qu'il n 'y a pas de corruption detecte
                             if ((textesFermenteur.size() == 8) && !corrompuFermenteur) {
-                                TableFermenteur.instance(contexte).ajouter(
-                                        Integer.parseInt(textesFermenteur.get(0)),
-                                        Integer.parseInt(textesFermenteur.get(1)),
-                                        Long.parseLong(textesFermenteur.get(2)),
-                                        Long.parseLong(textesFermenteur.get(3)),
-                                        Long.parseLong(textesFermenteur.get(4)),
-                                        Long.parseLong(textesFermenteur.get(5)),
-                                        Long.parseLong(textesFermenteur.get(6)),
-                                        Boolean.parseBoolean(textesFermenteur.get(7)));
+                                try {
+                                    TableFermenteur.instance(contexte).ajouter(
+                                            Integer.parseInt(textesFermenteur.get(0)),
+                                            Integer.parseInt(textesFermenteur.get(1)),
+                                            Long.parseLong(textesFermenteur.get(2)),
+                                            Long.parseLong(textesFermenteur.get(3)),
+                                            Long.parseLong(textesFermenteur.get(4)),
+                                            Long.parseLong(textesFermenteur.get(5)),
+                                            Long.parseLong(textesFermenteur.get(6)),
+                                            Boolean.parseBoolean(textesFermenteur.get(7)));
+                                } catch (Exception e) {}
                             }
                             break;
 
@@ -447,13 +473,15 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                             }
                             //Si il n'y a que 6 elements et qu'il n 'y a pas de corruption detecte
                             if ((textesEtatCuve.size() == 6) && !corrompuEtatCuve) {
-                                TableEtatCuve.instance(contexte).ajouter(
-                                        textesEtatCuve.get(0),
-                                        textesEtatCuve.get(1),
-                                        Integer.parseInt(textesEtatCuve.get(2)),
-                                        Integer.parseInt(textesEtatCuve.get(3)),
-                                        Boolean.parseBoolean(textesEtatCuve.get(4)),
-                                        Boolean.parseBoolean(textesEtatCuve.get(5)));
+                                try {
+                                    TableEtatCuve.instance(contexte).ajouter(
+                                            textesEtatCuve.get(0),
+                                            textesEtatCuve.get(1),
+                                            Integer.parseInt(textesEtatCuve.get(2)),
+                                            Integer.parseInt(textesEtatCuve.get(3)),
+                                            Boolean.parseBoolean(textesEtatCuve.get(4)),
+                                            Boolean.parseBoolean(textesEtatCuve.get(5)));
+                                } catch (Exception e) {}
                             }
                             break;
 
@@ -485,30 +513,20 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     }
                                 }
                             }
-                            //Si il n'y a que 8 elements et qu'il n 'y a pas de corruption detecte
-                            if ((textesCuve.size() == 8) && !corrompuCuve) {
-                                TableCuve.instance(contexte).ajouter(
-                                        Integer.parseInt(textesCuve.get(0)),
-                                        Integer.parseInt(textesCuve.get(1)),
-                                        Long.parseLong(textesCuve.get(2)),
-                                        Long.parseLong(textesCuve.get(3)),
-                                        Long.parseLong(textesCuve.get(4)),
-                                        Long.parseLong(textesCuve.get(5)),
-                                        textesCuve.get(6),
-                                        Long.parseLong(textesCuve.get(7)), true);
-                            }
                             //Si il n'y a que 9 elements et qu'il n 'y a pas de corruption detecte
                             if ((textesCuve.size() == 9) && !corrompuCuve) {
-                                TableCuve.instance(contexte).ajouter(
-                                        Integer.parseInt(textesCuve.get(0)),
-                                        Integer.parseInt(textesCuve.get(1)),
-                                        Long.parseLong(textesCuve.get(2)),
-                                        Long.parseLong(textesCuve.get(3)),
-                                        Long.parseLong(textesCuve.get(4)),
-                                        Long.parseLong(textesCuve.get(5)),
-                                        textesCuve.get(6),
-                                        Long.parseLong(textesCuve.get(7)),
-                                        Boolean.parseBoolean(textesCuve.get(8)));
+                                try {
+                                    TableCuve.instance(contexte).ajouter(
+                                            Integer.parseInt(textesCuve.get(0)),
+                                            Integer.parseInt(textesCuve.get(1)),
+                                            Long.parseLong(textesCuve.get(2)),
+                                            Long.parseLong(textesCuve.get(3)),
+                                            Long.parseLong(textesCuve.get(4)),
+                                            Long.parseLong(textesCuve.get(5)),
+                                            textesCuve.get(6),
+                                            Long.parseLong(textesCuve.get(7)),
+                                            Boolean.parseBoolean(textesCuve.get(8)));
+                                } catch (Exception e) {}
                             }
                             break;
 
@@ -540,15 +558,17 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     }
                                 }
                             }
-                            //Si il n'y a que 5 elements et qu'il n 'y a pas de corruption detecte
-                            if ((textesEtatFut.size() == 5) && !corrompuEtatFut) {
-                                TableEtatFut.instance(contexte).ajouter(
-                                        textesEtatFut.get(0),
-                                        textesEtatFut.get(1),
-                                        Integer.parseInt(textesEtatFut.get(2)),
-                                        Integer.parseInt(textesEtatFut.get(3)),
-                                        Boolean.parseBoolean(textesEtatFut.get(4)),
-                                        Boolean.parseBoolean(textesEtatFut.get(5)));
+                            //Si il n'y a que 6 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesEtatFut.size() == 6) && !corrompuEtatFut) {
+                                try {
+                                    TableEtatFut.instance(contexte).ajouter(
+                                            textesEtatFut.get(0),
+                                            textesEtatFut.get(1),
+                                            Integer.parseInt(textesEtatFut.get(2)),
+                                            Integer.parseInt(textesEtatFut.get(3)),
+                                            Boolean.parseBoolean(textesEtatFut.get(4)),
+                                            Boolean.parseBoolean(textesEtatFut.get(5)));
+                                } catch (Exception e) {}
                             }
                             break;
 
@@ -580,26 +600,18 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     }
                                 }
                             }
-                            //Si il n'y a que 6 elements et qu'il n 'y a pas de corruption detecte
-                            if ((textesFut.size() == 6) && !corrompuFut) {
-                                TableFut.instance(contexte).ajouter(
-                                        Integer.parseInt(textesFut.get(0)),
-                                        Integer.parseInt(textesFut.get(1)),
-                                        Long.parseLong(textesFut.get(2)),
-                                        Long.parseLong(textesFut.get(3)),
-                                        Long.parseLong(textesFut.get(4)),
-                                        Long.parseLong(textesFut.get(5)), true);
-                            }
                             //Si il n'y a que 7 elements et qu'il n 'y a pas de corruption detecte
                             if ((textesFut.size() == 7) && !corrompuFut) {
-                                TableFut.instance(contexte).ajouter(
-                                        Integer.parseInt(textesFut.get(0)),
-                                        Integer.parseInt(textesFut.get(1)),
-                                        Long.parseLong(textesFut.get(2)),
-                                        Long.parseLong(textesFut.get(3)),
-                                        Long.parseLong(textesFut.get(4)),
-                                        Long.parseLong(textesFut.get(5)),
-                                        Boolean.parseBoolean(textesFut.get(6)));
+                                try {
+                                    TableFut.instance(contexte).ajouter(
+                                            Integer.parseInt(textesFut.get(0)),
+                                            Integer.parseInt(textesFut.get(1)),
+                                            Long.parseLong(textesFut.get(2)),
+                                            Long.parseLong(textesFut.get(3)),
+                                            Long.parseLong(textesFut.get(4)),
+                                            Long.parseLong(textesFut.get(5)),
+                                            Boolean.parseBoolean(textesFut.get(6)));
+                                } catch (Exception e) {}
                             }
                             break;
 
@@ -633,13 +645,15 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                             }
                             //Si il n'y a que 6 elements et qu'il n 'y a pas de corruption detecte
                             if ((textesHistorique.size() == 6) && !corrompuHistorique) {
-                                TableHistorique.instance(contexte).ajouter(
-                                        textesHistorique.get(0),
-                                        Long.parseLong(textesHistorique.get(1)),
-                                        Long.parseLong(textesHistorique.get(2)),
-                                        Long.parseLong(textesHistorique.get(3)),
-                                        Long.parseLong(textesHistorique.get(4)),
-                                        Long.parseLong(textesHistorique.get(5)));
+                                try {
+                                    TableHistorique.instance(contexte).ajouter(
+                                            textesHistorique.get(0),
+                                            Long.parseLong(textesHistorique.get(1)),
+                                            Long.parseLong(textesHistorique.get(2)),
+                                            Long.parseLong(textesHistorique.get(3)),
+                                            Long.parseLong(textesHistorique.get(4)),
+                                            Long.parseLong(textesHistorique.get(5)));
+                                } catch (Exception e) {}
                             }
                             break;
 
@@ -673,9 +687,11 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                             }
                             //Si il n'y a que 2 elements et qu'il n 'y a pas de corruption detecte
                             if ((textesListeHistorique.size() == 2) && !corrompuListeHistorique) {
-                                TableListeHistorique.instance(contexte).ajouter(
-                                        Integer.parseInt(textesListeHistorique.get(0)),
-                                        textesListeHistorique.get(1));
+                                try {
+                                    TableListeHistorique.instance(contexte).ajouter(
+                                            Integer.parseInt(textesListeHistorique.get(0)),
+                                            textesListeHistorique.get(1));
+                                } catch (Exception e) {}
                             }
                             break;
 
@@ -714,6 +730,166 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                         Integer.parseInt(textesGestion.get(1)),
                                         Integer.parseInt(textesGestion.get(2)),
                                         Integer.parseInt(textesGestion.get(3)));
+                            }
+                            break;
+
+                        case ("O:Calendrier") :
+                            eventType = analyseur.next();
+                            boolean corrompuCalendrier = false;
+                            ArrayList<String> textesCalendrier = new ArrayList<>();
+                            String nomBaliseCalendrier = analyseur.getName();
+                            if (nomBaliseCalendrier == null) {
+                                nomBaliseCalendrier = "";
+                            }
+                            String texteCalendrier = analyseur.getText();
+                            //Tant qu'il ne trouve pas la balise de fin de "Fut" ou tant qu'il ne trouve pas une balise de debut contenant 'O' (donc debut d'un objet)
+                            while (!((eventType == XmlPullParser.END_TAG) && (nomBaliseCalendrier.equals("O:Calendrier"))) && !corrompuCalendrier) {
+                                if ((eventType == XmlPullParser.END_TAG) && (nomBaliseCalendrier.charAt(0) == 'E')) {
+                                    if (texteCalendrier == null) {
+                                        texteCalendrier = "";
+                                    }
+                                    textesCalendrier.add(texteCalendrier);
+                                }
+                                texteCalendrier = analyseur.getText();
+                                if ((eventType == XmlPullParser.START_TAG) && (analyseur.getName().charAt(0) == 'O')) {
+                                    corrompuCalendrier = true;
+                                } else {
+                                    eventType = analyseur.next();
+                                    nomBaliseCalendrier = analyseur.getName();
+                                    if (nomBaliseCalendrier == null) {
+                                        nomBaliseCalendrier = "";
+                                    }
+                                }
+                            }
+                            //Si il n'y a que 4 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesCalendrier.size() == 4) && !corrompuCalendrier) {
+                                try {
+                                    /*TableCalendrier.instance(contexte).ajouter(
+                                            Integer.parseInt(textesCalendrier.get(0)),
+                                            Integer.parseInt(textesCalendrier.get(1)),
+                                            Integer.parseInt(textesCalendrier.get(2)),
+                                            Integer.parseInt(textesCalendrier.get(3)));*/
+                                } catch (Exception e) {}
+                            }
+                            break;
+
+                        case ("O:NoeudFermenteur") :
+                            eventType = analyseur.next();
+                            boolean corrompuNoeudFermenteur = false;
+                            ArrayList<String> textesNoeudFermenteur = new ArrayList<>();
+                            String nomBaliseNoeudFermenteur = analyseur.getName();
+                            if (nomBaliseNoeudFermenteur == null) {
+                                nomBaliseNoeudFermenteur = "";
+                            }
+                            String texteNoeudFermenteur = analyseur.getText();
+                            //Tant qu'il ne trouve pas la balise de fin de "NoeudFermenteur" ou tant qu'il ne trouve pas une balise de debut contenant 'O' (donc debut d'un objet)
+                            while (!((eventType == XmlPullParser.END_TAG) && (nomBaliseNoeudFermenteur.equals("O:NoeudFermenteur"))) && !corrompuNoeudFermenteur) {
+                                if ((eventType == XmlPullParser.END_TAG) && (nomBaliseNoeudFermenteur.charAt(0) == 'E')) {
+                                    if (texteNoeudFermenteur == null) {
+                                        texteNoeudFermenteur = "";
+                                    }
+                                    textesNoeudFermenteur.add(texteNoeudFermenteur);
+                                }
+                                texteNoeudFermenteur = analyseur.getText();
+                                if ((eventType == XmlPullParser.START_TAG) && (analyseur.getName().charAt(0) == 'O')) {
+                                    corrompuNoeudFermenteur = true;
+                                } else {
+                                    eventType = analyseur.next();
+                                    nomBaliseNoeudFermenteur = analyseur.getName();
+                                    if (nomBaliseNoeudFermenteur == null) {
+                                        nomBaliseNoeudFermenteur = "";
+                                    }
+                                }
+                            }
+                            //Si il n'y a que 4 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesNoeudFermenteur.size() == 4) && !corrompuNoeudFermenteur) {
+                                try {
+                                    TableCheminBrassinFermenteur.instance(contexte).ajouter(
+                                            Long.parseLong(textesNoeudFermenteur.get(0)),
+                                            Long.parseLong(textesNoeudFermenteur.get(1)),
+                                            Long.parseLong(textesNoeudFermenteur.get(2)),
+                                            Long.parseLong(textesNoeudFermenteur.get(3)));
+                                } catch (Exception e) {}
+                            }
+                            break;
+
+                        case ("O:NoeudCuve") :
+                            eventType = analyseur.next();
+                            boolean corrompuNoeudCuve = false;
+                            ArrayList<String> textesNoeudCuve = new ArrayList<>();
+                            String nomBaliseNoeudCuve = analyseur.getName();
+                            if (nomBaliseNoeudCuve == null) {
+                                nomBaliseNoeudCuve = "";
+                            }
+                            String texteNoeudCuve = analyseur.getText();
+                            //Tant qu'il ne trouve pas la balise de fin de "Fut" ou tant qu'il ne trouve pas une balise de debut contenant 'O' (donc debut d'un objet)
+                            while (!((eventType == XmlPullParser.END_TAG) && (nomBaliseNoeudCuve.equals("O:NoeudCuve"))) && !corrompuNoeudCuve) {
+                                if ((eventType == XmlPullParser.END_TAG) && (nomBaliseNoeudCuve.charAt(0) == 'E')) {
+                                    if (texteNoeudCuve == null) {
+                                        texteNoeudCuve = "";
+                                    }
+                                    textesNoeudCuve.add(texteNoeudCuve);
+                                }
+                                texteNoeudCuve = analyseur.getText();
+                                if ((eventType == XmlPullParser.START_TAG) && (analyseur.getName().charAt(0) == 'O')) {
+                                    corrompuNoeudCuve = true;
+                                } else {
+                                    eventType = analyseur.next();
+                                    nomBaliseNoeudCuve = analyseur.getName();
+                                    if (nomBaliseNoeudCuve == null) {
+                                        nomBaliseNoeudCuve = "";
+                                    }
+                                }
+                            }
+                            //Si il n'y a que 4 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesNoeudCuve.size() == 4) && !corrompuNoeudCuve) {
+                                try {
+                                    TableCheminBrassinCuve.instance(contexte).ajouter(
+                                            Long.parseLong(textesNoeudCuve.get(0)),
+                                            Long.parseLong(textesNoeudCuve.get(1)),
+                                            Long.parseLong(textesNoeudCuve.get(2)),
+                                            Long.parseLong(textesNoeudCuve.get(3)));
+                                } catch (Exception e) {}
+                            }
+                            break;
+
+                        case ("O:NoeudFut") :
+                            eventType = analyseur.next();
+                            boolean corrompuNoeudFut = false;
+                            ArrayList<String> textesNoeudFut = new ArrayList<>();
+                            String nomBaliseNoeudFut = analyseur.getName();
+                            if (nomBaliseNoeudFut == null) {
+                                nomBaliseNoeudFut = "";
+                            }
+                            String texteNoeudFut = analyseur.getText();
+                            //Tant qu'il ne trouve pas la balise de fin de "Fut" ou tant qu'il ne trouve pas une balise de debut contenant 'O' (donc debut d'un objet)
+                            while (!((eventType == XmlPullParser.END_TAG) && (nomBaliseNoeudFut.equals("O:NoeudFut"))) && !corrompuNoeudFut) {
+                                if ((eventType == XmlPullParser.END_TAG) && (nomBaliseNoeudFut.charAt(0) == 'E')) {
+                                    if (texteNoeudFut == null) {
+                                        texteNoeudFut = "";
+                                    }
+                                    textesNoeudFut.add(texteNoeudFut);
+                                }
+                                texteNoeudFut = analyseur.getText();
+                                if ((eventType == XmlPullParser.START_TAG) && (analyseur.getName().charAt(0) == 'O')) {
+                                    corrompuNoeudFut = true;
+                                } else {
+                                    eventType = analyseur.next();
+                                    nomBaliseNoeudFut = analyseur.getName();
+                                    if (nomBaliseNoeudFut == null) {
+                                        nomBaliseNoeudFut = "";
+                                    }
+                                }
+                            }
+                            //Si il n'y a que 4 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesNoeudFut.size() == 4) && !corrompuNoeudFut) {
+                                try {
+                                    TableCheminBrassinFut.instance(contexte).ajouter(
+                                            Long.parseLong(textesNoeudFut.get(0)),
+                                            Long.parseLong(textesNoeudFut.get(1)),
+                                            Long.parseLong(textesNoeudFut.get(2)),
+                                            Long.parseLong(textesNoeudFut.get(3)));
+                                } catch (Exception e) {}
                             }
                             break;
 

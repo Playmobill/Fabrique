@@ -3,6 +3,7 @@ package fabrique.gestion.BDD;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +29,7 @@ public class TableEtatCuve extends Controle {
         etats = new ArrayList<>();
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
+            Log.i("EtatCuve", tmp.getLong(0) + " / " + tmp.getString(1) + " / " + tmp.getString(2) + " / " + tmp.getInt(3) + " / " + tmp.getInt(4) + " / " + (tmp.getInt(5) == 1) + " / " + (tmp.getInt(6) == 1));
             etats.add(new EtatCuve(tmp.getLong(0), tmp.getString(1), tmp.getString(2), tmp.getInt(3), tmp.getInt(4), tmp.getInt(5) == 1, tmp.getInt(6) == 1));
         }
         Collections.sort(etats);

@@ -1,7 +1,5 @@
 package fabrique.gestion.Objets;
 
-import java.util.Comparator;
-
 /**
  * Created by thibaut on 01/05/15.
  */
@@ -22,7 +20,12 @@ public class Calendrier extends Objet implements Comparable<Calendrier>{
 
     @Override
     public String sauvegarde() {
-        return null;
+        return ("<O:Calendrier>" +
+                    "<E:dateEvenement>" + dateEvenement + "</E:dateEvenement>" +
+                    "<E:nomEvenement>" + nomEvenement + "</E:nomEvenement>" +
+                    "<E:typeObjet>" + typeObjet + "</E:typeObjet>" +
+                    "<E:idObjet>" + idObjet + "</E:idObjet>" +
+                "</O:Calendrier>");
     }
 
     @Override

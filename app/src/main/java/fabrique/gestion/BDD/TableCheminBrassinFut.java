@@ -33,10 +33,10 @@ public class TableCheminBrassinFut extends Controle  {
         Collections.sort(noeuds);
     }
 
-    public long ajouter(long id_etat, long id_noeudPrecedent, long id_noeudAvecBrassin, long id_noeudSansBrassin) {
+    public long ajouter(long id_noeudPrecedent, long id_etat, long id_noeudAvecBrassin, long id_noeudSansBrassin) {
         ContentValues valeur = new ContentValues();
-        valeur.put("id_etat", id_etat);
         valeur.put("id_noeudPrecedent", id_noeudPrecedent);
+        valeur.put("id_etat", id_etat);
         valeur.put("id_noeudAvecBrassin", id_noeudAvecBrassin);
         valeur.put("id_noeudSansBrassin", id_noeudSansBrassin);
         long id = accesBDD.insert(nomTable, null, valeur);
@@ -57,7 +57,7 @@ public class TableCheminBrassinFut extends Controle  {
             noeud.setId_noeudSansBrassin(id_noeudSansBrassin);
         }
     }
-    
+
     public int tailleListe() {
         return noeuds.size();
     }
@@ -89,13 +89,67 @@ public class TableCheminBrassinFut extends Controle  {
     }
 
     public void supprimer(long id) {
-        if (accesBDD.delete(nomTable, "id = ?", new String[] {""+id}) == 1) {
-            noeuds.remove(recupererId(id));
+        NoeudFut noeud = recupererId(id);
+        if ((noeud.getId_noeudAvecBrassin() == -1) && (noeud.getId_noeudSansBrassin() == -1) && (accesBDD.delete(nomTable, "id = ?", new String[] {""+id}) == 1)) {
+            noeuds.remove(noeud);
+            NoeudFut noeudPrecedent = recupererId(noeud.getId_noeudPrecedent());
+            if (noeudPrecedent != null) {
+                if (noeudPrecedent.getId_noeudAvecBrassin() == id) {
+                    modifier(noeudPrecedent.getId(), -1, noeudPrecedent.getId_noeudSansBrassin());
+                } else if (noeudPrecedent.getId_noeudSansBrassin() == id) {
+                    modifier(noeudPrecedent.getId(), noeudPrecedent.getId_noeudAvecBrassin(), -1);
+                }
+            }
         }
+    }
+
+    private ArrayList<NoeudFut> trierParId(ArrayList<NoeudFut> liste, int petitIndex, int grandIndex) {
+        int i = petitIndex;
+        int j = grandIndex;
+        // calculate pivot number, I am taking pivot as middle index number
+        NoeudFut pivot = liste.get(petitIndex+(grandIndex-petitIndex)/2);
+        // Divide into two arrays
+        while (i <= j) {
+            while (liste.get(i).getId() < pivot.getId()) {
+                i++;
+            }
+            while (liste.get(j).getId() > pivot.getId()) {
+                j--;
+            }
+            if (i <= j) {
+                NoeudFut temp = liste.get(i);
+                liste.set(i, liste.get(j));
+                liste.set(j, temp);
+                //move index to next position on both sides
+                i++;
+                j--;
+            }
+        }
+        // call recursively
+        if (petitIndex < j) {
+            liste = trierParId(liste, petitIndex, j);
+        }
+        if (i < grandIndex) {
+            liste = trierParId(liste, i, grandIndex);
+        }
+        return liste;
     }
 
     @Override
     public String sauvegarde() {
-        return null;
+        StringBuilder texte = new StringBuilder();
+        if (noeuds.size() > 0) {
+            ArrayList<NoeudFut> trierParId = trierParId(noeuds, 0, noeuds.size() - 1);
+            for (int i = 0; i < trierParId.size(); i++) {
+                texte.append(trierParId.get(i).sauvegarde());
+            }
+        }
+        return texte.toString();
+    }
+
+    @Override
+    public void supprimerToutesLaBdd() {
+        super.supprimerToutesLaBdd();
+        noeuds.clear();
     }
 }

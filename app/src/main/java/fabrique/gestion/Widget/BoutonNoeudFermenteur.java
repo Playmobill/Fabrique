@@ -1,18 +1,20 @@
 package fabrique.gestion.Widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableRow;
 
-import fabrique.gestion.FragmentGestion.chemin.FragmentChemin;
+import fabrique.gestion.FragmentGestion.FragmentChemin;
 import fabrique.gestion.Objets.NoeudFermenteur;
 
 public class BoutonNoeudFermenteur extends Button implements View.OnClickListener {
 
     private FragmentChemin fragmentChemin;
 
-    private NoeudFermenteur noeudPrecedent;
+    private NoeudFermenteur noeudPrecedent, noeudActuel;
 
     public BoutonNoeudFermenteur(Context contexte) {
         super(contexte);
@@ -23,7 +25,12 @@ public class BoutonNoeudFermenteur extends Button implements View.OnClickListene
 
         this.fragmentChemin = fragmentChemin;
         this.noeudPrecedent = noeudPrecedent;
+        this.noeudActuel = noeudActuel;
 
+        TableRow.LayoutParams parametre = new TableRow.LayoutParams();
+        parametre.setMargins(5, 5, 5, 5);
+        setLayoutParams(parametre);
+        setBackgroundColor(Color.LTGRAY);
         setOnClickListener(this);
 
         setGravity(Gravity.CENTER);
@@ -35,12 +42,21 @@ public class BoutonNoeudFermenteur extends Button implements View.OnClickListene
         }
     }
 
+    public NoeudFermenteur getNoeudActif() {
+        return noeudActuel;
+    }
+
     @Override
     public void onClick(View v) {
-        if (noeudPrecedent == null) {
-            fragmentChemin.ajouterFermenteur(-1);
-        } else {
-            fragmentChemin.ajouterFermenteur(noeudPrecedent.getId());
+        if (noeudActuel != null) {
+            fragmentChemin.setBtnEtatFermenteurAvecBrassinSelectionne(this);
+        }
+        else {
+            if (noeudPrecedent == null) {
+                fragmentChemin.ajouterFermenteur(-1);
+            } else {
+                fragmentChemin.ajouterFermenteur(noeudPrecedent.getId());
+            }
         }
     }
 }
