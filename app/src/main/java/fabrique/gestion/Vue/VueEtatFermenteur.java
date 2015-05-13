@@ -51,6 +51,10 @@ public class VueEtatFermenteur extends TableLayout implements View.OnClickListen
         txtHistorique.setText("Historique");
         txtHistorique.setTypeface(null, Typeface.BOLD);
         ligneEnTete.addView(txtHistorique, marge);
+        TextView txtAvecBrassin = new TextView(getContext());
+        txtAvecBrassin.setText("Avec brassin");
+        txtAvecBrassin.setTypeface(null, Typeface.BOLD);
+        ligneEnTete.addView(txtAvecBrassin, marge);
         TextView txtActif = new TextView(getContext());
         txtActif.setText("Actif");
         txtActif.setTypeface(null, Typeface.BOLD);
