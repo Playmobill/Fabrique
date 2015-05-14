@@ -16,16 +16,19 @@ public class BoutonNoeudFermenteur extends Button implements View.OnClickListene
 
     private NoeudFermenteur noeudPrecedent, noeudActuel;
 
+    private boolean avecBrassin;
+
     public BoutonNoeudFermenteur(Context contexte) {
         super(contexte);
     }
 
-    public BoutonNoeudFermenteur(Context contexte, FragmentChemin fragmentChemin, NoeudFermenteur noeudPrecedent, NoeudFermenteur noeudActuel) {
+    public BoutonNoeudFermenteur(Context contexte, FragmentChemin fragmentChemin, NoeudFermenteur noeudPrecedent, NoeudFermenteur noeudActuel, boolean avecBrassin) {
         super(contexte);
 
         this.fragmentChemin = fragmentChemin;
         this.noeudPrecedent = noeudPrecedent;
         this.noeudActuel = noeudActuel;
+        this.avecBrassin = avecBrassin;
 
         TableRow.LayoutParams parametre = new TableRow.LayoutParams();
         parametre.setMargins(5, 5, 5, 5);
@@ -49,13 +52,13 @@ public class BoutonNoeudFermenteur extends Button implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (noeudActuel != null) {
-            fragmentChemin.setBtnEtatFermenteurAvecBrassinSelectionne(this);
+            fragmentChemin.setBtnNoeudFermenteurSelectionne(this);
         }
         else {
             if (noeudPrecedent == null) {
-                fragmentChemin.ajouterFermenteur(-1);
+                fragmentChemin.ajouterCheminDansFermenteur(-1, avecBrassin);
             } else {
-                fragmentChemin.ajouterFermenteur(noeudPrecedent.getId());
+                fragmentChemin.ajouterCheminDansFermenteur(noeudPrecedent.getId(), avecBrassin);
             }
         }
     }

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,9 +52,9 @@ public class FragmentChemin extends FragmentAmeliore implements View.OnClickList
 
     private Button btnSupprimerEtatFermenteurAvecBrassin, btnSupprimerEtatCuveAvecBrassin, btnSupprimerEtatFutAvecBrassin;
 
-    private BoutonNoeudFermenteur btnEtatFermenteurAvecBrassinSelectionne, btnAjouterEtatFermenteurAvecBrassin;
-    private BoutonNoeudCuve btnEtatCuveAvecBrassinSelectionne, btnAjouterEtatCuveAvecBrassin;
-    private BoutonNoeudFut btnEtatFutAvecBrassinSelectionne, btnAjouterEtatFutAvecBrassin;
+    private BoutonNoeudFermenteur btnNoeudFermenteurSelectionne;
+    private BoutonNoeudCuve btnNoeudCuveSelectionne;
+    private BoutonNoeudFut btnNoeudFutSelectionne;
 
     private BoutonEtatFermenteur btnEtatFermenteurAvecBrassin, btnEtatFermenteurSansBrassin;
     private BoutonEtatCuve btnEtatCuveAvecBrassin, btnEtatCuveSansBrassin;
@@ -72,15 +73,17 @@ public class FragmentChemin extends FragmentAmeliore implements View.OnClickList
 
         contexte = container.getContext();
 
-        LinearLayout.LayoutParams parametre = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        //LinearLayout.LayoutParams parametre = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
         LinearLayout.LayoutParams marge = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         marge.setMargins(10, 10, 10, 10);
 
         HorizontalScrollView horizontalScrollView = new HorizontalScrollView(contexte);
+        //horizontalScrollView.setLayoutParams(parametre);
             ScrollView verticalScrollView = new ScrollView(contexte);
+            //verticalScrollView.setLayoutParams(parametre);
                 LinearLayout ensemble = new LinearLayout(contexte);
-                ensemble.setLayoutParams(parametre);
+                //ensemble.setLayoutParams(parametre);
                     ligneChemin = new LinearLayout(contexte);
                     ligneChemin.setOrientation(LinearLayout.VERTICAL);
                 ensemble.addView(ligneChemin, marge);
@@ -112,9 +115,9 @@ public class FragmentChemin extends FragmentAmeliore implements View.OnClickList
 
     private void afficher() {
         ligneChemin.removeAllViews();
-        ligneChemin.addView(cadre(dansLeFermenteur(), " Dans le fermenteur "));
-        ligneChemin.addView(cadre(dansLaCuve(), " Dans la cuve "));
-        ligneChemin.addView(cadre(dansLeFut(), " Dans le fût "));
+        ligneChemin.addView(cadre(cheminDansLeFermenteur(), " Dans le fermenteur "));
+        ligneChemin.addView(cadre(cheminDansLaCuve(), " Dans la cuve "));
+        ligneChemin.addView(cadre(cheminDansLeFut(), " Dans le fût "));
     }
 
     private RelativeLayout cadre(View view, String texteTitre) {
@@ -154,158 +157,302 @@ public class FragmentChemin extends FragmentAmeliore implements View.OnClickList
         return contenant;
     }
 
-    private TableLayout dansLeFermenteur() {
-        NoeudFermenteur noeudPrecedent = null;
-        NoeudFermenteur noeudActuel = TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud();
-
+    private TableLayout cheminDansLeFermenteur() {
         TableLayout tableau = new TableLayout(contexte);
 
-        while(noeudActuel != null) {
-                TableRow ligneBouton = new TableRow(contexte);
-                ligneBouton.addView(new BoutonNoeudFermenteur(contexte, this, noeudPrecedent, noeudActuel));
-            tableau.addView(ligneBouton);
+            //Détermination de l'état avec brassin suivant
+            NoeudFermenteur noeudPrecedent = null;
+            NoeudFermenteur noeudActuel = TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud();
+
+            while(noeudActuel != null) {
+                //ligneEtatAvecBrassin : Ligne vertical qui contiendra 1 état avec brassin et des états sans brassin séparés par une flêche
+                TableRow ligneEtatAvecBrassin = new TableRow(contexte);
+                ligneEtatAvecBrassin.setGravity(Gravity.CENTER);
+                //Ajout de l'état avec brassin
+                ligneEtatAvecBrassin.addView(new BoutonNoeudFermenteur(contexte, this, noeudPrecedent, noeudActuel, true));
+
+                //Détermination de l'état sans brassin suivant
+                NoeudFermenteur noeudPrecedentSansBrassin = noeudActuel;
+                NoeudFermenteur noeudSuivantSansBrassin = noeudActuel.getNoeudSansBrassin(contexte);
+                //Tant qu'il y a des états sans brassin on continu de les ajouter
+                while(noeudSuivantSansBrassin != null) {
+                    //Ajout de la flêche directrice vers la droite
+                        ImageView imageDroite = new ImageView(contexte);
+                        imageDroite.setImageResource(R.drawable.fleche_droite);
+                        imageDroite.setMaxWidth(50);
+                        imageDroite.setMaxHeight(50);
+                    ligneEtatAvecBrassin.addView(imageDroite);
+                    //Ajout de l'état sans brassin
+                    ligneEtatAvecBrassin.addView(new BoutonNoeudFermenteur(contexte, this, noeudPrecedentSansBrassin, noeudSuivantSansBrassin, false));
+                    //Détermination de l'état sans brassin suivant
+                    noeudPrecedentSansBrassin = noeudSuivantSansBrassin;
+                    noeudSuivantSansBrassin = noeudSuivantSansBrassin.getNoeudSansBrassin(contexte);
+                }
+                //Ajout de la flêche directrice vers la droite
+                    ImageView imageDroite = new ImageView(contexte);
+                    imageDroite.setImageResource(R.drawable.fleche_droite);
+                    imageDroite.setMaxWidth(50);
+                    imageDroite.setMaxHeight(50);
+                ligneEtatAvecBrassin.addView(imageDroite);
+                //Ajout d'un état sans brassin vide pour accueillir un prochain état sans brassin
+                ligneEtatAvecBrassin.addView(new BoutonNoeudFermenteur(contexte, this, noeudPrecedentSansBrassin, null, false));
+            tableau.addView(ligneEtatAvecBrassin);
+
+                //Ajout d'une ligne pour afficher l'image de la flêche directrice vers le bas
                 TableRow ligneImage = new TableRow(contexte);
-                    ImageView image = new ImageView(contexte);
-                    image.setImageResource(R.drawable.fleche_bas);
-                    image.setMaxWidth(50);
-                    image.setMaxHeight(50);
-                ligneImage.addView(image);
+                    ImageView imageBas = new ImageView(contexte);
+                    imageBas.setImageResource(R.drawable.fleche_bas);
+                    imageBas.setMaxWidth(50);
+                    imageBas.setMaxHeight(50);
+                ligneImage.addView(imageBas);
             tableau.addView(ligneImage);
 
+            //Détermination de l'état avec brassin suivant
             noeudPrecedent = noeudActuel;
             noeudActuel = noeudActuel.getNoeudAvecBrassin(contexte);
-        }
-            TableRow ligneAjouterAvecBrassin = new TableRow(contexte);
-            btnAjouterEtatFermenteurAvecBrassin = new BoutonNoeudFermenteur(contexte, this, noeudPrecedent, null);
-            ligneAjouterAvecBrassin.addView(btnAjouterEtatFermenteurAvecBrassin);
-        tableau.addView(ligneAjouterAvecBrassin);
+            }
+            TableRow ligneAjouterEtatAvecBrassin = new TableRow(contexte);
+
+            //Ajout d'un état avec brassin vide pour accueillir un prochain état avec brassin
+            ligneAjouterEtatAvecBrassin.addView(new BoutonNoeudFermenteur(contexte, this, noeudPrecedent, null, true));
+
+        tableau.addView(ligneAjouterEtatAvecBrassin);
 
         return tableau;
     }
 
-    public void setBtnEtatFermenteurAvecBrassinSelectionne(BoutonNoeudFermenteur btnEtatFermenteurAvecBrassinSelectionne) {
-        if (this.btnEtatFermenteurAvecBrassinSelectionne != null) {
-            this.btnEtatFermenteurAvecBrassinSelectionne.setBackgroundColor(Color.LTGRAY);
-            if ((this.btnEtatFermenteurAvecBrassinSelectionne != null) && (this.btnEtatFermenteurAvecBrassinSelectionne.equals(btnEtatFermenteurAvecBrassinSelectionne))) {
+    public void setBtnNoeudFermenteurSelectionne(BoutonNoeudFermenteur btnEtatFermenteurAvecBrassinSelectionne) {
+        if (this.btnNoeudFermenteurSelectionne != null) {
+            this.btnNoeudFermenteurSelectionne.setBackgroundColor(Color.LTGRAY);
+            if ((this.btnNoeudFermenteurSelectionne != null) && (this.btnNoeudFermenteurSelectionne.equals(btnEtatFermenteurAvecBrassinSelectionne))) {
                 btnEtatFermenteurAvecBrassinSelectionne.setBackgroundColor(Color.LTGRAY);
-                this.btnEtatFermenteurAvecBrassinSelectionne = null;
+                this.btnNoeudFermenteurSelectionne = null;
             } else {
-                this.btnEtatFermenteurAvecBrassinSelectionne = btnEtatFermenteurAvecBrassinSelectionne;
-                this.btnEtatFermenteurAvecBrassinSelectionne.setBackgroundColor(Color.RED);
+                this.btnNoeudFermenteurSelectionne = btnEtatFermenteurAvecBrassinSelectionne;
+                this.btnNoeudFermenteurSelectionne.setBackgroundColor(Color.RED);
             }
         } else {
-            this.btnEtatFermenteurAvecBrassinSelectionne = btnEtatFermenteurAvecBrassinSelectionne;
-            this.btnEtatFermenteurAvecBrassinSelectionne.setBackgroundColor(Color.RED);
+            this.btnNoeudFermenteurSelectionne = btnEtatFermenteurAvecBrassinSelectionne;
+            this.btnNoeudFermenteurSelectionne.setBackgroundColor(Color.RED);
         }
     }
 
-    public void ajouterFermenteur(long id_noeudPrecedent) {
-        if (btnEtatFermenteurAvecBrassin != null) {
-            TableCheminBrassinFermenteur.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinFermenteur.instance(contexte).ajouter(id_noeudPrecedent, btnEtatFermenteurAvecBrassin.getEtat().getId(), -1, -1), -1);
+    public void ajouterCheminDansFermenteur(long id_noeudPrecedent, boolean avecBrassin) {
+        if ((btnEtatFermenteurAvecBrassin != null) && avecBrassin) {
+            NoeudFermenteur noeudPrecedent = TableCheminBrassinFermenteur.instance(contexte).recupererId(id_noeudPrecedent);
+            long idSuivantSansBrassin = -1;
+            if (noeudPrecedent != null) {
+                idSuivantSansBrassin = noeudPrecedent.getId_noeudSansBrassin();
+            }
+            TableCheminBrassinFermenteur.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinFermenteur.instance(contexte).ajouter(id_noeudPrecedent, btnEtatFermenteurAvecBrassin.getEtat().getId(), -1, -1), idSuivantSansBrassin);
+            afficher();
+        } else if ((btnEtatFermenteurSansBrassin != null) && !avecBrassin) {
+            NoeudFermenteur noeudPrecedent = TableCheminBrassinFermenteur.instance(contexte).recupererId(id_noeudPrecedent);
+            long idSuivantAvecBrassin = -1;
+            if (noeudPrecedent != null) {
+                idSuivantAvecBrassin = noeudPrecedent.getId_noeudAvecBrassin();
+            }
+            TableCheminBrassinFermenteur.instance(contexte).modifier(id_noeudPrecedent, idSuivantAvecBrassin, TableCheminBrassinFermenteur.instance(contexte).ajouter(id_noeudPrecedent, btnEtatFermenteurSansBrassin.getEtat().getId(), -1, -1));
             afficher();
         }
     }
 
-    private TableLayout dansLaCuve() {
+    private TableLayout cheminDansLaCuve() {
+        TableLayout tableau = new TableLayout(contexte);
+
+        //Détermination de l'état avec brassin suivant
         NoeudCuve noeudPrecedent = null;
         NoeudCuve noeudActuel = TableCheminBrassinCuve.instance(contexte).recupererPremierNoeud();
 
-        TableLayout tableau = new TableLayout(contexte);
-
         while(noeudActuel != null) {
-            TableRow ligneBouton = new TableRow(contexte);
-            ligneBouton.addView(new BoutonNoeudCuve(contexte, this, noeudPrecedent, noeudActuel));
-            tableau.addView(ligneBouton);
+            //ligneEtatAvecBrassin : Ligne vertical qui contiendra 1 état avec brassin et des états sans brassin séparés par une flêche
+            TableRow ligneEtatAvecBrassin = new TableRow(contexte);
+            ligneEtatAvecBrassin.setGravity(Gravity.CENTER);
+            //Ajout de l'état avec brassin
+            ligneEtatAvecBrassin.addView(new BoutonNoeudCuve(contexte, this, noeudPrecedent, noeudActuel, true));
+
+            //Détermination de l'état sans brassin suivant
+            NoeudCuve noeudPrecedentSansBrassin = noeudActuel;
+            NoeudCuve noeudSuivantSansBrassin = noeudActuel.getNoeudSansBrassin(contexte);
+            //Tant qu'il y a des états sans brassin on continu de les ajouter
+            while(noeudSuivantSansBrassin != null) {
+                //Ajout de la flêche directrice vers la droite
+                ImageView imageDroite = new ImageView(contexte);
+                imageDroite.setImageResource(R.drawable.fleche_droite);
+                imageDroite.setMaxWidth(50);
+                imageDroite.setMaxHeight(50);
+                ligneEtatAvecBrassin.addView(imageDroite);
+                //Ajout de l'état sans brassin
+                ligneEtatAvecBrassin.addView(new BoutonNoeudCuve(contexte, this, noeudPrecedentSansBrassin, noeudSuivantSansBrassin, false));
+                //Détermination de l'état sans brassin suivant
+                noeudPrecedentSansBrassin = noeudSuivantSansBrassin;
+                noeudSuivantSansBrassin = noeudSuivantSansBrassin.getNoeudSansBrassin(contexte);
+            }
+            //Ajout de la flêche directrice vers la droite
+            ImageView imageDroite = new ImageView(contexte);
+            imageDroite.setImageResource(R.drawable.fleche_droite);
+            imageDroite.setMaxWidth(50);
+            imageDroite.setMaxHeight(50);
+            ligneEtatAvecBrassin.addView(imageDroite);
+            //Ajout d'un état sans brassin vide pour accueillir un prochain état sans brassin
+            ligneEtatAvecBrassin.addView(new BoutonNoeudCuve(contexte, this, noeudPrecedentSansBrassin, null, false));
+            tableau.addView(ligneEtatAvecBrassin);
+
+            //Ajout d'une ligne pour afficher l'image de la flêche directrice vers le bas
             TableRow ligneImage = new TableRow(contexte);
-            ImageView image = new ImageView(contexte);
-            image.setImageResource(R.drawable.fleche_bas);
-            image.setMaxWidth(50);
-            image.setMaxHeight(50);
-            ligneImage.addView(image);
+            ImageView imageBas = new ImageView(contexte);
+            imageBas.setImageResource(R.drawable.fleche_bas);
+            imageBas.setMaxWidth(50);
+            imageBas.setMaxHeight(50);
+            ligneImage.addView(imageBas);
             tableau.addView(ligneImage);
 
+            //Détermination de l'état avec brassin suivant
             noeudPrecedent = noeudActuel;
             noeudActuel = noeudActuel.getNoeudAvecBrassin(contexte);
         }
-        TableRow ligneAjouterAvecBrassin = new TableRow(contexte);
-        btnAjouterEtatCuveAvecBrassin = new BoutonNoeudCuve(contexte, this, noeudPrecedent, null);
-        ligneAjouterAvecBrassin.addView(btnAjouterEtatCuveAvecBrassin);
-        tableau.addView(ligneAjouterAvecBrassin);
+        TableRow ligneAjouterEtatAvecBrassin = new TableRow(contexte);
+
+        //Ajout d'un état avec brassin vide pour accueillir un prochain état avec brassin
+        ligneAjouterEtatAvecBrassin.addView(new BoutonNoeudCuve(contexte, this, noeudPrecedent, null, true));
+
+        tableau.addView(ligneAjouterEtatAvecBrassin);
 
         return tableau;
     }
 
-    public void setBtnEtatCuveAvecBrassinSelectionne(BoutonNoeudCuve btnEtatCuveAvecBrassinSelectionne) {
-        if (this.btnEtatCuveAvecBrassinSelectionne != null) {
-            this.btnEtatCuveAvecBrassinSelectionne.setBackgroundColor(Color.LTGRAY);
-            if (this.btnEtatCuveAvecBrassinSelectionne.equals(btnEtatCuveAvecBrassinSelectionne)) {
+    public void setBtnNoeudCuveSelectionne(BoutonNoeudCuve btnEtatCuveAvecBrassinSelectionne) {
+        if (this.btnNoeudCuveSelectionne != null) {
+            this.btnNoeudCuveSelectionne.setBackgroundColor(Color.LTGRAY);
+            if (this.btnNoeudCuveSelectionne.equals(btnEtatCuveAvecBrassinSelectionne)) {
                 btnEtatCuveAvecBrassinSelectionne.setBackgroundColor(Color.LTGRAY);
-                this.btnEtatCuveAvecBrassinSelectionne = null;
+                this.btnNoeudCuveSelectionne = null;
             } else {
-                this.btnEtatCuveAvecBrassinSelectionne = btnEtatCuveAvecBrassinSelectionne;
-                this.btnEtatCuveAvecBrassinSelectionne.setBackgroundColor(Color.RED);
+                this.btnNoeudCuveSelectionne = btnEtatCuveAvecBrassinSelectionne;
+                this.btnNoeudCuveSelectionne.setBackgroundColor(Color.RED);
             }
         } else {
-            this.btnEtatCuveAvecBrassinSelectionne = btnEtatCuveAvecBrassinSelectionne;
-            this.btnEtatCuveAvecBrassinSelectionne.setBackgroundColor(Color.RED);
+            this.btnNoeudCuveSelectionne = btnEtatCuveAvecBrassinSelectionne;
+            this.btnNoeudCuveSelectionne.setBackgroundColor(Color.RED);
         }
     }
 
-    public void ajouterCuve(long id_noeudPrecedent) {
-        if (btnEtatCuveAvecBrassin != null) {
-            TableCheminBrassinCuve.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinCuve.instance(contexte).ajouter(id_noeudPrecedent, btnEtatCuveAvecBrassin.getEtat().getId(), -1, -1), -1);
+    public void ajouterCheminDansCuve(long id_noeudPrecedent, boolean avecBrassin) {
+        if ((btnEtatCuveAvecBrassin != null) && avecBrassin) {
+            NoeudCuve noeudPrecedent = TableCheminBrassinCuve.instance(contexte).recupererId(id_noeudPrecedent);
+            long idSuivantSansBrassin = -1;
+            if (noeudPrecedent != null) {
+                idSuivantSansBrassin = noeudPrecedent.getId_noeudSansBrassin();
+            }
+            TableCheminBrassinCuve.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinCuve.instance(contexte).ajouter(id_noeudPrecedent, btnEtatCuveAvecBrassin.getEtat().getId(), -1, -1), idSuivantSansBrassin);
+            afficher();
+        } else if ((btnEtatCuveSansBrassin != null) && !avecBrassin) {
+            NoeudCuve noeudPrecedent = TableCheminBrassinCuve.instance(contexte).recupererId(id_noeudPrecedent);
+            long idSuivantAvecBrassin = -1;
+            if (noeudPrecedent != null) {
+                idSuivantAvecBrassin = noeudPrecedent.getId_noeudAvecBrassin();
+            }
+            TableCheminBrassinCuve.instance(contexte).modifier(id_noeudPrecedent, idSuivantAvecBrassin, TableCheminBrassinCuve.instance(contexte).ajouter(id_noeudPrecedent, btnEtatCuveSansBrassin.getEtat().getId(), -1, -1));
             afficher();
         }
     }
 
-    private TableLayout dansLeFut() {
+    private TableLayout cheminDansLeFut() {
+        TableLayout tableau = new TableLayout(contexte);
+
+        //Détermination de l'état avec brassin suivant
         NoeudFut noeudPrecedent = null;
         NoeudFut noeudActuel = TableCheminBrassinFut.instance(contexte).recupererPremierNoeud();
 
-        TableLayout tableau = new TableLayout(contexte);
-
         while(noeudActuel != null) {
-            TableRow ligneBouton = new TableRow(contexte);
-            ligneBouton.addView(new BoutonNoeudFut(contexte, this, noeudPrecedent, noeudActuel));
-            tableau.addView(ligneBouton);
+            //ligneEtatAvecBrassin : Ligne vertical qui contiendra 1 état avec brassin et des états sans brassin séparés par une flêche
+            TableRow ligneEtatAvecBrassin = new TableRow(contexte);
+            ligneEtatAvecBrassin.setGravity(Gravity.CENTER);
+            //Ajout de l'état avec brassin
+            ligneEtatAvecBrassin.addView(new BoutonNoeudFut(contexte, this, noeudPrecedent, noeudActuel, true));
+
+            //Détermination de l'état sans brassin suivant
+            NoeudFut noeudPrecedentSansBrassin = noeudActuel;
+            NoeudFut noeudSuivantSansBrassin = noeudActuel.getNoeudSansBrassin(contexte);
+            //Tant qu'il y a des états sans brassin on continu de les ajouter
+            while(noeudSuivantSansBrassin != null) {
+                //Ajout de la flêche directrice vers la droite
+                ImageView imageDroite = new ImageView(contexte);
+                imageDroite.setImageResource(R.drawable.fleche_droite);
+                imageDroite.setMaxWidth(50);
+                imageDroite.setMaxHeight(50);
+                ligneEtatAvecBrassin.addView(imageDroite);
+                //Ajout de l'état sans brassin
+                ligneEtatAvecBrassin.addView(new BoutonNoeudFut(contexte, this, noeudPrecedentSansBrassin, noeudSuivantSansBrassin, false));
+                //Détermination de l'état sans brassin suivant
+                noeudPrecedentSansBrassin = noeudSuivantSansBrassin;
+                noeudSuivantSansBrassin = noeudSuivantSansBrassin.getNoeudSansBrassin(contexte);
+            }
+            //Ajout de la flêche directrice vers la droite
+            ImageView imageDroite = new ImageView(contexte);
+            imageDroite.setImageResource(R.drawable.fleche_droite);
+            imageDroite.setMaxWidth(50);
+            imageDroite.setMaxHeight(50);
+            ligneEtatAvecBrassin.addView(imageDroite);
+            //Ajout d'un état sans brassin vide pour accueillir un prochain état sans brassin
+            ligneEtatAvecBrassin.addView(new BoutonNoeudFut(contexte, this, noeudPrecedentSansBrassin, null, false));
+            tableau.addView(ligneEtatAvecBrassin);
+
+            //Ajout d'une ligne pour afficher l'image de la flêche directrice vers le bas
             TableRow ligneImage = new TableRow(contexte);
-            ImageView image = new ImageView(contexte);
-            image.setImageResource(R.drawable.fleche_bas);
-            image.setMaxWidth(50);
-            image.setMaxHeight(50);
-            ligneImage.addView(image);
+            ImageView imageBas = new ImageView(contexte);
+            imageBas.setImageResource(R.drawable.fleche_bas);
+            imageBas.setMaxWidth(50);
+            imageBas.setMaxHeight(50);
+            ligneImage.addView(imageBas);
             tableau.addView(ligneImage);
 
+            //Détermination de l'état avec brassin suivant
             noeudPrecedent = noeudActuel;
             noeudActuel = noeudActuel.getNoeudAvecBrassin(contexte);
         }
-        TableRow ligneAjouterAvecBrassin = new TableRow(contexte);
-        btnAjouterEtatFutAvecBrassin = new BoutonNoeudFut(contexte, this, noeudPrecedent, null);
-        ligneAjouterAvecBrassin.addView(btnAjouterEtatFutAvecBrassin);
-        tableau.addView(ligneAjouterAvecBrassin);
+        TableRow ligneAjouterEtatAvecBrassin = new TableRow(contexte);
+
+        //Ajout d'un état avec brassin vide pour accueillir un prochain état avec brassin
+        ligneAjouterEtatAvecBrassin.addView(new BoutonNoeudFut(contexte, this, noeudPrecedent, null, true));
+
+        tableau.addView(ligneAjouterEtatAvecBrassin);
 
         return tableau;
     }
 
-    public void setBtnEtatFutAvecBrassinSelectionne(BoutonNoeudFut btnEtatFutAvecBrassinSelectionne) {
-        if (this.btnEtatFutAvecBrassinSelectionne != null) {
-            this.btnEtatFutAvecBrassinSelectionne.setBackgroundColor(Color.LTGRAY);
-            if (this.btnEtatFutAvecBrassinSelectionne.equals(btnEtatFutAvecBrassinSelectionne)) {
+    public void setBtnNoeudFutSelectionne(BoutonNoeudFut btnEtatFutAvecBrassinSelectionne) {
+        if (this.btnNoeudFutSelectionne != null) {
+            this.btnNoeudFutSelectionne.setBackgroundColor(Color.LTGRAY);
+            if (this.btnNoeudFutSelectionne.equals(btnEtatFutAvecBrassinSelectionne)) {
                 btnEtatFutAvecBrassinSelectionne.setBackgroundColor(Color.LTGRAY);
-                this.btnEtatFutAvecBrassinSelectionne = null;
+                this.btnNoeudFutSelectionne = null;
             } else {
-                this.btnEtatFutAvecBrassinSelectionne = btnEtatFutAvecBrassinSelectionne;
-                this.btnEtatFutAvecBrassinSelectionne.setBackgroundColor(Color.RED);
+                this.btnNoeudFutSelectionne = btnEtatFutAvecBrassinSelectionne;
+                this.btnNoeudFutSelectionne.setBackgroundColor(Color.RED);
             }
         } else {
-            this.btnEtatFutAvecBrassinSelectionne = btnEtatFutAvecBrassinSelectionne;
-            this.btnEtatFutAvecBrassinSelectionne.setBackgroundColor(Color.RED);
+            this.btnNoeudFutSelectionne = btnEtatFutAvecBrassinSelectionne;
+            this.btnNoeudFutSelectionne.setBackgroundColor(Color.RED);
         }
     }
 
-    public void ajouterFut(long id_noeudPrecedent) {
-        if (btnEtatFermenteurAvecBrassin != null) {
-            TableCheminBrassinFut.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinFut.instance(contexte).ajouter(id_noeudPrecedent, btnEtatFutAvecBrassin.getEtat().getId(), -1, -1), -1);
+    public void ajouterCheminDansFut(long id_noeudPrecedent, boolean avecBrassin) {
+        if ((btnEtatFutAvecBrassin != null) && avecBrassin) {
+            NoeudFut noeudPrecedent = TableCheminBrassinFut.instance(contexte).recupererId(id_noeudPrecedent);
+            long idSuivantSansBrassin = -1;
+            if (noeudPrecedent != null) {
+                idSuivantSansBrassin = noeudPrecedent.getId_noeudSansBrassin();
+            }
+            TableCheminBrassinFut.instance(contexte).modifier(id_noeudPrecedent, TableCheminBrassinFut.instance(contexte).ajouter(id_noeudPrecedent, btnEtatFutAvecBrassin.getEtat().getId(), -1, -1), idSuivantSansBrassin);
+            afficher();
+        } else if ((btnEtatFutSansBrassin != null) && !avecBrassin) {
+            NoeudFut noeudPrecedent = TableCheminBrassinFut.instance(contexte).recupererId(id_noeudPrecedent);
+            long idSuivantAvecBrassin = -1;
+            if (noeudPrecedent != null) {
+                idSuivantAvecBrassin = noeudPrecedent.getId_noeudAvecBrassin();
+            }
+            TableCheminBrassinFut.instance(contexte).modifier(id_noeudPrecedent, idSuivantAvecBrassin, TableCheminBrassinFut.instance(contexte).ajouter(id_noeudPrecedent, btnEtatFutSansBrassin.getEtat().getId(), -1, -1));
             afficher();
         }
     }
@@ -362,7 +509,19 @@ public class FragmentChemin extends FragmentAmeliore implements View.OnClickList
     }
 
     public void setBtnEtatFermenteurSansBrassin(BoutonEtatFermenteur btnEtatFermenteurSansBrassin) {
-        this.btnEtatFermenteurSansBrassin = btnEtatFermenteurSansBrassin;
+        if (this.btnEtatFermenteurSansBrassin != null) {
+            this.btnEtatFermenteurSansBrassin.setBackgroundColor(Color.LTGRAY);
+            if (this.btnEtatFermenteurSansBrassin.equals(btnEtatFermenteurSansBrassin)) {
+                btnEtatFermenteurSansBrassin.setBackgroundColor(Color.LTGRAY);
+                this.btnEtatFermenteurSansBrassin = null;
+            } else {
+                this.btnEtatFermenteurSansBrassin = btnEtatFermenteurSansBrassin;
+                this.btnEtatFermenteurSansBrassin.setBackgroundColor(Color.BLUE);
+            }
+        } else {
+            this.btnEtatFermenteurSansBrassin = btnEtatFermenteurSansBrassin;
+            this.btnEtatFermenteurSansBrassin.setBackgroundColor(Color.BLUE);
+        }
     }
 
     private LinearLayout listeEtatCuve() {
@@ -417,7 +576,19 @@ public class FragmentChemin extends FragmentAmeliore implements View.OnClickList
     }
 
     public void setBtnEtatCuveSansBrassin(BoutonEtatCuve btnEtatCuveSansBrassin) {
-        this.btnEtatCuveSansBrassin = btnEtatCuveSansBrassin;
+        if (this.btnEtatCuveSansBrassin != null) {
+            this.btnEtatCuveSansBrassin.setBackgroundColor(Color.LTGRAY);
+            if (this.btnEtatCuveSansBrassin.equals(btnEtatCuveSansBrassin)) {
+                btnEtatCuveSansBrassin.setBackgroundColor(Color.LTGRAY);
+                this.btnEtatCuveSansBrassin = null;
+            } else {
+                this.btnEtatCuveSansBrassin = btnEtatCuveSansBrassin;
+                this.btnEtatCuveSansBrassin.setBackgroundColor(Color.BLUE);
+            }
+        } else {
+            this.btnEtatCuveSansBrassin = btnEtatCuveSansBrassin;
+            this.btnEtatCuveSansBrassin.setBackgroundColor(Color.BLUE);
+        }
     }
 
     private LinearLayout listeEtatFut() {
@@ -472,19 +643,31 @@ public class FragmentChemin extends FragmentAmeliore implements View.OnClickList
     }
 
     public void setBtnEtatFutSansBrassin(BoutonEtatFut btnEtatFutSansBrassin) {
-        this.btnEtatFutSansBrassin = btnEtatFutSansBrassin;
+        if (this.btnEtatFutSansBrassin != null) {
+            this.btnEtatFutSansBrassin.setBackgroundColor(Color.LTGRAY);
+            if (this.btnEtatFutSansBrassin.equals(btnEtatFutSansBrassin)) {
+                btnEtatFutSansBrassin.setBackgroundColor(Color.LTGRAY);
+                this.btnEtatFutSansBrassin = null;
+            } else {
+                this.btnEtatFutSansBrassin = btnEtatFutSansBrassin;
+                this.btnEtatFutSansBrassin.setBackgroundColor(Color.BLUE);
+            }
+        } else {
+            this.btnEtatFutSansBrassin = btnEtatFutSansBrassin;
+            this.btnEtatFutSansBrassin.setBackgroundColor(Color.BLUE);
+        }
     }
 
     @Override
     public void onClick(View v) {
-        if ((btnEtatFermenteurAvecBrassinSelectionne != null) && (v.equals(btnSupprimerEtatFermenteurAvecBrassin))) {
-            TableCheminBrassinFermenteur.instance(contexte).supprimer(btnEtatFermenteurAvecBrassinSelectionne.getNoeudActif().getId());
+        if ((btnNoeudFermenteurSelectionne != null) && (v.equals(btnSupprimerEtatFermenteurAvecBrassin))) {
+            TableCheminBrassinFermenteur.instance(contexte).supprimer(btnNoeudFermenteurSelectionne.getNoeudActif().getId());
             afficher();
-        } else if ((btnEtatCuveAvecBrassinSelectionne != null) && (v.equals(btnSupprimerEtatCuveAvecBrassin))) {
-            TableCheminBrassinCuve.instance(contexte).supprimer(btnEtatCuveAvecBrassinSelectionne.getNoeudActif().getId());
+        } else if ((btnNoeudCuveSelectionne != null) && (v.equals(btnSupprimerEtatCuveAvecBrassin))) {
+            TableCheminBrassinCuve.instance(contexte).supprimer(btnNoeudCuveSelectionne.getNoeudActif().getId());
             afficher();
-        } else if ((btnEtatFutAvecBrassinSelectionne != null) && (v.equals(btnSupprimerEtatFutAvecBrassin))) {
-            TableCheminBrassinFut.instance(contexte).supprimer(btnEtatFutAvecBrassinSelectionne.getNoeudActif().getId());
+        } else if ((btnNoeudFutSelectionne != null) && (v.equals(btnSupprimerEtatFutAvecBrassin))) {
+            TableCheminBrassinFut.instance(contexte).supprimer(btnNoeudFutSelectionne.getNoeudActif().getId());
             afficher();
         }
     }

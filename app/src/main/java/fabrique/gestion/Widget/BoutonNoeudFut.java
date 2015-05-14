@@ -16,16 +16,19 @@ public class BoutonNoeudFut extends Button implements View.OnClickListener {
 
     private NoeudFut noeudPrecedent, noeudActuel;
 
+    private boolean avecBrassin;
+
     public BoutonNoeudFut(Context contexte) {
         super(contexte);
     }
 
-    public BoutonNoeudFut(Context contexte, FragmentChemin fragmentChemin, NoeudFut noeudPrecedent, NoeudFut noeudActuel) {
+    public BoutonNoeudFut(Context contexte, FragmentChemin fragmentChemin, NoeudFut noeudPrecedent, NoeudFut noeudActuel, boolean avecBrassin) {
         super(contexte);
 
         this.fragmentChemin = fragmentChemin;
         this.noeudPrecedent = noeudPrecedent;
         this.noeudActuel = noeudActuel;
+        this.avecBrassin = avecBrassin;
 
         TableRow.LayoutParams parametre = new TableRow.LayoutParams();
         parametre.setMargins(5, 5, 5, 5);
@@ -49,13 +52,13 @@ public class BoutonNoeudFut extends Button implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (noeudActuel != null) {
-            fragmentChemin.setBtnEtatFutAvecBrassinSelectionne(this);
+            fragmentChemin.setBtnNoeudFutSelectionne(this);
         }
         else {
             if (noeudPrecedent == null) {
-                fragmentChemin.ajouterFut(-1);
+                fragmentChemin.ajouterCheminDansFut(-1, avecBrassin);
             } else {
-                fragmentChemin.ajouterFut(noeudPrecedent.getId());
+                fragmentChemin.ajouterCheminDansFut(noeudPrecedent.getId(), avecBrassin);
             }
         }
     }

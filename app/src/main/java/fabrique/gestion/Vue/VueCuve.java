@@ -129,8 +129,8 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         contour.setBackgroundColor(Color.BLACK);
         contour.setPadding(1, 1, 1, 1);
         RelativeLayout.LayoutParams parametreContour = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        parametreContour.topMargin=15;
-        parametreContour.leftMargin=5;
+        parametreContour.topMargin = 15;
+        parametreContour.leftMargin = 5;
 
         TextView titre = new TextView(getContext());
         titre.setText(texteTitre);
@@ -206,7 +206,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         adapteurEmplacement.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editEmplacement.setAdapter(adapteurEmplacement);
         indexEmplacement = -1;
-        for (int i=0; i<emplacements.size() ; i++) {
+        for (int i = 0; i < emplacements.size(); i++) {
             if (cuve.getEmplacement(getContext()).getId() == emplacements.get(i).getId()) {
                 indexEmplacement = i;
             }
@@ -214,7 +214,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         if (indexEmplacement == -1) {
             emplacements.add(cuve.getEmplacement(getContext()));
             adapteurEmplacement.add(TableEmplacement.instance(getContext()).recupererId(cuve.getEmplacement(getContext()).getId()).getTexte());
-            editEmplacement.setSelection(adapteurEmplacement.getCount()-1);
+            editEmplacement.setSelection(adapteurEmplacement.getCount() - 1);
         }
         layoutEmplacement.addView(editEmplacement);
         ligneCapaciteEmplacement.addView(layoutEmplacement, parametre);
@@ -265,10 +265,10 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         ligneAjouter = new TableRow(getContext());
         LinearLayout sous_ligneAjouter = new LinearLayout(getContext());
         ArrayList<ListeHistorique> listeHistoriques = TableListeHistorique.instance(getContext()).listeHistoriqueCuve();
-        String[] tabListeHistorique = new String[listeHistoriques.size()+1];
+        String[] tabListeHistorique = new String[listeHistoriques.size() + 1];
         tabListeHistorique[0] = "";
-        for (int i=0; i<listeHistoriques.size() ; i++) {
-            tabListeHistorique[i+1] = listeHistoriques.get(i).getTexte();
+        for (int i = 0; i < listeHistoriques.size(); i++) {
+            tabListeHistorique[i + 1] = listeHistoriques.get(i).getTexte();
         }
         ajoutListeHistorique = new Spinner(getContext());
         ArrayAdapter<String> adapteurAjoutListeHistorique = new ArrayAdapter<>(getContext(), R.layout.spinner_style, tabListeHistorique);
@@ -356,7 +356,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         listeBrassin = new Spinner(getContext());
         TableBrassin tableBrassin = TableBrassin.instance(getContext());
         ArrayList<String> brassins = new ArrayList<>();
-        for (int i=0; i<tableBrassin.tailleListe() ; i++) {
+        for (int i = 0; i < tableBrassin.tailleListe(); i++) {
             brassins.add("" + tableBrassin.recupererIndex(i).getNumero());
         }
         ArrayAdapter<String> adapteurBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style, brassins);
@@ -392,18 +392,18 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         btnsEtat = new ArrayList<>();
         TableRow ligne = new TableRow(getContext());
         int i;
-        for (i=0; i<listeEtat.size() ; i++) {
+        for (i = 0; i < listeEtat.size(); i++) {
             Button btnEtat = new Button(getContext());
             btnEtat.setText(listeEtat.get(i).getTexte());
             btnEtat.setOnClickListener((this));
             btnsEtat.add(btnEtat);
             ligne.addView(btnEtat);
-            if (i%3 == 2) {
+            if (i % 3 == 2) {
                 tableauEtat.addView(ligne);
                 ligne = new TableRow(getContext());
             }
         }
-        if ((i-1)%3 != 2) {
+        if ((i - 1) % 3 != 2) {
             tableauEtat.addView(ligne);
         }
     }
@@ -415,8 +415,8 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         tableauHistorique.removeAllViews();
         tableauHistorique.addView(ligneAjouter, margeTableau);
 
-        ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdCuve(cuve.getId());
-        for (int i=0; i<historiques.size() ; i++) {
+        ArrayList<Historique> historiques = TableHistorique.instance(getContext()).recupererSelonIdCuve(cuve.getId());
+        for (int i = 0; i < historiques.size(); i++) {
             tableauHistorique.addView(new LigneHistorique(getContext(), this, historiques.get(i)), margeTableau);
         }
     }
@@ -425,23 +425,18 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
     public void onClick(View v) {
         if (v.equals(btnModifier)) {
             modifier();
-        }
-        else if (v.equals(btnValider)) {
+        } else if (v.equals(btnValider)) {
             valider();
-        }
-        else if (v.equals(btnAnnuler)) {
+        } else if (v.equals(btnAnnuler)) {
             afficher();
-        }
-        else if (v.equals(btnChanger)) {
+        } else if (v.equals(btnChanger)) {
             changer();
-        }
-        else if (v.equals(btnAjouterHistorique)) {
+        } else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, cuve.getId(), -1, -1);
             afficherHistorique();
-        }
-        else {
+        } else {
             boolean etat = false;
-            for (int i=0; (i<btnsEtat.size()) && !etat ; i++) {
+            for (int i = 0; (i < btnsEtat.size()) && !etat; i++) {
                 if (v.equals(btnsEtat.get(i))) {
                     etat = true;
                     TableCuve.instance(getContext()).modifier(cuve.getId(),

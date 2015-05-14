@@ -16,15 +16,18 @@ public class BoutonNoeudCuve extends Button implements View.OnClickListener {
 
     private NoeudCuve noeudPrecedent, noeudActuel;
 
+    private boolean avecBrassin;
+
     public BoutonNoeudCuve(Context contexte) {
         super(contexte);
     }
 
-    public BoutonNoeudCuve(Context contexte, FragmentChemin fragmentChemin, NoeudCuve noeudPrecedent, NoeudCuve noeudActuel) {
+    public BoutonNoeudCuve(Context contexte, FragmentChemin fragmentChemin, NoeudCuve noeudPrecedent, NoeudCuve noeudActuel, boolean avecBrassin) {
         super(contexte);
         this.fragmentChemin = fragmentChemin;
         this.noeudPrecedent = noeudPrecedent;
         this.noeudActuel = noeudActuel;
+        this.avecBrassin = avecBrassin;
 
         TableRow.LayoutParams parametre = new TableRow.LayoutParams();
         parametre.setMargins(5, 5, 5, 5);
@@ -48,13 +51,13 @@ public class BoutonNoeudCuve extends Button implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (noeudActuel != null) {
-            fragmentChemin.setBtnEtatCuveAvecBrassinSelectionne(this);
+            fragmentChemin.setBtnNoeudCuveSelectionne(this);
         }
         else {
             if (noeudPrecedent == null) {
-                fragmentChemin.ajouterCuve(-1);
+                fragmentChemin.ajouterCheminDansCuve(-1, avecBrassin);
             } else {
-                fragmentChemin.ajouterCuve(noeudPrecedent.getId());
+                fragmentChemin.ajouterCheminDansCuve(noeudPrecedent.getId(), avecBrassin);
             }
         }
     }
