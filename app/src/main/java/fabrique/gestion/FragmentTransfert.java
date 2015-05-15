@@ -25,7 +25,6 @@ import fabrique.gestion.Objets.Fermenteur;
 import fabrique.gestion.Objets.Fut;
 import fabrique.gestion.Vue.VueBrassinSimple;
 import fabrique.gestion.Vue.VueCuveSimple;
-import fabrique.gestion.Vue.VueFermenteurSimple;
 import fabrique.gestion.Vue.VueFutSimple;
 
 public class FragmentTransfert extends FragmentAmeliore implements AdapterView.OnItemSelectedListener, View.OnClickListener{
@@ -60,7 +59,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
         listeTypeOrigineVide = true;
 
         listeTypeOrigine = (Spinner)view.findViewById(R.id.listeTypeOrigine);
-        ArrayAdapter<String> adapteurTypeOrigine= new ArrayAdapter<>(contexte, R.layout.spinner_style);
+        ArrayAdapter<String> adapteurTypeOrigine = new ArrayAdapter<>(contexte, R.layout.spinner_style);
         adapteurTypeOrigine.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         if(TableFermenteur.instance(contexte).recupererNumerosFermenteurAvecBrassin().size()!=0) {
             adapteurTypeOrigine.add("Fermenteur");
@@ -133,7 +132,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                     Cuve cuveDest = TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getSelectedItem()));
                     TableCuve.instance(contexte).modifier(cuveDest.getId(), cuveDest.getNumero(), cuveDest.getCapacite(), cuveDest.getIdEmplacement(), cuveDest.getDateLavageAcide(), 2, date, cuveDest.getCommentaireEtat(), idBrassinTransfere, true);
                 }
-                Toast.makeText(contexte, "Brassin transféré !", Toast.LENGTH_LONG).show();
+                Toast.makeText(contexte, "Brassin transféré !", Toast.LENGTH_SHORT).show();
 
                 //Mise a Jour du spinner du type d'origine
                 ArrayAdapter<String> adapteurTypeOrigine= new ArrayAdapter<>(contexte, R.layout.spinner_style);
@@ -179,7 +178,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                 //Fin MaJ type destination
             }
             else{
-                Toast.makeText(contexte, "Vous avez besoin d'un contenant d'origine et une destination pour transférer un brassin.", Toast.LENGTH_LONG).show();
+                Toast.makeText(contexte, "Vous avez besoin d'un contenant d'origine et une destination pour transférer un brassin.", Toast.LENGTH_SHORT).show();
             }
         }
     }

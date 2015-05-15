@@ -106,7 +106,7 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
 
             TableFut.instance(contexte).ajouter(numero, capacite, 1, date, -1, date, true);
 
-            Toast.makeText(contexte, "Fut ajouté !", Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, "Fut ajouté !", Toast.LENGTH_SHORT).show();
 
             TableFut tableFut = TableFut.instance(contexte);
             int numeroSuivant = 1;
@@ -117,7 +117,7 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
             }
             editNumero.setText("" + numeroSuivant);
         } else {
-            Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, erreur, Toast.LENGTH_SHORT).show();
         }
     }
 

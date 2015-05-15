@@ -50,6 +50,10 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
     private TableRow ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler;
 
+    //Chemin du brassin
+    private TableLayout tableauCheminBrassin;
+    private Button btnEtatPrecedent, btnEtatSuivant, btnTransfere;
+
     //Historique
     private LinearLayout tableauHistorique;
 
@@ -77,14 +81,15 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
         tableauHistorique = new TableLayout(getContext());
         ligne.addView(cadre(tableauHistorique, " Historique "));
 
-        if (cuve.getIdBrassin() != -1) {
-            TableLayout tableauCheminBrassin = new TableLayout(contexte);
-            addView(cadre(tableauCheminBrassin, " Chemin du brassin "));
-        }
-
         initialiser();
         afficher();
         afficherHistorique();
+
+        if ((cuve.getIdBrassin() != -1) && cuve.getActif()) {
+            tableauCheminBrassin = new TableLayout(contexte);
+            addView(cadre(tableauCheminBrassin, " Chemin du brassin "));
+            //afficherCheminBrassin();
+        }
 
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(getContext());
         layoutHorizontalScroll.addView(ligne);
@@ -329,7 +334,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
                 afficher();
             }
         } else {
-            Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), erreur, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -345,6 +350,8 @@ public class VueCuve extends TableLayout implements View.OnClickListener {
             tableauHistorique.addView(new LigneHistorique(getContext(), this, historiques.get(i)), margeTableau);
         }
     }
+
+
 
     @Override
     public void onClick(View v) {

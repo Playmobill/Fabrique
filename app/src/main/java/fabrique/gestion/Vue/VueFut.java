@@ -271,7 +271,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
             TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite, fut.getId_noeud(), fut.getDateEtatToLong(), fut.getId_brassin(), fut.getDateInspectionToLong(), editActif.isChecked());
             afficher();
         } else {
-            Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), erreur, Toast.LENGTH_SHORT).show();
         }
     }
 

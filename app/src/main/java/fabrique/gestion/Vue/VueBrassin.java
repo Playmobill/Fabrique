@@ -411,7 +411,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
                     densiteFinale);
             indexRecette = editRecette.getSelectedItemPosition();
         } else {
-            Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), erreur, Toast.LENGTH_SHORT).show();
         }
     }
 

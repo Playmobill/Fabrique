@@ -24,6 +24,9 @@ public class NoeudFermenteur extends Objet implements Comparable<NoeudFermenteur
     public long getId_noeudPrecedent() {
         return id_noeudPrecedent;
     }
+    public NoeudFermenteur getNoeudPrecedent(Context contexte) {
+        return TableCheminBrassinFermenteur.instance(contexte).recupererId(id_noeudPrecedent);
+    }
     public long getId_etat() {
         return id_etat;
     }

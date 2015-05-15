@@ -159,9 +159,9 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                 filewriter.write(TableCheminBrassinFut.instance(contexte).sauvegarde());
                 filewriter.write(TableCalendrier.instance(contexte).sauvegarde());
                 filewriter.close();
-            Toast.makeText(contexte, "Sauvegarde réussite dans le fichier : Gestion_" + annee + "a_" + mois + "m_" + jour + "j_" + heure + "h_" + minute + "m_" + seconde + "ms.bak", Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, "Sauvegarde réussite dans le fichier : Gestion_" + annee + "a_" + mois + "m_" + jour + "j_" + heure + "h_" + minute + "m_" + seconde + "ms.bak", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
-            Toast.makeText(contexte, "Erreur lors de la création du fichier de sauvegarde.", Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, "Erreur lors de la création du fichier de sauvegarde.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -900,9 +900,9 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                     eventType = analyseur.next();
                 }
             }
-            Toast.makeText(contexte, "Chargement du fichier : " + ligne.getFichier().getName() + " terminé.", Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, "Chargement du fichier : " + ligne.getFichier().getName() + " terminé.", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(contexte, "Problème avec le chargement du fichier. Le document ne peut pas être lu", Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, "Problème avec le chargement du fichier. Le document ne peut pas être lu", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }

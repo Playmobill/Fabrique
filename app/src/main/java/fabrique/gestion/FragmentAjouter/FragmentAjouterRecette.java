@@ -76,7 +76,7 @@ public class FragmentAjouterRecette extends FragmentAmeliore implements View.OnC
                 couleurAffichage.getCurrentTextColor(),
                 couleurAffichage.getDrawingCacheBackgroundColor(),
                 true);
-        Toast.makeText(contexte, "Recette ajouté !", Toast.LENGTH_LONG).show();
+        Toast.makeText(contexte, "Recette ajouté !", Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -142,7 +142,7 @@ public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClick
             if (brassin != null) {
                 navigation(brassin.getId());
             } else {
-                Toast.makeText(contexte, "Le brassin n'a pas été trouvé.", Toast.LENGTH_LONG).show();
+                Toast.makeText(contexte, "Le brassin n'a pas été trouvé.", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -129,6 +129,17 @@ public class TableCuve extends Controle{
         return listeCuve;
     }
 
+    public ArrayList<Cuve> recupererCuveSansBrassin() {
+        ArrayList<Cuve> listeCuve = new ArrayList<>();
+        ArrayList<Cuve> listeCuveActive = recupererCuvesActifs();
+        for (int i=0; i<listeCuveActive.size(); i++) {
+            if (listeCuveActive.get(i).getIdBrassin() == -1) {
+                listeCuve.add(listeCuveActive.get(i));
+            }
+        }
+        return listeCuve;
+    }
+
     public ArrayList<String> recupererNumerosCuveAvecBrassin() {
         ArrayList<String> listeCuve = new ArrayList<>();
         ArrayList<Cuve> listeCuveActive = recupererCuvesActifs();
