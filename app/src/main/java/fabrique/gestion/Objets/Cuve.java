@@ -4,8 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableCheminBrassinCuve;
 import fabrique.gestion.BDD.TableEmplacement;
-import fabrique.gestion.BDD.TableEtatCuve;
 
 public class Cuve extends Objet implements Comparable<Cuve> {
 
@@ -13,19 +13,19 @@ public class Cuve extends Objet implements Comparable<Cuve> {
     private int capacite;
     private long id_emplacement;
     private long dateLavageAcide;
-    private long id_etat;
+    private long id_noeud;
     private long dateEtat;
     private String commentaireEtat;
     private long id_brassin;
     private boolean actif;
 
-    public Cuve(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, String commentaireEtat, long id_brassin, boolean actif){
+    public Cuve(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_noeud, long dateEtat, String commentaireEtat, long id_brassin, boolean actif){
         super(id);
         this.numero = numero;
         this.capacite = capacite;
         this.id_emplacement = id_emplacement;
         this.dateLavageAcide = dateLavageAcide;
-        this.id_etat = id_etat;
+        this.id_noeud = id_noeud;
         this.dateEtat = dateEtat;
         this.commentaireEtat = commentaireEtat;
         this.id_brassin = id_brassin;
@@ -50,11 +50,11 @@ public class Cuve extends Objet implements Comparable<Cuve> {
     public String getDateLavageAcideToString() {
         return DateToString.dateToString(dateLavageAcide);
     }
-    public long getIdEtat() {
-        return id_etat;
+    public long getIdNoeud() {
+        return id_noeud;
     }
-    public EtatCuve getEtat(Context contexte) {
-        return TableEtatCuve.instance(contexte).recupererId(id_etat);
+    public NoeudCuve getNoeud(Context contexte) {
+        return TableCheminBrassinCuve.instance(contexte).recupererId(id_noeud);
     }
     public long getLongDateEtat() {
         return dateEtat;
@@ -97,9 +97,8 @@ public class Cuve extends Objet implements Comparable<Cuve> {
     public void setDateLavageAcide(long dateLavageAcide) {
         this.dateLavageAcide = dateLavageAcide;
     }
-    public void setEtat(long id_etat) {
-        this.id_etat = id_etat;
-        dateEtat = System.currentTimeMillis();
+    public void setNoeud(long id_noeud) {
+        this.id_noeud = id_noeud;
     }
     public void setCommentaireEtat(String commentaireEtat) {
         this.commentaireEtat = commentaireEtat;
@@ -133,7 +132,7 @@ public class Cuve extends Objet implements Comparable<Cuve> {
                     "<E:capacite>" + capacite + "</E:capacite>" +
                     "<E:id_emplacement>" + id_emplacement + "</E:id_emplacement>" +
                     "<E:dateLavageAcide>" + dateLavageAcide + "</E:dateLavageAcide>" +
-                    "<E:id_etat>" + id_etat + "</E:id_etat>" +
+                    "<E:id_noeud>" + id_noeud + "</E:id_noeud>" +
                     "<E:dateEtat>" + dateEtat + "</E:dateEtat>" +
                     "<E:commentaireEtat>" + commentaireEtat + "</E:commentaireEtat>" +
                     "<E:id_brassin>" + id_brassin + "</E:id_brassin>" +

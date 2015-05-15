@@ -34,20 +34,20 @@ public class TableCuve extends Controle{
         Collections.sort(cuves);
     }
 
-    public long ajouter(int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, String commentaireEtat, long id_brassin, boolean actif) {
+    public long ajouter(int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_noeud, long dateEtat, String commentaireEtat, long id_brassin, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("capacite", capacite);
         valeur.put("id_emplacement", id_emplacement);
         valeur.put("dateLavageAcide", dateLavageAcide);
-        valeur.put("id_etatCuve", id_etat);
+        valeur.put("id_noeudCuve", id_noeud);
         valeur.put("dateEtat", dateEtat);
         valeur.put("commentaireEtat", commentaireEtat);
         valeur.put("id_brassin", id_brassin);
         valeur.put("actif", actif);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            cuves.add(new Cuve(id, numero, capacite, id_emplacement, dateLavageAcide, id_etat, dateEtat, commentaireEtat, id_brassin, actif));
+            cuves.add(new Cuve(id, numero, capacite, id_emplacement, dateLavageAcide, id_noeud, dateEtat, commentaireEtat, id_brassin, actif));
             Collections.sort(cuves);
         }
         return id;
@@ -74,13 +74,13 @@ public class TableCuve extends Controle{
         return null;
     }
 
-    public void modifier(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, String commentaireEtat, long id_brassin, boolean actif){
+    public void modifier(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_noeud, long dateEtat, String commentaireEtat, long id_brassin, boolean actif){
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("capacite", capacite);
         valeur.put("id_emplacement", id_emplacement);
         valeur.put("dateLavageAcide", dateLavageAcide);
-        valeur.put("id_etatCuve", id_etat);
+        valeur.put("id_noeudCuve", id_noeud);
         valeur.put("dateEtat", dateEtat);
         valeur.put("commentaireEtat", commentaireEtat);
         valeur.put("id_brassin", id_brassin);
@@ -91,7 +91,7 @@ public class TableCuve extends Controle{
             cuve.setCapacite(capacite);
             cuve.setEmplacement(id_emplacement);
             cuve.setDateLavageAcide(dateLavageAcide);
-            cuve.setEtat(id_etat);
+            cuve.setNoeud(id_noeud);
             cuve.setCommentaireEtat(commentaireEtat);
             cuve.setBrassin(id_brassin);
             cuve.setActif(actif);

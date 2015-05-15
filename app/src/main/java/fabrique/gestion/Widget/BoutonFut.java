@@ -2,6 +2,7 @@ package fabrique.gestion.Widget;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -32,17 +33,26 @@ public class BoutonFut extends Button implements View.OnClickListener {
 
         setGravity(Gravity.CENTER);
 
+        String texteEtat = "Non utilisé";
+        int couleurTexteEtat = Color.BLACK;
+        int couleurFondEtat = Color.WHITE;
+        if ((fut.getNoeud(contexte) != null) && (fut.getNoeud(contexte).getEtat(contexte) != null)) {
+            texteEtat = fut.getNoeud(contexte).getEtat(contexte).getTexte();
+            couleurTexteEtat = fut.getNoeud(contexte).getEtat(contexte).getCouleurTexte();
+            couleurFondEtat = fut.getNoeud(contexte).getEtat(contexte).getCouleurFond();
+        }
+        
         StringBuilder texte = new StringBuilder();
         texte.append(fut.getNumero()).append("\n");
         texte.append(fut.getCapacite()).append("L").append("\n");
-        texte.append(fut.getEtat(contexte).getTexte()).append("\n");
+        texte.append(texteEtat).append("\n");
         if (fut.getBrassin(contexte) != null) {
             texte.append(fut.getBrassin(contexte).getRecette(contexte).getAcronyme()).append(" #").append(fut.getBrassin(contexte).getNumero());
             setTextColor(fut.getBrassin(contexte).getRecette(contexte).getCouleurTexte());
             setBackgroundColor(fut.getBrassin(contexte).getRecette(contexte).getCouleurFond());
         } else {
-            setTextColor(fut.getEtat(contexte).getCouleurTexte());
-            setBackgroundColor(fut.getEtat(contexte).getCouleurFond());
+            setTextColor(couleurTexteEtat);
+            setBackgroundColor(couleurFondEtat);
         }
         texte.append("\n").append(fut.getDateEtat());
 

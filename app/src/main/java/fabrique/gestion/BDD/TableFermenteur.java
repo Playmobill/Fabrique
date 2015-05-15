@@ -34,19 +34,19 @@ public class TableFermenteur extends Controle {
         Collections.sort(fermenteurs);
     }
 
-    public long ajouter(int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, long id_brassin, boolean actif) {
+    public long ajouter(int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_noeud, long dateEtat, long id_brassin, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("capacite", capacite);
         valeur.put("id_emplacement", id_emplacement);
         valeur.put("dateLavageAcide", dateLavageAcide);
-        valeur.put("id_etatFermenteur", id_etat);
+        valeur.put("id_noeudFermenteur", id_noeud);
         valeur.put("dateEtat", dateEtat);
         valeur.put("id_brassin", id_brassin);
         valeur.put("actif", actif);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            fermenteurs.add(new Fermenteur(id, numero, capacite, id_emplacement, dateLavageAcide, id_etat, dateEtat, id_brassin, actif));
+            fermenteurs.add(new Fermenteur(id, numero, capacite, id_emplacement, dateLavageAcide, id_noeud, dateEtat, id_brassin, actif));
             Collections.sort(fermenteurs);
         }
         return id;
@@ -73,13 +73,13 @@ public class TableFermenteur extends Controle {
         return null;
     }
 
-    public void modifier(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_etat, long dateEtat, long id_brassin, boolean actif){
+    public void modifier(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_noeud, long dateEtat, long id_brassin, boolean actif){
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("capacite", capacite);
         valeur.put("id_emplacement", id_emplacement);
         valeur.put("dateLavageAcide", dateLavageAcide);
-        valeur.put("id_etatFermenteur", id_etat);
+        valeur.put("id_noeudFermenteur", id_noeud);
         valeur.put("dateEtat", dateEtat);
         valeur.put("id_brassin", id_brassin);
         valeur.put("actif", actif);
@@ -89,7 +89,7 @@ public class TableFermenteur extends Controle {
             fermenteur.setCapacite(capacite);
             fermenteur.setEmplacement(id_emplacement);
             fermenteur.setDateLavageAcide(dateLavageAcide);
-            fermenteur.setEtat(id_etat);
+            fermenteur.setNoeud(id_noeud);
             fermenteur.setDateEtat(dateEtat);
             fermenteur.setBrassin(id_brassin);
             fermenteur.setActif(actif);

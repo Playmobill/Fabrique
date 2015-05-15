@@ -35,18 +35,18 @@ public class TableFut extends Controle {
         Collections.sort(futs);
     }
 
-    public long ajouter(int numero, int capacite, long id_etat, long dateEtat, long id_brassin, long dateInspection, boolean actif) {
+    public long ajouter(int numero, int capacite, long id_noeud, long dateEtat, long id_brassin, long dateInspection, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("capacite", capacite);
-        valeur.put("id_etatFut", id_etat);
+        valeur.put("id_noeudFut", id_noeud);
         valeur.put("dateEtat", dateEtat);
         valeur.put("id_brassin", id_brassin);
         valeur.put("dateInspection", dateInspection);
         valeur.put("actif", actif);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            futs.add(new Fut(id, numero, capacite, id_etat, dateEtat, id_brassin, dateInspection, actif));
+            futs.add(new Fut(id, numero, capacite, id_noeud, dateEtat, id_brassin, dateInspection, actif));
             Collections.sort(futs);
         }
         return id;
@@ -73,11 +73,11 @@ public class TableFut extends Controle {
         return null;
     }
 
-    public void modifier(long id, int numero, int capacite, long id_etat, long dateEtat, long id_brassin, long dateInspection, boolean actif){
+    public void modifier(long id, int numero, int capacite, long id_noeud, long dateEtat, long id_brassin, long dateInspection, boolean actif){
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
         valeur.put("capacite", capacite);
-        valeur.put("id_etatFut", id_etat);
+        valeur.put("id_noeudFut", id_noeud);
         valeur.put("dateEtat", dateEtat);
         valeur.put("id_brassin", id_brassin);
         valeur.put("dateInspection", dateInspection);
@@ -86,7 +86,7 @@ public class TableFut extends Controle {
             Fut fut = recupererId(id);
             fut.setNumero(numero);
             fut.setCapacite(capacite);
-            fut.setEtat(id_etat);
+            fut.setNoeud(id_noeud);
             fut.setDateEtat(dateEtat);
             fut.setBrassin(id_brassin);
             fut.setDateInspection(dateInspection);
@@ -289,10 +289,10 @@ public class TableFut extends Controle {
 
         ArrayList<Fut> cloneFuts = recupererFutActifs();
         while(cloneFuts.size()!=0) {
-            long id = cloneFuts.get(0).getId_etat();
+            long id = cloneFuts.get(0).getId_noeud();
             ArrayList<Fut> listeFutDeMemeEtat = new ArrayList<>();
             for(int i=0; i<cloneFuts.size() ; i++) {
-                if (cloneFuts.get(i).getId_etat() == id) {
+                if (cloneFuts.get(i).getId_noeud() == id) {
                     listeFutDeMemeEtat.add(cloneFuts.get(i));
                     cloneFuts.remove(i);
                     i--;
@@ -310,10 +310,10 @@ public class TableFut extends Controle {
         ArrayList<Fut> pivot = listeListe.get(petitIndex+(grandIndex-petitIndex)/2);
         // Divide into two arrays
         while (i <= j) {
-            while (listeListe.get(i).get(0).getId_etat() < pivot.get(0).getId_etat()) {
+            while (listeListe.get(i).get(0).getId_noeud() < pivot.get(0).getId_noeud()) {
                 i++;
             }
-            while (listeListe.get(j).get(0).getId_etat() > pivot.get(0).getId_etat()) {
+            while (listeListe.get(j).get(0).getId_noeud() > pivot.get(0).getId_noeud()) {
                 j--;
             }
             if (i <= j) {

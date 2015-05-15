@@ -4,23 +4,23 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import fabrique.gestion.BDD.TableBrassin;
-import fabrique.gestion.BDD.TableEtatFut;
+import fabrique.gestion.BDD.TableCheminBrassinFut;
 
 public class Fut extends Objet implements Comparable<Fut> {
 
     private int numero;
     private int capacite;
-    private long id_etat;
+    private long id_noeud;
     private long dateEtat;
     private long id_brassin;
     private long dateInspection;
     private boolean actif;
 
-    public Fut(long id, int numero, int capacite, long id_etat, long dateEtat, long id_brassin, long dateInspection, boolean actif) {
+    public Fut(long id, int numero, int capacite, long id_noeud, long dateEtat, long id_brassin, long dateInspection, boolean actif) {
         super(id);
         this.numero = numero;
         this.capacite = capacite;
-        this.id_etat = id_etat;
+        this.id_noeud = id_noeud;
         this.dateEtat = dateEtat;
         this.id_brassin = id_brassin;
         this.dateInspection = dateInspection;
@@ -33,11 +33,11 @@ public class Fut extends Objet implements Comparable<Fut> {
     public int getCapacite() {
         return capacite;
     }
-    public long getId_etat() {
-        return id_etat;
+    public long getId_noeud() {
+        return id_noeud;
     }
-    public EtatFut getEtat(Context contexte) {
-        return TableEtatFut.instance(contexte).recupererId(id_etat);
+    public NoeudFut getNoeud(Context contexte) {
+        return TableCheminBrassinFut.instance(contexte).recupererId(id_noeud);
     }
     public String getDateEtat() {
         return DateToString.dateToString(dateEtat);
@@ -67,8 +67,8 @@ public class Fut extends Objet implements Comparable<Fut> {
     public void setCapacite(int capacite) {
         this.capacite = capacite;
     }
-    public void setEtat(long id_etat) {
-        this.id_etat = id_etat;
+    public void setNoeud(long id_noeud) {
+        this.id_noeud = id_noeud;
     }
     public void setDateEtat(long dateEtat) {
         this.dateEtat = dateEtat;
@@ -103,7 +103,7 @@ public class Fut extends Objet implements Comparable<Fut> {
         return ("<O:Fut>" +
                     "<E:numero>" + numero + "</E:numero>" +
                     "<E:capacite>" + capacite + "</E:capacite>" +
-                    "<E:id_etat>" + id_etat + "</E:id_etat>" +
+                    "<E:id_noeud>" + id_noeud + "</E:id_noeud>" +
                     "<E:dateEtat>" + dateEtat + "</E:dateEtat>" +
                     "<E:id_brassin>" + id_brassin + "</E:id_brassin>" +
                     "<E:dateInspection>" + dateInspection + "</E:dateInspection>" +

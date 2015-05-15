@@ -97,9 +97,14 @@ public class VueFermenteurSimple extends LinearLayout {
             TextView emplacement = new TextView(getContext());
             emplacement.setText("Emplacement : " + fermenteur.getEmplacement(getContext()).getTexte());
 
+        String texteEtat = "Non utilisé";
+        if ((fermenteur.getNoeud(getContext()) != null) && (fermenteur.getNoeud(getContext()).getEtat(getContext()) != null)) {
+            texteEtat = fermenteur.getNoeud(getContext()).getEtat(getContext()).getTexte();
+        }
+
         TableRow ligneEtatDate = new TableRow(getContext());
             TextView etat = new TextView(getContext());
-            etat.setText("État : " + fermenteur.getEtat(getContext()).getTexte());
+            etat.setText("État : " + texteEtat);
 
             TextView dateEtat = new TextView(getContext());
             dateEtat.setText("Depuis le : " + fermenteur.getDateEtat());

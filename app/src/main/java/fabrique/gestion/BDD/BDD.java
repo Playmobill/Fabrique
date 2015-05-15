@@ -71,7 +71,7 @@ public class BDD extends SQLiteOpenHelper {
                                                 "capacite INTEGER NOT NULL," +
                                                 "id_emplacement INTEGER NOT NULL," +
                                                 "dateLavageAcide INTEGER NOT NULL," +
-                                                "id_etatFermenteur INTEGER NOT NULL," +
+                                                "id_noeudFermenteur INTEGER NOT NULL," +
                                                 "dateEtat INTEGER NOT NULL," +
                                                 "id_brassin INTEGER," +
                                                 "actif INTEGER NOT NULL)";
@@ -82,7 +82,7 @@ public class BDD extends SQLiteOpenHelper {
                                                 "capacite INTEGER NOT NULL, " +
                                                 "id_emplacement INTEGER NOT NULL, " +
                                                 "dateLavageAcide INTEGER NOT NULL, " +
-                                                "id_etatCuve INTEGER NOT NULL, " +
+                                                "id_noeudCuve INTEGER NOT NULL, " +
                                                 "dateEtat INTEGER NOT NULL, " +
                                                 "commentaireEtat TEXT, " +
                                                 "id_brassin INTEGER," +
@@ -92,7 +92,7 @@ public class BDD extends SQLiteOpenHelper {
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                 "numero INTEGER NOT NULL, " +
                                                 "capacite INTEGER NOT NULL, " +
-                                                "id_etatFut INTEGER NOT NULL, " +
+                                                "id_noeudFut INTEGER NOT NULL, " +
                                                 "dateEtat INTEGER NOT NULL, " +
                                                 "id_brassin INTEGER, " +
                                                 "dateInspection INTEGER NOT NULL," +

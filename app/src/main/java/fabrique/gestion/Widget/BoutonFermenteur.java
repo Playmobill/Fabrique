@@ -2,6 +2,7 @@ package fabrique.gestion.Widget;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -33,18 +34,27 @@ public class BoutonFermenteur extends Button implements View.OnClickListener {
 
         setGravity(Gravity.CENTER);
 
+        String texteEtat = "Non utilisé";
+        int couleurTexteEtat = Color.BLACK;
+        int couleurFondEtat = Color.WHITE;
+        if ((fermenteur.getNoeud(contexte) != null) && (fermenteur.getNoeud(contexte).getEtat(contexte) != null)) {
+            texteEtat = fermenteur.getNoeud(contexte).getEtat(contexte).getTexte();
+            couleurTexteEtat = fermenteur.getNoeud(contexte).getEtat(contexte).getCouleurTexte();
+            couleurFondEtat = fermenteur.getNoeud(contexte).getEtat(contexte).getCouleurFond();
+        }
+
         StringBuilder texte = new StringBuilder();
         texte.append("F").append(fermenteur.getNumero()).append("\n");
         texte.append(fermenteur.getCapacite()).append("L").append("\n");
         texte.append(fermenteur.getEmplacement(contexte).getTexte()).append("\n");
-        texte.append(fermenteur.getEtat(contexte).getTexte()).append("\n");
+        texte.append(texteEtat).append("\n");
         if (fermenteur.getBrassin(contexte) != null) {
             texte.append(fermenteur.getBrassin(contexte).getRecette(contexte).getAcronyme()).append(" #").append(fermenteur.getBrassin(contexte).getNumero());
             setTextColor(fermenteur.getBrassin(contexte).getRecette(contexte).getCouleurTexte());
             setBackgroundColor(fermenteur.getBrassin(contexte).getRecette(contexte).getCouleurFond());
         } else {
-            setTextColor(fermenteur.getEtat(contexte).getCouleurTexte());
-            setBackgroundColor(fermenteur.getEtat(contexte).getCouleurFond());
+            setTextColor(couleurTexteEtat);
+            setBackgroundColor(couleurFondEtat);
         }
         texte.append("\n").append(fermenteur.getDateEtat());
 

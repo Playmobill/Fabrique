@@ -95,9 +95,14 @@ public class VueFutSimple extends LinearLayout {
             TextView capacite = new TextView(getContext());
             capacite.setText("Capacité : " + fut.getCapacite());
 
+        String texteEtat = "Non utilisé";
+        if ((fut.getNoeud(getContext()) != null) && (fut.getNoeud(getContext()).getEtat(getContext()) != null)) {
+            texteEtat = fut.getNoeud(getContext()).getEtat(getContext()).getTexte();
+        }
+
         TableRow ligneEtatDate = new TableRow(getContext());
             TextView etat = new TextView(getContext());
-            etat.setText("État : " + fut.getEtat(getContext()).getTexte());
+            etat.setText("État : " + texteEtat);
 
             TextView dateEtat = new TextView(getContext());
             dateEtat.setText("Depuis le : " + fut.getDateEtat());

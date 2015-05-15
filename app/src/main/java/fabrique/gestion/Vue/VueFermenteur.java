@@ -23,16 +23,13 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableEmplacement;
-import fabrique.gestion.BDD.TableEtatFermenteur;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Objets.Emplacement;
-import fabrique.gestion.Objets.EtatFermenteur;
 import fabrique.gestion.Objets.Fermenteur;
 import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.Objets.ListeHistorique;
@@ -53,15 +50,8 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     private TableRow ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler;
 
-    //Changer Brassin
-    private LinearLayout tableauBrassin;
-    private Spinner listeBrassin;
-    private Button btnChanger;
-
-    //Changer Etat
-    private TableLayout tableauEtat;
-    private ArrayList<EtatFermenteur> listeEtat;
-    private ArrayList<Button> btnsEtat;
+    //Chemin du brassin
+    private TableLayout tableauCheminBrassin;
 
     //Historique
     private LinearLayout tableauHistorique;
@@ -90,6 +80,11 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         tableauHistorique = new TableLayout(getContext());
         ligne.addView(cadre(tableauHistorique, " Historique "));
 
+        if (fermenteur.getIdBrassin() != -1) {
+            tableauCheminBrassin = new TableLayout(contexte);
+            addView(cadre(tableauCheminBrassin, " Chemin du brassin "));
+        }
+
         initialiser();
         afficher();
         afficherHistorique();
@@ -98,18 +93,6 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         layoutHorizontalScroll.addView(ligne);
         addView(layoutHorizontalScroll);
 
-        //Interface pour tester les états et les brassins
-        TableRow ligne2 = new TableRow(contexte);
-
-        tableauBrassin = new LinearLayout(contexte);
-        ligne2.addView(cadre(tableauBrassin, " Changer brassin "));
-        changerBrassin();
-
-        tableauEtat = new TableLayout(contexte);
-        ligne2.addView(cadre(tableauEtat, " Changer Etat "));
-        changerEtat();
-
-        addView(ligne2);
     }
 
     private RelativeLayout cadre(View view, String texteTitre) {
@@ -221,10 +204,15 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         tableauDescription.addView(ligneCapaciteEmplacement);
 
 
+        String texteEtat = "Non utilisé";
+        if ((fermenteur.getNoeud(getContext()) != null) && (fermenteur.getNoeud(getContext()).getEtat(getContext()) != null)) {
+            texteEtat = fermenteur.getNoeud(getContext()).getEtat(getContext()).getTexte();
+        }
+
             TableRow ligneEtatDate = new TableRow(getContext());
                 TextView etat = new TextView(getContext());
                 etat.setGravity(Gravity.CENTER_VERTICAL);
-                etat.setText("État : " + fermenteur.getEtat(getContext()).getTexte());
+                etat.setText("État : " + texteEtat);
             ligneEtatDate.addView(etat, parametre);
                 TextView dateEtat = new TextView(getContext());
                 dateEtat.setGravity(Gravity.CENTER_VERTICAL);
@@ -341,69 +329,12 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 TableFermenteur.instance(getContext()).supprimer(fermenteur.getId());
                 parent.invalidate();
             } else {
-                TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int) editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdEtat(), fermenteur.getDateEtatToLong(), fermenteur.getIdBrassin(), editActif.isChecked());
+                TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int) editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdNoeud(), fermenteur.getDateEtatToLong(), fermenteur.getIdBrassin(), editActif.isChecked());
                 indexEmplacement = editEmplacement.getSelectedItemPosition();
                 afficher();
             }
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void changerBrassin() {
-        tableauBrassin.removeAllViews();
-
-        listeBrassin = new Spinner(getContext());
-        TableBrassin tableBrassin = TableBrassin.instance(getContext());
-        ArrayList<String> brassins = new ArrayList<>();
-        for (int i=0; i<tableBrassin.tailleListe() ; i++) {
-            brassins.add("" + tableBrassin.recupererIndex(i).getNumero());
-        }
-        ArrayAdapter<String> adapteurBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style, brassins);
-        adapteurBrassin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        listeBrassin.setAdapter(adapteurBrassin);
-
-        btnChanger = new Button(getContext());
-        btnChanger.setText("Ajouter");
-        btnChanger.setOnClickListener(this);
-
-        tableauBrassin.addView(listeBrassin);
-        tableauBrassin.addView(btnChanger);
-    }
-
-    private void changer() {
-        TableFermenteur.instance(getContext()).modifier(fermenteur.getId(),
-                fermenteur.getNumero(),
-                fermenteur.getCapacite(),
-                fermenteur.getIdEmplacement(),
-                fermenteur.getDateLavageAcideToLong(),
-                fermenteur.getIdEtat(),
-                fermenteur.getDateEtatToLong(),
-                TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId(),
-                true);
-    }
-
-    private void changerEtat() {
-        tableauEtat.removeAllViews();
-
-        listeEtat = TableEtatFermenteur.instance(getContext()).recupererListeEtatActifs();
-
-        btnsEtat = new ArrayList<>();
-        TableRow ligne = new TableRow(getContext());
-        int i;
-        for (i=0; i<listeEtat.size() ; i++) {
-            Button btnEtat = new Button(getContext());
-            btnEtat.setText(listeEtat.get(i).getTexte());
-            btnEtat.setOnClickListener((this));
-            btnsEtat.add(btnEtat);
-            ligne.addView(btnEtat);
-            if (i%3 == 2) {
-                tableauEtat.addView(ligne);
-                ligne = new TableRow(getContext());
-            }
-        }
-        if ((i-1)%3 != 2) {
-            tableauEtat.addView(ligne);
         }
     }
 
@@ -431,35 +362,9 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         else if (v.equals(btnAnnuler)) {
             afficher();
         }
-        else if (v.equals(btnChanger)) {
-            changer();
-        }
         else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), fermenteur.getId(), -1, -1, -1);
             afficherHistorique();
-        }
-        else {
-            boolean etat = false;
-            for (int i=0; (i<btnsEtat.size()) && !etat ; i++) {
-                if (v.equals(btnsEtat.get(i))) {
-                    etat = true;
-                    TableFermenteur.instance(getContext()).modifier(fermenteur.getId(),
-                            fermenteur.getNumero(),
-                            fermenteur.getCapacite(),
-                            fermenteur.getIdEmplacement(),
-                            fermenteur.getDateLavageAcideToLong(),
-                            listeEtat.get(i).getId(),
-                            System.currentTimeMillis(),
-                            fermenteur.getIdBrassin(),
-                            true);
-                    String texte = listeEtat.get(i).getHistorique();
-                    if ((texte != null) && (!texte.equals(""))) {
-                        TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, fermenteur.getId(), -1, fermenteur.getIdBrassin());
-                        afficherHistorique();
-                    }
-                    afficher();
-                }
-            }
         }
     }
 

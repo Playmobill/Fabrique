@@ -23,13 +23,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import fabrique.gestion.BDD.TableBrassin;
-import fabrique.gestion.BDD.TableEtatFut;
 import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
-import fabrique.gestion.Objets.EtatFut;
 import fabrique.gestion.Objets.Fut;
 import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.Objets.ListeHistorique;
@@ -45,16 +42,6 @@ public class VueFut extends TableLayout implements View.OnClickListener {
     private CheckBox editActif;
     private TableRow ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler;
-
-    //Changer Brassin
-    private LinearLayout tableauBrassin;
-    private Spinner listeBrassin;
-    private Button btnChanger;
-
-    //Changer Etat
-    private TableLayout tableauEtat;
-    private ArrayList<EtatFut> listeEtat;
-    private ArrayList<Button> btnsEtat;
 
     //Historique
     private TableLayout tableauHistorique;
@@ -89,19 +76,6 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(getContext());
         layoutHorizontalScroll.addView(ligne);
         addView(layoutHorizontalScroll);
-
-        //Interface pour tester les états et les brassins
-        TableRow ligne2 = new TableRow(contexte);
-
-        tableauBrassin = new LinearLayout(contexte);
-        ligne2.addView(cadre(tableauBrassin, " Changer brassin "));
-        changerBrassin();
-
-        tableauEtat = new TableLayout(contexte);
-        ligne2.addView(cadre(tableauEtat, " Changer Etat "));
-        changerEtat();
-
-        addView(ligne2);
     }
 
     private RelativeLayout cadre(View view, String texteTitre) {
@@ -174,9 +148,14 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         editCapacite.setInputType(InputType.TYPE_CLASS_NUMBER);
         editCapacite.setEnabled(false);
 
+        String texteEtat = "Non utilisé";
+        if ((fut.getNoeud(getContext()) != null) && (fut.getNoeud(getContext()).getEtat(getContext()) != null)) {
+            texteEtat = fut.getNoeud(getContext()).getEtat(getContext()).getTexte();
+        }
+        
         TableRow ligneEtatDate = new TableRow(getContext());
         TextView etat = new TextView(getContext());
-        etat.setText("État : " + fut.getEtat(getContext()).getTexte());
+        etat.setText("État : " + texteEtat);
 
         TextView dateEtat = new TextView(getContext());
         dateEtat.setText("Depuis le : " + fut.getDateEtat());
@@ -289,55 +268,10 @@ public class VueFut extends TableLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite,fut.getId_etat(), fut.getDateEtatToLong(), fut.getId_brassin(), fut.getDateInspectionToLong(), editActif.isChecked());
+            TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite, fut.getId_noeud(), fut.getDateEtatToLong(), fut.getId_brassin(), fut.getDateInspectionToLong(), editActif.isChecked());
             afficher();
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void changerBrassin() {
-        tableauBrassin.removeAllViews();
-
-        TableBrassin tableBrassin = TableBrassin.instance(getContext());
-        ArrayList<String> listeNumeroBrassin = new ArrayList<>();
-        for (int i=0; i<tableBrassin.tailleListe() ; i++) {
-            listeNumeroBrassin.add("" + tableBrassin.recupererIndex(i).getNumero());
-        }
-        listeBrassin = new Spinner(getContext());
-            ArrayAdapter<String> adapteurBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style, listeNumeroBrassin);
-            adapteurBrassin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        listeBrassin.setAdapter(adapteurBrassin);
-
-        btnChanger = new Button(getContext());
-        btnChanger.setText("Ajouter");
-        btnChanger.setOnClickListener(this);
-
-        tableauBrassin.addView(listeBrassin);
-        tableauBrassin.addView(btnChanger);
-    }
-
-    private void changerEtat() {
-        tableauEtat.removeAllViews();
-
-        listeEtat = TableEtatFut.instance(getContext()).recupererListeEtatActifs();
-
-        btnsEtat = new ArrayList<>();
-        TableRow ligne = new TableRow(getContext());
-        int i;
-        for (i=0; i<listeEtat.size() ; i++) {
-            Button btnEtat = new Button(getContext());
-            btnEtat.setText(listeEtat.get(i).getTexte());
-            btnEtat.setOnClickListener((this));
-            btnsEtat.add(btnEtat);
-            ligne.addView(btnEtat);
-            if (i%3 == 2) {
-                tableauEtat.addView(ligne);
-                ligne = new TableRow(getContext());
-            }
-        }
-        if ((i-1)%3 != 2) {
-            tableauEtat.addView(ligne);
         }
     }
 
@@ -361,37 +295,9 @@ public class VueFut extends TableLayout implements View.OnClickListener {
             valider();
         } else if (v.equals(btnAnnuler)) {
             afficher();
-        } else if (v.equals(btnChanger)) {
-            TableFut.instance(getContext()).modifier(fut.getId(),
-                    fut.getNumero(),
-                    fut.getCapacite(),
-                    fut.getId_etat(),
-                    fut.getDateEtatToLong(),
-                    TableBrassin.instance(getContext()).recupererIndex(listeBrassin.getSelectedItemPosition()).getId(),
-                    fut.getDateInspectionToLong(),
-                    fut.getActif());
         } else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, fut.getId(), -1);
             afficherHistorique();
-        } else {
-            for (int i=0; i<btnsEtat.size() ; i++) {
-                if (v.equals(btnsEtat.get(i))) {
-                    TableFut.instance(getContext()).modifier(fut.getId(),
-                            fut.getNumero(),
-                            fut.getCapacite(),
-                            listeEtat.get(i).getId(),
-                            System.currentTimeMillis(),
-                            fut.getId_brassin(),
-                            fut.getDateInspectionToLong(),
-                            fut.getActif());
-                    String texte = listeEtat.get(i).getHistorique();
-                    if ((texte != null) && (!texte.equals(""))) {
-                        TableHistorique.instance(getContext()).ajouter(texte, System.currentTimeMillis(), -1, -1, fut.getId(), fut.getId_brassin());
-                        afficherHistorique();
-                    }
-                    afficher();
-                }
-            }
         }
     }
 

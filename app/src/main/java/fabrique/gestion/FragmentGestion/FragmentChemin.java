@@ -160,56 +160,55 @@ public class FragmentChemin extends FragmentAmeliore implements View.OnClickList
     private TableLayout cheminDansLeFermenteur() {
         TableLayout tableau = new TableLayout(contexte);
 
-            //Détermination de l'état avec brassin suivant
-            NoeudFermenteur noeudPrecedent = null;
-            NoeudFermenteur noeudActuel = TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud();
+                //Détermination de l'état avec brassin suivant
+                NoeudFermenteur noeudPrecedent = null;
+                NoeudFermenteur noeudActuel = TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud();
+                while(noeudActuel != null) {
+                    //ligneEtatAvecBrassin : Ligne vertical qui contiendra 1 état avec brassin et des états sans brassin séparés par une flêche
+                    TableRow ligneEtatAvecBrassin = new TableRow(contexte);
+                    ligneEtatAvecBrassin.setGravity(Gravity.CENTER);
+                    //Ajout de l'état avec brassin
+                    ligneEtatAvecBrassin.addView(new BoutonNoeudFermenteur(contexte, this, noeudPrecedent, noeudActuel, true));
 
-            while(noeudActuel != null) {
-                //ligneEtatAvecBrassin : Ligne vertical qui contiendra 1 état avec brassin et des états sans brassin séparés par une flêche
-                TableRow ligneEtatAvecBrassin = new TableRow(contexte);
-                ligneEtatAvecBrassin.setGravity(Gravity.CENTER);
-                //Ajout de l'état avec brassin
-                ligneEtatAvecBrassin.addView(new BoutonNoeudFermenteur(contexte, this, noeudPrecedent, noeudActuel, true));
-
-                //Détermination de l'état sans brassin suivant
-                NoeudFermenteur noeudPrecedentSansBrassin = noeudActuel;
-                NoeudFermenteur noeudSuivantSansBrassin = noeudActuel.getNoeudSansBrassin(contexte);
-                //Tant qu'il y a des états sans brassin on continu de les ajouter
-                while(noeudSuivantSansBrassin != null) {
+                    //Détermination de l'état sans brassin suivant
+                    NoeudFermenteur noeudPrecedentSansBrassin = noeudActuel;
+                    NoeudFermenteur noeudSuivantSansBrassin = noeudActuel.getNoeudSansBrassin(contexte);
+                    //Tant qu'il y a des états sans brassin on continu de les ajouter
+                    while(noeudSuivantSansBrassin != null) {
+                        //Ajout de la flêche directrice vers la droite
+                            ImageView imageDroite = new ImageView(contexte);
+                            imageDroite.setImageResource(R.drawable.fleche_droite);
+                            imageDroite.setMaxWidth(50);
+                            imageDroite.setMaxHeight(50);
+                        ligneEtatAvecBrassin.addView(imageDroite);
+                        //Ajout de l'état sans brassin
+                        ligneEtatAvecBrassin.addView(new BoutonNoeudFermenteur(contexte, this, noeudPrecedentSansBrassin, noeudSuivantSansBrassin, false));
+                        //Détermination de l'état sans brassin suivant
+                        noeudPrecedentSansBrassin = noeudSuivantSansBrassin;
+                        noeudSuivantSansBrassin = noeudSuivantSansBrassin.getNoeudSansBrassin(contexte);
+                    }
                     //Ajout de la flêche directrice vers la droite
                         ImageView imageDroite = new ImageView(contexte);
                         imageDroite.setImageResource(R.drawable.fleche_droite);
                         imageDroite.setMaxWidth(50);
                         imageDroite.setMaxHeight(50);
                     ligneEtatAvecBrassin.addView(imageDroite);
-                    //Ajout de l'état sans brassin
-                    ligneEtatAvecBrassin.addView(new BoutonNoeudFermenteur(contexte, this, noeudPrecedentSansBrassin, noeudSuivantSansBrassin, false));
-                    //Détermination de l'état sans brassin suivant
-                    noeudPrecedentSansBrassin = noeudSuivantSansBrassin;
-                    noeudSuivantSansBrassin = noeudSuivantSansBrassin.getNoeudSansBrassin(contexte);
-                }
-                //Ajout de la flêche directrice vers la droite
-                    ImageView imageDroite = new ImageView(contexte);
-                    imageDroite.setImageResource(R.drawable.fleche_droite);
-                    imageDroite.setMaxWidth(50);
-                    imageDroite.setMaxHeight(50);
-                ligneEtatAvecBrassin.addView(imageDroite);
-                //Ajout d'un état sans brassin vide pour accueillir un prochain état sans brassin
-                ligneEtatAvecBrassin.addView(new BoutonNoeudFermenteur(contexte, this, noeudPrecedentSansBrassin, null, false));
-            tableau.addView(ligneEtatAvecBrassin);
+                    //Ajout d'un état sans brassin vide pour accueillir un prochain état sans brassin
+                    ligneEtatAvecBrassin.addView(new BoutonNoeudFermenteur(contexte, this, noeudPrecedentSansBrassin, null, false));
+                tableau.addView(ligneEtatAvecBrassin);
 
-                //Ajout d'une ligne pour afficher l'image de la flêche directrice vers le bas
-                TableRow ligneImage = new TableRow(contexte);
-                    ImageView imageBas = new ImageView(contexte);
-                    imageBas.setImageResource(R.drawable.fleche_bas);
-                    imageBas.setMaxWidth(50);
-                    imageBas.setMaxHeight(50);
-                ligneImage.addView(imageBas);
-            tableau.addView(ligneImage);
+                    //Ajout d'une ligne pour afficher l'image de la flêche directrice vers le bas
+                    TableRow ligneImage = new TableRow(contexte);
+                        ImageView imageBas = new ImageView(contexte);
+                        imageBas.setImageResource(R.drawable.fleche_bas);
+                        imageBas.setMaxWidth(50);
+                        imageBas.setMaxHeight(50);
+                    ligneImage.addView(imageBas);
+                tableau.addView(ligneImage);
 
-            //Détermination de l'état avec brassin suivant
-            noeudPrecedent = noeudActuel;
-            noeudActuel = noeudActuel.getNoeudAvecBrassin(contexte);
+                //Détermination de l'état avec brassin suivant
+                noeudPrecedent = noeudActuel;
+                noeudActuel = noeudActuel.getNoeudAvecBrassin(contexte);
             }
             TableRow ligneAjouterEtatAvecBrassin = new TableRow(contexte);
 

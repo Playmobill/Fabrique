@@ -2,6 +2,7 @@ package fabrique.gestion.Widget;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -33,18 +34,27 @@ public class BoutonCuve extends Button implements View.OnClickListener {
 
         setGravity(Gravity.CENTER);
 
+        String texteEtat = "Non utilisé";
+        int couleurTexteEtat = Color.BLACK;
+        int couleurFondEtat = Color.WHITE;
+        if ((cuve.getNoeud(contexte) != null) && (cuve.getNoeud(contexte).getEtat(contexte) != null)) {
+            texteEtat = cuve.getNoeud(contexte).getEtat(contexte).getTexte();
+            couleurTexteEtat = cuve.getNoeud(contexte).getEtat(contexte).getCouleurTexte();
+            couleurFondEtat = cuve.getNoeud(contexte).getEtat(contexte).getCouleurFond();
+        }
+        
         StringBuilder texte = new StringBuilder();
         texte.append("C").append(cuve.getNumero()).append("\n");
         texte.append(cuve.getCapacite()).append("L").append("\n");
         texte.append(cuve.getEmplacement(contexte).getTexte()).append("\n");
-        texte.append(cuve.getEtat(contexte).getTexte()).append("\n");
+        texte.append(texteEtat).append("\n");
         if (cuve.getBrassin(contexte) != null) {
             texte.append(cuve.getBrassin(contexte).getRecette(contexte).getAcronyme()).append(" #").append(cuve.getBrassin(contexte).getNumero());
             setTextColor(cuve.getBrassin(contexte).getRecette(contexte).getCouleurTexte());
             setBackgroundColor(cuve.getBrassin(contexte).getRecette(contexte).getCouleurFond());
         } else {
-            setTextColor(cuve.getEtat(contexte).getCouleurTexte());
-            setBackgroundColor(cuve.getEtat(contexte).getCouleurFond());
+            setTextColor(couleurTexteEtat);
+            setBackgroundColor(couleurFondEtat);
         }
         texte.append("\n").append(cuve.getDateEtat());
 

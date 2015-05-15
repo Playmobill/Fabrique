@@ -98,9 +98,14 @@ public class VueCuveSimple extends LinearLayout {
             TextView emplacement = new TextView(getContext());
             emplacement.setText("Emplacement : " + cuve.getEmplacement(getContext()).getTexte());
 
+        String texteEtat = "Non utilisé";
+        if ((cuve.getNoeud(getContext()) != null) && (cuve.getNoeud(getContext()).getEtat(getContext()) != null)) {
+            texteEtat = cuve.getNoeud(getContext()).getEtat(getContext()).getTexte();
+        }
+
         TableRow ligneEtatDate = new TableRow(getContext());
             TextView etat = new TextView(getContext());
-            etat.setText("État : " + cuve.getEtat(getContext()).getTexte());
+            etat.setText("État : " + texteEtat);
 
             TextView dateEtat = new TextView(getContext());
             dateEtat.setText("Depuis le : " + cuve.getDateEtat());

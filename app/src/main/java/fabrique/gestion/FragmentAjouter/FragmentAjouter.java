@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import fabrique.gestion.ActivityAccueil;
+import fabrique.gestion.BDD.TableCheminBrassinFermenteur;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.BDD.TableTypeBiere;
@@ -89,6 +90,9 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
         else if (view.equals(brassin)) {
             if (TableFermenteur.instance(contexte).recupererNumerosFermenteurSansBrassin().isEmpty()) {
                 Toast.makeText(contexte, "Il n'y a pas de fermenteur actif libre pouvant accueillir un nouveau brassin.", Toast.LENGTH_LONG).show();
+            }
+            if (TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud() == null) {
+                Toast.makeText(contexte, "Il n'y a pas de chemin du brassin pour le fermenteur.", Toast.LENGTH_LONG).show();
             }
             else if (TableRecette.instance(contexte).recupererNomRecettesActifs().isEmpty()) {
                 Toast.makeText(contexte, "Il faut avoir au moins UNE recette ACTIF pour pouvoir ajouter un brassin.", Toast.LENGTH_LONG).show();
