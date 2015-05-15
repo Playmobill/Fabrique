@@ -179,8 +179,8 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO EtatFermenteur (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Lavé', '', "+Color.BLACK+", "+Color.WHITE+", 0, 1)");
 
         db.execSQL("INSERT INTO EtatCuve (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 0, 1)");
-        db.execSQL("INSERT INTO EtatCuve (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Gazéification', '', "+Color.BLACK+", "+Color.WHITE+", 1, 1)");
         db.execSQL("INSERT INTO EtatCuve (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Service', '', "+Color.BLACK+", "+Color.WHITE+", 1, 1)");
+        db.execSQL("INSERT INTO EtatCuve (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Gazéification', '', "+Color.BLACK+", "+Color.WHITE+", 1, 1)");
         db.execSQL("INSERT INTO EtatCuve (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Lavé', '', "+Color.BLACK+", "+Color.WHITE+", 0, 1)");
 
         db.execSQL("INSERT INTO EtatFut (texte, historique, couleurTexte, couleurFond, avecBrassin, actif) VALUES ('Vide', '', "+Color.BLACK+", "+Color.WHITE+", 0, 1)");
@@ -224,6 +224,27 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Kaliningrad', 'Kal', 12, "+Color.argb(255,255,255,255)+", "+Color.argb(255,30,30,30)+", 1)");
         db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Dame de Pique', 'Dam', 13, "+Color.argb(255,255,255,255)+", "+Color.argb(255,115,65,45)+", 1)");
         db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Duplessis', 'Dup', 14, "+Color.argb(255,255,255,255)+", "+Color.argb(255,30,30,30)+", 1)");
+
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Relevé de densité')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Transfert')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Gazéification')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Enfûtage')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (0 , 'Lavage Caustique')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (1 , 'Lavage Caustique')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (2 , 'Inspection de Baril')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (0 , 'Lavage acide')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (1 , 'Lavage acide')");
+        //<- auto ; -> manuel
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Relevé de température')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Ajustement contrôleur')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Crash')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Drainage de levure')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Récupération de levure')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Filtration')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Ajustement Gazéification')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Mesure CO2 dissout')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (0 , 'Rinçage')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (1 , 'Rinçage')");
     }
 
     @Override
