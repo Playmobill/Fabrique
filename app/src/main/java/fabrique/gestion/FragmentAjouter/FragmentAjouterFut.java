@@ -104,7 +104,7 @@ public class FragmentAjouterFut extends FragmentAmeliore implements View.OnClick
             calendrier.setTimeInMillis(System.currentTimeMillis());
             long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
 
-            TableFut.instance(contexte).ajouter(numero, capacite, 1, date, -1, date, true);
+            TableFut.instance(contexte).ajouter(numero, capacite, -1, date, -1, date, true);
 
             Toast.makeText(contexte, "Fut ajouté !", Toast.LENGTH_SHORT).show();
 
