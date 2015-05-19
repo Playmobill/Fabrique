@@ -187,4 +187,8 @@ public class TableHistorique extends Controle {
         super.supprimerToutesLaBdd();
         historiques.clear();
     }
+
+    public ArrayList<Historique> recupererHistorique(){
+        return new ArrayList<>(historiques);
+    }
 }

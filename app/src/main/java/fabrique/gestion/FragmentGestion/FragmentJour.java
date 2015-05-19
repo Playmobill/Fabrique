@@ -18,9 +18,11 @@ import java.util.Date;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableCalendrier;
+import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Objets.Calendrier;
 import fabrique.gestion.Objets.DateToString;
+import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.R;
 
 /**
@@ -35,6 +37,7 @@ public class FragmentJour extends FragmentAmeliore {
     private LinearLayout affichageEvenements;
     private ArrayList<LinearLayout> evenements;
     private ArrayList<Calendrier> calendrier;
+    private ArrayList<Historique> historique;
     private Button jourSuivant, jourPrecedent;
 
     @Nullable
@@ -53,6 +56,7 @@ public class FragmentJour extends FragmentAmeliore {
         view = inflater.inflate(R.layout.activity_vue_jour, container, false);
 
         calendrier = TableCalendrier.instance(contexte).getEvenements();
+        historique = TableHistorique.instance(contexte).recupererHistorique();
 
         affichageEvenements = (LinearLayout)view.findViewById(R.id.listeEvenement);
 
@@ -97,6 +101,16 @@ public class FragmentJour extends FragmentAmeliore {
             if(calendrierTime.get(Calendar.MONTH) == mois && calendrierTime.get(Calendar.DAY_OF_MONTH) == jour && calendrierTime.get(Calendar.YEAR) == annee){
                 TextView textView= new TextView(contexte);
                 textView.setText(calendrier.get(i).getNomEvenement());
+                textView.setPadding(30,30,0,0);
+                affichageEvenements.addView(textView);
+            }
+        }
+
+        for (int i = 0; i < historique.size(); i++) {
+            calendrierTime.setTimeInMillis(historique.get(i).getDate());
+            if(calendrierTime.get(Calendar.MONTH) == mois && calendrierTime.get(Calendar.DAY_OF_MONTH) == jour && calendrierTime.get(Calendar.YEAR) == annee){
+                TextView textView= new TextView(contexte);
+                textView.setText(historique.get(i).getTexte());
                 textView.setPadding(30,30,0,0);
                 affichageEvenements.addView(textView);
             }

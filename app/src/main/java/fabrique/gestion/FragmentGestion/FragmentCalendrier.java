@@ -20,9 +20,11 @@ import java.util.Date;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableCalendrier;
+import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Objets.Calendrier;
 import fabrique.gestion.Objets.DateToString;
+import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.R;
 
 /**
@@ -40,6 +42,7 @@ public class FragmentCalendrier extends FragmentAmeliore implements View.OnClick
     private TextView moisActuel;
 
     private ArrayList<Calendrier> evenements;
+    private ArrayList<Historique> historique;
 
     int annee, mois, jour;
 
@@ -57,6 +60,7 @@ public class FragmentCalendrier extends FragmentAmeliore implements View.OnClick
         View view = inflater.inflate(R.layout.activity_calendrier, container, false);
 
         evenements = TableCalendrier.instance(contexte).getEvenements();
+        historique = TableHistorique.instance(contexte).recupererHistorique();
 
         annee = Calendar.getInstance().get(Calendar.YEAR);
         mois = Calendar.getInstance().get(Calendar.MONTH);
@@ -89,12 +93,21 @@ public class FragmentCalendrier extends FragmentAmeliore implements View.OnClick
         int joursDansMois = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
         for (int i = 1; i <= joursDansMois; i++) {
             evenement = "";
+
+            for (int j = 0; j < historique.size() && evenement.equals(""); j++) {
+                cal.setTimeInMillis(historique.get(j).getDate());
+                if(cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i && cal.get(Calendar.YEAR) == annee){
+                    evenement = historique.get(j).getTexte();
+                }
+            }
+
             for (int j = 0; j < evenements.size() && evenement.equals(""); j++) {
                 cal.setTimeInMillis(evenements.get(j).getDateEvenement()*1000);
                 if(cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i && cal.get(Calendar.YEAR) == annee){
                     evenement = evenements.get(j).getNomEvenement();
                 }
             }
+
             listeBtnJours.add(new BoutonCalendrier(contexte, i, mois, annee, longueurBouton, hauteurBouton, evenement));
         }
 
