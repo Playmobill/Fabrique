@@ -686,11 +686,11 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                 }
                             }
                             //Si il n'y a que 2 elements et qu'il n 'y a pas de corruption detecte
-                            if ((textesListeHistorique.size() == 2) && !corrompuListeHistorique) {
+                            if ((textesListeHistorique.size() == 3) && !corrompuListeHistorique) {
                                 try {
                                     TableListeHistorique.instance(contexte).ajouter(
                                             Integer.parseInt(textesListeHistorique.get(0)),
-                                            textesListeHistorique.get(1));
+                                            textesListeHistorique.get(1), Integer.parseInt(textesListeHistorique.get(2)));
                                 } catch (Exception e) {}
                             }
                             break;

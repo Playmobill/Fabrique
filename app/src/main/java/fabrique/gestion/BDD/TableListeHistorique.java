@@ -29,18 +29,19 @@ public class TableListeHistorique extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            listeHistoriques.add(new ListeHistorique(tmp.getLong(0), tmp.getInt(1), tmp.getString(2)));
+            listeHistoriques.add(new ListeHistorique(tmp.getLong(0), tmp.getInt(1), tmp.getString(2), tmp.getInt(3)));
         }
         Collections.sort(listeHistoriques);
     }
 
-    public long ajouter(int elementConcerne, String texte){
+    public long ajouter(int elementConcerne, String texte, int supprimable){
         ContentValues valeur = new ContentValues();
         valeur.put("elementConcerne", elementConcerne);
         valeur.put("texte", texte);
+        valeur.put("supprimable", supprimable);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            listeHistoriques.add(new ListeHistorique(id, elementConcerne, texte));
+            listeHistoriques.add(new ListeHistorique(id, elementConcerne, texte, supprimable));
             Collections.sort(listeHistoriques);
         }
         return id;
@@ -85,7 +86,7 @@ public class TableListeHistorique extends Controle {
     public ArrayList<ListeHistorique> listeHistoriqueFermenteur() {
         ArrayList<ListeHistorique> listeHistoriqueFermenteur = new ArrayList<>();
         for (int i=0; i<listeHistoriques.size() ; i++) {
-            if (listeHistoriques.get(i).getElementConcerne() == 0) {
+            if (listeHistoriques.get(i).getElementConcerne() == 0 && listeHistoriques.get(i).getSupprimable() == 1) {
                 listeHistoriqueFermenteur.add(listeHistoriques.get(i));
             }
         }
@@ -95,7 +96,7 @@ public class TableListeHistorique extends Controle {
     public ArrayList<ListeHistorique> listeHistoriqueCuve() {
         ArrayList<ListeHistorique> listeHistoriqueCuve = new ArrayList<>();
         for (int i=0; i<listeHistoriques.size() ; i++) {
-            if (listeHistoriques.get(i).getElementConcerne() == 1) {
+            if (listeHistoriques.get(i).getElementConcerne() == 1 && listeHistoriques.get(i).getSupprimable() == 1) {
                 listeHistoriqueCuve.add(listeHistoriques.get(i));
             }
         }
@@ -105,7 +106,7 @@ public class TableListeHistorique extends Controle {
     public ArrayList<ListeHistorique> listeHistoriqueFut() {
         ArrayList<ListeHistorique> listeHistoriqueListeHistorique = new ArrayList<>();
         for (int i=0; i<listeHistoriques.size() ; i++) {
-            if (listeHistoriques.get(i).getElementConcerne() == 2) {
+            if (listeHistoriques.get(i).getElementConcerne() == 2 && listeHistoriques.get(i).getSupprimable() == 1) {
                 listeHistoriqueListeHistorique.add(listeHistoriques.get(i));
             }
         }
@@ -115,7 +116,7 @@ public class TableListeHistorique extends Controle {
     public ArrayList<ListeHistorique> listeHistoriqueBrassin() {
         ArrayList<ListeHistorique> listeHistoriqueBrassin = new ArrayList<>();
         for (int i=0; i<listeHistoriques.size() ; i++) {
-            if (listeHistoriques.get(i).getElementConcerne() == 3) {
+            if (listeHistoriques.get(i).getElementConcerne() == 3 && listeHistoriques.get(i).getSupprimable() == 1) {
                 listeHistoriqueBrassin.add(listeHistoriques.get(i));
             }
         }

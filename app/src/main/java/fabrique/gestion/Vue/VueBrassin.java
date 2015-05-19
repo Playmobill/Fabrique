@@ -400,6 +400,16 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
 
         if (erreur.equals("")) {
             long recette = listeRecetteActifs.get(editRecette.getSelectedItemPosition()).getId();
+
+            if(densiteFinale != brassin.getDensiteFinale()) {
+                Calendar calendrier = Calendar.getInstance();
+                calendrier.setTimeInMillis(System.currentTimeMillis());
+                long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
+                String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(1).getTexte() + " : " + editDensiteFinale.getText().toString();
+                TableHistorique.instance(getContext()).ajouter(texteTransfert, date, 0, 0, 0, brassin.getId());
+            }
+
             TableBrassin.instance(getContext()).modifier(
                     brassin.getId(),
                     numero,
@@ -410,6 +420,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
                     densiteOriginale,
                     densiteFinale);
             indexRecette = editRecette.getSelectedItemPosition();
+
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_SHORT).show();
         }
@@ -436,6 +447,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
         else if (v.equals(btnValider)) {
             valider();
             afficher();
+            afficherHistorique();
         }
 
         else if (v.equals(btnAnnuler)) {

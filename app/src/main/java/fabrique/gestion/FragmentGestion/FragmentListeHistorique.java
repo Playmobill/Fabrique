@@ -143,7 +143,7 @@ public class FragmentListeHistorique extends FragmentAmeliore implements View.On
     }
 
     private void ajouter() {
-        TableListeHistorique.instance(contexte).ajouter(elementConcerne.getSelectedItemPosition(), texteAjouter.getText().toString());
+        TableListeHistorique.instance(contexte).ajouter(elementConcerne.getSelectedItemPosition(), texteAjouter.getText().toString(), 1);
         afficher();
     }
 

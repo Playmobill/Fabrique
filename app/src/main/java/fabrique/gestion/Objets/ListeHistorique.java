@@ -6,11 +6,13 @@ public class ListeHistorique extends Objet implements Comparable<ListeHistorique
 
     private int elementConcerne;
     private String texte;
+    private int supprimable;
 
-    public ListeHistorique(long id, int elementConcerne, String texte) {
+    public ListeHistorique(long id, int elementConcerne, String texte, int supprimable) {
         super(id);
         this.elementConcerne = elementConcerne;
         this.texte = texte;
+        this.supprimable = supprimable;
     }
 
     public int getElementConcerne() {
@@ -18,6 +20,9 @@ public class ListeHistorique extends Objet implements Comparable<ListeHistorique
     }
     public String getTexte() {
         return texte;
+    }
+    public int getSupprimable() {
+        return supprimable;
     }
 
     public void setTexte(String texte) {
@@ -38,6 +43,7 @@ public class ListeHistorique extends Objet implements Comparable<ListeHistorique
         return ("<O:ListeHistorique>" +
                     "<E:elementConcerne>" + elementConcerne + "</E:elementConcerne>" +
                     "<E:texte>" + texte + "</E:texte>" +
+                    "<E:supprimable>" + supprimable + "</E:supprimable>" +
                 "</O:ListeHistorique>");
     }
 }
