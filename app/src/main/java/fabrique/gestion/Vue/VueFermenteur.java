@@ -8,6 +8,7 @@ import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,16 +24,20 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import fabrique.gestion.BDD.TableCheminBrassinCuve;
+import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
 import fabrique.gestion.FragmentAmeliore;
+import fabrique.gestion.Objets.Cuve;
 import fabrique.gestion.Objets.Emplacement;
 import fabrique.gestion.Objets.Fermenteur;
 import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.Objets.ListeHistorique;
+import fabrique.gestion.Objets.NoeudFermenteur;
 import fabrique.gestion.R;
 
 public class VueFermenteur extends TableLayout implements View.OnClickListener {
@@ -52,6 +57,9 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
 
     //Chemin du brassin
     private TableLayout tableauCheminBrassin;
+    private Button btnEtatPrecedent, btnEtatSuivant, btnTransfere;
+    private ArrayList<Cuve> listeCuveSansBrassin;
+    private Spinner spinnerListeCuveSansBrassin;
 
     //Historique
     private LinearLayout tableauHistorique;
@@ -80,14 +88,15 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         tableauHistorique = new TableLayout(getContext());
         ligne.addView(cadre(tableauHistorique, " Historique "));
 
-        if (fermenteur.getIdBrassin() != -1) {
-            tableauCheminBrassin = new TableLayout(contexte);
-            addView(cadre(tableauCheminBrassin, " Chemin du brassin "));
-        }
-
         initialiser();
         afficher();
         afficherHistorique();
+
+        if ((fermenteur.getIdBrassin() != -1) && fermenteur.getActif()) {
+            tableauCheminBrassin = new TableLayout(contexte);
+            addView(cadre(tableauCheminBrassin, " Chemin du brassin "));
+            afficherCheminBrassin();
+        }
 
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(getContext());
         layoutHorizontalScroll.addView(ligne);
@@ -272,6 +281,20 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         btnAjouterHistorique.setText(ajouter);
         btnAjouterHistorique.setOnClickListener(this);
         ligneAjouter.addView(btnAjouterHistorique, margeHistorique);
+
+
+        btnEtatPrecedent = new Button(getContext());
+        btnEtatPrecedent.setOnClickListener(this);
+
+        btnEtatSuivant = new Button(getContext());
+        btnEtatSuivant.setOnClickListener(this);
+
+        btnTransfere = new Button(getContext());
+        btnTransfere.setText("Transférer");
+        btnTransfere.setOnClickListener(this);
+
+        spinnerListeCuveSansBrassin = new Spinner(getContext());
+
     }
 
     private void afficher() {
@@ -334,7 +357,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 afficher();
             }
         } else {
-            Toast.makeText(getContext(), erreur, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), erreur, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -351,6 +374,95 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         }
     }
 
+    private void afficherCheminBrassin() {
+        tableauCheminBrassin.removeAllViews();
+
+        if (((ViewGroup)btnEtatPrecedent.getParent()) != null) {
+            ((ViewGroup)btnEtatPrecedent.getParent()).removeAllViews();
+        }
+        if (((ViewGroup) btnEtatSuivant.getParent()) != null) {
+            ((ViewGroup) btnEtatSuivant.getParent()).removeAllViews();
+        }
+        if (((ViewGroup) btnTransfere.getParent()) != null) {
+            ((ViewGroup) btnTransfere.getParent()).removeAllViews();
+        }
+
+            NoeudFermenteur noeud = fermenteur.getNoeud(getContext());
+
+            TableRow.LayoutParams margeLigneTableau = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+            margeLigneTableau.setMargins(5, 5, 5, 5);
+
+            TableRow ligne = new TableRow(getContext());
+
+                LinearLayout lignePrecedent = new LinearLayout(getContext());
+                lignePrecedent.setGravity(Gravity.CENTER);
+                lignePrecedent.setOrientation(LinearLayout.VERTICAL);
+                if (noeud.getNoeudPrecedent(getContext()) != null) {
+                        TextView etatPrecedent = new TextView(getContext());
+                        etatPrecedent.setText("État précédent :");
+                    lignePrecedent.addView(etatPrecedent);
+                        btnEtatPrecedent.setText(noeud.getNoeudPrecedent(getContext()).getEtat(getContext()).getTexte());
+                    lignePrecedent.addView(btnEtatPrecedent);
+                }
+            ligne.addView(lignePrecedent);
+
+                LinearLayout ligneEtatActuel = new LinearLayout(getContext());
+                ligneEtatActuel.setGravity(Gravity.CENTER);
+                ligneEtatActuel.setOrientation(LinearLayout.VERTICAL);
+                    TextView etatTexteActuel = new TextView(getContext());
+                    etatTexteActuel.setText("État actuel :");
+                ligneEtatActuel.addView(etatTexteActuel);
+                    TextView etatActuel = new TextView(getContext());
+                    etatActuel.setText(fermenteur.getNoeud(getContext()).getEtat(getContext()).getTexte());
+                ligneEtatActuel.addView(etatActuel);
+            ligne.addView(ligneEtatActuel, margeLigneTableau);
+
+                LinearLayout ligneChoixFutur = new LinearLayout(getContext());
+                ligneChoixFutur.setGravity(Gravity.CENTER);
+                ligneChoixFutur.setOrientation(LinearLayout.VERTICAL);
+                //Si il y a un prochain etat avec brassin dans ce recipient
+                if (noeud.getNoeudAvecBrassin(getContext()) != null) {
+                        TextView etatSuivant = new TextView(getContext());
+                        etatSuivant.setText("État suivant :");
+                    ligneChoixFutur.addView(etatSuivant);
+                        btnEtatSuivant.setText(noeud.getNoeudAvecBrassin(getContext()).getEtat(getContext()).getTexte());
+                    ligneChoixFutur.addView(btnEtatSuivant);
+                }
+
+                //Si il y a un prochain etat sans brassin dans ce recipient
+                if (noeud.getNoeudSansBrassin(getContext()) != null) {
+                        TextView recipientSuivant = new TextView(getContext());
+                        recipientSuivant.setText("Récipient suivant :");
+                    ligneChoixFutur.addView(recipientSuivant);
+                    ligneChoixFutur.addView(btnTransfere);
+                        ArrayAdapter<String> adapteurListeCuveSansBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style);
+                        adapteurListeCuveSansBrassin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        listeCuveSansBrassin = TableCuve.instance(getContext()).recupererCuveSansBrassin();
+                        for (int i=0; i<listeCuveSansBrassin.size(); i++) {
+                            adapteurListeCuveSansBrassin.add(""+listeCuveSansBrassin.get(i).getNumero());
+                        }
+                        spinnerListeCuveSansBrassin.setAdapter(adapteurListeCuveSansBrassin);
+                    ligneChoixFutur.addView(spinnerListeCuveSansBrassin);
+                }
+                //Si il n'y a ni etat suivant avec brassin ni etat suivant sans brassin dans ce recipient
+                if ((noeud.getNoeudAvecBrassin(getContext()) == null) && (noeud.getNoeudSansBrassin(getContext()) == null)) {
+                        TextView recipientSuivant = new TextView(getContext());
+                        recipientSuivant.setText("Récipient suivant :");
+                    ligneChoixFutur.addView(recipientSuivant);
+                    ligneChoixFutur.addView(btnTransfere);
+                        ArrayAdapter<String> adapteurListeCuveSansBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style);
+                        adapteurListeCuveSansBrassin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        listeCuveSansBrassin = TableCuve.instance(getContext()).recupererCuveSansBrassin();
+                        for (int i=0; i<listeCuveSansBrassin.size(); i++) {
+                            adapteurListeCuveSansBrassin.add(""+listeCuveSansBrassin.get(i).getNumero());
+                        }
+                        spinnerListeCuveSansBrassin.setAdapter(adapteurListeCuveSansBrassin);
+                    ligneChoixFutur.addView(spinnerListeCuveSansBrassin);
+                }
+            ligne.addView(ligneChoixFutur, margeLigneTableau);
+        tableauCheminBrassin.addView(ligne);
+    }
+
     @Override
     public void onClick(View v) {
         if (v.equals(btnModifier)) {
@@ -365,6 +477,14 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), fermenteur.getId(), -1, -1, -1);
             afficherHistorique();
+        } else if (v.equals(btnEtatSuivant)) {
+            TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudAvecBrassin(), System.currentTimeMillis(), fermenteur.getIdBrassin(), fermenteur.getActif());
+            afficherCheminBrassin();
+        } else if (v.equals(btnTransfere) && spinnerListeCuveSansBrassin.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
+            Cuve cuve = listeCuveSansBrassin.get(spinnerListeCuveSansBrassin.getSelectedItemPosition());
+            TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), TableCheminBrassinCuve.instance(getContext()).recupererPremierNoeud().getId(), System.currentTimeMillis(), cuve.getCommentaireEtat(), fermenteur.getIdBrassin(), cuve.getActif());
+            TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fermenteur.getActif());
+            parent.invalidate();
         }
     }
 

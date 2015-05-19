@@ -24,6 +24,9 @@ public class NoeudCuve extends Objet implements Comparable<NoeudCuve> {
     public long getId_noeudPrecedent() {
         return id_noeudPrecedent;
     }
+    public NoeudCuve getNoeudPrecedent(Context contexte) {
+        return TableCheminBrassinCuve.instance(contexte).recupererId(id_noeudPrecedent);
+    }
     public long getId_etat() {
         return id_etat;
     }

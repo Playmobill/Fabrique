@@ -89,13 +89,13 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
         }
         else if (view.equals(brassin)) {
             if (TableFermenteur.instance(contexte).recupererNumerosFermenteurSansBrassin().isEmpty()) {
-                Toast.makeText(contexte, "Il n'y a pas de fermenteur actif libre pouvant accueillir un nouveau brassin.", Toast.LENGTH_LONG).show();
+                Toast.makeText(contexte, "Il n'y a pas de fermenteur actif libre pouvant accueillir un nouveau brassin.", Toast.LENGTH_SHORT).show();
             }
-            if (TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud() == null) {
-                Toast.makeText(contexte, "Il n'y a pas de chemin du brassin pour le fermenteur.", Toast.LENGTH_LONG).show();
+            else if (TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud() == null) {
+                Toast.makeText(contexte, "Il n'y a pas de chemin du brassin pour le fermenteur.", Toast.LENGTH_SHORT).show();
             }
             else if (TableRecette.instance(contexte).recupererNomRecettesActifs().isEmpty()) {
-                Toast.makeText(contexte, "Il faut avoir au moins UNE recette ACTIF pour pouvoir ajouter un brassin.", Toast.LENGTH_LONG).show();
+                Toast.makeText(contexte, "Il faut avoir au moins UNE recette ACTIF pour pouvoir ajouter un brassin.", Toast.LENGTH_SHORT).show();
                 onBackPressed();
             }
             else {
@@ -108,7 +108,7 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
         else if (view.equals(recette)) {
             ArrayList<String> listeTypeBiere = TableTypeBiere.instance(contexte).recupererNomTypeBieresActifs();
             if (listeTypeBiere.size() == 0) {
-                Toast.makeText(contexte, "Il faut avoir au moins UN type de bière ACTIF pour pouvoir ajouter une recette.", Toast.LENGTH_LONG).show();
+                Toast.makeText(contexte, "Il faut avoir au moins UN type de bière ACTIF pour pouvoir ajouter une recette.", Toast.LENGTH_SHORT).show();
                 onBackPressed();
             } else {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();

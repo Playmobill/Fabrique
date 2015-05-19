@@ -53,7 +53,7 @@ public class FragmentAjouterCuve extends FragmentAmeliore implements View.OnClic
 
         emplacements = TableEmplacement.instance(contexte).recupererActifs();
         if (emplacements.size() == 0) {
-            Toast.makeText(contexte, "Il faut avoir au moins UN emplacement ACTIF pour pouvoir ajouter une cuve.", Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, "Il faut avoir au moins UN emplacement ACTIF pour pouvoir ajouter une cuve.", Toast.LENGTH_SHORT).show();
             onBackPressed();
         }
         ArrayList<String> texteEmplacements = new ArrayList<>();
@@ -120,7 +120,7 @@ public class FragmentAjouterCuve extends FragmentAmeliore implements View.OnClic
 
             TableCuve.instance(contexte).ajouter(numero, capacite, emplacement, date, 1, date, "", -1, true);
 
-            Toast.makeText(contexte, "Cuve ajouté !", Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, "Cuve ajouté !", Toast.LENGTH_SHORT).show();
 
             TableCuve tableCuve = TableCuve.instance(contexte);
             int numeroSuivant = 1;
@@ -131,7 +131,7 @@ public class FragmentAjouterCuve extends FragmentAmeliore implements View.OnClic
             }
             editNumero.setText("" + numeroSuivant);
         } else {
-            Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, erreur, Toast.LENGTH_SHORT).show();
         }
     }
 

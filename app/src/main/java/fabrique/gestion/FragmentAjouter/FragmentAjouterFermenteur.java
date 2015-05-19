@@ -53,7 +53,7 @@ public class FragmentAjouterFermenteur extends FragmentAmeliore implements View.
 
         emplacements = TableEmplacement.instance(contexte).recupererActifs();
         if (emplacements.size() == 0) {
-            Toast.makeText(contexte, "Il faut avoir au moins UN emplacement ACTIF pour pouvoir ajouter un fermenteur.", Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, "Il faut avoir au moins UN emplacement ACTIF pour pouvoir ajouter un fermenteur.", Toast.LENGTH_SHORT).show();
             onBackPressed();
         }
         ArrayList<String> texteEmplacements = new ArrayList<>();
@@ -118,9 +118,9 @@ public class FragmentAjouterFermenteur extends FragmentAmeliore implements View.
             calendrier.setTimeInMillis(System.currentTimeMillis());
             long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
 
-            TableFermenteur.instance(contexte).ajouter(numero, capacite, emplacement, date, 1, date, -1, true);
+            TableFermenteur.instance(contexte).ajouter(numero, capacite, emplacement, date, -1, date, -1, true);
 
-            Toast.makeText(contexte, "Fermenteur ajouté !", Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, "Fermenteur ajouté !", Toast.LENGTH_SHORT).show();
 
             TableFermenteur tableFermenteur = TableFermenteur.instance(contexte);
             int numeroSuivant = 1;
@@ -131,7 +131,7 @@ public class FragmentAjouterFermenteur extends FragmentAmeliore implements View.
             }
             editNumero.setText("" + numeroSuivant);
         } else {
-            Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, erreur, Toast.LENGTH_SHORT).show();
         }
     }
 

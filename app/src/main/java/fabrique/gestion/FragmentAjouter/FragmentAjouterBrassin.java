@@ -152,7 +152,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(Long.parseLong(editFermenteur.getItemAtPosition(editFermenteur.getSelectedItemPosition()).toString()));
             TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud().getId(), date, id_brassin, fermenteur.getActif());
 
-            Toast.makeText(contexte, "Brassin ajouté !", Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, "Brassin ajouté !", Toast.LENGTH_SHORT).show();
             TableBrassin tableBrassin = TableBrassin.instance(contexte);
 
             int max = 0;
@@ -172,7 +172,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
                 }
 
         } else {
-            Toast.makeText(contexte, erreur, Toast.LENGTH_LONG).show();
+            Toast.makeText(contexte, erreur, Toast.LENGTH_SHORT).show();
         }
     }
 
