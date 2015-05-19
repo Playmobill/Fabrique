@@ -17,6 +17,9 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import fabrique.gestion.BDD.TableCheminBrassinCuve;
+import fabrique.gestion.BDD.TableCheminBrassinFermenteur;
+import fabrique.gestion.BDD.TableCheminBrassinFut;
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableFut;
@@ -119,24 +122,24 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                     Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem()));
                     idBrassinTransfere = fermenteur.getIdBrassin();
                     idOrigine = fermenteur.getId();
-                    TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), 1, date, -1, true);
+                    TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud().getId(), date, -1, true);
                 }
                 else if (listeTypeOrigine.getSelectedItem().equals("Cuve")) {
                     Cuve cuve = TableCuve.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem()));
                     idBrassinTransfere = cuve.getIdBrassin();
                     idOrigine = cuve.getId();
-                    TableCuve.instance(contexte).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), 1, date, cuve.getCommentaireEtat(), -1, true);
+                    TableCuve.instance(contexte).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), TableCheminBrassinCuve.instance(contexte).recupererPremierNoeud().getId(), date, cuve.getCommentaireEtat(), -1, true);
                 }
 
                 if(listeTypeDestination.getText().toString().equals("Fût")){
                     Fut futDest = TableFut.instance(contexte).recupererId(Long.parseLong((String) listeDestination.getSelectedItem()));
-                    TableFut.instance(contexte).modifier(futDest.getId(), futDest.getNumero(), futDest.getCapacite(), 2, date, idBrassinTransfere, futDest.getDateInspectionToLong(), true);
+                    TableFut.instance(contexte).modifier(futDest.getId(), futDest.getNumero(), futDest.getCapacite(), TableCheminBrassinFut.instance(contexte).recupererPremierNoeud().getId(), date, idBrassinTransfere, futDest.getDateInspectionToLong(), true);
                     String texteTransfert = TableListeHistorique.instance(contexte).recupererId(4).getTexte()+" de la cuve n°"+idOrigine+" au fût n°"+futDest.getId();
                     TableHistorique.instance(contexte).ajouter(texteTransfert, date, 0, 0, 0, idBrassinTransfere);
                 }
                 else if(listeTypeDestination.getText().toString().equals("Cuve")){
                     Cuve cuveDest = TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getSelectedItem()));
-                    TableCuve.instance(contexte).modifier(cuveDest.getId(), cuveDest.getNumero(), cuveDest.getCapacite(), cuveDest.getIdEmplacement(), cuveDest.getDateLavageAcide(), 2, date, cuveDest.getCommentaireEtat(), idBrassinTransfere, true);
+                    TableCuve.instance(contexte).modifier(cuveDest.getId(), cuveDest.getNumero(), cuveDest.getCapacite(), cuveDest.getIdEmplacement(), cuveDest.getDateLavageAcide(), TableCheminBrassinCuve.instance(contexte).recupererPremierNoeud().getId(), date, cuveDest.getCommentaireEtat(), idBrassinTransfere, true);
                     String texteTransfert = TableListeHistorique.instance(contexte).recupererId(2).getTexte()+" du fermenteur n°"+idOrigine+" à la cuve n°"+cuveDest.getId();
                     TableHistorique.instance(contexte).ajouter(texteTransfert, date, 0, 0, 0, idBrassinTransfere);
                 }
