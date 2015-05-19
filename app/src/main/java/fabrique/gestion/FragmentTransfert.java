@@ -134,13 +134,13 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                 if(listeTypeDestination.getText().toString().equals("Fût")){
                     Fut futDest = TableFut.instance(contexte).recupererId(Long.parseLong((String) listeDestination.getSelectedItem()));
                     TableFut.instance(contexte).modifier(futDest.getId(), futDest.getNumero(), futDest.getCapacite(), TableCheminBrassinFut.instance(contexte).recupererPremierNoeud().getId(), date, idBrassinTransfere, futDest.getDateInspectionToLong(), true);
-                    String texteTransfert = TableListeHistorique.instance(contexte).recupererId(4).getTexte()+" de la cuve n°"+idOrigine+" au fût n°"+futDest.getId();
+                    String texteTransfert = TableListeHistorique.instance(contexte).recupererId(4).getTexte()+"du brassin n°"+idBrassinTransfere+" de la cuve n°"+idOrigine+" au fût n°"+futDest.getId();
                     TableHistorique.instance(contexte).ajouter(texteTransfert, date, 0, 0, 0, idBrassinTransfere);
                 }
                 else if(listeTypeDestination.getText().toString().equals("Cuve")){
                     Cuve cuveDest = TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getSelectedItem()));
                     TableCuve.instance(contexte).modifier(cuveDest.getId(), cuveDest.getNumero(), cuveDest.getCapacite(), cuveDest.getIdEmplacement(), cuveDest.getDateLavageAcide(), TableCheminBrassinCuve.instance(contexte).recupererPremierNoeud().getId(), date, cuveDest.getCommentaireEtat(), idBrassinTransfere, true);
-                    String texteTransfert = TableListeHistorique.instance(contexte).recupererId(2).getTexte()+" du fermenteur n°"+idOrigine+" à la cuve n°"+cuveDest.getId();
+                    String texteTransfert = TableListeHistorique.instance(contexte).recupererId(2).getTexte()+" du brassin n°"+idBrassinTransfere+" du fermenteur n°"+idOrigine+" à la cuve n°"+cuveDest.getId();
                     TableHistorique.instance(contexte).ajouter(texteTransfert, date, 0, 0, 0, idBrassinTransfere);
                 }
                 Toast.makeText(contexte, "Brassin transféré !", Toast.LENGTH_SHORT).show();
