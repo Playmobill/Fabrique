@@ -18,7 +18,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import fabrique.gestion.BDD.TableCheminBrassinCuve;
-import fabrique.gestion.BDD.TableCheminBrassinFermenteur;
 import fabrique.gestion.BDD.TableCheminBrassinFut;
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableFermenteur;
@@ -122,13 +121,13 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                     Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem()));
                     idBrassinTransfere = fermenteur.getIdBrassin();
                     idOrigine = fermenteur.getId();
-                    TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud().getId(), date, -1, true);
+                    TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(contexte).getId_noeudSansBrassin(), date, -1, true);
                 }
                 else if (listeTypeOrigine.getSelectedItem().equals("Cuve")) {
                     Cuve cuve = TableCuve.instance(contexte).recupererId(Long.parseLong((String) listeOrigine.getSelectedItem()));
                     idBrassinTransfere = cuve.getIdBrassin();
                     idOrigine = cuve.getId();
-                    TableCuve.instance(contexte).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), TableCheminBrassinCuve.instance(contexte).recupererPremierNoeud().getId(), date, cuve.getCommentaireEtat(), -1, true);
+                    TableCuve.instance(contexte).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(contexte).getId_noeudSansBrassin(), date, cuve.getCommentaireEtat(), -1, true);
                 }
 
                 if(listeTypeDestination.getText().toString().equals("Fût")){
