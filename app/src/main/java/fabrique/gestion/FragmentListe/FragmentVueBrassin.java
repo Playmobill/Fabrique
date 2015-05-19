@@ -94,7 +94,6 @@ public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClick
             if (index < TableBrassin.instance(contexte).tailleListe()-1) {
                 btnSuivant.setEnabled(true);
             }
-            editRechercheBrassin.setSelection(index);
             layout.addView(new VueBrassin(contexte, brassin));
         } else {
             index = -1;
