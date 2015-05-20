@@ -19,11 +19,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import fabrique.gestion.ActivityAccueil;
-import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableBrassinPere;
 import fabrique.gestion.FragmentAmeliore;
-import fabrique.gestion.Objets.Brassin;
+import fabrique.gestion.Objets.BrassinPere;
 import fabrique.gestion.R;
-import fabrique.gestion.Widget.BoutonBrassin;
+import fabrique.gestion.Widget.BoutonBrassinPere;
 
 public class FragmentListeBrassin extends FragmentAmeliore implements AdapterView.OnItemSelectedListener {
 
@@ -66,16 +66,16 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
         axe.addView(header);
         axe.addView(bodyScrollView);
 
-        TableBrassin tableBrassin = TableBrassin.instance(contexte);
+        TableBrassinPere tableBrassin = TableBrassinPere.instance(contexte);
         for (int i=0; i<tableBrassin.tailleListe(); i++) {
-            ajouterBoutonBrassin(tableBrassin.recupererIndex(i));
+            ajouterBoutonBrassinPere(tableBrassin.recupererIndex(i));
         }
 
         return axe;
     }
 
-    public void ajouterBoutonBrassin(Brassin brassin) {
-        body.addView(new BoutonBrassin(contexte, this, brassin));
+    public void ajouterBoutonBrassinPere(BrassinPere brassinPere) {
+        body.addView(new BoutonBrassinPere(contexte, this, brassinPere));
     }
 
     public RelativeLayout initTexteHeader(){
@@ -145,23 +145,23 @@ public class FragmentListeBrassin extends FragmentAmeliore implements AdapterVie
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         tri.setSelection(position);
-        ArrayList<Brassin> listeBrassin;
+        ArrayList<BrassinPere> listeBrassin;
         switch (position) {
             case 0:
-                listeBrassin = TableBrassin.instance(contexte).trierParNumero();
+                listeBrassin = TableBrassinPere.instance(contexte).trierParNumero();
                 break;
             case 1:
-                listeBrassin = TableBrassin.instance(contexte).trierParRecette();
+                listeBrassin = TableBrassinPere.instance(contexte).trierParRecette();
                 break;
             case 2:
-                listeBrassin = TableBrassin.instance(contexte).trierParDateCreation();
+                listeBrassin = TableBrassinPere.instance(contexte).trierParDateCreation();
                 break;
             default:
                 listeBrassin = new ArrayList<>();
         }
         body.removeAllViews();
         for (int i=0; i<listeBrassin.size(); i++) {
-            ajouterBoutonBrassin(listeBrassin.get(i));
+            ajouterBoutonBrassinPere(listeBrassin.get(i));
         }
     }
 }
