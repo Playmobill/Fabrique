@@ -378,6 +378,9 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         if (((ViewGroup) btnEtatSuivantAvecBrassin.getParent()) != null) {
             ((ViewGroup) btnEtatSuivantAvecBrassin.getParent()).removeAllViews();
         }
+        if (((ViewGroup) btnEtatSuivantSansBrassin.getParent()) != null) {
+            ((ViewGroup) btnEtatSuivantSansBrassin.getParent()).removeAllViews();
+        }
         if (((ViewGroup) btnTransfere.getParent()) != null) {
             ((ViewGroup) btnTransfere.getParent()).removeAllViews();
         }

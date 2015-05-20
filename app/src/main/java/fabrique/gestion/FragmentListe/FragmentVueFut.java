@@ -21,6 +21,8 @@ import fabrique.gestion.Vue.VueFut;
 
 public class FragmentVueFut extends FragmentAmeliore {
 
+    private long id_fut;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,12 +39,13 @@ public class FragmentVueFut extends FragmentAmeliore {
         LinearLayout layout = new LinearLayout(contexte);
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        Fut fut = TableFut.instance(contexte).recupererId(getArguments().getLong("id"));
+        id_fut = getArguments().getLong("id");
+        Fut fut = TableFut.instance(contexte).recupererId(id_fut);
         if (fut != null) {
             if (fut.getBrassin(contexte) != null) {
                 layout.addView(new VueBrassin(contexte, fut.getBrassin(contexte)));
             }
-            layout.addView(new VueFut(contexte, fut));
+            layout.addView(new VueFut(contexte, this, fut));
         } else {
             TextView txtErreur = new TextView(contexte);
             txtErreur.setText("Aucun fut sélectionné");
@@ -56,7 +59,17 @@ public class FragmentVueFut extends FragmentAmeliore {
     }
 
     @Override
-    public void invalidate() {}
+    public void invalidate() {
+        FragmentVueFut fragmentVueFut = new FragmentVueFut();
+        Bundle args = new Bundle();
+        args.putLong("id", id_fut);
+        fragmentVueFut.setArguments(args);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.onglet, fragmentVueFut);
+        transaction.setTransition((FragmentTransaction.TRANSIT_NONE));
+        transaction.addToBackStack(null).commit();
+    }
 
     @Override
     public void onBackPressed() {

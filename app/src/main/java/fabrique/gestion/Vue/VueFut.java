@@ -8,6 +8,7 @@ import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -27,13 +28,16 @@ import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
+import fabrique.gestion.FragmentListe.FragmentVueFut;
 import fabrique.gestion.Objets.Fut;
 import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.Objets.ListeHistorique;
+import fabrique.gestion.Objets.NoeudFut;
 import fabrique.gestion.R;
 
 public class VueFut extends TableLayout implements View.OnClickListener {
 
+    private FragmentVueFut parent;
     private Fut fut;
 
     //Description
@@ -42,6 +46,10 @@ public class VueFut extends TableLayout implements View.OnClickListener {
     private CheckBox editActif;
     private TableRow ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler;
+
+    //Chemin du brassin
+    private TableLayout tableauCheminBrassin;
+    private Button btnEtatSuivantAvecBrassin, btnEtatSuivantSansBrassin, btnVider;
 
     //Historique
     private TableLayout tableauHistorique;
@@ -56,9 +64,10 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         super(contexte);
     }
 
-    public VueFut(Context contexte, Fut fut) {
+    public VueFut(Context contexte, FragmentVueFut parent, Fut fut) {
         super(contexte);
 
+        this.parent = parent;
         this.fut = fut;
 
         TableRow ligne = new TableRow(contexte);
@@ -72,6 +81,10 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         initialiser();
         afficher();
         afficherHistorique();
+
+        tableauCheminBrassin = new TableLayout(contexte);
+        addView(cadre(tableauCheminBrassin, " Chemin du brassin "));
+        afficherCheminBrassin();
 
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(getContext());
         layoutHorizontalScroll.addView(ligne);
@@ -223,6 +236,16 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         btnAjouterHistorique.setText(ajouter);
         btnAjouterHistorique.setOnClickListener(this);
         ligneAjouter.addView(btnAjouterHistorique, margeCase);
+
+        btnEtatSuivantAvecBrassin = new Button(getContext());
+        btnEtatSuivantAvecBrassin.setOnClickListener(this);
+
+        btnEtatSuivantSansBrassin = new Button(getContext());
+        btnEtatSuivantSansBrassin.setOnClickListener(this);
+
+        btnVider = new Button(getContext());
+        btnVider.setText("Vider");
+        btnVider.setOnClickListener(this);
     }
 
     private void afficher() {
@@ -287,15 +310,103 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         }
     }
 
+    private void afficherCheminBrassin() {
+        tableauCheminBrassin.removeAllViews();
+
+        if (((ViewGroup) btnEtatSuivantAvecBrassin.getParent()) != null) {
+            ((ViewGroup) btnEtatSuivantAvecBrassin.getParent()).removeAllViews();
+        }
+        if (((ViewGroup) btnEtatSuivantSansBrassin.getParent()) != null) {
+            ((ViewGroup) btnEtatSuivantSansBrassin.getParent()).removeAllViews();
+        }
+        if (((ViewGroup) btnVider.getParent()) != null) {
+            ((ViewGroup) btnVider.getParent()).removeAllViews();
+        }
+
+        NoeudFut noeud = fut.getNoeud(getContext());
+
+        TableRow.LayoutParams margeLigneTableau = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        margeLigneTableau.setMargins(5, 5, 5, 5);
+
+        TableRow ligne = new TableRow(getContext());
+
+        LinearLayout ligneEtatActuel = new LinearLayout(getContext());
+        ligneEtatActuel.setGravity(Gravity.CENTER);
+        ligneEtatActuel.setOrientation(LinearLayout.VERTICAL);
+        TextView etatTexteActuel = new TextView(getContext());
+        etatTexteActuel.setText("État actuel :");
+        ligneEtatActuel.addView(etatTexteActuel);
+        TextView etatActuel = new TextView(getContext());
+        etatActuel.setText(fut.getNoeud(getContext()).getEtat(getContext()).getTexte());
+        ligneEtatActuel.addView(etatActuel);
+        ligne.addView(ligneEtatActuel, margeLigneTableau);
+
+        LinearLayout ligneChoixFutur = new LinearLayout(getContext());
+        ligneChoixFutur.setGravity(Gravity.CENTER);
+        ligneChoixFutur.setOrientation(LinearLayout.VERTICAL);
+
+        if (fut.getId_brassin() != -1) {
+            //Si il y a un prochain etat avec brassin dans ce recipient
+            if (noeud.getNoeudAvecBrassin(getContext()) != null) {
+                TextView etatSuivant = new TextView(getContext());
+                etatSuivant.setText("État suivant :");
+                ligneChoixFutur.addView(etatSuivant);
+                btnEtatSuivantAvecBrassin.setText(noeud.getNoeudAvecBrassin(getContext()).getEtat(getContext()).getTexte());
+                ligneChoixFutur.addView(btnEtatSuivantAvecBrassin);
+            }
+
+            //Si il y a un prochain etat sans brassin dans ce recipient
+            if (noeud.getNoeudSansBrassin(getContext()) != null) {
+                TextView vider = new TextView(getContext());
+                vider.setText("Vider :");
+                ligneChoixFutur.addView(vider);
+                ligneChoixFutur.addView(btnVider);
+            }
+            //Si il n'y a ni etat suivant avec brassin ni etat suivant sans brassin dans ce recipient
+            if ((noeud.getNoeudAvecBrassin(getContext()) == null) && (noeud.getNoeudSansBrassin(getContext()) == null)) {
+                TextView vider = new TextView(getContext());
+                vider.setText("Vider :");
+                ligneChoixFutur.addView(vider);
+                ligneChoixFutur.addView(btnVider);
+            }
+        } else {
+            //Si il y a un prochain etat avec brassin dans ce recipient
+            if (noeud.getNoeudSansBrassin(getContext()) != null) {
+                TextView etatSuivant = new TextView(getContext());
+                etatSuivant.setText("État suivant :");
+                ligneChoixFutur.addView(etatSuivant);
+                btnEtatSuivantSansBrassin.setText(noeud.getNoeudSansBrassin(getContext()).getEtat(getContext()).getTexte());
+                ligneChoixFutur.addView(btnEtatSuivantSansBrassin);
+            }
+        }
+        ligne.addView(ligneChoixFutur, margeLigneTableau);
+        tableauCheminBrassin.addView(ligne);
+    }
+
     @Override
     public void onClick(View v) {
         if (v.equals(btnModifier)) {
             modifier();
-        } else if (v.equals(btnValider)) {
+        }
+        else if (v.equals(btnValider)) {
             valider();
-        } else if (v.equals(btnAnnuler)) {
+        }
+        else if (v.equals(btnAnnuler)) {
             afficher();
-        } else if (v.equals(btnAjouterHistorique)) {
+        }
+        else if (v.equals(btnVider)) {
+            TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fut.getDateInspectionToLong(), fut.getActif());
+            parent.invalidate();
+        }
+        else if (v.equals(btnEtatSuivantAvecBrassin)) {
+            TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getNoeud(getContext()).getId_noeudAvecBrassin(), System.currentTimeMillis(), fut.getId_brassin(), fut.getDateInspectionToLong(), fut.getActif());
+            afficherCheminBrassin();
+        }
+        else if (v.equals(btnEtatSuivantSansBrassin)) {
+            TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), fut.getId_brassin(), fut.getDateInspectionToLong(), fut.getActif());
+            afficherCheminBrassin();
+        }
+        else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, fut.getId(), -1);
             afficherHistorique();
         }
