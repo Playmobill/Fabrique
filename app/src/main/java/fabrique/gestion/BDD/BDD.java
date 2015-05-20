@@ -68,13 +68,7 @@ public class BDD extends SQLiteOpenHelper {
     private static String createurTableBrassin = "CREATE TABLE IF NOT EXISTS Brassin (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                                 "id_brassinPere INTEGER NOT NULL," +
-                                                "numero INTEGER NOT NULL," +
-                                                "commentaire TEXT," +
-                                                "dateCreation INTEGER NOT NULL," +
-                                                "quantite INTEGER NOT NULL," +
-                                                "id_recette INTEGER NOT NULL," +
-                                                "densiteOriginale REAL," +
-                                                "densiteFinale REAL)";
+                                                "quantite INTEGER NOT NULL)";
 
     private static String createurTableFermenteur = "CREATE TABLE IF NOT EXISTS Fermenteur (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +

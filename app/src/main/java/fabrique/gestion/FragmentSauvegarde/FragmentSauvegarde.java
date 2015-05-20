@@ -30,6 +30,7 @@ import java.util.Calendar;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableBrassinPere;
 import fabrique.gestion.BDD.TableCalendrier;
 import fabrique.gestion.BDD.TableCheminBrassinCuve;
 import fabrique.gestion.BDD.TableCheminBrassinFermenteur;
@@ -314,6 +315,49 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                             }
                             break;
 
+                        case ("O:BrassinPere") :
+                            eventType = analyseur.next();
+                            boolean corrompuBrassinPere = false;
+                            ArrayList<String> textesBrassinPere = new ArrayList<>();
+                            String nomBaliseBrassinPere = analyseur.getName();
+                            if (nomBaliseBrassinPere == null) {
+                                nomBaliseBrassinPere = "";
+                            }
+                            String texteBrassinPere = analyseur.getText();
+                            //Tant qu'il ne trouve pas la balise de fin de "BrassinPere" ou tant qu'il ne trouve pas une balise de debut contenant 'O' (donc debut d'un objet)
+                            while (!((eventType == XmlPullParser.END_TAG) && (nomBaliseBrassinPere.equals("O:Brassin"))) && !corrompuBrassinPere) {
+                                if ((eventType == XmlPullParser.END_TAG) && (nomBaliseBrassinPere.charAt(0) == 'E')) {
+                                    if (texteBrassinPere == null) {
+                                        texteBrassinPere = "";
+                                    }
+                                    textesBrassinPere.add(texteBrassinPere);
+                                }
+                                texteBrassinPere = analyseur.getText();
+                                if ((eventType == XmlPullParser.START_TAG) && (analyseur.getName().charAt(0) == 'O')) {
+                                    corrompuBrassinPere = true;
+                                } else {
+                                    eventType = analyseur.next();
+                                    nomBaliseBrassinPere = analyseur.getName();
+                                    if (nomBaliseBrassinPere == null) {
+                                        nomBaliseBrassinPere = "";
+                                    }
+                                }
+                            }
+                            //Si il n'y a que 7 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesBrassinPere.size() == 7) && !corrompuBrassinPere) {
+                                try {
+                                    TableBrassinPere.instance(contexte).ajouter(
+                                            Integer.parseInt(textesBrassinPere.get(0)),
+                                            textesBrassinPere.get(1),
+                                            Long.parseLong(textesBrassinPere.get(2)),
+                                            Integer.parseInt(textesBrassinPere.get(3)),
+                                            Long.parseLong(textesBrassinPere.get(4)),
+                                            Float.parseFloat(textesBrassinPere.get(5)),
+                                            Float.parseFloat(textesBrassinPere.get(6)));
+                                } catch (Exception e) {}
+                            }
+                            break;
+
                         case ("O:Brassin") :
                             eventType = analyseur.next();
                             boolean corrompuBrassin = false;
@@ -342,18 +386,12 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     }
                                 }
                             }
-                            //Si il n'y a que 8 elements et qu'il n 'y a pas de corruption detecte
-                            if ((textesBrassin.size() == 8) && !corrompuBrassin) {
+                            //Si il n'y a que 2 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesBrassin.size() == 2) && !corrompuBrassin) {
                                 try {
-                                    TableBrassin.instance(contexte).ajouter(
+                                    TableBrassin.instance(contexte).ajouter(contexte,
                                             Long.parseLong(textesBrassin.get(0)),
-                                            Integer.parseInt(textesBrassin.get(1)),
-                                            textesBrassin.get(2),
-                                            Long.parseLong(textesBrassin.get(3)),
-                                            Integer.parseInt(textesBrassin.get(4)),
-                                            Long.parseLong(textesBrassin.get(5)),
-                                            Float.parseFloat(textesBrassin.get(6)),
-                                            Float.parseFloat(textesBrassin.get(7)));
+                                            Integer.parseInt(textesBrassin.get(1)));
                                 } catch (Exception e) {}
                             }
                             break;
