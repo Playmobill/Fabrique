@@ -1,5 +1,6 @@
 package fabrique.gestion.Vue;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -23,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import fabrique.gestion.BDD.TableCheminBrassinCuve;
 import fabrique.gestion.BDD.TableCuve;
@@ -33,6 +37,7 @@ import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Objets.Cuve;
+import fabrique.gestion.Objets.DateToString;
 import fabrique.gestion.Objets.Emplacement;
 import fabrique.gestion.Objets.Fermenteur;
 import fabrique.gestion.Objets.Historique;
@@ -40,7 +45,7 @@ import fabrique.gestion.Objets.ListeHistorique;
 import fabrique.gestion.Objets.NoeudFermenteur;
 import fabrique.gestion.R;
 
-public class VueFermenteur extends TableLayout implements View.OnClickListener {
+public class VueFermenteur extends TableLayout implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private FragmentAmeliore parent;
     private Fermenteur fermenteur;
@@ -54,6 +59,10 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
     private CheckBox editActif;
     private TableRow ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler;
+
+    //DatePicker
+    private long dateLavageAcide;
+    private TextView texteDateLavageAcide;
 
     //Chemin du brassin
     private TableLayout tableauCheminBrassin;
@@ -159,19 +168,13 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 layoutTitre.addView(editTitre);
             ligneTitreLavageAcide.addView(layoutTitre, parametre);
 
-                LinearLayout layoutDateLavageAcide = new LinearLayout(getContext());
+            LinearLayout layoutDateLavageAcide = new LinearLayout(getContext());
                 layoutDateLavageAcide.setGravity(Gravity.CENTER_VERTICAL);
-                    TextView dateLavageAcide = new TextView(getContext());
-                    dateLavageAcide.setGravity(Gravity.CENTER_VERTICAL);
-                    dateLavageAcide.setText("" + fermenteur.getDateLavageAcide());
-                    if ((System.currentTimeMillis() - fermenteur.getDateLavageAcideToLong()) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
-                        dateLavageAcide.setTextColor(Color.RED);
-                    } else if ((System.currentTimeMillis() - fermenteur.getDateLavageAcideToLong()) >= (TableGestion.instance(getContext()).avertissementLavageAcide())) {
-                        dateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
-                    } else {
-                        dateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
-                    }
-                layoutDateLavageAcide.addView(dateLavageAcide);
+                    texteDateLavageAcide = new TextView(getContext());
+                    texteDateLavageAcide.setFocusable(false);
+                    texteDateLavageAcide.setOnClickListener(this);
+                    texteDateLavageAcide.setGravity(Gravity.CENTER_VERTICAL);
+                layoutDateLavageAcide.addView(texteDateLavageAcide);
             ligneTitreLavageAcide.addView(layoutDateLavageAcide, parametre);
         tableauDescription.addView(ligneTitreLavageAcide);
 
@@ -299,6 +302,10 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         editTitre.setText("" + fermenteur.getNumero());
         editTitre.setEnabled(false);
 
+        dateLavageAcide = fermenteur.getDateLavageAcideToLong();
+        afficherDateLavageAcide();
+        texteDateLavageAcide.setEnabled(false);
+
         editCapacite.setText("" + fermenteur.getCapacite());
         editCapacite.setEnabled(false);
 
@@ -312,8 +319,20 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         ligneBouton.addView(btnModifier);
     }
 
+    private void afficherDateLavageAcide() {
+        texteDateLavageAcide.setText(DateToString.dateToString(dateLavageAcide));
+        if ((System.currentTimeMillis() - dateLavageAcide) >= TableGestion.instance(getContext()).delaiLavageAcide()) {
+            texteDateLavageAcide.setTextColor(Color.RED);
+        } else if ((System.currentTimeMillis() - dateLavageAcide) >= (TableGestion.instance(getContext()).avertissementLavageAcide())) {
+            texteDateLavageAcide.setTextColor(Color.rgb(198, 193, 13));
+        } else {
+            texteDateLavageAcide.setTextColor(Color.rgb(34, 177, 76));
+        }
+    }
+
     private void modifier() {
         editTitre.setEnabled(true);
+        texteDateLavageAcide.setEnabled(true);
         editEmplacement.setEnabled(true);
         editCapacite.setEnabled(true);
         editActif.setEnabled(true);
@@ -350,7 +369,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
                 TableFermenteur.instance(getContext()).supprimer(fermenteur.getId());
                 parent.invalidate();
             } else {
-                TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int) editEmplacement.getSelectedItemId()).getId(), fermenteur.getDateLavageAcideToLong(), fermenteur.getIdNoeud(), fermenteur.getDateEtatToLong(), fermenteur.getIdBrassin(), editActif.isChecked());
+                TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int) editEmplacement.getSelectedItemId()).getId(), dateLavageAcide, fermenteur.getIdNoeud(), fermenteur.getDateEtatToLong(), fermenteur.getIdBrassin(), editActif.isChecked());
                 indexEmplacement = editEmplacement.getSelectedItemPosition();
                 afficher();
             }
@@ -472,6 +491,11 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
         else if (v.equals(btnAnnuler)) {
             afficher();
         }
+        else if (v.equals(texteDateLavageAcide)){
+            Calendar calendrier = Calendar.getInstance();
+            calendrier.setTimeInMillis(dateLavageAcide);
+            new DatePickerDialog(getContext(), this, calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).show();
+        }
         else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), fermenteur.getId(), -1, -1, -1);
             afficherHistorique();
@@ -487,6 +511,12 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener {
             TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fermenteur.getActif());
             parent.invalidate();
         }
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int annee, int mois, int jour) {
+        dateLavageAcide = new GregorianCalendar(annee, mois, jour).getTimeInMillis();
+        afficherDateLavageAcide();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package fabrique.gestion.Vue;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -23,19 +25,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
 import fabrique.gestion.FragmentListe.FragmentVueFut;
+import fabrique.gestion.Objets.DateToString;
 import fabrique.gestion.Objets.Fut;
 import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.Objets.ListeHistorique;
 import fabrique.gestion.Objets.NoeudFut;
 import fabrique.gestion.R;
 
-public class VueFut extends TableLayout implements View.OnClickListener {
+public class VueFut extends TableLayout implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private FragmentVueFut parent;
     private Fut fut;
@@ -46,6 +51,10 @@ public class VueFut extends TableLayout implements View.OnClickListener {
     private CheckBox editActif;
     private TableRow ligneBouton;
     private Button btnModifier, btnValider, btnAnnuler;
+
+    //DatePicker
+    private long dateInspection;
+    private TextView texteDateInspection;
 
     //Chemin du brassin
     private TableLayout tableauCheminBrassin;
@@ -142,15 +151,10 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         editTitre.setInputType(InputType.TYPE_CLASS_NUMBER);
         editTitre.setEnabled(false);
 
-        TextView dateInspection = new TextView(getContext());
-        dateInspection.setText("" + fut.getDateInspection());
-        if ((System.currentTimeMillis() - fut.getDateInspectionToLong()) >= TableGestion.instance(getContext()).delaiInspectionBaril()) {
-            dateInspection.setTextColor(Color.RED);
-        } else if ((System.currentTimeMillis() - fut.getDateInspectionToLong()) >= (TableGestion.instance(getContext()).avertissementInspectionBaril())) {
-            dateInspection.setTextColor(Color.rgb(198, 193, 13));
-        } else {
-            dateInspection.setTextColor(Color.rgb(34, 177, 76));
-        }
+        texteDateInspection = new TextView(getContext());
+        texteDateInspection.setFocusable(false);
+        texteDateInspection.setOnClickListener(this);
+        texteDateInspection.setGravity(Gravity.CENTER_VERTICAL);
 
         TableRow ligneCapacite = new TableRow(getContext());
         LinearLayout layoutCapacite = new LinearLayout(getContext());
@@ -198,7 +202,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         layoutTitre.addView(titre);
         layoutTitre.addView(editTitre);
         ligneTitreInspection.addView(layoutTitre, parametre);
-        ligneTitreInspection.addView(dateInspection, parametre);
+        ligneTitreInspection.addView(texteDateInspection, parametre);
         tableauDescription.addView(ligneTitreInspection);
         layoutCapacite.addView(capacite);
         layoutCapacite.addView(editCapacite);
@@ -251,16 +255,35 @@ public class VueFut extends TableLayout implements View.OnClickListener {
     private void afficher() {
         editTitre.setEnabled(false);
         editTitre.setText("" + fut.getNumero());
+
+        dateInspection = fut.getDateInspectionToLong();
+        afficherDateInspection();
+        texteDateInspection.setEnabled(false);
+        
         editCapacite.setEnabled(false);
         editCapacite.setText("" + fut.getCapacite());
+        
         editActif.setChecked(fut.getActif());
         editActif.setEnabled(false);
+        
         ligneBouton.removeAllViews();
         ligneBouton.addView(btnModifier);
     }
 
+    private void afficherDateInspection() {
+        texteDateInspection.setText(DateToString.dateToString(dateInspection));
+        if ((System.currentTimeMillis() - dateInspection) >= TableGestion.instance(getContext()).delaiInspectionBaril()) {
+            texteDateInspection.setTextColor(Color.RED);
+        } else if ((System.currentTimeMillis() - dateInspection) >= (TableGestion.instance(getContext()).avertissementInspectionBaril())) {
+            texteDateInspection.setTextColor(Color.rgb(198, 193, 13));
+        } else {
+            texteDateInspection.setTextColor(Color.rgb(34, 177, 76));
+        }
+    }
+
     private void modifier() {
         editTitre.setEnabled(true);
+        texteDateInspection.setEnabled(true);
         editCapacite.setEnabled(true);
         editActif.setEnabled(true);
         ligneBouton.removeAllViews();
@@ -291,7 +314,7 @@ public class VueFut extends TableLayout implements View.OnClickListener {
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite, fut.getId_noeud(), fut.getDateEtatToLong(), fut.getId_brassin(), fut.getDateInspectionToLong(), editActif.isChecked());
+            TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite, fut.getId_noeud(), fut.getDateEtatToLong(), fut.getId_brassin(), dateInspection, editActif.isChecked());
             afficher();
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_SHORT).show();
@@ -394,6 +417,11 @@ public class VueFut extends TableLayout implements View.OnClickListener {
         else if (v.equals(btnAnnuler)) {
             afficher();
         }
+        else if (v.equals(texteDateInspection)){
+            Calendar calendrier = Calendar.getInstance();
+            calendrier.setTimeInMillis(dateInspection);
+            new DatePickerDialog(getContext(), this, calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).show();
+        }
         else if (v.equals(btnVider)) {
             TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fut.getDateInspectionToLong(), fut.getActif());
             parent.invalidate();
@@ -410,6 +438,12 @@ public class VueFut extends TableLayout implements View.OnClickListener {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, fut.getId(), -1);
             afficherHistorique();
         }
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int annee, int mois, int jour) {
+        dateInspection = new GregorianCalendar(annee, mois, jour).getTimeInMillis();
+        afficherDateInspection();
     }
 
     @Override
