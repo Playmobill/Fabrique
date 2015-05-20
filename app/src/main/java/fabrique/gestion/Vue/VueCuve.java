@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableCheminBrassinFut;
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableEmplacement;
@@ -36,6 +37,7 @@ import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
 import fabrique.gestion.FragmentAmeliore;
+import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.Cuve;
 import fabrique.gestion.Objets.DateToString;
 import fabrique.gestion.Objets.Emplacement;
@@ -69,6 +71,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
     private Button btnEtatSuivantAvecBrassin, btnEtatSuivantSansBrassin, btnTransfere;
     private ArrayList<Fut> listeFutSansBrassin;
     private Spinner spinnerListeFutSansBrassin;
+    private EditText quantiteTransfere;
 
     //Historique
     private LinearLayout tableauHistorique;
@@ -446,6 +449,8 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 }
                 spinnerListeFutSansBrassin.setAdapter(adapteurListeCuveSansBrassin);
                 ligneChoixFutur.addView(spinnerListeFutSansBrassin);
+                quantiteTransfere = new EditText(getContext());
+                ligneChoixFutur.addView(quantiteTransfere);
             }
             //Si il n'y a ni etat suivant avec brassin ni etat suivant sans brassin dans ce recipient
             if ((noeud.getNoeudAvecBrassin(getContext()) == null) && (noeud.getNoeudSansBrassin(getContext()) == null)) {
@@ -461,6 +466,8 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 }
                 spinnerListeFutSansBrassin.setAdapter(adapteurListeCuveSansBrassin);
                 ligneChoixFutur.addView(spinnerListeFutSansBrassin);
+                quantiteTransfere = new EditText(getContext());
+                ligneChoixFutur.addView(quantiteTransfere);
             }
         } else {
             //Si il y a un prochain etat avec brassin dans ce recipient
@@ -505,10 +512,38 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
             afficherCheminBrassin();
         }
         else if (v.equals(btnTransfere) && spinnerListeFutSansBrassin.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
-            Fut fut = listeFutSansBrassin.get(spinnerListeFutSansBrassin.getSelectedItemPosition());
-            TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud().getId(), System.currentTimeMillis(), cuve.getIdBrassin(), fut.getDateInspectionToLong(), fut.getActif());
-            TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), -1, cuve.getActif());
-            parent.invalidate();
+            int quantite;
+            try {
+                quantite = Integer.parseInt(quantiteTransfere.getText().toString());
+            } catch (Exception e) {
+                quantite = 0;
+                Toast.makeText(getContext(), "La quantite inscrite ne peut être lu.", Toast.LENGTH_SHORT).show();
+            }
+            if (quantite != 0) {
+                Fut fut = listeFutSansBrassin.get(spinnerListeFutSansBrassin.getSelectedItemPosition());
+                Brassin brassin = TableBrassin.instance(getContext()).recupererId(cuve.getIdBrassin());
+                //Si la quantite que l'on veut transferer est plus petit à la quantite du brassin
+                //ET que cette quantite est plus petite ou egal à la capacite du fut alors on creer un nouveau brassin
+                if ((brassin.getQuantite() > quantite) && (quantite <= fut.getCapacite())) {
+                    brassin.setQuantite(brassin.getQuantite() - quantite);
+                    long idNouveauBrassin = TableBrassin.instance(getContext()).ajouter(getContext(), brassin.getId_brassinPere(), quantite);
+                    TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud().getId(), System.currentTimeMillis(), idNouveauBrassin, fut.getDateInspectionToLong(), fut.getActif());
+                    parent.invalidate();
+                }
+                else if ((brassin.getQuantite() == quantite) && (quantite <= fut.getCapacite())) {
+                    TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud().getId(), System.currentTimeMillis(), cuve.getIdBrassin(), fut.getDateInspectionToLong(), fut.getActif());
+                    TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), -1, cuve.getActif());
+                    parent.invalidate();
+                }
+                //Si la quantite que l'on veut transferer est plus grande que la quantite du brassin
+                //ET que la quantite du brassin est plus petite ou egal à la capacite du fut alors on transfere
+                //en prenant la quantite du brassin
+                else if ((brassin.getQuantite() < quantite) && (brassin.getQuantite() <= fut.getCapacite())) {
+                    TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud().getId(), System.currentTimeMillis(), cuve.getIdBrassin(), fut.getDateInspectionToLong(), fut.getActif());
+                    TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), -1, cuve.getActif());
+                    parent.invalidate();
+                }
+            }
         }
     }
 

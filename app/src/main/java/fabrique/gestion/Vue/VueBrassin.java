@@ -30,6 +30,7 @@ import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
 import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.Objets.Brassin;
+import fabrique.gestion.Objets.BrassinPere;
 import fabrique.gestion.Objets.DateToString;
 import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.Objets.ListeHistorique;
@@ -38,7 +39,7 @@ import fabrique.gestion.R;
 
 public class VueBrassin extends LinearLayout implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
-    private Brassin brassin;
+    private BrassinPere brassin;
 
     //Description
     private LinearLayout tableauDescription;
@@ -67,7 +68,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
         super(contexte);
     }
 
-    public VueBrassin(Context contexte, Brassin brassin) {
+    public VueBrassin(Context contexte, BrassinPere brassin) {
         super(contexte);
 
         this.brassin = brassin;
@@ -410,17 +411,19 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
                 TableHistorique.instance(getContext()).ajouter(texteTransfert, date, 0, 0, 0, brassin.getId());
             }
 
-            TableBrassin.instance(getContext()).modifier(
-                    brassin.getId(),
-                    brassin.getId_brassinPere(),
-                    numero,
-                    editCommentaire.getText().toString(),
-                    longDateCreation,
-                    quantite,
-                    recette,
-                    densiteOriginale,
-                    densiteFinale);
-            indexRecette = editRecette.getSelectedItemPosition();
+            if (brassin instanceof Brassin) {
+                TableBrassin.instance(getContext()).modifier(
+                        brassin.getId(),
+                        ((Brassin)brassin).getId_brassinPere(),
+                        numero,
+                        editCommentaire.getText().toString(),
+                        longDateCreation,
+                        quantite,
+                        recette,
+                        densiteOriginale,
+                        densiteFinale);
+                indexRecette = editRecette.getSelectedItemPosition();
+            }
 
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_SHORT).show();

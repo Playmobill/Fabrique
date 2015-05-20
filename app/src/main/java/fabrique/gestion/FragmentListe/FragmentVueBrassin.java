@@ -18,8 +18,10 @@ import android.widget.Toast;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableBrassinPere;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Objets.Brassin;
+import fabrique.gestion.Objets.BrassinPere;
 import fabrique.gestion.R;
 import fabrique.gestion.Vue.VueBrassin;
 
@@ -44,7 +46,7 @@ public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClick
 
         contexte = container.getContext();
 
-        Brassin brassin = TableBrassin.instance(contexte).recupererId(getArguments().getLong("id"));
+        BrassinPere brassinPere = TableBrassinPere.instance(contexte).recupererId(getArguments().getLong("id"));
 
         LinearLayout layout = new LinearLayout(contexte);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -85,16 +87,16 @@ public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClick
             ligneEnTete.addView(ligneRecherche);
         layout.addView(ligneEnTete, parametreLigneSpinner);
 
-        if (brassin != null) {
-            index = TableBrassin.instance(contexte).recupererIndexSelonId(brassin.getId());
+        if (brassinPere != null) {
+            index = TableBrassin.instance(contexte).recupererIndexSelonId(brassinPere.getId());
             if (index > 0) {
                 btnPrecedent.setEnabled(true);
             }
-            txtActuel.setText("Brassin " + brassin.getNumero());
+            txtActuel.setText("Brassin " + brassinPere.getNumero());
             if (index < TableBrassin.instance(contexte).tailleListe()-1) {
                 btnSuivant.setEnabled(true);
             }
-            layout.addView(new VueBrassin(contexte, brassin));
+            layout.addView(new VueBrassin(contexte, brassinPere));
         } else {
             index = -1;
             TextView txtErreur = new TextView(contexte);
