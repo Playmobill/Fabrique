@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import fabrique.gestion.R;
 /**
  * Created by thibaut on 01/05/15.
  */
-public class FragmentJour extends FragmentAmeliore {
+public class FragmentJour extends FragmentAmeliore implements View.OnClickListener {
 
     long jour, mois, annee;
     private Context contexte;
@@ -38,7 +39,7 @@ public class FragmentJour extends FragmentAmeliore {
     private ArrayList<LinearLayout> evenements;
     private ArrayList<Calendrier> calendrier;
     private ArrayList<Historique> historique;
-    private Button jourSuivant, jourPrecedent;
+    private Button jourSuivant, jourPrecedent, ajoutEvent;
 
     @Nullable
     @Override
@@ -116,6 +117,9 @@ public class FragmentJour extends FragmentAmeliore {
             }
         }
 
+        ajoutEvent = (Button) view.findViewById(R.id.BtnAjoutEvent);
+        ajoutEvent.setOnClickListener(this);
+
         return view;
     }
 
@@ -129,5 +133,13 @@ public class FragmentJour extends FragmentAmeliore {
         transaction.replace(R.id.onglet, new FragmentCalendrier());
         transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
         transaction.addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.equals(ajoutEvent)){
+            LayoutInflater li = LayoutInflater.from(contexte);
+            View promptFormulaire = li.inflate(R.layout.dialog_ajout_evenement, null);
+        }
     }
 }

@@ -236,6 +236,8 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (2 , 'Inspection de Baril', 0)");
         db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (0 , 'Lavage acide', 0)");
         db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (1 , 'Lavage acide', 0)");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (0 , 'Rinçage', 0)");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (1 , 'Rinçage', 0)");
         //<- auto ; -> manuel
         db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Relevé de température', 1)");
         db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Ajustement contrôleur', 1)");
@@ -245,8 +247,6 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Filtration', 1)");
         db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Ajustement Gazéification', 1)");
         db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Mesure CO2 dissout', 1)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (0 , 'Rinçage', 1)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (1 , 'Rinçage', 1)");
     }
 
     @Override
