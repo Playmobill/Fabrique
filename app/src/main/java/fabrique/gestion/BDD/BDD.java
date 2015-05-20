@@ -55,8 +55,19 @@ public class BDD extends SQLiteOpenHelper {
                                                 "avecBrassin INTEGER NOT NULL," +
                                                 "actif INTEGER NOT NULL)";
 
+    private static String createurTableBrassinPere = "CREATE TABLE IF NOT EXISTS BrassinPere (" +
+                                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                                "numero INTEGER NOT NULL," +
+                                                "commentaire TEXT," +
+                                                "dateCreation INTEGER NOT NULL," +
+                                                "quantite INTEGER NOT NULL," +
+                                                "id_recette INTEGER NOT NULL," +
+                                                "densiteOriginale REAL," +
+                                                "densiteFinale REAL)";
+
     private static String createurTableBrassin = "CREATE TABLE IF NOT EXISTS Brassin (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                                "id_brassinPere INTEGER NOT NULL," +
                                                 "numero INTEGER NOT NULL," +
                                                 "commentaire TEXT," +
                                                 "dateCreation INTEGER NOT NULL," +
@@ -116,8 +127,7 @@ public class BDD extends SQLiteOpenHelper {
     private static String createurTableListeHistorique = "CREATE TABLE IF NOT EXISTS ListeHistorique (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                 "elementConcerne INTEGER NOT NULL, " +
-                                                "texte TEXT," +
-                                                "supprimable INTEGER NOT NULL)";
+                                                "texte TEXT)";
 
     private static String createurTableCalendrier = "CREATE TABLE IF NOT EXISTS Calendrier (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -155,6 +165,7 @@ public class BDD extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createurTableTypeBiere);
         db.execSQL(createurTableRecette);
+        db.execSQL(createurTableBrassinPere);
         db.execSQL(createurTableBrassin);
         db.execSQL(createurTableEmplacement);
         db.execSQL(createurTableEtatFermenteur);
@@ -221,26 +232,26 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Dame de Pique', 'Dam', 13, "+Color.argb(255,255,255,255)+", "+Color.argb(255,115,65,45)+", 1)");
         db.execSQL("INSERT INTO Recette (nom, acronyme, id_typeBiere, couleurTexte, couleurFond, actif) VALUES ('Duplessis', 'Dup', 14, "+Color.argb(255,255,255,255)+", "+Color.argb(255,30,30,30)+", 1)");
 
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Relevé de densité', 0)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Transfert', 0)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Gazéification', 0)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Enfûtage', 0)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (0 , 'Lavage Caustique', 0)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (1 , 'Lavage Caustique', 0)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (2 , 'Inspection de Baril', 0)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (0 , 'Lavage acide', 0)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (1 , 'Lavage acide', 0)");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Relevé de densité')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Transfert')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Gazéification')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Enfûtage')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (0 , 'Lavage Caustique')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (1 , 'Lavage Caustique')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (2 , 'Inspection de Baril')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (0 , 'Lavage acide')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (1 , 'Lavage acide')");
         //<- auto ; -> manuel
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Relevé de température', 1)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Ajustement contrôleur', 1)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Crash', 1)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Drainage de levure', 1)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Récupération de levure', 1)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Filtration', 1)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Ajustement Gazéification', 1)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (3 , 'Mesure CO2 dissout', 1)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (0 , 'Rinçage', 1)");
-        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte, supprimable) VALUES (1 , 'Rinçage', 1)");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Relevé de température')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Ajustement contrôleur')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Crash')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Drainage de levure')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Récupération de levure')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Filtration')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Ajustement Gazéification')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (3 , 'Mesure CO2 dissout')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (0 , 'Rinçage')");
+        db.execSQL("INSERT INTO ListeHistorique (elementConcerne, texte) VALUES (1 , 'Rinçage')");
     }
 
     @Override

@@ -342,17 +342,18 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     }
                                 }
                             }
-                            //Si il n'y a que 7 elements et qu'il n 'y a pas de corruption detecte
-                            if ((textesBrassin.size() == 7) && !corrompuBrassin) {
+                            //Si il n'y a que 8 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesBrassin.size() == 8) && !corrompuBrassin) {
                                 try {
                                     TableBrassin.instance(contexte).ajouter(
-                                            Integer.parseInt(textesBrassin.get(0)),
-                                            textesBrassin.get(1),
-                                            Long.parseLong(textesBrassin.get(2)),
-                                            Integer.parseInt(textesBrassin.get(3)),
-                                            Long.parseLong(textesBrassin.get(4)),
-                                            Float.parseFloat(textesBrassin.get(5)),
-                                            Float.parseFloat(textesBrassin.get(6)));
+                                            Long.parseLong(textesBrassin.get(0)),
+                                            Integer.parseInt(textesBrassin.get(1)),
+                                            textesBrassin.get(2),
+                                            Long.parseLong(textesBrassin.get(3)),
+                                            Integer.parseInt(textesBrassin.get(4)),
+                                            Long.parseLong(textesBrassin.get(5)),
+                                            Float.parseFloat(textesBrassin.get(6)),
+                                            Float.parseFloat(textesBrassin.get(7)));
                                 } catch (Exception e) {}
                             }
                             break;

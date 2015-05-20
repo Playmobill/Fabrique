@@ -412,6 +412,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
 
             TableBrassin.instance(getContext()).modifier(
                     brassin.getId(),
+                    brassin.getId_brassinPere(),
                     numero,
                     editCommentaire.getText().toString(),
                     longDateCreation,

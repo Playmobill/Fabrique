@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import fabrique.gestion.Objets.Brassin;
+import fabrique.gestion.Objets.BrassinPere;
 
 public class TableBrassin extends Controle {
 
@@ -29,13 +30,14 @@ public class TableBrassin extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            brassins.add(new Brassin(tmp.getLong(0), tmp.getInt(1), tmp.getString(2), tmp.getLong(3), tmp.getInt(4), tmp.getLong(5), tmp.getFloat(6), tmp.getFloat(7)));
+            brassins.add(new Brassin(tmp.getLong(0), tmp.getLong(1), tmp.getInt(2), tmp.getString(3), tmp.getLong(4), tmp.getInt(5), tmp.getLong(6), tmp.getFloat(7), tmp.getFloat(8)));
         }
         Collections.sort(brassins);
     }
 
-    public long ajouter(int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
+    public long ajouter(long id_brassinPere, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
         ContentValues valeur = new ContentValues();
+        valeur.put("id_brassinPere", id_brassinPere);
         valeur.put("numero", numero);
         valeur.put("commentaire", commentaire);
         valeur.put("dateCreation", dateCreation);
@@ -45,7 +47,34 @@ public class TableBrassin extends Controle {
         valeur.put("densiteFinale", densiteFinale);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            brassins.add(new Brassin(id, numero, commentaire, dateCreation, quantite, id_recette, densiteOriginale, densiteFinale));
+            brassins.add(new Brassin(id, id_brassinPere, numero, commentaire, dateCreation, quantite, id_recette, densiteOriginale, densiteFinale));
+            Collections.sort(brassins);
+        }
+        return id;
+    }
+
+    public long ajouter(Context contexte, long id_brassinPere){
+        BrassinPere brassinPere = TableBrassinPere.instance(contexte).recupererId(id_brassinPere);
+        int numero = brassinPere.getNumero();
+        String commentaire = brassinPere.getCommentaire();
+        long dateCreation  = brassinPere.getDateLong();
+        int quantite = brassinPere.getQuantite();
+        long id_recette = brassinPere.getId_recette();
+        float densiteOriginale = brassinPere.getDensiteOriginale();
+        float densiteFinale = brassinPere.getDensiteFinale();
+        
+        ContentValues valeur = new ContentValues();
+        valeur.put("id_brassinPere", id_brassinPere);
+        valeur.put("numero", numero);
+        valeur.put("commentaire", commentaire);
+        valeur.put("dateCreation", dateCreation);
+        valeur.put("quantite", quantite);
+        valeur.put("id_recette", id_recette);
+        valeur.put("densiteOriginale", densiteOriginale);
+        valeur.put("densiteFinale", densiteFinale);
+        long id = accesBDD.insert(nomTable, null, valeur);
+        if (id != -1) {
+            brassins.add(new Brassin(id, id_brassinPere, numero, commentaire, dateCreation, quantite, id_recette, densiteOriginale, densiteFinale));
             Collections.sort(brassins);
         }
         return id;
@@ -84,9 +113,9 @@ public class TableBrassin extends Controle {
         }
         return null;
     }
-
-    public void modifier(long id, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
+    public void modifier(long id, long id_brassinPere, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
         ContentValues valeur = new ContentValues();
+        valeur.put("id_brassinPere", id_brassinPere);
         valeur.put("numero", numero);
         valeur.put("commentaire", commentaire);
         valeur.put("dateCreation", dateCreation);

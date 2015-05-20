@@ -18,6 +18,7 @@ import java.util.GregorianCalendar;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableBrassinPere;
 import fabrique.gestion.BDD.TableCheminBrassinFermenteur;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableRecette;
@@ -147,7 +148,8 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             calendrier.setTimeInMillis(System.currentTimeMillis());
             long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
 
-            long id_brassin = TableBrassin.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale);
+            long id_brassinPere = TableBrassinPere.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale);
+            long id_brassin = TableBrassin.instance(contexte).ajouter(contexte, id_brassinPere);
 
             Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(Long.parseLong(editFermenteur.getItemAtPosition(editFermenteur.getSelectedItemPosition()).toString()));
             TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud().getId(), date, id_brassin, fermenteur.getActif());
