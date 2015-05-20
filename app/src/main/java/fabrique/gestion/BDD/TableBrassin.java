@@ -23,58 +23,27 @@ public class TableBrassin extends Controle {
         return INSTANCE;
     }
 
-    private TableBrassin(Context contexte){
+    private TableBrassin(Context contexte) {
         super(contexte, "Brassin");
 
         brassins = new ArrayList<>();
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            brassins.add(new Brassin(tmp.getLong(0), tmp.getLong(1), tmp.getInt(2), tmp.getString(3), tmp.getLong(4), tmp.getInt(5), tmp.getLong(6), tmp.getFloat(7), tmp.getFloat(8)));
+            brassins.add(new Brassin(tmp.getLong(0), TableBrassinPere.instance(contexte).recupererId(tmp.getLong(1)), tmp.getInt(2)));
         }
         Collections.sort(brassins);
     }
 
-    public long ajouter(long id_brassinPere, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
-        ContentValues valeur = new ContentValues();
-        valeur.put("id_brassinPere", id_brassinPere);
-        valeur.put("numero", numero);
-        valeur.put("commentaire", commentaire);
-        valeur.put("dateCreation", dateCreation);
-        valeur.put("quantite", quantite);
-        valeur.put("id_recette", id_recette);
-        valeur.put("densiteOriginale", densiteOriginale);
-        valeur.put("densiteFinale", densiteFinale);
-        long id = accesBDD.insert(nomTable, null, valeur);
-        if (id != -1) {
-            brassins.add(new Brassin(id, id_brassinPere, numero, commentaire, dateCreation, quantite, id_recette, densiteOriginale, densiteFinale));
-            Collections.sort(brassins);
-        }
-        return id;
-    }
-
-    public long ajouter(Context contexte, long id_brassinPere){
-        BrassinPere brassinPere = TableBrassinPere.instance(contexte).recupererId(id_brassinPere);
-        int numero = brassinPere.getNumero();
-        String commentaire = brassinPere.getCommentaire();
-        long dateCreation  = brassinPere.getDateLong();
-        int quantite = brassinPere.getQuantite();
-        long id_recette = brassinPere.getId_recette();
-        float densiteOriginale = brassinPere.getDensiteOriginale();
-        float densiteFinale = brassinPere.getDensiteFinale();
+    public long ajouter(Context contexte, long id_brassinPere, int quantite) {
         
         ContentValues valeur = new ContentValues();
         valeur.put("id_brassinPere", id_brassinPere);
-        valeur.put("numero", numero);
-        valeur.put("commentaire", commentaire);
-        valeur.put("dateCreation", dateCreation);
         valeur.put("quantite", quantite);
-        valeur.put("id_recette", id_recette);
-        valeur.put("densiteOriginale", densiteOriginale);
-        valeur.put("densiteFinale", densiteFinale);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            brassins.add(new Brassin(id, id_brassinPere, numero, commentaire, dateCreation, quantite, id_recette, densiteOriginale, densiteFinale));
+            BrassinPere brassinPere = TableBrassinPere.instance(contexte).recupererId(id_brassinPere);
+            brassins.add(new Brassin(id, brassinPere, quantite));
             Collections.sort(brassins);
         }
         return id;

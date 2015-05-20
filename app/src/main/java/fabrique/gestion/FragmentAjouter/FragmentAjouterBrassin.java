@@ -149,7 +149,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
 
             long id_brassinPere = TableBrassinPere.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale);
-            long id_brassin = TableBrassin.instance(contexte).ajouter(contexte, id_brassinPere);
+            long id_brassin = TableBrassin.instance(contexte).ajouter(contexte, id_brassinPere, quantite);
 
             Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(Long.parseLong(editFermenteur.getItemAtPosition(editFermenteur.getSelectedItemPosition()).toString()));
             TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud().getId(), date, id_brassin, fermenteur.getActif());
