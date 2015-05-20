@@ -14,10 +14,10 @@ public class BoutonCalendrier extends RelativeLayout {
     protected Button bouton;
     protected int jour, mois, annee;
     protected TextView textJour;
-    protected TextView evenement;
+    protected TextView evenement, nbEvent;
     protected LayoutParams parametres;
 
-    public BoutonCalendrier(Context contexte, int jour_, int mois_, int annee_, int longueur, int hauteur, String evenement_) {
+    public BoutonCalendrier(Context contexte, int jour_, int mois_, int annee_, int longueur, int hauteur, String evenement_, int nbEvent_) {
         super(contexte);
 
         bouton = new Button(contexte);
@@ -40,11 +40,26 @@ public class BoutonCalendrier extends RelativeLayout {
 
         evenement = new TextView(contexte);
         evenement.setText(evenement_);
-        this.addView(evenement);
         parametres = new LayoutParams(longueur,(int)evenement.getTextSize()+2 );
         parametres.addRule(ALIGN_PARENT_LEFT);
         parametres.addRule(CENTER_VERTICAL);
         evenement.setLayoutParams(parametres);
-        evenement.setPadding(10,0,10,0);
+        evenement.setPadding(10, 0, 10, 0);
+
+
+        this.addView(evenement);
+
+        if(nbEvent_ > 0) {
+            nbEvent = new TextView(contexte);
+            nbEvent.setText("+" + nbEvent_);
+            parametres = new LayoutParams(longueur, (int) nbEvent.getTextSize() + 2);
+            parametres.addRule(ALIGN_PARENT_LEFT);
+            parametres.addRule(CENTER_VERTICAL);
+            nbEvent.setLayoutParams(parametres);
+            nbEvent.setY(nbEvent.getY()+evenement.getTextSize()+5);
+            nbEvent.setPadding(10, 0, 10, 0);
+
+            this.addView(nbEvent);
+        }
     }
 }

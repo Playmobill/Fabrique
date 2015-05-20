@@ -94,21 +94,33 @@ public class FragmentCalendrier extends FragmentAmeliore implements View.OnClick
         for (int i = 1; i <= joursDansMois; i++) {
             evenement = "";
 
-            for (int j = 0; j < historique.size() && evenement.equals(""); j++) {
+            int compt = 0;
+
+            for (int j = 0; j < evenements.size() ; j++) {
+                cal.setTimeInMillis(evenements.get(j).getDateEvenement() * 1000);
+                if(cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i && cal.get(Calendar.YEAR) == annee){
+                    if(evenement.equals("")) {
+                        evenement = evenements.get(j).getNomEvenement();
+                    }
+                    else{
+                        compt++;
+                    }
+                }
+            }
+
+            for (int j = 0; j < historique.size(); j++) {
                 cal.setTimeInMillis(historique.get(j).getDate());
                 if(cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i && cal.get(Calendar.YEAR) == annee){
-                    evenement = historique.get(j).getTexte();
+                    if(evenement.equals("")) {
+                        evenement = historique.get(j).getTexte();
+                    }
+                    else{
+                        compt++;
+                    }
                 }
             }
 
-            for (int j = 0; j < evenements.size() && evenement.equals(""); j++) {
-                cal.setTimeInMillis(evenements.get(j).getDateEvenement()*1000);
-                if(cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i && cal.get(Calendar.YEAR) == annee){
-                    evenement = evenements.get(j).getNomEvenement();
-                }
-            }
-
-            listeBtnJours.add(new BoutonCalendrier(contexte, i, mois, annee, longueurBouton, hauteurBouton, evenement));
+            listeBtnJours.add(new BoutonCalendrier(contexte, i, mois, annee, longueurBouton, hauteurBouton, evenement, compt));
         }
 
         int k = 0;
@@ -173,13 +185,32 @@ public class FragmentCalendrier extends FragmentAmeliore implements View.OnClick
             int joursDansMois = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
             for (int i = 1; i <= joursDansMois; i++) {
                 evenement = "";
-                for (int j = 0; j < evenements.size() && evenement.equals(""); j++) {
-                    cal.setTimeInMillis(evenements.get(j).getDateEvenement()*1000);
+                int compt = 0;
+
+                for (int j = 0; j < evenements.size() ; j++) {
+                    cal.setTimeInMillis(evenements.get(j).getDateEvenement() * 1000);
                     if(cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i && cal.get(Calendar.YEAR) == annee){
-                        evenement = evenements.get(j).getNomEvenement();
+                        if(evenement.equals("")) {
+                            evenement = evenements.get(j).getNomEvenement();
+                        }
+                        else{
+                            compt++;
+                        }
                     }
                 }
-                listeBtnJours.add(new BoutonCalendrier(contexte, i, mois, annee, longueurBouton, hauteurBouton, evenement));
+
+                for (int j = 0; j < historique.size(); j++) {
+                    cal.setTimeInMillis(historique.get(j).getDate());
+                    if(cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i && cal.get(Calendar.YEAR) == annee){
+                        if(evenement.equals("")) {
+                            evenement = historique.get(j).getTexte();
+                        }
+                        else{
+                            compt++;
+                        }
+                    }
+                }
+                listeBtnJours.add(new BoutonCalendrier(contexte, i, mois, annee, longueurBouton, hauteurBouton, evenement, compt));
             }
 
             int k = 0;
@@ -230,13 +261,32 @@ public class FragmentCalendrier extends FragmentAmeliore implements View.OnClick
             int joursDansMois = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
             for (int i = 1; i <= joursDansMois; i++) {
                 evenement = "";
-                for (int j = 0; j < evenements.size() && evenement.equals(""); j++) {
-                    cal.setTimeInMillis(evenements.get(j).getDateEvenement()*1000);
+                int compt = 0;
+
+                for (int j = 0; j < evenements.size() ; j++) {
+                    cal.setTimeInMillis(evenements.get(j).getDateEvenement() * 1000);
                     if(cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i && cal.get(Calendar.YEAR) == annee){
-                        evenement = evenements.get(j).getNomEvenement();
+                        if(evenement.equals("")) {
+                            evenement = evenements.get(j).getNomEvenement();
+                        }
+                        else{
+                            compt++;
+                        }
                     }
                 }
-                listeBtnJours.add(new BoutonCalendrier(contexte, i, mois, annee, longueurBouton, hauteurBouton, evenement));
+
+                for (int j = 0; j < historique.size(); j++) {
+                    cal.setTimeInMillis(historique.get(j).getDate());
+                    if(cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i && cal.get(Calendar.YEAR) == annee){
+                        if(evenement.equals("")) {
+                            evenement = historique.get(j).getTexte();
+                        }
+                        else{
+                            compt++;
+                        }
+                    }
+                }
+                listeBtnJours.add(new BoutonCalendrier(contexte, i, mois, annee, longueurBouton, hauteurBouton, evenement, compt));
             }
 
             int k = 0;
