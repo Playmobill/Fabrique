@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
 import fabrique.gestion.BDD.TableRecette;
@@ -409,20 +408,6 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
 
                 String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(1).getTexte() + " : " + editDensiteFinale.getText().toString();
                 TableHistorique.instance(getContext()).ajouter(texteTransfert, date, 0, 0, 0, brassin.getId());
-            }
-
-            if (brassin instanceof Brassin) {
-                TableBrassin.instance(getContext()).modifier(
-                        brassin.getId(),
-                        ((Brassin)brassin).getId_brassinPere(),
-                        numero,
-                        editCommentaire.getText().toString(),
-                        longDateCreation,
-                        quantite,
-                        recette,
-                        densiteOriginale,
-                        densiteFinale);
-                indexRecette = editRecette.getSelectedItemPosition();
             }
 
         } else {

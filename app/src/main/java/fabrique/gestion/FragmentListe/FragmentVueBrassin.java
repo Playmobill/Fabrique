@@ -23,7 +23,7 @@ import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.BrassinPere;
 import fabrique.gestion.R;
-import fabrique.gestion.Vue.VueBrassin;
+import fabrique.gestion.Vue.VueBrassinPere;
 
 public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClickListener{
 
@@ -96,7 +96,7 @@ public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClick
             if (index < TableBrassin.instance(contexte).tailleListe()-1) {
                 btnSuivant.setEnabled(true);
             }
-            layout.addView(new VueBrassin(contexte, brassinPere));
+            layout.addView(new VueBrassinPere(contexte, brassinPere));
         } else {
             index = -1;
             TextView txtErreur = new TextView(contexte);
