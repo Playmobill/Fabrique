@@ -92,12 +92,12 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
         this.parent = parent;
         this.cuve = cuve;
 
-        tableauCheminBrassin = new TableLayout(contexte);
+        tableauCheminBrassin = new TableLayout(getContext());
         addView(tableauCheminBrassin);
 
-        TableRow ligne = new TableRow(contexte);
+        TableRow ligne = new TableRow(getContext());
 
-        tableauDescription = new TableLayout(contexte);
+        tableauDescription = new TableLayout(getContext());
         ligne.addView(cadre(tableauDescription, " Description "));
 
         tableauHistorique = new TableLayout(getContext());
@@ -543,23 +543,46 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 Brassin brassin = TableBrassin.instance(getContext()).recupererId(cuve.getIdBrassin());
                 //Si la quantite que l'on veut transferer est plus petit à la quantite du brassin
                 //ET que cette quantite est plus petite ou égal à la capacite de la cuve alors on creer un nouveau brassin
-                if ((brassin.getQuantite() > quantite) && (quantite <= cuve.getCapacite())) {
+                if ((brassin.getQuantite() > quantite) && (quantite <= fut.getCapacite())) {
+                    Calendar calendrier = Calendar.getInstance();
+                    calendrier.setTimeInMillis(System.currentTimeMillis());
+                    long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(4).getTexte() + " du brassin n°" + brassin.getId() + " (" + quantite + "L)" + " de la cuve n°" + cuve.getId() + " au fût n°" + fut.getId();
+                    TableHistorique.instance(getContext()).ajouter(texteTransfert, date, -1, cuve.getId(), fut.getId(), brassin.getId_brassinPere());
+
                     TableBrassin.instance(getContext()).modifier(brassin.getId(), brassin.getId_brassinPere(), brassin.getNumero(), brassin.getCommentaire(), brassin.getDateLong(), brassin.getQuantite() - quantite, brassin.getId_recette(), brassin.getDensiteOriginale(), brassin.getDensiteFinale());
                     long idNouveauBrassin = TableBrassin.instance(getContext()).ajouter(getContext(), brassin.getId_brassinPere(), quantite);
                     TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), idPremierNoeud, System.currentTimeMillis(), idNouveauBrassin, fut.getDateInspectionToLong(), fut.getActif());
-                    afficherCheminBrassin();
+
+                    parent.invalidate();
                 }
                 //Si la quantite que l'on veut transferer est plus grande ou égal à la quantite du brassin
                 //ET que la quantite du brassin est plus petite ou égal à la capacite de la cuve alors on transfere le brassin
-                else if ((brassin.getQuantite() <= quantite) && (brassin.getQuantite() <= cuve.getCapacite())) {
+                else if ((brassin.getQuantite() <= quantite) && (brassin.getQuantite() <= fut.getCapacite())) {
+                    Calendar calendrier = Calendar.getInstance();
+                    calendrier.setTimeInMillis(System.currentTimeMillis());
+                    long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(4).getTexte() + " du brassin n°" + brassin.getNumero() + " (" + quantite + "L)" + " de la cuve n°" + cuve.getId() + " au fût n°" + fut.getId();
+                    TableHistorique.instance(getContext()).ajouter(texteTransfert, date, -1, cuve.getId(), fut.getId(), brassin.getId_brassinPere());
+
                     TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), idPremierNoeud, System.currentTimeMillis(), cuve.getIdBrassin(), fut.getDateInspectionToLong(), fut.getActif());
                     TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), -1, cuve.getActif());
+
                     parent.invalidate();
                 }
             }
         }
         else if (v.equals(btnVider)) {
+            Brassin brassin = TableBrassin.instance(getContext()).recupererId(cuve.getIdBrassin());
+
+            Calendar calendrier = Calendar.getInstance();
+            calendrier.setTimeInMillis(System.currentTimeMillis());
+            long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+            String texteTransfert = "Perte de " + brassin.getQuantite() + "L" + " du brassin n°" + brassin.getNumero();
+            TableHistorique.instance(getContext()).ajouter(texteTransfert, date, -1, -1, -1, brassin.getId_brassinPere());
+
             TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), -1, cuve.getActif());
+
             parent.invalidate();
         }
     }

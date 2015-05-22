@@ -551,22 +551,45 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                 //Si la quantite que l'on veut transferer est plus petit à la quantite du brassin
                 //ET que cette quantite est plus petite ou égal à la capacite de la cuve alors on creer un nouveau brassin
                 if ((brassin.getQuantite() > quantite) && (quantite <= cuve.getCapacite())) {
+                    Calendar calendrier = Calendar.getInstance();
+                    calendrier.setTimeInMillis(System.currentTimeMillis());
+                    long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(2).getTexte() + " du brassin n°" + brassin.getId() + " (" + quantite + "L)" + " du fermenteur n°" + fermenteur.getId() + " à la cuve n°" + cuve.getId();
+                    TableHistorique.instance(getContext()).ajouter(texteTransfert, date, fermenteur.getId(), cuve.getId(), -1, brassin.getId_brassinPere());
+
                     TableBrassin.instance(getContext()).modifier(brassin.getId(), brassin.getId_brassinPere(), brassin.getNumero(), brassin.getCommentaire(), brassin.getDateLong(), brassin.getQuantite() - quantite, brassin.getId_recette(), brassin.getDensiteOriginale(), brassin.getDensiteFinale());
                     long idNouveauBrassin = TableBrassin.instance(getContext()).ajouter(getContext(), brassin.getId_brassinPere(), quantite);
                     TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), idPremierNoeud, System.currentTimeMillis(), cuve.getCommentaireEtat(), idNouveauBrassin, cuve.getActif());
-                    afficherCheminBrassin();
+
+                    parent.invalidate();
                 }
                 //Si la quantite que l'on veut transferer est plus grande ou égal à la quantite du brassin
                 //ET que la quantite du brassin est plus petite ou égal à la capacite de la cuve alors on transfere le brassin
                 else if ((brassin.getQuantite() <= quantite) && (brassin.getQuantite() <= cuve.getCapacite())) {
+                    Calendar calendrier = Calendar.getInstance();
+                    calendrier.setTimeInMillis(System.currentTimeMillis());
+                    long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(2).getTexte() + " du brassin n°" + brassin.getId() + " (" + quantite + "L)" + " du fermenteur n°" + fermenteur.getId() + " à la cuve n°" + cuve.getId();
+                    TableHistorique.instance(getContext()).ajouter(texteTransfert, date, fermenteur.getId(), cuve.getId(), -1, brassin.getId_brassinPere());
+
                     TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), idPremierNoeud, System.currentTimeMillis(), cuve.getCommentaireEtat(), brassin.getId(), cuve.getActif());
                     TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fermenteur.getActif());
+
                     parent.invalidate();
                 }
             }
         }
         else if (v.equals(btnVider)) {
+            Brassin brassin = TableBrassin.instance(getContext()).recupererId(fermenteur.getIdBrassin());
+
+            Calendar calendrier = Calendar.getInstance();
+            calendrier.setTimeInMillis(System.currentTimeMillis());
+            long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+            String texteTransfert = "Perte de " + brassin.getQuantite() + "L" + " du brassin n°" + brassin.getNumero();
+            TableHistorique.instance(getContext()).ajouter(texteTransfert, date, -1, -1, -1, brassin.getId_brassinPere());
+
             TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fermenteur.getActif());
+
             parent.invalidate();
         }
     }

@@ -139,7 +139,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
         }
 
         if(erreur.equals("") && quantite > TableFermenteur.instance(contexte).recupererIndex(editFermenteur.getSelectedItemPosition()).getCapacite()){
-            erreur = erreur + "Le quantité du brassin est trop importante par rapport à la capacité du brassin.";
+            erreur = erreur + "Le quantité du brassin est trop importante par rapport à la capacité du fermenteur.";
         }
 
 
