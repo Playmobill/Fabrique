@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import fabrique.gestion.ActivityAccueil;
+import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableBrassinPere;
 import fabrique.gestion.BDD.TableEtatFut;
 import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.FragmentAmeliore;
@@ -118,7 +120,15 @@ public class FragmentListeFut extends FragmentAmeliore implements AdapterView.On
             ArrayList<Fut> listeFut = listeListeFut.get(i);
                 TableRow ligneTitre = new TableRow(contexte);
                     TextView titre = new TextView(contexte);
-                    long id_brassin = listeFut.get(0).getId_brassin();
+
+                    long id_brassin;
+                    try{
+                        id_brassin = TableBrassin.instance(contexte).recupererId(listeFut.get(0).getId_brassin()).getId_brassinPere();
+                    }
+                    catch(NullPointerException e){
+                        id_brassin = -1;
+                    }
+
                     if (id_brassin == -1) {
                         titre.setText("Sans brassin");
                     } else {
@@ -137,7 +147,7 @@ public class FragmentListeFut extends FragmentAmeliore implements AdapterView.On
 
             TableRow ligneTitre = new TableRow(contexte);
                 TextView titre = new TextView(contexte);
-                titre.setText("Désactiver");
+                titre.setText("Désactivés");
             ligneTitre.addView(titre, marge);
         tableau.addView(ligneTitre);
         ArrayList<Fut> listeFutNonActif = TableFut.instance(contexte).recupererFutNonActifs();

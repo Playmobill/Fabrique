@@ -130,10 +130,23 @@ public class TableFut extends Controle {
 
         ArrayList<Fut> cloneFuts = recupererFutActifs();
         while(cloneFuts.size()!=0) {
-            long id = cloneFuts.get(0).getId_brassin();
+            long id;
+            try {
+                id = TableBrassin.instance(contexte).recupererId(cloneFuts.get(0).getId_brassin()).getId_brassinPere();
+            }
+            catch (NullPointerException e){
+                id = -1;
+            }
             ArrayList<Fut> listeFutDeMemeBrassin = new ArrayList<>();
             for(int i=0; i<cloneFuts.size() ; i++) {
-                if (cloneFuts.get(i).getId_brassin() == id) {
+                long idTmp;
+                try {
+                    idTmp = TableBrassin.instance(contexte).recupererId(cloneFuts.get(i).getId_brassin()).getId_brassinPere();
+                }
+                catch(NullPointerException e){
+                    idTmp = -1;
+                }
+                if (idTmp == id) {
                     listeFutDeMemeBrassin.add(cloneFuts.get(i));
                     cloneFuts.remove(i);
                     i--;
@@ -154,31 +167,31 @@ public class TableFut extends Controle {
 
             int numeroPivot = -1;
             if (pivot.get(0).getBrassin(contexte) != null) {
-                numeroPivot = pivot.get(0).getBrassin(contexte).getNumero();
+                numeroPivot = (int) pivot.get(0).getBrassin(contexte).getId_brassinPere();
             }
 
             int numeroPetitIndex = -1;
             if (listeListe.get(i).get(0).getBrassin(contexte) != null) {
-                numeroPetitIndex = listeListe.get(i).get(0).getBrassin(contexte).getNumero();
+                numeroPetitIndex = (int) listeListe.get(i).get(0).getBrassin(contexte).getId_brassinPere();
             }
 
             int numeroGrandIndex = -1;
             if (listeListe.get(j).get(0).getBrassin(contexte) != null) {
-                numeroGrandIndex = listeListe.get(j).get(0).getBrassin(contexte).getNumero();
+                numeroGrandIndex = (int) listeListe.get(j).get(0).getBrassin(contexte).getId_brassinPere();
             }
 
             while (numeroPetitIndex < numeroPivot) {
                 i++;
                 numeroPetitIndex = -1;
                 if (listeListe.get(i).get(0).getBrassin(contexte) != null) {
-                    numeroPetitIndex = listeListe.get(i).get(0).getBrassin(contexte).getNumero();
+                    numeroPetitIndex = (int) listeListe.get(i).get(0).getBrassin(contexte).getId_brassinPere();
                 }
             }
             while (numeroGrandIndex > numeroPivot) {
                 j--;
                 numeroGrandIndex = -1;
                 if (listeListe.get(j).get(0).getBrassin(contexte) != null) {
-                    numeroGrandIndex = listeListe.get(j).get(0).getBrassin(contexte).getNumero();
+                    numeroGrandIndex = (int) listeListe.get(j).get(0).getBrassin(contexte).getId_brassinPere();
                 }
             }
             if (i <= j) {
