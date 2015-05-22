@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableCheminBrassinCuve;
 import fabrique.gestion.BDD.TableCheminBrassinFut;
 import fabrique.gestion.BDD.TableCuve;
@@ -61,6 +62,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
         transferer.setOnClickListener(this);
 
         listeTypeOrigineVide = true;
+
 
         listeTypeOrigine = (Spinner)view.findViewById(R.id.listeTypeOrigine);
         ArrayAdapter<String> adapteurTypeOrigine = new ArrayAdapter<>(contexte, R.layout.spinner_style);
