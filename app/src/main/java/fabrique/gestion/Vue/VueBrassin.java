@@ -433,7 +433,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
 
         tableauHistorique.removeAllViews();
         tableauHistorique.addView(ligneAjouter);
-        ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdBrassin(brassin.getId());
+        ArrayList<Historique> historiques  = TableHistorique.instance(getContext()).recupererSelonIdBrassin(brassin.getId_brassinPere());
         for (int i=0; i<historiques.size() ; i++) {
             tableauHistorique.addView(new LigneHistorique(getContext(), this, historiques.get(i)), margeTableau);
         }
