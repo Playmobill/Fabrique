@@ -104,9 +104,12 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
         ligne.addView(cadre(tableauHistorique, " Historique "));
 
         initialiser();
-        afficherCheminBrassin();
         afficher();
         afficherHistorique();
+
+        if (fermenteur.getIdNoeud() != -1) {
+            afficherCheminBrassin();
+        }
 
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(getContext());
         layoutHorizontalScroll.addView(ligne);
@@ -426,7 +429,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
             }
 
             //Si il y a un prochain etat sans brassin dans ce recipient
-            if (noeud.getNoeudSansBrassin(getContext()) != null) {
+            if (noeud.getId_noeudSansBrassin() == -1) {
                 TableRow.LayoutParams marge = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
                 marge.setMargins(5, 5, 5, 5);
 
@@ -455,7 +458,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                 ligne.addView(cadre(tableauRecipientSuivant, " Récipient suivant "));
             }
             //Si il n'y a ni etat suivant avec brassin ni etat suivant sans brassin dans ce recipient
-            if ((noeud.getNoeudAvecBrassin(getContext()) == null) && (noeud.getNoeudSansBrassin(getContext()) == null)) {
+            if ((noeud.getId_noeudAvecBrassin() == -1) && (noeud.getId_noeudSansBrassin() == -1)) {
                 TableRow.LayoutParams marge = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
                 marge.setMargins(5, 5, 5, 5);
 
@@ -491,7 +494,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
 
         } else {
             //Si il y a un prochain etat sans brassin dans ce recipient
-            if (noeud.getNoeudSansBrassin(getContext()) != null) {
+            if (noeud.getId_noeudSansBrassin() != -1) {
                     LinearLayout ligneEtatSuivant = new LinearLayout(getContext());
                     ligneEtatSuivant.setGravity(Gravity.CENTER);
                         btnEtatSuivantSansBrassin.setText(noeud.getNoeudSansBrassin(getContext()).getEtat(getContext()).getTexte());
@@ -515,7 +518,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
         }
         else if (v.equals(texteDateLavageAcide)) {
             Calendar calendrier = Calendar.getInstance();
-            calendrier.setTimeInMillis(dateLavageAcide);
+            calendrier.setTimeInMillis(System.currentTimeMillis());
             new DatePickerDialog(getContext(), this, calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).show();
         }
         else if (v.equals(btnAjouterHistorique)) {

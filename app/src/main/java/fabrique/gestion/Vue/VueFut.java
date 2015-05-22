@@ -419,7 +419,7 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
         }
         else if (v.equals(texteDateInspection)){
             Calendar calendrier = Calendar.getInstance();
-            calendrier.setTimeInMillis(dateInspection);
+            calendrier.setTimeInMillis(System.currentTimeMillis());
             new DatePickerDialog(getContext(), this, calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).show();
         }
         else if (v.equals(btnVider)) {

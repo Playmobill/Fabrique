@@ -21,6 +21,8 @@ import fabrique.gestion.Vue.VueFermenteur;
 
 public class FragmentVueFermenteur extends FragmentAmeliore {
 
+    private Fermenteur fermenteur;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,7 +39,7 @@ public class FragmentVueFermenteur extends FragmentAmeliore {
         LinearLayout layout = new LinearLayout(contexte);
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(getArguments().getLong("id"));
+        fermenteur = TableFermenteur.instance(contexte).recupererId(getArguments().getLong("id"));
         if (fermenteur != null) {
             if (fermenteur.getBrassin(contexte) != null) {
                 layout.addView(new VueBrassin(contexte, fermenteur.getBrassin(contexte)));
@@ -57,9 +59,14 @@ public class FragmentVueFermenteur extends FragmentAmeliore {
 
     @Override
     public void invalidate() {
+        FragmentVueFermenteur fragmentVueFermenteur = new FragmentVueFermenteur();
+        Bundle args = new Bundle();
+        args.putLong("id", fermenteur.getId());
+        fragmentVueFermenteur.setArguments(args);
+
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.onglet, new FragmentTableauDeBord());
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
+        transaction.replace(R.id.onglet, fragmentVueFermenteur);
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
         transaction.addToBackStack(null).commit();
     }
 
