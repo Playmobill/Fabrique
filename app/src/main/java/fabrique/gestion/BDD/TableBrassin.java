@@ -85,13 +85,7 @@ public class TableBrassin extends Controle {
     public void modifier(long id, long id_brassinPere, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
         ContentValues valeur = new ContentValues();
         valeur.put("id_brassinPere", id_brassinPere);
-        valeur.put("numero", numero);
-        valeur.put("commentaire", commentaire);
-        valeur.put("dateCreation", dateCreation);
         valeur.put("quantite", quantite);
-        valeur.put("id_recette", id_recette);
-        valeur.put("densiteOriginale", densiteOriginale);
-        valeur.put("densiteFinale", densiteFinale);
         if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
             Brassin brassin = recupererId(id);
             brassin.setNumero(numero);
