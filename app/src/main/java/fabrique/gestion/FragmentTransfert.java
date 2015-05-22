@@ -131,16 +131,28 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                 }
 
                 if(listeTypeDestination.getText().toString().equals("Fût")){
-                    Fut futDest = TableFut.instance(contexte).recupererId(Long.parseLong((String) listeDestination.getSelectedItem()));
-                    TableFut.instance(contexte).modifier(futDest.getId(), futDest.getNumero(), futDest.getCapacite(), TableCheminBrassinFut.instance(contexte).recupererPremierNoeud(), date, idBrassinTransfere, futDest.getDateInspectionToLong(), true);
-                    String texteTransfert = TableListeHistorique.instance(contexte).recupererId(4).getTexte()+" du brassin n°"+idBrassinTransfere+" de la cuve n°"+idOrigine+" au fût n°"+futDest.getId();
-                    TableHistorique.instance(contexte).ajouter(texteTransfert, date, 0, idOrigine, futDest.getId(), idBrassinTransfere);
+                    long idPremierNoeud = TableCheminBrassinFut.instance(contexte).recupererPremierNoeud();
+                    if (idPremierNoeud == -1) {
+                        Toast.makeText(contexte, "Le fût n'a pas de chemin du brassin", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Fut futDest = TableFut.instance(contexte).recupererId(Long.parseLong((String) listeDestination.getSelectedItem()));
+                        TableFut.instance(contexte).modifier(futDest.getId(), futDest.getNumero(), futDest.getCapacite(), idPremierNoeud, date, idBrassinTransfere, futDest.getDateInspectionToLong(), true);
+                        String texteTransfert = TableListeHistorique.instance(contexte).recupererId(4).getTexte() + " du brassin n°" + idBrassinTransfere + " de la cuve n°" + idOrigine + " au fût n°" + futDest.getId();
+                        TableHistorique.instance(contexte).ajouter(texteTransfert, date, 0, idOrigine, futDest.getId(), idBrassinTransfere);
+                    }
                 }
-                else if(listeTypeDestination.getText().toString().equals("Cuve")){
-                    Cuve cuveDest = TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getSelectedItem()));
-                    TableCuve.instance(contexte).modifier(cuveDest.getId(), cuveDest.getNumero(), cuveDest.getCapacite(), cuveDest.getIdEmplacement(), cuveDest.getDateLavageAcide(), TableCheminBrassinCuve.instance(contexte).recupererPremierNoeud(), date, cuveDest.getCommentaireEtat(), idBrassinTransfere, true);
-                    String texteTransfert = TableListeHistorique.instance(contexte).recupererId(2).getTexte()+" du brassin n°"+idBrassinTransfere+" du fermenteur n°"+idOrigine+" à la cuve n°"+cuveDest.getId();
-                    TableHistorique.instance(contexte).ajouter(texteTransfert, date, idOrigine, cuveDest.getId(), 0, idBrassinTransfere);
+                else if(listeTypeDestination.getText().toString().equals("Cuve")) {
+                    long idPremierNoeud = TableCheminBrassinCuve.instance(contexte).recupererPremierNoeud();
+                    if (idPremierNoeud == -1) {
+                        Toast.makeText(contexte, "La cuve n'a pas de chemin du brassin", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Cuve cuveDest = TableCuve.instance(contexte).recupererId(Long.parseLong((String) listeDestination.getSelectedItem()));
+                        TableCuve.instance(contexte).modifier(cuveDest.getId(), cuveDest.getNumero(), cuveDest.getCapacite(), cuveDest.getIdEmplacement(), cuveDest.getDateLavageAcide(), idPremierNoeud, date, cuveDest.getCommentaireEtat(), idBrassinTransfere, true);
+                        String texteTransfert = TableListeHistorique.instance(contexte).recupererId(2).getTexte() + " du brassin n°" + idBrassinTransfere + " du fermenteur n°" + idOrigine + " à la cuve n°" + cuveDest.getId();
+                        TableHistorique.instance(contexte).ajouter(texteTransfert, date, idOrigine, cuveDest.getId(), 0, idBrassinTransfere);
+                    }
+
                 }
                 Toast.makeText(contexte, "Brassin transféré !", Toast.LENGTH_SHORT).show();
 

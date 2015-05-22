@@ -80,7 +80,7 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
         this.fut = fut;
 
         tableauCheminBrassin = new TableLayout(contexte);
-        addView(cadre(tableauCheminBrassin, " Chemin du brassin "));
+        addView(tableauCheminBrassin);
 
         TableRow ligne = new TableRow(contexte);
 
@@ -317,8 +317,13 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
             erreur = erreur + "La quantité est trop grande.";
         }
         if (erreur.equals("")) {
-            TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite, fut.getId_noeud(), fut.getDateEtatToLong(), fut.getId_brassin(), dateInspection, editActif.isChecked());
-            afficher();
+            if ((!editActif.isChecked()) && (TableHistorique.instance(getContext()).recupererSelonIdFermenteur(fut.getId()).size() == 0)) {
+                TableFut.instance(getContext()).supprimer(fut.getId());
+                parent.invalidate();
+            } else {
+                TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite, fut.getId_noeud(), fut.getDateEtatToLong(), fut.getId_brassin(), dateInspection, editActif.isChecked());
+                afficher();
+            }
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_SHORT).show();
         }

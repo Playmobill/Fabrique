@@ -412,6 +412,9 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
         if (((ViewGroup) btnVider.getParent()) != null) {
             ((ViewGroup) btnVider.getParent()).removeAllViews();
         }
+        if (((ViewGroup) spinnerListeFutSansBrassin.getParent()) != null) {
+            ((ViewGroup) spinnerListeFutSansBrassin.getParent()).removeAllViews();
+        }
 
         NoeudCuve noeud = cuve.getNoeud(getContext());
 
@@ -429,6 +432,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 texteFut.setText("Fut / Capacité");
                 ligneEnTete.addView(texteFut, marge);
                 TextView texteQuantite = new TextView(getContext());
+                texteQuantite.setInputType(InputType.TYPE_CLASS_NUMBER);
                 texteQuantite.setText("Quantité");
                 ligneEnTete.addView(texteQuantite, marge);
                 tableauRecipientSuivant.addView(ligneEnTete);
@@ -458,6 +462,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 texteFut.setText("Fut / Capacité");
                 ligneEnTete.addView(texteFut, marge);
                 TextView texteQuantite = new TextView(getContext());
+                texteQuantite.setInputType(InputType.TYPE_CLASS_NUMBER);
                 texteQuantite.setText("Quantité");
                 ligneEnTete.addView(texteQuantite, marge);
                 tableauRecipientSuivant.addView(ligneEnTete);
@@ -531,7 +536,11 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 quantite = 0;
                 Toast.makeText(getContext(), "La quantite inscrite ne peut être lu.", Toast.LENGTH_SHORT).show();
             }
-            if (quantite != 0) {
+            long idPremierNoeud = TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud();
+            if (idPremierNoeud == -1) {
+                Toast.makeText(getContext(), "Le fût n'a pas de chemin du brassin", Toast.LENGTH_SHORT).show();
+            }
+            else if (quantite != 0) {
                 Fut fut = listeFutSansBrassin.get(spinnerListeFutSansBrassin.getSelectedItemPosition());
                 Brassin brassin = TableBrassin.instance(getContext()).recupererId(cuve.getIdBrassin());
                 //Si la quantite que l'on veut transferer est plus petit à la quantite du brassin
@@ -539,13 +548,13 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 if ((brassin.getQuantite() > quantite) && (quantite <= cuve.getCapacite())) {
                     brassin.setQuantite(brassin.getQuantite() - quantite);
                     long idNouveauBrassin = TableBrassin.instance(getContext()).ajouter(getContext(), brassin.getId_brassinPere(), quantite);
-                    TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud(), System.currentTimeMillis(), idNouveauBrassin, fut.getDateInspectionToLong(), fut.getActif());
+                    TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), idPremierNoeud, System.currentTimeMillis(), idNouveauBrassin, fut.getDateInspectionToLong(), fut.getActif());
                     parent.invalidate();
                 }
                 //Si la quantite que l'on veut transferer est plus grande ou égal à la quantite du brassin
                 //ET que la quantite du brassin est plus petite ou égal à la capacite de la cuve alors on transfere le brassin
                 else if ((brassin.getQuantite() <= quantite) && (brassin.getQuantite() <= cuve.getCapacite())) {
-                    TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud(), System.currentTimeMillis(), cuve.getIdBrassin(), fut.getDateInspectionToLong(), fut.getActif());
+                    TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), idPremierNoeud, System.currentTimeMillis(), cuve.getIdBrassin(), fut.getDateInspectionToLong(), fut.getActif());
                     TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), -1, cuve.getActif());
                     parent.invalidate();
                 }

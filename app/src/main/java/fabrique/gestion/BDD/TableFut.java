@@ -423,6 +423,12 @@ public class TableFut extends Controle {
         return texte.toString();
     }
 
+    public void supprimer(long id) {
+        if (accesBDD.delete(nomTable, "id = ?", new String[]{"" + id}) == 1) {
+            futs.remove(recupererId(id));
+        }
+    }
+
     @Override
     public void supprimerToutesLaBdd() {
         super.supprimerToutesLaBdd();
