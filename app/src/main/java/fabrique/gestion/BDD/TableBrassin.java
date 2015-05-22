@@ -82,6 +82,7 @@ public class TableBrassin extends Controle {
         }
         return null;
     }
+
     public void modifier(long id, long id_brassinPere, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
         ContentValues valeur = new ContentValues();
         valeur.put("id_brassinPere", id_brassinPere);
