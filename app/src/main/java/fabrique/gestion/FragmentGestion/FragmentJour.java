@@ -40,8 +40,7 @@ public class FragmentJour extends FragmentAmeliore implements View.OnClickListen
     private Context contexte;
     private View view;
     private TextView titre;
-    private LinearLayout affichageEvenements;
-    private ArrayList<LinearLayout> evenements;
+    private LinearLayout affichageEvenements, affichageHistorique;
     private ArrayList<Calendrier> calendrier;
     private ArrayList<Historique> historique;
     private Button jourSuivant, jourPrecedent, ajoutEvent;
@@ -75,30 +74,54 @@ public class FragmentJour extends FragmentAmeliore implements View.OnClickListen
 
         jourPrecedent = (Button)view.findViewById(R.id.btnJourPrecedent);
         if(jour-1<=0){
-            Date date = new Date(calendrierTime.getTimeInMillis());
-            date.setMonth((int)mois-1);
-            calendrierTime.setTime(date);
-            date.setDate(calendrierTime.getActualMaximum(Calendar.DAY_OF_MONTH));
-            calendrierTime.setTime(date);
-            jourPrecedent.setText(calendrierTime.get(Calendar.DAY_OF_MONTH)+ " " + DateToString.moisToString(Integer.parseInt(""+calendrierTime.get(Calendar.MONTH))) + " " + annee);
+            if(mois-1<calendrierTime.getActualMinimum(Calendar.MONTH)) {
+                Date date = new Date(calendrierTime.getTimeInMillis());
+                date.setYear((int)(annee-1));
+                calendrierTime.setTime(date);
+                date.setMonth(calendrierTime.getActualMaximum(Calendar.MONTH));
+                calendrierTime.setTime(date);
+                date.setDate(calendrierTime.getActualMaximum(Calendar.DAY_OF_MONTH));
+                calendrierTime.setTime(date);
+                jourPrecedent.setText(calendrierTime.get(Calendar.DAY_OF_MONTH) + " " + DateToString.moisToString(Integer.parseInt("" + calendrierTime.get(Calendar.MONTH))) + " " + (annee-1));
+            }
+            else{
+                Date date = new Date(calendrierTime.getTimeInMillis());
+                date.setMonth((int)mois-1);
+                calendrierTime.setTime(date);
+                date.setDate(calendrierTime.getActualMaximum(Calendar.DAY_OF_MONTH));
+                calendrierTime.setTime(date);
+                jourPrecedent.setText(calendrierTime.get(Calendar.DAY_OF_MONTH)+ " " + DateToString.moisToString(Integer.parseInt(""+calendrierTime.get(Calendar.MONTH))) + " " + annee);
+            }
         }else {
             jourPrecedent.setText(jour - 1 + " " + DateToString.moisToString(Integer.parseInt("" + mois)) + " " + annee);
         }
+        jourPrecedent.setOnClickListener(this);
 
         jourSuivant = (Button)view.findViewById(R.id.btnJourSuivant);
         calendrierTime.setTime(new Date((int)annee, (int)mois, (int)jour));
         if(jour+1>calendrierTime.getActualMaximum(Calendar.DAY_OF_MONTH)){
-            Date date = new Date(calendrierTime.getTimeInMillis());
-            date.setMonth((int)mois+1);
-            date.setDate(1);
-            calendrierTime.setTime(date);
-            jourSuivant.setText(calendrierTime.get(Calendar.DAY_OF_MONTH)+ " " + DateToString.moisToString(Integer.parseInt(""+calendrierTime.get(Calendar.MONTH))) + " " + annee);
+            if(mois+1>calendrierTime.getActualMaximum(Calendar.MONTH)) {
+                Date date = new Date(calendrierTime.getTimeInMillis());
+                date.setYear((int)(annee+1));
+                date.setMonth(calendrierTime.getActualMinimum(Calendar.MONTH));
+                date.setDate(1);
+                calendrierTime.setTime(date);
+                jourSuivant.setText(calendrierTime.get(Calendar.DAY_OF_MONTH) + " " + DateToString.moisToString(Integer.parseInt("" + calendrierTime.get(Calendar.MONTH))) + " " + (annee+1));
+            }
+            else{
+                Date date = new Date(calendrierTime.getTimeInMillis());
+                date.setMonth((int) mois + 1);
+                date.setDate(1);
+                calendrierTime.setTime(date);
+                jourSuivant.setText(calendrierTime.get(Calendar.DAY_OF_MONTH) + " " + DateToString.moisToString(Integer.parseInt("" + calendrierTime.get(Calendar.MONTH))) + " " + annee);
+            }
         }else {
             jourSuivant.setText(jour + 1 + " " + DateToString.moisToString(Integer.parseInt("" + mois)) + " " + annee);
         }
+        jourSuivant.setOnClickListener(this);
 
         affichageEvenements = (LinearLayout)view.findViewById(R.id.listeEvenement);
-        evenements = new ArrayList<>();
+        affichageHistorique = (LinearLayout)view.findViewById(R.id.listeHistorique);
 
         initialiserTexte();
 
@@ -164,33 +187,36 @@ public class FragmentJour extends FragmentAmeliore implements View.OnClickListen
             // show it
             alertDialog.show();
         }
+
     }
 
     public void initialiserTexte(){
         affichageEvenements.removeAllViews();
+        affichageHistorique.removeAllViews();
 
         calendrier = TableCalendrier.instance(contexte).getEvenements();
         historique = TableHistorique.instance(contexte).recupererHistorique();
-
-        for (int i = 0; i < calendrier.size(); i++) {
-            calendrierTime.setTimeInMillis(calendrier.get(i).getDateEvenement());
-            if(calendrierTime.get(Calendar.MONTH) == mois && calendrierTime.get(Calendar.DAY_OF_MONTH) == jour && calendrierTime.get(Calendar.YEAR) == annee){
-                TextView textView= new TextView(contexte);
-                textView.setText(calendrier.get(i).getNomEvenement());
-                textView.setPadding(30,30,0,0);
-                affichageEvenements.addView(textView);
-            }
-        }
 
         for (int i = 0; i < historique.size(); i++) {
             calendrierTime.setTimeInMillis(historique.get(i).getDate());
             if(calendrierTime.get(Calendar.MONTH) == mois && calendrierTime.get(Calendar.DAY_OF_MONTH) == jour && calendrierTime.get(Calendar.YEAR) == annee){
                 TextView textView= new TextView(contexte);
                 textView.setText(historique.get(i).getTexte());
-                textView.setPadding(30,30,0,0);
+                textView.setPadding(30,0,0,15);
+                affichageHistorique.addView(textView);
+            }
+        }
+
+        for (int i = 0; i < calendrier.size(); i++) {
+            calendrierTime.setTimeInMillis(calendrier.get(i).getDateEvenement());
+            if(calendrierTime.get(Calendar.MONTH) == mois && calendrierTime.get(Calendar.DAY_OF_MONTH) == jour && calendrierTime.get(Calendar.YEAR) == annee){
+                TextView textView= new TextView(contexte);
+                textView.setText(calendrier.get(i).getNomEvenement());
+                textView.setPadding(30,0,0,15);
                 affichageEvenements.addView(textView);
             }
         }
+
     }
 
 
