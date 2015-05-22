@@ -1,7 +1,9 @@
 package fabrique.gestion.FragmentGestion;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -9,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -16,6 +20,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import fabrique.gestion.ActivityAccueil;
 import fabrique.gestion.BDD.TableCalendrier;
@@ -40,6 +45,7 @@ public class FragmentJour extends FragmentAmeliore implements View.OnClickListen
     private ArrayList<Calendrier> calendrier;
     private ArrayList<Historique> historique;
     private Button jourSuivant, jourPrecedent, ajoutEvent;
+    private Calendar calendrierTime;
 
     @Nullable
     @Override
@@ -56,16 +62,13 @@ public class FragmentJour extends FragmentAmeliore implements View.OnClickListen
 
         view = inflater.inflate(R.layout.activity_vue_jour, container, false);
 
-        calendrier = TableCalendrier.instance(contexte).getEvenements();
-        historique = TableHistorique.instance(contexte).recupererHistorique();
-
         affichageEvenements = (LinearLayout)view.findViewById(R.id.listeEvenement);
 
         jour = (long)getArguments().get("jour");
         mois = (long)getArguments().get("mois");
         annee = (long)getArguments().get("annee");
 
-        Calendar calendrierTime = Calendar.getInstance();
+        calendrierTime = Calendar.getInstance();
 
         titre = (TextView)view.findViewById(R.id.txtJourActuel);
         titre.setText(jour+" "+DateToString.moisToString(Integer.parseInt(""+mois))+" "+annee);
@@ -97,25 +100,7 @@ public class FragmentJour extends FragmentAmeliore implements View.OnClickListen
         affichageEvenements = (LinearLayout)view.findViewById(R.id.listeEvenement);
         evenements = new ArrayList<>();
 
-        for (int i = 0; i < calendrier.size(); i++) {
-            calendrierTime.setTimeInMillis(calendrier.get(i).getDateEvenement()*1000);
-            if(calendrierTime.get(Calendar.MONTH) == mois && calendrierTime.get(Calendar.DAY_OF_MONTH) == jour && calendrierTime.get(Calendar.YEAR) == annee){
-                TextView textView= new TextView(contexte);
-                textView.setText(calendrier.get(i).getNomEvenement());
-                textView.setPadding(30,30,0,0);
-                affichageEvenements.addView(textView);
-            }
-        }
-
-        for (int i = 0; i < historique.size(); i++) {
-            calendrierTime.setTimeInMillis(historique.get(i).getDate());
-            if(calendrierTime.get(Calendar.MONTH) == mois && calendrierTime.get(Calendar.DAY_OF_MONTH) == jour && calendrierTime.get(Calendar.YEAR) == annee){
-                TextView textView= new TextView(contexte);
-                textView.setText(historique.get(i).getTexte());
-                textView.setPadding(30,30,0,0);
-                affichageEvenements.addView(textView);
-            }
-        }
+        initialiserTexte();
 
         ajoutEvent = (Button) view.findViewById(R.id.BtnAjoutEvent);
         ajoutEvent.setOnClickListener(this);
@@ -140,6 +125,73 @@ public class FragmentJour extends FragmentAmeliore implements View.OnClickListen
         if(v.equals(ajoutEvent)){
             LayoutInflater li = LayoutInflater.from(contexte);
             View promptFormulaire = li.inflate(R.layout.dialog_ajout_evenement, null);
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(contexte);
+
+            // set prompts.xml to alertdialog builder
+            alertDialogBuilder.setView(promptFormulaire);
+
+            final EditText nomInput = (EditText) promptFormulaire.findViewById(R.id.editNomEvent);
+            final DatePicker dateInput = (DatePicker) promptFormulaire.findViewById(R.id.editDatePicker);
+
+            // set dialog message
+            alertDialogBuilder.setCancelable(false).setPositiveButton("Ajouter",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // get user input and set it to result
+                            // edit text => result
+
+                            String nomEventET = nomInput.getText().toString();
+                            long date = new GregorianCalendar(dateInput.getYear(), dateInput.getMonth(), dateInput.getDayOfMonth()).getTimeInMillis();
+
+                            long result = TableCalendrier.instance(contexte).ajouter(date, nomEventET, 0,0);
+
+                            Log.i("Coucou", ""+result);
+                            initialiserTexte();
+
+                        }
+                    })
+                    .setNegativeButton("Annuler",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
         }
     }
+
+    public void initialiserTexte(){
+        affichageEvenements.removeAllViews();
+
+        calendrier = TableCalendrier.instance(contexte).getEvenements();
+        historique = TableHistorique.instance(contexte).recupererHistorique();
+
+        for (int i = 0; i < calendrier.size(); i++) {
+            calendrierTime.setTimeInMillis(calendrier.get(i).getDateEvenement());
+            if(calendrierTime.get(Calendar.MONTH) == mois && calendrierTime.get(Calendar.DAY_OF_MONTH) == jour && calendrierTime.get(Calendar.YEAR) == annee){
+                TextView textView= new TextView(contexte);
+                textView.setText(calendrier.get(i).getNomEvenement());
+                textView.setPadding(30,30,0,0);
+                affichageEvenements.addView(textView);
+            }
+        }
+
+        for (int i = 0; i < historique.size(); i++) {
+            calendrierTime.setTimeInMillis(historique.get(i).getDate());
+            if(calendrierTime.get(Calendar.MONTH) == mois && calendrierTime.get(Calendar.DAY_OF_MONTH) == jour && calendrierTime.get(Calendar.YEAR) == annee){
+                TextView textView= new TextView(contexte);
+                textView.setText(historique.get(i).getTexte());
+                textView.setPadding(30,30,0,0);
+                affichageEvenements.addView(textView);
+            }
+        }
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package fabrique.gestion.BDD;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
@@ -55,5 +56,19 @@ public class TableCalendrier extends Controle {
     public void supprimerToutesLaBdd() {
         super.supprimerToutesLaBdd();
         evenements.clear();
+    }
+
+    public long ajouter(long date, String nom, int type, int idObjet){
+        ContentValues valeur = new ContentValues();
+        valeur.put("dateEvenement", date);
+        valeur.put("nomEvenement", nom);
+        valeur.put("typeObjet", type);
+        valeur.put("idObjet", idObjet);
+        long id = accesBDD.insert(nomTable, null, valeur);
+        if (id != -1) {
+            evenements.add(new Calendrier(id, date, nom, 0, 0));
+            Collections.sort(evenements);
+        }
+        return id;
     }
 }

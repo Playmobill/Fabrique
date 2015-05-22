@@ -8,6 +8,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <DatePicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editDatePicker"></DatePicker>
+
     </LinearLayout>
 
     <LinearLayout
@@ -22,7 +27,8 @@
 
         <EditText
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:id="@+id/editNomEvent"/>
 
     </LinearLayout>
 

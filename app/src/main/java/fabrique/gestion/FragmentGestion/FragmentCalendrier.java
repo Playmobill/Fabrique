@@ -97,7 +97,7 @@ public class FragmentCalendrier extends FragmentAmeliore implements View.OnClick
             int compt = 0;
 
             for (int j = 0; j < evenements.size() ; j++) {
-                cal.setTimeInMillis(evenements.get(j).getDateEvenement() * 1000);
+                cal.setTimeInMillis(evenements.get(j).getDateEvenement());
                 if(cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i && cal.get(Calendar.YEAR) == annee){
                     if(evenement.equals("")) {
                         evenement = evenements.get(j).getNomEvenement();
@@ -188,7 +188,7 @@ public class FragmentCalendrier extends FragmentAmeliore implements View.OnClick
                 int compt = 0;
 
                 for (int j = 0; j < evenements.size() ; j++) {
-                    cal.setTimeInMillis(evenements.get(j).getDateEvenement() * 1000);
+                    cal.setTimeInMillis(evenements.get(j).getDateEvenement());
                     if(cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i && cal.get(Calendar.YEAR) == annee){
                         if(evenement.equals("")) {
                             evenement = evenements.get(j).getNomEvenement();
@@ -264,7 +264,7 @@ public class FragmentCalendrier extends FragmentAmeliore implements View.OnClick
                 int compt = 0;
 
                 for (int j = 0; j < evenements.size() ; j++) {
-                    cal.setTimeInMillis(evenements.get(j).getDateEvenement() * 1000);
+                    cal.setTimeInMillis(evenements.get(j).getDateEvenement());
                     if(cal.get(Calendar.MONTH) == mois && cal.get(Calendar.DAY_OF_MONTH) == i && cal.get(Calendar.YEAR) == annee){
                         if(evenement.equals("")) {
                             evenement = evenements.get(j).getNomEvenement();
