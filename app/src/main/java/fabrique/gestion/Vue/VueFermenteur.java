@@ -216,7 +216,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
         tableauDescription.addView(ligneCapaciteEmplacement);
 
 
-        String texteEtat = "Non utilisé";
+        String texteEtat = "État non défini";
         if ((fermenteur.getNoeud(getContext()) != null) && (fermenteur.getNoeud(getContext()).getEtat(getContext()) != null)) {
             texteEtat = fermenteur.getNoeud(getContext()).getEtat(getContext()).getTexte();
         }

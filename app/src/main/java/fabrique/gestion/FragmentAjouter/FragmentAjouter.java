@@ -91,7 +91,7 @@ public class FragmentAjouter extends FragmentAmeliore implements View.OnClickLis
             if (TableFermenteur.instance(contexte).recupererNumerosFermenteurSansBrassin().isEmpty()) {
                 Toast.makeText(contexte, "Il n'y a pas de fermenteur actif libre pouvant accueillir un nouveau brassin.", Toast.LENGTH_SHORT).show();
             }
-            else if (TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud() == null) {
+            else if (TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud() == -1) {
                 Toast.makeText(contexte, "Il n'y a pas de chemin du brassin pour le fermenteur.", Toast.LENGTH_SHORT).show();
             }
             else if (TableRecette.instance(contexte).recupererNomRecettesActifs().isEmpty()) {

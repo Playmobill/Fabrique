@@ -165,7 +165,7 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
         editCapacite.setInputType(InputType.TYPE_CLASS_NUMBER);
         editCapacite.setEnabled(false);
 
-        String texteEtat = "Non utilisé";
+        String texteEtat = "État non défini";
         if ((fut.getNoeud(getContext()) != null) && (fut.getNoeud(getContext()).getEtat(getContext()) != null)) {
             texteEtat = fut.getNoeud(getContext()).getEtat(getContext()).getTexte();
         }

@@ -34,7 +34,7 @@ public class BoutonFermenteur extends Button implements View.OnClickListener {
 
         setGravity(Gravity.CENTER);
 
-        String texteEtat = "Non utilisé";
+        String texteEtat = "État non défini";
         int couleurTexteEtat = Color.BLACK;
         int couleurFondEtat = Color.WHITE;
         if ((fermenteur.getNoeud(contexte) != null) && (fermenteur.getNoeud(contexte).getEtat(contexte) != null)) {

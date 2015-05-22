@@ -215,7 +215,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
         ligneCapaciteEmplacement.addView(layoutEmplacement, parametre);
         tableauDescription.addView(ligneCapaciteEmplacement);
 
-        String texteEtat = "Non utilisé";
+        String texteEtat = "État non défini";
         if ((cuve.getNoeud(getContext()) != null) && (cuve.getNoeud(getContext()).getEtat(getContext()) != null)) {
             texteEtat = cuve.getNoeud(getContext()).getEtat(getContext()).getTexte();
         }
@@ -536,13 +536,13 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 if ((brassin.getQuantite() > quantite) && (quantite <= cuve.getCapacite())) {
                     brassin.setQuantite(brassin.getQuantite() - quantite);
                     long idNouveauBrassin = TableBrassin.instance(getContext()).ajouter(getContext(), brassin.getId_brassinPere(), quantite);
-                    TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud().getId(), System.currentTimeMillis(), idNouveauBrassin, fut.getDateInspectionToLong(), fut.getActif());
+                    TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud(), System.currentTimeMillis(), idNouveauBrassin, fut.getDateInspectionToLong(), fut.getActif());
                     parent.invalidate();
                 }
                 //Si la quantite que l'on veut transferer est plus grande ou égal à la quantite du brassin
                 //ET que la quantite du brassin est plus petite ou égal à la capacite de la cuve alors on transfere le brassin
                 else if ((brassin.getQuantite() <= quantite) && (brassin.getQuantite() <= cuve.getCapacite())) {
-                    TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud().getId(), System.currentTimeMillis(), cuve.getIdBrassin(), fut.getDateInspectionToLong(), fut.getActif());
+                    TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud(), System.currentTimeMillis(), cuve.getIdBrassin(), fut.getDateInspectionToLong(), fut.getActif());
                     TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), -1, cuve.getActif());
                     parent.invalidate();
                 }

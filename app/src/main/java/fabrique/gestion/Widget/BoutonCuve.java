@@ -34,7 +34,7 @@ public class BoutonCuve extends Button implements View.OnClickListener {
 
         setGravity(Gravity.CENTER);
 
-        String texteEtat = "Non utilisé";
+        String texteEtat = "État non défini";
         int couleurTexteEtat = Color.BLACK;
         int couleurFondEtat = Color.WHITE;
         if ((cuve.getNoeud(contexte) != null) && (cuve.getNoeud(contexte).getEtat(contexte) != null)) {

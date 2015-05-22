@@ -79,13 +79,13 @@ public class TableCheminBrassinFermenteur extends Controle  {
         return null;
     }
 
-    public NoeudFermenteur recupererPremierNoeud() {
+    public long recupererPremierNoeud() {
         for (int i=0; i<noeuds.size(); i++) {
             if (noeuds.get(i).getId_noeudPrecedent() == -1) {
-                return noeuds.get(i);
+                return noeuds.get(i).getId();
             }
         }
-        return null;
+        return -1;
     }
 
     public void supprimer(long id) {

@@ -166,7 +166,7 @@ public class FragmentChemin extends FragmentAmeliore implements View.OnClickList
 
                 //Détermination de l'état avec brassin suivant
                 NoeudFermenteur noeudPrecedent = null;
-                NoeudFermenteur noeudActuel = TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud();
+                NoeudFermenteur noeudActuel = TableCheminBrassinFermenteur.instance(contexte).recupererId(TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud());
                 while(noeudActuel != null) {
                     //ligneEtatAvecBrassin : Ligne vertical qui contiendra 1 état avec brassin et des états sans brassin séparés par une flêche
                     TableRow ligneEtatAvecBrassin = new TableRow(contexte);
@@ -365,7 +365,7 @@ public class FragmentChemin extends FragmentAmeliore implements View.OnClickList
 
         //Détermination de l'état avec brassin suivant
         NoeudFut noeudPrecedent = null;
-        NoeudFut noeudActuel = TableCheminBrassinFut.instance(contexte).recupererPremierNoeud();
+        NoeudFut noeudActuel = TableCheminBrassinFut.instance(contexte).recupererId(TableCheminBrassinFut.instance(contexte).recupererPremierNoeud());
 
         while(noeudActuel != null) {
             //ligneEtatAvecBrassin : Ligne vertical qui contiendra 1 état avec brassin et des états sans brassin séparés par une flêche
