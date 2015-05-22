@@ -7,7 +7,7 @@ import fabrique.gestion.BDD.TableBrassinPere;
 public class Brassin extends BrassinPere {
 
     private long id_brassinPere;
-    private int quantite;
+    public int quantite;
     
     public Brassin(long id, BrassinPere brassinPere, int quantite) {
         super(id, brassinPere.getNumero(), brassinPere.getCommentaire(), brassinPere.getDateLong(), brassinPere.getQuantite(), brassinPere.getId_recette(), brassinPere.getDensiteOriginale(), brassinPere.getDensiteFinale());
