@@ -138,6 +138,10 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             erreur = erreur + "Il n'y a pas de fermenteur vide pour accueillir un nouveau brassin.";
         }
 
+        if(erreur.equals("") && quantite > TableFermenteur.instance(contexte).recupererIndex(editFermenteur.getSelectedItemPosition()).getCapacite()){
+            erreur = erreur + "Le quantité du brassin est trop importante par rapport à la capacité du brassin.";
+        }
+
 
 
         if (erreur.equals("")) {
