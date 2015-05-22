@@ -92,6 +92,9 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
         this.parent = parent;
         this.fermenteur = fermenteur;
 
+        tableauCheminBrassin = new TableLayout(contexte);
+        addView(tableauCheminBrassin);
+
         TableRow ligne = new TableRow(contexte);
 
         tableauDescription = new TableLayout(contexte);
@@ -101,18 +104,13 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
         ligne.addView(cadre(tableauHistorique, " Historique "));
 
         initialiser();
+        afficherCheminBrassin();
         afficher();
         afficherHistorique();
-
-        tableauCheminBrassin = new TableLayout(contexte);
-        //addView(cadre(tableauCheminBrassin, " Chemin du brassin "));
-        addView(tableauCheminBrassin);
-        afficherCheminBrassin();
 
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(getContext());
         layoutHorizontalScroll.addView(ligne);
         addView(layoutHorizontalScroll);
-
     }
 
     private RelativeLayout cadre(View view, String texteTitre) {
@@ -515,7 +513,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
         else if (v.equals(btnAnnuler)) {
             afficher();
         }
-        else if (v.equals(texteDateLavageAcide)){
+        else if (v.equals(texteDateLavageAcide)) {
             Calendar calendrier = Calendar.getInstance();
             calendrier.setTimeInMillis(dateLavageAcide);
             new DatePickerDialog(getContext(), this, calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).show();
@@ -534,30 +532,25 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
             try {
                 quantite = Integer.parseInt(quantiteTransfere.getText().toString());
             } catch (Exception e) {
-                quantite = 0;
+                quantite = -1;
                 Toast.makeText(getContext(), "La quantite inscrite ne peut être lu.", Toast.LENGTH_SHORT).show();
             }
-            if (quantite != 0) {
-                Cuve fermenteur = listeCuveSansBrassin.get(spinnerListeCuveSansBrassin.getSelectedItemPosition());
+            if (quantite >= 0) {
+                Cuve cuve = listeCuveSansBrassin.get(spinnerListeCuveSansBrassin.getSelectedItemPosition());
                 Brassin brassin = TableBrassin.instance(getContext()).recupererId(fermenteur.getIdBrassin());
                 //Si la quantite que l'on veut transferer est plus petit à la quantite du brassin
-                //ET que cette quantite est plus petite ou egal à la capacite de la fermenteur alors on creer un nouveau brassin
-                if ((brassin.getQuantite() > quantite) && (quantite <= fermenteur.getCapacite())) {
+                //ET que cette quantite est plus petite ou égal à la capacite de la cuve alors on creer un nouveau brassin
+                if ((brassin.getQuantite() > quantite) && (quantite <= cuve.getCapacite())) {
                     brassin.setQuantite(brassin.getQuantite() - quantite);
                     long idNouveauBrassin = TableBrassin.instance(getContext()).ajouter(getContext(), brassin.getId_brassinPere(), quantite);
-                    TableCuve.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcide(), TableCheminBrassinCuve.instance(getContext()).recupererPremierNoeud().getId(), System.currentTimeMillis(), fermenteur.getCommentaireEtat(), idNouveauBrassin, fermenteur.getActif());
-                    parent.invalidate();
-                } else if ((brassin.getQuantite() == quantite) && (quantite <= fermenteur.getCapacite())) {
-                    TableCuve.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcide(), TableCheminBrassinCuve.instance(getContext()).recupererPremierNoeud().getId(), System.currentTimeMillis(), fermenteur.getCommentaireEtat(), brassin.getId(), fermenteur.getActif());
-                    TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcide(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fermenteur.getActif());
+                    TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), TableCheminBrassinCuve.instance(getContext()).recupererPremierNoeud(), System.currentTimeMillis(), cuve.getCommentaireEtat(), idNouveauBrassin, cuve.getActif());
                     parent.invalidate();
                 }
-                //Si la quantite que l'on veut transferer est plus grande que la quantite du brassin
-                //ET que la quantite du brassin est plus petite ou egal à la capacite de la fermenteur alors on transfere
-                //en prenant la quantite du brassin
-                else if ((brassin.getQuantite() < quantite) && (brassin.getQuantite() <= fermenteur.getCapacite())) {
-                    TableCuve.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcide(), TableCheminBrassinCuve.instance(getContext()).recupererPremierNoeud().getId(), System.currentTimeMillis(), fermenteur.getCommentaireEtat(), brassin.getId(), fermenteur.getActif());
-                    TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcide(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fermenteur.getActif());
+                //Si la quantite que l'on veut transferer est plus grande ou égal à la quantite du brassin
+                //ET que la quantite du brassin est plus petite ou égal à la capacite de la cuve alors on transfere le brassin
+                else if ((brassin.getQuantite() <= quantite) && (brassin.getQuantite() <= cuve.getCapacite())) {
+                    TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), TableCheminBrassinCuve.instance(getContext()).recupererPremierNoeud(), System.currentTimeMillis(), cuve.getCommentaireEtat(), brassin.getId(), cuve.getActif());
+                    TableFermenteur.instance(getContext()).modifier(cuve.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fermenteur.getActif());
                     parent.invalidate();
                 }
             }

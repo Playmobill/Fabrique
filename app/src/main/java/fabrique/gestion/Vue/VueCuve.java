@@ -92,6 +92,9 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
         this.parent = parent;
         this.cuve = cuve;
 
+        tableauCheminBrassin = new TableLayout(contexte);
+        addView(tableauCheminBrassin);
+
         TableRow ligne = new TableRow(contexte);
 
         tableauDescription = new TableLayout(contexte);
@@ -101,12 +104,9 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
         ligne.addView(cadre(tableauHistorique, " Historique "));
 
         initialiser();
+        afficherCheminBrassin();
         afficher();
         afficherHistorique();
-
-        tableauCheminBrassin = new TableLayout(contexte);
-        addView(cadre(tableauCheminBrassin, " Chemin du brassin "));
-        afficherCheminBrassin();
 
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(getContext());
         layoutHorizontalScroll.addView(ligne);
@@ -412,96 +412,81 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
 
         NoeudCuve noeud = cuve.getNoeud(getContext());
 
-        TableRow.LayoutParams margeLigneTableau = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        margeLigneTableau.setMargins(5, 5, 5, 5);
-
         TableRow ligne = new TableRow(getContext());
 
-        LinearLayout ligneEtatActuel = new LinearLayout(getContext());
-        ligneEtatActuel.setGravity(Gravity.CENTER);
-        ligneEtatActuel.setOrientation(LinearLayout.VERTICAL);
-        TextView etatTexteActuel = new TextView(getContext());
-        etatTexteActuel.setText("État actuel :");
-        ligneEtatActuel.addView(etatTexteActuel);
-        TextView etatActuel = new TextView(getContext());
-        etatActuel.setText(cuve.getNoeud(getContext()).getEtat(getContext()).getTexte());
-        ligneEtatActuel.addView(etatActuel);
-        ligne.addView(ligneEtatActuel, margeLigneTableau);
-
         if (cuve.getIdBrassin() != -1) {
-            //Si il y a un prochain etat avec brassin dans ce recipient
-            if (noeud.getNoeudAvecBrassin(getContext()) != null) {
-                LinearLayout ligneEtatSuivant = new LinearLayout(getContext());
-                ligneEtatSuivant.setOrientation(LinearLayout.VERTICAL);
-                ligneEtatSuivant.setGravity(Gravity.CENTER);
-                TextView etatSuivant = new TextView(getContext());
-                etatSuivant.setText("État suivant :");
-                ligneEtatSuivant.addView(etatSuivant);
-                btnEtatSuivantAvecBrassin.setText(noeud.getNoeudAvecBrassin(getContext()).getEtat(getContext()).getTexte());
-                ligneEtatSuivant.addView(btnEtatSuivantAvecBrassin);
-                ligne.addView(ligneEtatSuivant, margeLigneTableau);
-            }
-
             //Si il y a un prochain etat sans brassin dans ce recipient
             if (noeud.getNoeudSansBrassin(getContext()) != null) {
-                LinearLayout ligneRecipientSuivant = new LinearLayout(getContext());
-                ligneRecipientSuivant.setOrientation(LinearLayout.VERTICAL);
-                ligneRecipientSuivant.setGravity(Gravity.CENTER);
-                TextView recipientSuivant = new TextView(getContext());
-                recipientSuivant.setText("Récipient suivant :");
-                ligneRecipientSuivant.addView(recipientSuivant);
-                ligneRecipientSuivant.addView(btnTransfere);
-                ArrayAdapter<String> adapteurListeCuveSansBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style);
-                adapteurListeCuveSansBrassin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                TableRow.LayoutParams marge = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+                marge.setMargins(5, 5, 5, 5);
+
+                TableLayout tableauRecipientSuivant = new TableLayout(getContext());
+                TableRow ligneEnTete = new TableRow(getContext());
+                TextView texteFut = new TextView(getContext());
+                texteFut.setText("Fut / Capacité");
+                ligneEnTete.addView(texteFut, marge);
+                TextView texteQuantite = new TextView(getContext());
+                texteQuantite.setText("Quantité");
+                ligneEnTete.addView(texteQuantite, marge);
+                tableauRecipientSuivant.addView(ligneEnTete);
+                TableRow ligneElement = new TableRow(getContext());
+                ArrayAdapter<String> adapteurListeFutSansBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style);
+                adapteurListeFutSansBrassin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 listeFutSansBrassin = TableFut.instance(getContext()).recupererFutSansBrassin();
                 for (int i = 0; i < listeFutSansBrassin.size(); i++) {
-                    adapteurListeCuveSansBrassin.add(listeFutSansBrassin.get(i).getNumero() + " / " + listeFutSansBrassin.get(i).getCapacite() + "L");
+                    adapteurListeFutSansBrassin.add(listeFutSansBrassin.get(i).getNumero() + " / " + listeFutSansBrassin.get(i).getCapacite() + "L");
                 }
-                spinnerListeFutSansBrassin.setAdapter(adapteurListeCuveSansBrassin);
-                ligneRecipientSuivant.addView(spinnerListeFutSansBrassin);
+                spinnerListeFutSansBrassin.setAdapter(adapteurListeFutSansBrassin);
+                ligneElement.addView(spinnerListeFutSansBrassin, marge);
                 quantiteTransfere = new EditText(getContext());
-                ligneRecipientSuivant.addView(quantiteTransfere);
-                ligne.addView(ligneRecipientSuivant, margeLigneTableau);
+                ligneElement.addView(quantiteTransfere, marge);
+                ligneElement.addView(btnTransfere, marge);
+                tableauRecipientSuivant.addView(ligneElement);
+                ligne.addView(cadre(tableauRecipientSuivant, " Récipient suivant "));
             }
             //Si il n'y a ni etat suivant avec brassin ni etat suivant sans brassin dans ce recipient
             if ((noeud.getNoeudAvecBrassin(getContext()) == null) && (noeud.getNoeudSansBrassin(getContext()) == null)) {
-                LinearLayout ligneRecipientSuivant = new LinearLayout(getContext());
-                ligneRecipientSuivant.setOrientation(LinearLayout.VERTICAL);
-                ligneRecipientSuivant.setGravity(Gravity.CENTER);
-                TextView recipientSuivant = new TextView(getContext());
-                recipientSuivant.setText("Récipient suivant :");
-                ligneRecipientSuivant.addView(recipientSuivant);
-                ligneRecipientSuivant.addView(btnTransfere);
-                ArrayAdapter<String> adapteurListeCuveSansBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style);
-                adapteurListeCuveSansBrassin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                TableRow.LayoutParams marge = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+                marge.setMargins(5, 5, 5, 5);
+
+                TableLayout tableauRecipientSuivant = new TableLayout(getContext());
+                TableRow ligneEnTete = new TableRow(getContext());
+                TextView texteFut = new TextView(getContext());
+                texteFut.setText("Fut / Capacité");
+                ligneEnTete.addView(texteFut, marge);
+                TextView texteQuantite = new TextView(getContext());
+                texteQuantite.setText("Quantité");
+                ligneEnTete.addView(texteQuantite, marge);
+                tableauRecipientSuivant.addView(ligneEnTete);
+                TableRow ligneElement = new TableRow(getContext());
+                ArrayAdapter<String> adapteurListeFutSansBrassin = new ArrayAdapter<>(getContext(), R.layout.spinner_style);
+                adapteurListeFutSansBrassin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 listeFutSansBrassin = TableFut.instance(getContext()).recupererFutSansBrassin();
                 for (int i = 0; i < listeFutSansBrassin.size(); i++) {
-                    adapteurListeCuveSansBrassin.add(listeFutSansBrassin.get(i).getNumero() + " / " + listeFutSansBrassin.get(i).getCapacite() + "L");
+                    adapteurListeFutSansBrassin.add(listeFutSansBrassin.get(i).getNumero() + " / " + listeFutSansBrassin.get(i).getCapacite() + "L");
                 }
-                spinnerListeFutSansBrassin.setAdapter(adapteurListeCuveSansBrassin);
-                ligneRecipientSuivant.addView(spinnerListeFutSansBrassin);
+                spinnerListeFutSansBrassin.setAdapter(adapteurListeFutSansBrassin);
+                ligneElement.addView(spinnerListeFutSansBrassin, marge);
                 quantiteTransfere = new EditText(getContext());
-                ligneRecipientSuivant.addView(quantiteTransfere, margeLigneTableau);
+                ligneElement.addView(quantiteTransfere, marge);
+                ligneElement.addView(btnTransfere, marge);
+                tableauRecipientSuivant.addView(ligneElement);
+                ligne.addView(cadre(tableauRecipientSuivant, " Récipient suivant "));
             }
 
             LinearLayout ligneVider = new LinearLayout(getContext());
-            ligneVider.setOrientation(LinearLayout.VERTICAL);
             ligneVider.setGravity(Gravity.CENTER);
             ligneVider.addView(btnVider);
-            ligne.addView(ligneVider, margeLigneTableau);
+            ligne.addView(cadre(ligneVider, " Vider "));
 
         } else {
-            //Si il y a un prochain etat avec brassin dans ce recipient
+            //Si il y a un prochain etat sans brassin dans ce recipient
             if (noeud.getNoeudSansBrassin(getContext()) != null) {
                 LinearLayout ligneEtatSuivant = new LinearLayout(getContext());
-                ligneEtatSuivant.setOrientation(LinearLayout.VERTICAL);
                 ligneEtatSuivant.setGravity(Gravity.CENTER);
-                TextView etatSuivant = new TextView(getContext());
-                etatSuivant.setText("État suivant :");
-                ligneEtatSuivant.addView(etatSuivant);
                 btnEtatSuivantSansBrassin.setText(noeud.getNoeudSansBrassin(getContext()).getEtat(getContext()).getTexte());
                 ligneEtatSuivant.addView(btnEtatSuivantSansBrassin);
-                ligne.addView(ligneEtatSuivant, margeLigneTableau);
+                ligne.addView(cadre(ligneEtatSuivant, " État suivant "));
             }
         }
         tableauCheminBrassin.addView(ligne);
@@ -547,22 +532,16 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 Fut fut = listeFutSansBrassin.get(spinnerListeFutSansBrassin.getSelectedItemPosition());
                 Brassin brassin = TableBrassin.instance(getContext()).recupererId(cuve.getIdBrassin());
                 //Si la quantite que l'on veut transferer est plus petit à la quantite du brassin
-                //ET que cette quantite est plus petite ou egal à la capacite du fut alors on creer un nouveau brassin
-                if ((brassin.getQuantite() > quantite) && (quantite <= fut.getCapacite())) {
+                //ET que cette quantite est plus petite ou égal à la capacite de la cuve alors on creer un nouveau brassin
+                if ((brassin.getQuantite() > quantite) && (quantite <= cuve.getCapacite())) {
                     brassin.setQuantite(brassin.getQuantite() - quantite);
                     long idNouveauBrassin = TableBrassin.instance(getContext()).ajouter(getContext(), brassin.getId_brassinPere(), quantite);
                     TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud().getId(), System.currentTimeMillis(), idNouveauBrassin, fut.getDateInspectionToLong(), fut.getActif());
                     parent.invalidate();
                 }
-                else if ((brassin.getQuantite() == quantite) && (quantite <= fut.getCapacite())) {
-                    TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud().getId(), System.currentTimeMillis(), cuve.getIdBrassin(), fut.getDateInspectionToLong(), fut.getActif());
-                    TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), -1, cuve.getActif());
-                    parent.invalidate();
-                }
-                //Si la quantite que l'on veut transferer est plus grande que la quantite du brassin
-                //ET que la quantite du brassin est plus petite ou egal à la capacite du fut alors on transfere
-                //en prenant la quantite du brassin
-                else if ((brassin.getQuantite() < quantite) && (brassin.getQuantite() <= fut.getCapacite())) {
+                //Si la quantite que l'on veut transferer est plus grande ou égal à la quantite du brassin
+                //ET que la quantite du brassin est plus petite ou égal à la capacite de la cuve alors on transfere le brassin
+                else if ((brassin.getQuantite() <= quantite) && (brassin.getQuantite() <= cuve.getCapacite())) {
                     TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), TableCheminBrassinFut.instance(getContext()).recupererPremierNoeud().getId(), System.currentTimeMillis(), cuve.getIdBrassin(), fut.getDateInspectionToLong(), fut.getActif());
                     TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), -1, cuve.getActif());
                     parent.invalidate();

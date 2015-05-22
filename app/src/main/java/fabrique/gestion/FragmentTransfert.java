@@ -138,7 +138,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                 }
                 else if(listeTypeDestination.getText().toString().equals("Cuve")){
                     Cuve cuveDest = TableCuve.instance(contexte).recupererId(Long.parseLong((String)listeDestination.getSelectedItem()));
-                    TableCuve.instance(contexte).modifier(cuveDest.getId(), cuveDest.getNumero(), cuveDest.getCapacite(), cuveDest.getIdEmplacement(), cuveDest.getDateLavageAcide(), TableCheminBrassinCuve.instance(contexte).recupererPremierNoeud().getId(), date, cuveDest.getCommentaireEtat(), idBrassinTransfere, true);
+                    TableCuve.instance(contexte).modifier(cuveDest.getId(), cuveDest.getNumero(), cuveDest.getCapacite(), cuveDest.getIdEmplacement(), cuveDest.getDateLavageAcide(), TableCheminBrassinCuve.instance(contexte).recupererPremierNoeud(), date, cuveDest.getCommentaireEtat(), idBrassinTransfere, true);
                     String texteTransfert = TableListeHistorique.instance(contexte).recupererId(2).getTexte()+" du brassin n°"+idBrassinTransfere+" du fermenteur n°"+idOrigine+" à la cuve n°"+cuveDest.getId();
                     TableHistorique.instance(contexte).ajouter(texteTransfert, date, idOrigine, cuveDest.getId(), 0, idBrassinTransfere);
                 }

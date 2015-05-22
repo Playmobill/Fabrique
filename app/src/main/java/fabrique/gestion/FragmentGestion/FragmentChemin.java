@@ -73,17 +73,21 @@ public class FragmentChemin extends FragmentAmeliore implements View.OnClickList
 
         contexte = container.getContext();
 
-        //LinearLayout.LayoutParams parametre = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams parametre = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
         LinearLayout.LayoutParams marge = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         marge.setMargins(10, 10, 10, 10);
 
+        HorizontalScrollView.LayoutParams parametreHorizontalScrollView = new HorizontalScrollView.LayoutParams(HorizontalScrollView.LayoutParams.MATCH_PARENT, HorizontalScrollView.LayoutParams.MATCH_PARENT);
+
+        ScrollView.LayoutParams parametreVerticalScrollView = new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
+
         HorizontalScrollView horizontalScrollView = new HorizontalScrollView(contexte);
-        //horizontalScrollView.setLayoutParams(parametre);
+        horizontalScrollView.setLayoutParams(parametreHorizontalScrollView);
             ScrollView verticalScrollView = new ScrollView(contexte);
-            //verticalScrollView.setLayoutParams(parametre);
+            verticalScrollView.setLayoutParams(parametreVerticalScrollView);
                 LinearLayout ensemble = new LinearLayout(contexte);
-                //ensemble.setLayoutParams(parametre);
+                ensemble.setLayoutParams(parametre);
                     ligneChemin = new LinearLayout(contexte);
                     ligneChemin.setOrientation(LinearLayout.VERTICAL);
                 ensemble.addView(ligneChemin, marge);
@@ -261,7 +265,7 @@ public class FragmentChemin extends FragmentAmeliore implements View.OnClickList
 
         //Détermination de l'état avec brassin suivant
         NoeudCuve noeudPrecedent = null;
-        NoeudCuve noeudActuel = TableCheminBrassinCuve.instance(contexte).recupererPremierNoeud();
+        NoeudCuve noeudActuel = TableCheminBrassinCuve.instance(contexte).recupererId(TableCheminBrassinCuve.instance(contexte).recupererPremierNoeud());
 
         while(noeudActuel != null) {
             //ligneEtatAvecBrassin : Ligne vertical qui contiendra 1 état avec brassin et des états sans brassin séparés par une flêche
