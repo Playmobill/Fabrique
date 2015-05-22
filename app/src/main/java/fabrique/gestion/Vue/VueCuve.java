@@ -432,7 +432,6 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 texteFut.setText("Fut / Capacité");
                 ligneEnTete.addView(texteFut, marge);
                 TextView texteQuantite = new TextView(getContext());
-                texteQuantite.setInputType(InputType.TYPE_CLASS_NUMBER);
                 texteQuantite.setText("Quantité");
                 ligneEnTete.addView(texteQuantite, marge);
                 tableauRecipientSuivant.addView(ligneEnTete);
@@ -446,6 +445,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 spinnerListeFutSansBrassin.setAdapter(adapteurListeFutSansBrassin);
                 ligneElement.addView(spinnerListeFutSansBrassin, marge);
                 quantiteTransfere = new EditText(getContext());
+                quantiteTransfere.setInputType(InputType.TYPE_CLASS_NUMBER);
                 ligneElement.addView(quantiteTransfere, marge);
                 ligneElement.addView(btnTransfere, marge);
                 tableauRecipientSuivant.addView(ligneElement);
@@ -462,7 +462,6 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 texteFut.setText("Fut / Capacité");
                 ligneEnTete.addView(texteFut, marge);
                 TextView texteQuantite = new TextView(getContext());
-                texteQuantite.setInputType(InputType.TYPE_CLASS_NUMBER);
                 texteQuantite.setText("Quantité");
                 ligneEnTete.addView(texteQuantite, marge);
                 tableauRecipientSuivant.addView(ligneEnTete);
@@ -476,6 +475,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 spinnerListeFutSansBrassin.setAdapter(adapteurListeFutSansBrassin);
                 ligneElement.addView(spinnerListeFutSansBrassin, marge);
                 quantiteTransfere = new EditText(getContext());
+                quantiteTransfere.setInputType(InputType.TYPE_CLASS_NUMBER);
                 ligneElement.addView(quantiteTransfere, marge);
                 ligneElement.addView(btnTransfere, marge);
                 tableauRecipientSuivant.addView(ligneElement);

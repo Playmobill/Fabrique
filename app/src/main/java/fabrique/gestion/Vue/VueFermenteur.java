@@ -442,7 +442,6 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                             texteCuve.setText("Cuve / Capacité");
                         ligneEnTete.addView(texteCuve, marge);
                             TextView texteQuantite = new TextView(getContext());
-                            texteQuantite.setInputType(InputType.TYPE_CLASS_NUMBER);
                             texteQuantite.setText("Quantité");
                         ligneEnTete.addView(texteQuantite, marge);
                     tableauRecipientSuivant.addView(ligneEnTete);
@@ -456,6 +455,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                             spinnerListeCuveSansBrassin.setAdapter(adapteurListeCuveSansBrassin);
                         ligneElement.addView(spinnerListeCuveSansBrassin, marge);
                             quantiteTransfere = new EditText(getContext());
+                            quantiteTransfere.setInputType(InputType.TYPE_CLASS_NUMBER);
                         ligneElement.addView(quantiteTransfere, marge);
                         ligneElement.addView(btnTransfere, marge);
                     tableauRecipientSuivant.addView(ligneElement);
@@ -472,7 +472,6 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                 texteCuve.setText("Cuve / Capacité");
                 ligneEnTete.addView(texteCuve, marge);
                 TextView texteQuantite = new TextView(getContext());
-                texteQuantite.setInputType(InputType.TYPE_CLASS_NUMBER);
                 texteQuantite.setText("Quantité");
                 ligneEnTete.addView(texteQuantite, marge);
                 tableauRecipientSuivant.addView(ligneEnTete);
@@ -486,6 +485,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                 spinnerListeCuveSansBrassin.setAdapter(adapteurListeCuveSansBrassin);
                 ligneElement.addView(spinnerListeCuveSansBrassin, marge);
                 quantiteTransfere = new EditText(getContext());
+                quantiteTransfere.setInputType(InputType.TYPE_CLASS_NUMBER);
                 ligneElement.addView(quantiteTransfere, marge);
                 ligneElement.addView(btnTransfere, marge);
                 tableauRecipientSuivant.addView(ligneElement);
