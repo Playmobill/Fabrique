@@ -118,7 +118,7 @@ public class VueBrassinPere extends LinearLayout {
 
         LinearLayout layoutDateCreation = new LinearLayout(getContext());
         TextView dateCreation = new TextView(getContext());
-        dateCreation.setText("Date de création ");
+        dateCreation.setText("Date de crÃ©ation ");
 
         editDateCreation = new EditText(getContext());
 
@@ -131,7 +131,7 @@ public class VueBrassinPere extends LinearLayout {
 
         LinearLayout layoutQuantite = new LinearLayout(getContext());
         TextView quantite = new TextView(getContext());
-        quantite.setText("Quantité : ");
+        quantite.setText("QuantitÃ© : ");
 
         editQuantite = new EditText(getContext());
         editQuantite.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -146,14 +146,14 @@ public class VueBrassinPere extends LinearLayout {
         TableRow ligneDensite = new TableRow(getContext());
         LinearLayout layoutDensiteOriginale = new LinearLayout(getContext());
         TextView densiteOriginale = new TextView(getContext());
-        densiteOriginale.setText("Densité originale : ");
+        densiteOriginale.setText("DensitÃ© originale : ");
 
         editDensiteOriginale = new EditText(getContext());
         editDensiteOriginale.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         LinearLayout layoutDensiteFinale = new LinearLayout(getContext());
         TextView densiteFinale = new TextView(getContext());
-        densiteFinale.setText("Densité finale : ");
+        densiteFinale.setText("DensitÃ© finale : ");
 
         editDensiteFinale = new EditText(getContext());
         editDensiteFinale.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
