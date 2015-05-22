@@ -53,8 +53,14 @@ public class Historique extends Objet implements Comparable<Historique> {
     @Override
     public int compareTo(@NonNull Historique historique) {
         if (date == historique.date) {
-            return 0;
-        } else if (date > historique.date) {
+            if (getId() == historique.getId()) {
+                return 0;
+            } else if (getId() < historique.getId()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else if (date < historique.date) {
             return 1;
         }
         return -1;
