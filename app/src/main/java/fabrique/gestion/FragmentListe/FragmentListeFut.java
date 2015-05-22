@@ -197,7 +197,11 @@ public class FragmentListeFut extends FragmentAmeliore implements AdapterView.On
             ArrayList<Fut> listeFut = listeListeFut.get(i);
                 TableRow ligneTitre = new TableRow(contexte);
                     TextView titre = new TextView(contexte);
-                    titre.setText("" + TableEtatFut.instance(contexte).recupererId(listeFut.get(0).getNoeud(contexte).getId_etat()).getTexte());
+                    String texte = "Non utilisé";
+                    if (listeFut.get(0).getId_noeud() != -1) {
+                        texte = TableEtatFut.instance(contexte).recupererId(listeFut.get(0).getNoeud(contexte).getId_etat()).getTexte();
+                    }
+                    titre.setText(texte);
                 ligneTitre.addView(titre, marge);
             tableau.addView(ligneTitre);
             PredicateLayout ligne = new PredicateLayout(contexte);

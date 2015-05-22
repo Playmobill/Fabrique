@@ -118,7 +118,7 @@ public class FragmentAjouterCuve extends FragmentAmeliore implements View.OnClic
             calendrier.setTimeInMillis(System.currentTimeMillis());
             long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
 
-            TableCuve.instance(contexte).ajouter(numero, capacite, emplacement, date, 1, date, "", -1, true);
+            TableCuve.instance(contexte).ajouter(numero, capacite, emplacement, date, -1, date, "", -1, true);
 
             Toast.makeText(contexte, "Cuve ajouté !", Toast.LENGTH_SHORT).show();
 

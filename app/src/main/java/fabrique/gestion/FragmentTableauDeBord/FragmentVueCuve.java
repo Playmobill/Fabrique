@@ -21,6 +21,8 @@ import fabrique.gestion.Vue.VueCuve;
 
 public class FragmentVueCuve extends FragmentAmeliore {
 
+    private Cuve cuve;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,7 +39,7 @@ public class FragmentVueCuve extends FragmentAmeliore {
         LinearLayout layout = new LinearLayout(contexte);
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        Cuve cuve = TableCuve.instance(contexte).recupererId(getArguments().getLong("id"));
+        cuve = TableCuve.instance(contexte).recupererId(getArguments().getLong("id"));
         if (cuve != null) {
             if (cuve.getBrassin(contexte) != null) {
                 layout.addView(new VueBrassin(contexte, cuve.getBrassin(contexte)));
@@ -56,9 +58,14 @@ public class FragmentVueCuve extends FragmentAmeliore {
 
     @Override
     public void invalidate() {
+        FragmentVueCuve fragmentVueCuve = new FragmentVueCuve();
+        Bundle args = new Bundle();
+        args.putLong("id", cuve.getId());
+        fragmentVueCuve.setArguments(args);
+
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.onglet, new FragmentTableauDeBord());
-        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_CLOSE));
+        transaction.replace(R.id.onglet, fragmentVueCuve);
+        transaction.setTransition((FragmentTransaction.TRANSIT_FRAGMENT_OPEN));
         transaction.addToBackStack(null).commit();
     }
 
