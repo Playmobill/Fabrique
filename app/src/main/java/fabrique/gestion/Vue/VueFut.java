@@ -79,6 +79,9 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
         this.parent = parent;
         this.fut = fut;
 
+        tableauCheminBrassin = new TableLayout(contexte);
+        addView(cadre(tableauCheminBrassin, " Chemin du brassin "));
+
         TableRow ligne = new TableRow(contexte);
 
         tableauDescription = new TableLayout(contexte);
@@ -91,9 +94,9 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
         afficher();
         afficherHistorique();
 
-        tableauCheminBrassin = new TableLayout(contexte);
-        addView(cadre(tableauCheminBrassin, " Chemin du brassin "));
-        afficherCheminBrassin();
+        if (fut.getId_noeud() != -1) {
+            afficherCheminBrassin();
+        }
 
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(getContext());
         layoutHorizontalScroll.addView(ligne);
