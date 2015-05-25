@@ -13,7 +13,6 @@ import fabrique.gestion.Objets.Emplacement;
 
 public class LigneEmplacement extends TableRow implements View.OnClickListener {
 
-    private FragmentEmplacement parent;
     private Emplacement emplacement;
 
     private TableRow.LayoutParams marge;
@@ -27,9 +26,8 @@ public class LigneEmplacement extends TableRow implements View.OnClickListener {
         super(context);
     }
 
-    public LigneEmplacement(Context context, FragmentEmplacement parent, Emplacement emplacement) {
+    public LigneEmplacement(Context context, Emplacement emplacement) {
         this(context);
-        this.parent = parent;
         this.emplacement = emplacement;
 
         initialiser();
@@ -79,7 +77,6 @@ public class LigneEmplacement extends TableRow implements View.OnClickListener {
 
     private void valider() {
         TableEmplacement.instance(getContext()).modifier(emplacement.getId(), editText.getText().toString(), actif.isChecked());
-        parent.afficher();
     }
 
     @Override

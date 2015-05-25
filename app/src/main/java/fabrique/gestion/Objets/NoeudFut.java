@@ -66,10 +66,10 @@ public class NoeudFut extends Objet implements Comparable<NoeudFut> {
     @Override
     public String sauvegarde() {
         return ("<O:NoeudFut>" +
-                "<E:id_noeudPrecedent>" + id_noeudPrecedent + "</E:id_noeudPrecedent>" +
-                "<E:id_etat>" + id_etat + "</E:id_etat>" +
-                "<E:id_noeudAvecBrassin>" + id_noeudAvecBrassin + "</E:id_noeudAvecBrassin>" +
-                "<E:id_noeudSansBrassin>" + id_noeudSansBrassin + "</E:id_noeudSansBrassin>" +
+                    "<E:id_noeudPrecedent>" + id_noeudPrecedent + "</E:id_noeudPrecedent>" +
+                    "<E:id_etat>" + id_etat + "</E:id_etat>" +
+                    "<E:id_noeudAvecBrassin>" + id_noeudAvecBrassin + "</E:id_noeudAvecBrassin>" +
+                    "<E:id_noeudSansBrassin>" + id_noeudSansBrassin + "</E:id_noeudSansBrassin>" +
                 "</O:NoeudFut>");
     }
 }

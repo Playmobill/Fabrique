@@ -54,7 +54,7 @@ public class DateToString {
             case(10) : return "Nov";
             case(11) : return "Dec";
             case(12) : return "Jan";
-            default : return null;
+            default : return "";
         }
     }
 }

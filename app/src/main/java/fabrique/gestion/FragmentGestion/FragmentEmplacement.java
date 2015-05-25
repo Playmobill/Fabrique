@@ -70,6 +70,11 @@ public class FragmentEmplacement extends FragmentAmeliore implements View.OnClic
             titre.setTypeface(null, Typeface.BOLD);
         ligneTitre.addView(titre);
 
+            TextView actif = new TextView(contexte);
+                actif.setText("Actif");
+                actif.setTypeface(null, Typeface.BOLD);
+        ligneTitre.addView(actif);
+
         ligneTitreAjouter = new TableRow(contexte);
             TextView titreAjouter = new TextView(contexte);
             titreAjouter.setText("Ajouter un emplacement :");
@@ -98,7 +103,7 @@ public class FragmentEmplacement extends FragmentAmeliore implements View.OnClic
         tableau.addView(ligneTitre, marge);
         ArrayList<Emplacement> emplacements = TableEmplacement.instance(contexte).recupererTous();
         for (int i=0; i< emplacements.size(); i++) {
-            tableau.addView(new LigneEmplacement(contexte, this, emplacements.get(i)));
+            tableau.addView(new LigneEmplacement(contexte, emplacements.get(i)));
         }
 
         tableau.addView(ligneTitreAjouter, marge);

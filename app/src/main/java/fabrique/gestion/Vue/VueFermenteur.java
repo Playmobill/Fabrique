@@ -535,7 +535,10 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
             new DatePickerDialog(getContext(), this, calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).show();
         }
         else if (v.equals(btnAjouterHistorique)) {
-            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), fermenteur.getId(), -1, -1, -1);
+            Calendar calendrier = Calendar.getInstance();
+            calendrier.setTimeInMillis(System.currentTimeMillis());
+            long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), date, fermenteur.getId(), -1, -1, -1);
             afficherHistorique();
         } else if (v.equals(btnEtatSuivantAvecBrassin)) {
             TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudAvecBrassin(), System.currentTimeMillis(), fermenteur.getIdBrassin(), fermenteur.getActif());

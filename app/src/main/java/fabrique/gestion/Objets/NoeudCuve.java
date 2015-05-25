@@ -69,10 +69,10 @@ public class NoeudCuve extends Objet implements Comparable<NoeudCuve> {
     @Override
     public String sauvegarde() {
         return ("<O:NoeudCuve>" +
-                "<E:id_noeudPrecedent>" + id_noeudPrecedent + "</E:id_noeudPrecedent>" +
-                "<E:id_etat>" + id_etat + "</E:id_etat>" +
-                "<E:id_noeudAvecBrassin>" + id_noeudAvecBrassin + "</E:id_noeudAvecBrassin>" +
-                "<E:id_noeudSansBrassin>" + id_noeudSansBrassin + "</E:id_noeudSansBrassin>" +
+                    "<E:id_noeudPrecedent>" + id_noeudPrecedent + "</E:id_noeudPrecedent>" +
+                    "<E:id_etat>" + id_etat + "</E:id_etat>" +
+                    "<E:id_noeudAvecBrassin>" + id_noeudAvecBrassin + "</E:id_noeudAvecBrassin>" +
+                    "<E:id_noeudSansBrassin>" + id_noeudSansBrassin + "</E:id_noeudSansBrassin>" +
                 "</O:NoeudCuve>");
     }
 }

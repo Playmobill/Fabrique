@@ -382,8 +382,8 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 TableCuve.instance(getContext()).supprimer(cuve.getId());
                 parent.invalidate();
             } else {
-                TableCuve.instance(getContext()).modifier(cuve.getId(), numero, capacite, emplacements.get((int) editEmplacement.getSelectedItemId()).getId(), dateLavageAcide, cuve.getIdNoeud(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin(), editActif.isChecked());
                 indexEmplacement = editEmplacement.getSelectedItemPosition();
+                TableCuve.instance(getContext()).modifier(cuve.getId(), numero, capacite, emplacements.get(indexEmplacement).getId(), dateLavageAcide, cuve.getIdNoeud(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin(), editActif.isChecked());
                 afficher();
             }
         } else {
@@ -525,7 +525,10 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
             new DatePickerDialog(getContext(), this, calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).show();
         }
         else if (v.equals(btnAjouterHistorique)) {
-            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, cuve.getId(), -1, -1);
+            Calendar calendrier = Calendar.getInstance();
+            calendrier.setTimeInMillis(System.currentTimeMillis());
+            long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), date, -1, cuve.getId(), -1, -1);
             afficherHistorique();
         }
         else if (v.equals(btnEtatSuivantAvecBrassin)) {

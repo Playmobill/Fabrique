@@ -23,7 +23,7 @@ public class Brassin extends BrassinPere {
     public String sauvegarde() {
         return ("<O:Brassin>" +
                     "<E:id_brassinPere>" + id_brassinPere + "</E:id_brassinPere>" +
-                    "<E:quantite" + getQuantite() + "</E:quantite>" +
+                    "<E:quantite>" + getQuantite() + "</E:quantite>" +
                 "</O:Brassin>");
     }
 }
