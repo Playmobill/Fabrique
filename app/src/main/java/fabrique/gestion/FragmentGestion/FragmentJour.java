@@ -14,12 +14,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import fabrique.gestion.ActivityAccueil;
@@ -36,15 +33,14 @@ import fabrique.gestion.R;
  */
 public class FragmentJour extends FragmentAmeliore implements View.OnClickListener {
 
-    long jour, mois, annee;
+    private long date;
     private Context contexte;
     private View view;
     private TextView titre;
     private LinearLayout affichageEvenements, affichageHistorique;
-    private ArrayList<Calendrier> calendrier;
-    private ArrayList<Historique> historique;
+    private ArrayList<Calendrier> calendriers;
+    private ArrayList<Historique> historiques;
     private Button jourSuivant, jourPrecedent, ajoutEvent;
-    private Calendar calendrierTime;
 
     @Nullable
     @Override
@@ -63,61 +59,17 @@ public class FragmentJour extends FragmentAmeliore implements View.OnClickListen
 
         affichageEvenements = (LinearLayout)view.findViewById(R.id.listeEvenement);
 
-        jour = (long)getArguments().get("jour");
-        mois = (long)getArguments().get("mois");
-        annee = (long)getArguments().get("annee");
-
-        calendrierTime = Calendar.getInstance();
+        date = getArguments().getLong("date");
 
         titre = (TextView)view.findViewById(R.id.txtJourActuel);
-        titre.setText(jour+" "+DateToString.moisToString(Integer.parseInt(""+mois))+" "+annee);
+        titre.setText(DateToString.dateToString(date));
 
         jourPrecedent = (Button)view.findViewById(R.id.btnJourPrecedent);
-        if(jour-1<=0){
-            if(mois-1<calendrierTime.getActualMinimum(Calendar.MONTH)) {
-                Date date = new Date(calendrierTime.getTimeInMillis());
-                date.setYear((int)(annee-1));
-                calendrierTime.setTime(date);
-                date.setMonth(calendrierTime.getActualMaximum(Calendar.MONTH));
-                calendrierTime.setTime(date);
-                date.setDate(calendrierTime.getActualMaximum(Calendar.DAY_OF_MONTH));
-                calendrierTime.setTime(date);
-                jourPrecedent.setText(calendrierTime.get(Calendar.DAY_OF_MONTH) + " " + DateToString.moisToString(Integer.parseInt("" + calendrierTime.get(Calendar.MONTH))) + " " + (annee-1));
-            }
-            else{
-                Date date = new Date(calendrierTime.getTimeInMillis());
-                date.setMonth((int)mois-1);
-                calendrierTime.setTime(date);
-                date.setDate(calendrierTime.getActualMaximum(Calendar.DAY_OF_MONTH));
-                calendrierTime.setTime(date);
-                jourPrecedent.setText(calendrierTime.get(Calendar.DAY_OF_MONTH)+ " " + DateToString.moisToString(Integer.parseInt(""+calendrierTime.get(Calendar.MONTH))) + " " + annee);
-            }
-        }else {
-            jourPrecedent.setText(jour - 1 + " " + DateToString.moisToString(Integer.parseInt("" + mois)) + " " + annee);
-        }
+        jourPrecedent.setText(DateToString.dateToString(date - 1000 * 60 * 60 * 24));
         jourPrecedent.setOnClickListener(this);
 
         jourSuivant = (Button)view.findViewById(R.id.btnJourSuivant);
-        calendrierTime.setTime(new Date((int)annee, (int)mois, (int)jour));
-        if(jour+1>calendrierTime.getActualMaximum(Calendar.DAY_OF_MONTH)){
-            if(mois+1>calendrierTime.getActualMaximum(Calendar.MONTH)) {
-                Date date = new Date(calendrierTime.getTimeInMillis());
-                date.setYear((int)(annee+1));
-                date.setMonth(calendrierTime.getActualMinimum(Calendar.MONTH));
-                date.setDate(1);
-                calendrierTime.setTime(date);
-                jourSuivant.setText(calendrierTime.get(Calendar.DAY_OF_MONTH) + " " + DateToString.moisToString(Integer.parseInt("" + calendrierTime.get(Calendar.MONTH))) + " " + (annee+1));
-            }
-            else{
-                Date date = new Date(calendrierTime.getTimeInMillis());
-                date.setMonth((int) mois + 1);
-                date.setDate(1);
-                calendrierTime.setTime(date);
-                jourSuivant.setText(calendrierTime.get(Calendar.DAY_OF_MONTH) + " " + DateToString.moisToString(Integer.parseInt("" + calendrierTime.get(Calendar.MONTH))) + " " + annee);
-            }
-        }else {
-            jourSuivant.setText(jour + 1 + " " + DateToString.moisToString(Integer.parseInt("" + mois)) + " " + annee);
-        }
+        jourSuivant.setText(DateToString.dateToString(date+1000*60*60*24));
         jourSuivant.setOnClickListener(this);
 
         affichageEvenements = (LinearLayout)view.findViewById(R.id.listeEvenement);
@@ -187,37 +139,53 @@ public class FragmentJour extends FragmentAmeliore implements View.OnClickListen
             // show it
             alertDialog.show();
         }
+        else if (v.equals(jourPrecedent)) {
+            FragmentJour fragmentJour = new FragmentJour();
+            Bundle args = new Bundle();
+            args.putLong("date", date - 1000 * 60 * 60 * 24);
+            fragmentJour.setArguments(args);
 
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.onglet, fragmentJour);
+            transaction.setTransition((FragmentTransaction.TRANSIT_NONE));
+            transaction.addToBackStack(null).commit();
+        }
+        else if (v.equals(jourSuivant)) {
+            FragmentJour fragmentJour = new FragmentJour();
+            Bundle args = new Bundle();
+            args.putLong("date", date+1000*60*60*24);
+            fragmentJour.setArguments(args);
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.onglet, fragmentJour);
+            transaction.setTransition((FragmentTransaction.TRANSIT_NONE));
+            transaction.addToBackStack(null).commit();
+        }
     }
 
     public void initialiserTexte(){
         affichageEvenements.removeAllViews();
         affichageHistorique.removeAllViews();
 
-        calendrier = TableCalendrier.instance(contexte).getEvenements();
-        historique = TableHistorique.instance(contexte).recupererHistorique();
+        calendriers = TableCalendrier.instance(contexte).getEvenements();
+        historiques = TableHistorique.instance(contexte).recupererHistorique();
 
-        for (int i = 0; i < historique.size(); i++) {
-            calendrierTime.setTimeInMillis(historique.get(i).getDate());
-            if(calendrierTime.get(Calendar.MONTH) == mois && calendrierTime.get(Calendar.DAY_OF_MONTH) == jour && calendrierTime.get(Calendar.YEAR) == annee){
+        for (int i = 0; i < historiques.size(); i++) {
+            if(historiques.get(i).getDate() == date){
                 TextView textView= new TextView(contexte);
-                textView.setText(historique.get(i).getTexte());
+                textView.setText(historiques.get(i).getTexte());
                 textView.setPadding(30,0,0,15);
                 affichageHistorique.addView(textView);
             }
         }
 
-        for (int i = 0; i < calendrier.size(); i++) {
-            calendrierTime.setTimeInMillis(calendrier.get(i).getDateEvenement());
-            if(calendrierTime.get(Calendar.MONTH) == mois && calendrierTime.get(Calendar.DAY_OF_MONTH) == jour && calendrierTime.get(Calendar.YEAR) == annee){
+        for (int i = 0; i < calendriers.size(); i++) {
+            if(calendriers.get(i).getDateEvenement() == date) {
                 TextView textView= new TextView(contexte);
-                textView.setText(calendrier.get(i).getNomEvenement());
+                textView.setText(calendriers.get(i).getNomEvenement());
                 textView.setPadding(30,0,0,15);
                 affichageEvenements.addView(textView);
             }
         }
-
     }
-
-
 }
