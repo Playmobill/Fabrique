@@ -60,6 +60,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
     private EditText editTitre, editCapacite;
     private CheckBox editActif;
     private TableRow ligneBouton;
+    private TextView etat, dateEtat;
     private Button btnModifier, btnValider, btnAnnuler;
 
     //DatePicker
@@ -222,11 +223,11 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
         }
 
             TableRow ligneEtatDate = new TableRow(getContext());
-                TextView etat = new TextView(getContext());
+                etat = new TextView(getContext());
                 etat.setGravity(Gravity.CENTER_VERTICAL);
                 etat.setText("État : " + texteEtat);
             ligneEtatDate.addView(etat, parametre);
-                TextView dateEtat = new TextView(getContext());
+                dateEtat = new TextView(getContext());
                 dateEtat.setGravity(Gravity.CENTER_VERTICAL);
                 dateEtat.setText("Depuis le : " + fermenteur.getDateEtat());
             ligneEtatDate.addView(dateEtat, parametre);
@@ -321,6 +322,15 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
 
         ligneBouton.removeAllViews();
         ligneBouton.addView(btnModifier);
+
+        String texteEtat = "État non défini";
+        if ((fermenteur.getNoeud(getContext()) != null) && (fermenteur.getNoeud(getContext()).getEtat(getContext()) != null)) {
+            texteEtat = fermenteur.getNoeud(getContext()).getEtat(getContext()).getTexte();
+        }
+
+        etat.setText("État : " + texteEtat);
+
+        dateEtat.setText("Depuis le : " + fermenteur.getDateEtat());
     }
 
     private void afficherDateLavageAcide() {
@@ -529,9 +539,11 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
             afficherHistorique();
         } else if (v.equals(btnEtatSuivantAvecBrassin)) {
             TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudAvecBrassin(), System.currentTimeMillis(), fermenteur.getIdBrassin(), fermenteur.getActif());
+            afficher();
             afficherCheminBrassin();
         } else if (v.equals(btnEtatSuivantSansBrassin)) {
             TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), fermenteur.getIdBrassin(), fermenteur.getActif());
+            afficher();
             afficherCheminBrassin();
         } else if (v.equals(btnTransfere) && spinnerListeCuveSansBrassin.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
             int quantite;
@@ -554,7 +566,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                     Calendar calendrier = Calendar.getInstance();
                     calendrier.setTimeInMillis(System.currentTimeMillis());
                     long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
-                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(2).getTexte() + " du brassin n°" + brassin.getId() + " (" + quantite + "L)" + " du fermenteur n°" + fermenteur.getId() + " à la cuve n°" + cuve.getId();
+                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(2).getTexte() + " du brassin n°" + brassin.getNumero() + " (" + quantite + "L)" + " du fermenteur n°" + fermenteur.getNumero() + " à la cuve n°" + cuve.getNumero();
                     TableHistorique.instance(getContext()).ajouter(texteTransfert, date, fermenteur.getId(), cuve.getId(), -1, brassin.getId_brassinPere());
 
                     TableBrassin.instance(getContext()).modifier(brassin.getId(), brassin.getId_brassinPere(), brassin.getNumero(), brassin.getCommentaire(), brassin.getDateLong(), brassin.getQuantite() - quantite, brassin.getId_recette(), brassin.getDensiteOriginale(), brassin.getDensiteFinale());
@@ -569,7 +581,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                     Calendar calendrier = Calendar.getInstance();
                     calendrier.setTimeInMillis(System.currentTimeMillis());
                     long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
-                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(2).getTexte() + " du brassin n°" + brassin.getId() + " (" + quantite + "L)" + " du fermenteur n°" + fermenteur.getId() + " à la cuve n°" + cuve.getId();
+                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(2).getTexte() + " du brassin n°" + brassin.getNumero() + " (" + quantite + "L)" + " du fermenteur n°" + fermenteur.getNumero() + " à la cuve n°" + cuve.getNumero();
                     TableHistorique.instance(getContext()).ajouter(texteTransfert, date, fermenteur.getId(), cuve.getId(), -1, brassin.getId_brassinPere());
 
                     TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), idPremierNoeud, System.currentTimeMillis(), cuve.getCommentaireEtat(), brassin.getId(), cuve.getActif());

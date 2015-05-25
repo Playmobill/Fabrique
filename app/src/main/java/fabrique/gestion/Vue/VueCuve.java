@@ -60,6 +60,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
     private EditText editTitre, editCapacite;
     private CheckBox editActif;
     private TableRow ligneBouton;
+    private TextView etat, dateEtat;
     private Button btnModifier, btnValider, btnAnnuler;
 
     //DatePicker
@@ -221,11 +222,11 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
         }
 
         TableRow ligneEtatDate = new TableRow(getContext());
-        TextView etat = new TextView(getContext());
+        etat = new TextView(getContext());
         etat.setGravity(Gravity.CENTER_VERTICAL);
         etat.setText("État : " + texteEtat);
         ligneEtatDate.addView(etat, parametre);
-        TextView dateEtat = new TextView(getContext());
+        dateEtat = new TextView(getContext());
         dateEtat.setGravity(Gravity.CENTER_VERTICAL);
         dateEtat.setText("Depuis le : " + cuve.getDateEtat());
         ligneEtatDate.addView(dateEtat, parametre);
@@ -320,6 +321,15 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
 
         ligneBouton.removeAllViews();
         ligneBouton.addView(btnModifier);
+
+        String texteEtat = "État non défini";
+        if ((cuve.getNoeud(getContext()) != null) && (cuve.getNoeud(getContext()).getEtat(getContext()) != null)) {
+            texteEtat = cuve.getNoeud(getContext()).getEtat(getContext()).getTexte();
+        }
+
+        etat.setText("État : " + texteEtat);
+
+        dateEtat.setText("Depuis le : " + cuve.getDateEtat());
     }
 
     private void afficherDateLavageAcide() {
@@ -520,10 +530,12 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
         }
         else if (v.equals(btnEtatSuivantAvecBrassin)) {
             TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudAvecBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), cuve.getIdBrassin(), cuve.getActif());
+            afficher();
             afficherCheminBrassin();
         }
         else if (v.equals(btnEtatSuivantSansBrassin)) {
             TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), cuve.getIdBrassin(), cuve.getActif());
+            afficher();
             afficherCheminBrassin();
         }
         else if (v.equals(btnTransfere) && spinnerListeFutSansBrassin.getSelectedItemPosition() != Spinner.INVALID_POSITION) {

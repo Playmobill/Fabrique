@@ -436,10 +436,12 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
         }
         else if (v.equals(btnEtatSuivantAvecBrassin)) {
             TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getNoeud(getContext()).getId_noeudAvecBrassin(), System.currentTimeMillis(), fut.getId_brassin(), fut.getDateInspectionToLong(), fut.getActif());
+            afficher();
             afficherCheminBrassin();
         }
         else if (v.equals(btnEtatSuivantSansBrassin)) {
             TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), fut.getId_brassin(), fut.getDateInspectionToLong(), fut.getActif());
+            afficher();
             afficherCheminBrassin();
         }
         else if (v.equals(btnAjouterHistorique)) {
