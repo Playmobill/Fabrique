@@ -401,6 +401,15 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
         }
 
         if (erreur.equals("")) {
+            if(densiteFinale != brassin.getDensiteFinale()) {
+                Calendar calendrier = Calendar.getInstance();
+                calendrier.setTimeInMillis(System.currentTimeMillis());
+                long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
+                String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(1).getTexte() + " : " + editDensiteFinale.getText().toString();
+                TableHistorique.instance(getContext()).ajouter(texteTransfert, date, 0, 0, 0, brassin.getId_brassinPere());
+            }
+
             long recette = listeRecetteActifs.get(editRecette.getSelectedItemPosition()).getId();
 
             TableBrassin.instance(getContext()).modifier(brassin.getId(), brassin.getId_brassinPere(), numero, editCommentaire.getText().toString(), brassin.getDateLong(), quantite, recette, densiteOriginale, densiteFinale);
@@ -412,15 +421,6 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
                 quantitePere = quantite;
             }
             TableBrassinPere.instance(getContext()).modifier(brassinPere.getId(), numero, editCommentaire.getText().toString(), brassinPere.getDateLong(), quantitePere, brassinPere.getId_recette(), densiteOriginale, densiteFinale);
-
-            if(densiteFinale != brassin.getDensiteFinale()) {
-                Calendar calendrier = Calendar.getInstance();
-                calendrier.setTimeInMillis(System.currentTimeMillis());
-                long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
-
-                String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(1).getTexte() + " : " + editDensiteFinale.getText().toString();
-                TableHistorique.instance(getContext()).ajouter(texteTransfert, date, 0, 0, 0, brassin.getId_brassinPere());
-            }
 
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_SHORT).show();
