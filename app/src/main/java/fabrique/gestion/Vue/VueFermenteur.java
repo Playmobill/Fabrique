@@ -383,9 +383,14 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                 TableFermenteur.instance(getContext()).supprimer(fermenteur.getId());
                 parent.invalidate();
             } else {
+                if(dateLavageAcide != fermenteur.getDateLavageAcideToLong()){
+                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(6).getTexte();
+                    TableHistorique.instance(getContext()).ajouter(texteTransfert, dateLavageAcide, fermenteur.getId(), 0, 0, 0);
+                }
                 TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), numero, capacite, emplacements.get((int) editEmplacement.getSelectedItemId()).getId(), dateLavageAcide, fermenteur.getIdNoeud(), fermenteur.getDateEtatToLong(), fermenteur.getIdBrassin(), editActif.isChecked());
                 indexEmplacement = editEmplacement.getSelectedItemPosition();
                 afficher();
+                afficherHistorique();
             }
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_SHORT).show();

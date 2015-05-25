@@ -321,8 +321,13 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
                 TableFut.instance(getContext()).supprimer(fut.getId());
                 parent.invalidate();
             } else {
+                if(dateInspection != fut.getDateInspectionToLong()){
+                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(5).getTexte();
+                    TableHistorique.instance(getContext()).ajouter(texteTransfert, dateInspection, 0, 0, fut.getId(), 0);
+                }
                 TableFut.instance(getContext()).modifier(fut.getId(), numero, capacite, fut.getId_noeud(), fut.getDateEtatToLong(), fut.getId_brassin(), dateInspection, editActif.isChecked());
                 afficher();
+                afficherHistorique();
             }
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_SHORT).show();

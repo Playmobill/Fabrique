@@ -383,8 +383,13 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                 parent.invalidate();
             } else {
                 indexEmplacement = editEmplacement.getSelectedItemPosition();
+                if(dateLavageAcide != cuve.getDateLavageAcide()){
+                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(7).getTexte();
+                    TableHistorique.instance(getContext()).ajouter(texteTransfert, dateLavageAcide, 0, cuve.getId(), 0, 0);
+                }
                 TableCuve.instance(getContext()).modifier(cuve.getId(), numero, capacite, emplacements.get(indexEmplacement).getId(), dateLavageAcide, cuve.getIdNoeud(), cuve.getLongDateEtat(), cuve.getCommentaireEtat(), cuve.getIdBrassin(), editActif.isChecked());
                 afficher();
+                afficherHistorique();
             }
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_SHORT).show();
