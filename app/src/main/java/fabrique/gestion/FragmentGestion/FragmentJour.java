@@ -28,18 +28,11 @@ import fabrique.gestion.Objets.DateToString;
 import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.R;
 
-/**
- * Created by thibaut on 01/05/15.
- */
 public class FragmentJour extends FragmentAmeliore implements View.OnClickListener {
 
     private long date;
     private Context contexte;
-    private View view;
-    private TextView titre;
     private LinearLayout affichageEvenements, affichageHistorique;
-    private ArrayList<Calendrier> calendriers;
-    private ArrayList<Historique> historiques;
     private Button jourSuivant, jourPrecedent, ajoutEvent;
 
     @Nullable
@@ -55,13 +48,13 @@ public class FragmentJour extends FragmentAmeliore implements View.OnClickListen
         ((ActivityAccueil) getActivity()).setVue(this);
         contexte = container.getContext();
 
-        view = inflater.inflate(R.layout.activity_vue_jour, container, false);
+        View view = inflater.inflate(R.layout.activity_vue_jour, container, false);
 
         affichageEvenements = (LinearLayout)view.findViewById(R.id.listeEvenement);
 
         date = getArguments().getLong("date");
 
-        titre = (TextView)view.findViewById(R.id.txtJourActuel);
+        TextView titre = (TextView)view.findViewById(R.id.txtJourActuel);
         titre.setText(DateToString.dateToString(date));
 
         jourPrecedent = (Button)view.findViewById(R.id.btnJourPrecedent);
@@ -167,8 +160,8 @@ public class FragmentJour extends FragmentAmeliore implements View.OnClickListen
         affichageEvenements.removeAllViews();
         affichageHistorique.removeAllViews();
 
-        calendriers = TableCalendrier.instance(contexte).getEvenements();
-        historiques = TableHistorique.instance(contexte).recupererHistorique();
+        ArrayList<Calendrier> calendriers = TableCalendrier.instance(contexte).getEvenements();
+        ArrayList<Historique> historiques = TableHistorique.instance(contexte).recupererHistorique();
 
         for (int i = 0; i < historiques.size(); i++) {
             if(historiques.get(i).getDate() == date){

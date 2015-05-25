@@ -26,13 +26,9 @@ import fabrique.gestion.Objets.DateToString;
 import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.R;
 
-/**
- * Created by thibaut on 30/04/15.
- */
 public class FragmentCalendrier extends FragmentAmeliore implements View.OnClickListener {
 
     private Context contexte;
-    private View view;
     private long date;
     private TableLayout tableauCalendrier;
     int longueurBouton, hauteurBouton;
