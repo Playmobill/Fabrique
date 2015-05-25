@@ -116,11 +116,11 @@ public class TableFermenteur extends Controle {
         return listeFermenteur;
     }
 
-    public ArrayList<Fermenteur> recupererFermenteurAvecBrassin() {
+    public ArrayList<Fermenteur> recupererFermenteursVidesActifs() {
         ArrayList<Fermenteur> listeFermenteur = new ArrayList<>();
         ArrayList<Fermenteur> listeFermenteurActif = recupererFermenteursActifs();
         for (int i=0; i<listeFermenteurActif.size(); i++) {
-            if (listeFermenteurActif.get(i).getIdBrassin() != -1) {
+            if (listeFermenteurActif.get(i).getIdBrassin() == -1) {
                 listeFermenteur.add(listeFermenteurActif.get(i));
             }
         }

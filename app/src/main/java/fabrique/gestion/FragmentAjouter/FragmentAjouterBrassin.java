@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -30,6 +31,8 @@ import fabrique.gestion.R;
 public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnClickListener {
 
     private Context contexte;
+    private ArrayList<Fermenteur> listeFermenteursDisponibles;
+    private ArrayList<String> labelsListeDeroulanteFermenteurs;
 
     private Button btnAjouter;
 
@@ -73,9 +76,14 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
         adapteurRecette.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editRecette.setAdapter(adapteurRecette);
 
+        listeFermenteursDisponibles = TableFermenteur.instance(contexte).recupererFermenteursVidesActifs();
+        labelsListeDeroulanteFermenteurs = new ArrayList<>();
+        for (int i = 0; i < listeFermenteursDisponibles.size(); i++) {
+            labelsListeDeroulanteFermenteurs.add(i,listeFermenteursDisponibles.get(i).getNumero()+" / "+listeFermenteursDisponibles.get(i).getCapacite()+"L");
+        }
+
         editFermenteur = (Spinner)view.findViewById(R.id.editFermenteur);
-        TableFermenteur tableFermenteur = TableFermenteur.instance(contexte);
-        ArrayAdapter<String> adapteurFermenteur = new ArrayAdapter<>(contexte, R.layout.spinner_style, tableFermenteur.recupererNumerosFermenteurSansBrassin());
+        ArrayAdapter<String> adapteurFermenteur = new ArrayAdapter<>(contexte, R.layout.spinner_style, labelsListeDeroulanteFermenteurs);
         adapteurFermenteur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editFermenteur.setAdapter(adapteurFermenteur);
 
@@ -157,7 +165,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             long id_brassin = TableBrassin.instance(contexte).ajouter(contexte, id_brassinPere, quantite);
 
             Log.i("Coucou", editFermenteur.getSelectedItemPosition()+"");
-            Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererIndex(editFermenteur.getSelectedItemPosition());
+            Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(listeFermenteursDisponibles.get(editFermenteur.getSelectedItemPosition()).getId());
             TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud(), date, id_brassin, fermenteur.getActif());
 
             Toast.makeText(contexte, "Brassin ajouté !", Toast.LENGTH_SHORT).show();
@@ -171,11 +179,16 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             }
             editNumero.setText("" + (max+1));
 
-                TableFermenteur tableFermenteur = TableFermenteur.instance(contexte);
-                ArrayAdapter<String> adapteurFermenteur = new ArrayAdapter<>(contexte, R.layout.spinner_style, tableFermenteur.recupererNumerosFermenteurSansBrassin());
+            listeFermenteursDisponibles = TableFermenteur.instance(contexte).recupererFermenteursVidesActifs();
+            labelsListeDeroulanteFermenteurs = new ArrayList<>();
+            for (int i = 0; i < listeFermenteursDisponibles.size(); i++) {
+                labelsListeDeroulanteFermenteurs.add(i,listeFermenteursDisponibles.get(i).getNumero()+" / "+listeFermenteursDisponibles.get(i).getCapacite()+"L");
+            }
+
+                ArrayAdapter<String> adapteurFermenteur = new ArrayAdapter<>(contexte, R.layout.spinner_style, labelsListeDeroulanteFermenteurs);
                 adapteurFermenteur.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 editFermenteur.setAdapter(adapteurFermenteur);
-                if(tableFermenteur.recupererNumerosFermenteurSansBrassin().size()<=0) {
+                if(listeFermenteursDisponibles.size()<=0) {
                     editFermenteur.setEnabled(false);
                 }
 
