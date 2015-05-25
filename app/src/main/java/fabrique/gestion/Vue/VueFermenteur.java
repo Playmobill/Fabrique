@@ -412,6 +412,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
 
     private void afficherCheminBrassin() {
         tableauCheminBrassin.removeAllViews();
+
         if (fermenteur.getIdNoeud() != -1) {
             if (((ViewGroup) btnEtatSuivantAvecBrassin.getParent()) != null) {
                 ((ViewGroup) btnEtatSuivantAvecBrassin.getParent()).removeAllViews();
@@ -440,7 +441,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                     ligneEtatSuivant.setGravity(Gravity.CENTER);
                     btnEtatSuivantAvecBrassin.setText(noeud.getNoeudAvecBrassin(getContext()).getEtat(getContext()).getTexte());
                     ligneEtatSuivant.addView(btnEtatSuivantAvecBrassin);
-                    ligne.addView(cadre(ligneEtatSuivant, " État actuel "));
+                    ligne.addView(cadre(ligneEtatSuivant, " État suivant "));
                 }
 
                 //Si il y a un prochain etat sans brassin dans ce recipient
@@ -547,12 +548,35 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
             afficherHistorique();
         } else if (v.equals(btnEtatSuivantAvecBrassin)) {
             TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudAvecBrassin(), System.currentTimeMillis(), fermenteur.getIdBrassin(), fermenteur.getActif());
+
+            if (fermenteur.getIdNoeud() != -1) {
+                String historique = fermenteur.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                if ((historique != null) && (!historique.equals(""))) {
+                    Calendar calendrier = Calendar.getInstance();
+                    calendrier.setTimeInMillis(System.currentTimeMillis());
+                    long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    TableHistorique.instance(getContext()).ajouter(historique, date, fermenteur.getId(), -1, -1, -1);
+                    afficherHistorique();
+                }
+            }
+
             afficher();
             afficherCheminBrassin();
         } else if (v.equals(btnEtatSuivantSansBrassin)) {
             TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), fermenteur.getIdBrassin(), fermenteur.getActif());
             afficher();
             afficherCheminBrassin();
+
+            if (fermenteur.getIdNoeud() != -1) {
+                String historique = fermenteur.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                if ((historique != null) && (!historique.equals(""))) {
+                    Calendar calendrier = Calendar.getInstance();
+                    calendrier.setTimeInMillis(System.currentTimeMillis());
+                    long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    TableHistorique.instance(getContext()).ajouter(historique, date, fermenteur.getId(), -1, -1, -1);
+                    afficherHistorique();
+                }
+            }
         } else if (v.equals(btnTransfere) && spinnerListeCuveSansBrassin.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
             int quantite;
             try {
@@ -581,6 +605,17 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                     long idNouveauBrassin = TableBrassin.instance(getContext()).ajouter(getContext(), brassin.getId_brassinPere(), quantite);
                     TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), idPremierNoeud, System.currentTimeMillis(), cuve.getCommentaireEtat(), idNouveauBrassin, cuve.getActif());
 
+                    if (cuve.getIdNoeud() != -1) {
+                        String historique = cuve.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                        if ((historique != null) && (!historique.equals(""))) {
+                            Calendar calendrier2 = Calendar.getInstance();
+                            calendrier2.setTimeInMillis(System.currentTimeMillis());
+                            long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                            TableHistorique.instance(getContext()).ajouter(historique, date2, -1, cuve.getId(), -1, -1);
+                            afficherHistorique();
+                        }
+                    }
+
                     parent.invalidate();
                 }
                 //Si la quantite que l'on veut transferer est plus grande ou égal à la quantite du brassin
@@ -593,7 +628,30 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                     TableHistorique.instance(getContext()).ajouter(texteTransfert, date, fermenteur.getId(), cuve.getId(), -1, brassin.getId_brassinPere());
 
                     TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), idPremierNoeud, System.currentTimeMillis(), cuve.getCommentaireEtat(), brassin.getId(), cuve.getActif());
+
+                    if (cuve.getIdNoeud() != -1) {
+                        String historique = cuve.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                        if ((historique != null) && (!historique.equals(""))) {
+                            Calendar calendrier2 = Calendar.getInstance();
+                            calendrier2.setTimeInMillis(System.currentTimeMillis());
+                            long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                            TableHistorique.instance(getContext()).ajouter(historique, date2, -1, cuve.getId(), -1, -1);
+                            afficherHistorique();
+                        }
+                    }
+
                     TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fermenteur.getActif());
+
+                    if (fermenteur.getIdNoeud() != -1) {
+                        String historique = fermenteur.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                        if ((historique != null) && (!historique.equals(""))) {
+                            Calendar calendrier2 = Calendar.getInstance();
+                            calendrier2.setTimeInMillis(System.currentTimeMillis());
+                            long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                            TableHistorique.instance(getContext()).ajouter(historique, date2, fermenteur.getId(), -1, -1, -1);
+                            afficherHistorique();
+                        }
+                    }
 
                     parent.invalidate();
                 }
@@ -609,6 +667,17 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
             TableHistorique.instance(getContext()).ajouter(texteTransfert, date, -1, -1, -1, brassin.getId_brassinPere());
 
             TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fermenteur.getActif());
+
+            if (fermenteur.getIdNoeud() != -1) {
+                String historique = fermenteur.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                if ((historique != null) && (!historique.equals(""))) {
+                    Calendar calendrier2 = Calendar.getInstance();
+                    calendrier2.setTimeInMillis(System.currentTimeMillis());
+                    long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    TableHistorique.instance(getContext()).ajouter(historique, date2, fermenteur.getId(), -1, -1, -1);
+                    afficherHistorique();
+                }
+            }
 
             parent.invalidate();
         }

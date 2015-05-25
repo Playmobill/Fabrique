@@ -93,10 +93,7 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
         initialiser();
         afficher();
         afficherHistorique();
-
-        if (fut.getId_noeud() != -1) {
-            afficherCheminBrassin();
-        }
+        afficherCheminBrassin();
 
         HorizontalScrollView layoutHorizontalScroll = new HorizontalScrollView(getContext());
         layoutHorizontalScroll.addView(ligne);
@@ -349,74 +346,48 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
     private void afficherCheminBrassin() {
         tableauCheminBrassin.removeAllViews();
 
-        if (((ViewGroup) btnEtatSuivantAvecBrassin.getParent()) != null) {
-            ((ViewGroup) btnEtatSuivantAvecBrassin.getParent()).removeAllViews();
-        }
-        if (((ViewGroup) btnEtatSuivantSansBrassin.getParent()) != null) {
-            ((ViewGroup) btnEtatSuivantSansBrassin.getParent()).removeAllViews();
-        }
-        if (((ViewGroup) btnVider.getParent()) != null) {
-            ((ViewGroup) btnVider.getParent()).removeAllViews();
-        }
-
-        NoeudFut noeud = fut.getNoeud(getContext());
-
-        TableRow.LayoutParams margeLigneTableau = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        margeLigneTableau.setMargins(5, 5, 5, 5);
-
-        TableRow ligne = new TableRow(getContext());
-
-        LinearLayout ligneEtatActuel = new LinearLayout(getContext());
-        ligneEtatActuel.setGravity(Gravity.CENTER);
-        ligneEtatActuel.setOrientation(LinearLayout.VERTICAL);
-        TextView etatTexteActuel = new TextView(getContext());
-        etatTexteActuel.setText("État actuel :");
-        ligneEtatActuel.addView(etatTexteActuel);
-        TextView etatActuel = new TextView(getContext());
-        etatActuel.setText(fut.getNoeud(getContext()).getEtat(getContext()).getTexte());
-        ligneEtatActuel.addView(etatActuel);
-        ligne.addView(ligneEtatActuel, margeLigneTableau);
-
-        LinearLayout ligneChoixFutur = new LinearLayout(getContext());
-        ligneChoixFutur.setGravity(Gravity.CENTER);
-        ligneChoixFutur.setOrientation(LinearLayout.VERTICAL);
-
-        if (fut.getId_brassin() != -1) {
-            //Si il y a un prochain etat avec brassin dans ce recipient
-            if (noeud.getNoeudAvecBrassin(getContext()) != null) {
-                TextView etatSuivant = new TextView(getContext());
-                etatSuivant.setText("État suivant :");
-                ligneChoixFutur.addView(etatSuivant);
-                btnEtatSuivantAvecBrassin.setText(noeud.getNoeudAvecBrassin(getContext()).getEtat(getContext()).getTexte());
-                ligneChoixFutur.addView(btnEtatSuivantAvecBrassin);
+        if (fut.getId_noeud() != -1) {
+            if (((ViewGroup) btnEtatSuivantAvecBrassin.getParent()) != null) {
+                ((ViewGroup) btnEtatSuivantAvecBrassin.getParent()).removeAllViews();
+            }
+            if (((ViewGroup) btnEtatSuivantSansBrassin.getParent()) != null) {
+                ((ViewGroup) btnEtatSuivantSansBrassin.getParent()).removeAllViews();
+            }
+            if (((ViewGroup) btnVider.getParent()) != null) {
+                ((ViewGroup) btnVider.getParent()).removeAllViews();
             }
 
-            //Si il y a un prochain etat sans brassin dans ce recipient
-            if (noeud.getNoeudSansBrassin(getContext()) != null) {
-                TextView vider = new TextView(getContext());
-                vider.setText("Vider :");
-                ligneChoixFutur.addView(vider);
-                ligneChoixFutur.addView(btnVider);
+            NoeudFut noeud = fut.getNoeud(getContext());
+
+            TableRow ligne = new TableRow(getContext());
+
+            if (fut.getId_brassin() != -1) {
+                //Si il y a un prochain etat avec brassin dans ce recipient
+                if (noeud.getNoeudAvecBrassin(getContext()) != null) {
+                    LinearLayout ligneEtatSuivant = new LinearLayout(getContext());
+                    ligneEtatSuivant.setGravity(Gravity.CENTER);
+                    btnEtatSuivantAvecBrassin.setText(noeud.getNoeudAvecBrassin(getContext()).getEtat(getContext()).getTexte());
+                    ligneEtatSuivant.addView(btnEtatSuivantAvecBrassin);
+                    ligne.addView(cadre(ligneEtatSuivant, " État suivant "));
+                }
+
+                LinearLayout ligneVider = new LinearLayout(getContext());
+                ligneVider.setGravity(Gravity.CENTER);
+                ligneVider.addView(btnVider);
+                ligne.addView(cadre(ligneVider, " Vider "));
+
+            } else {
+                //Si il y a un prochain etat sans brassin dans ce recipient
+                if (noeud.getId_noeudSansBrassin() != -1) {
+                    LinearLayout ligneEtatSuivant = new LinearLayout(getContext());
+                    ligneEtatSuivant.setGravity(Gravity.CENTER);
+                    btnEtatSuivantSansBrassin.setText(noeud.getNoeudSansBrassin(getContext()).getEtat(getContext()).getTexte());
+                    ligneEtatSuivant.addView(btnEtatSuivantSansBrassin);
+                    ligne.addView(cadre(ligneEtatSuivant, " État suivant "));
+                }
             }
-            //Si il n'y a ni etat suivant avec brassin ni etat suivant sans brassin dans ce recipient
-            if ((noeud.getNoeudAvecBrassin(getContext()) == null) && (noeud.getNoeudSansBrassin(getContext()) == null)) {
-                TextView vider = new TextView(getContext());
-                vider.setText("Vider :");
-                ligneChoixFutur.addView(vider);
-                ligneChoixFutur.addView(btnVider);
-            }
-        } else {
-            //Si il y a un prochain etat avec brassin dans ce recipient
-            if (noeud.getNoeudSansBrassin(getContext()) != null) {
-                TextView etatSuivant = new TextView(getContext());
-                etatSuivant.setText("État suivant :");
-                ligneChoixFutur.addView(etatSuivant);
-                btnEtatSuivantSansBrassin.setText(noeud.getNoeudSansBrassin(getContext()).getEtat(getContext()).getTexte());
-                ligneChoixFutur.addView(btnEtatSuivantSansBrassin);
-            }
+            tableauCheminBrassin.addView(ligne);
         }
-        ligne.addView(ligneChoixFutur, margeLigneTableau);
-        tableauCheminBrassin.addView(ligne);
     }
 
     @Override
@@ -437,17 +408,51 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
         }
         else if (v.equals(btnVider)) {
             TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fut.getDateInspectionToLong(), fut.getActif());
+
+            if (fut.getId_noeud() != -1) {
+                String historique = fut.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                if ((historique != null) && (!historique.equals(""))) {
+                    Calendar calendrier = Calendar.getInstance();
+                    calendrier.setTimeInMillis(System.currentTimeMillis());
+                    long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    TableHistorique.instance(getContext()).ajouter(historique, date, -1, -1, fut.getId(), -1);
+                    afficherHistorique();
+                }
+            }
+
             parent.invalidate();
         }
         else if (v.equals(btnEtatSuivantAvecBrassin)) {
             TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getNoeud(getContext()).getId_noeudAvecBrassin(), System.currentTimeMillis(), fut.getId_brassin(), fut.getDateInspectionToLong(), fut.getActif());
             afficher();
             afficherCheminBrassin();
+
+            if (fut.getId_noeud() != -1) {
+                String historique = fut.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                if ((historique != null) && (!historique.equals(""))) {
+                    Calendar calendrier = Calendar.getInstance();
+                    calendrier.setTimeInMillis(System.currentTimeMillis());
+                    long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    TableHistorique.instance(getContext()).ajouter(historique, date, -1, -1, fut.getId(), -1);
+                    afficherHistorique();
+                }
+            }
         }
         else if (v.equals(btnEtatSuivantSansBrassin)) {
             TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), fut.getId_brassin(), fut.getDateInspectionToLong(), fut.getActif());
             afficher();
             afficherCheminBrassin();
+
+            if (fut.getId_noeud() != -1) {
+                String historique = fut.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                if ((historique != null) && (!historique.equals(""))) {
+                    Calendar calendrier = Calendar.getInstance();
+                    calendrier.setTimeInMillis(System.currentTimeMillis());
+                    long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    TableHistorique.instance(getContext()).ajouter(historique, date, -1, -1, fut.getId(), -1);
+                    afficherHistorique();
+                }
+            }
         }
         else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, fut.getId(), -1);

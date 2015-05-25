@@ -4,7 +4,6 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,7 @@ import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableBrassinPere;
 import fabrique.gestion.BDD.TableCheminBrassinFermenteur;
 import fabrique.gestion.BDD.TableFermenteur;
+import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Objets.Fermenteur;
@@ -164,9 +164,18 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             long id_brassinPere = TableBrassinPere.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale);
             long id_brassin = TableBrassin.instance(contexte).ajouter(contexte, id_brassinPere, quantite);
 
-            Log.i("Coucou", editFermenteur.getSelectedItemPosition()+"");
             Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(listeFermenteursDisponibles.get(editFermenteur.getSelectedItemPosition()).getId());
             TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud(), date, id_brassin, fermenteur.getActif());
+
+            if (fermenteur.getIdNoeud() != -1) {
+                String historique = fermenteur.getNoeud(contexte).getEtat(contexte).getHistorique();
+                if ((historique != null) && (!historique.equals(""))) {
+                    Calendar calendrier2 = Calendar.getInstance();
+                    calendrier2.setTimeInMillis(System.currentTimeMillis());
+                    long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    TableHistorique.instance(contexte).ajouter(historique, date2, fermenteur.getId(), -1, -1, -1);
+                }
+            }
 
             Toast.makeText(contexte, "Brassin ajouté !", Toast.LENGTH_SHORT).show();
             TableBrassin tableBrassin = TableBrassin.instance(contexte);

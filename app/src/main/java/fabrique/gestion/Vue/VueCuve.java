@@ -433,6 +433,15 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
             TableRow ligne = new TableRow(getContext());
 
             if (cuve.getIdBrassin() != -1) {
+                //Si il y a un prochain etat avec brassin dans ce recipient
+                if (noeud.getNoeudAvecBrassin(getContext()) != null) {
+                    LinearLayout ligneEtatSuivant = new LinearLayout(getContext());
+                    ligneEtatSuivant.setGravity(Gravity.CENTER);
+                    btnEtatSuivantAvecBrassin.setText(noeud.getNoeudAvecBrassin(getContext()).getEtat(getContext()).getTexte());
+                    ligneEtatSuivant.addView(btnEtatSuivantAvecBrassin);
+                    ligne.addView(cadre(ligneEtatSuivant, " État suivant "));
+                }
+
                 //Si il y a un prochain etat sans brassin dans ce recipient
                 if (noeud.getId_noeudSansBrassin() != -1) {
                     TableRow.LayoutParams marge = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
@@ -540,11 +549,33 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
             TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudAvecBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), cuve.getIdBrassin(), cuve.getActif());
             afficher();
             afficherCheminBrassin();
+
+            if (cuve.getIdNoeud() != -1) {
+                String historique = cuve.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                if ((historique != null) && (!historique.equals(""))) {
+                    Calendar calendrier = Calendar.getInstance();
+                    calendrier.setTimeInMillis(System.currentTimeMillis());
+                    long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    TableHistorique.instance(getContext()).ajouter(historique, date, -1, cuve.getId(), -1, -1);
+                    afficherHistorique();
+                }
+            }
         }
         else if (v.equals(btnEtatSuivantSansBrassin)) {
             TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), cuve.getIdBrassin(), cuve.getActif());
             afficher();
             afficherCheminBrassin();
+
+            if (cuve.getIdNoeud() != -1) {
+                String historique = cuve.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                if ((historique != null) && (!historique.equals(""))) {
+                    Calendar calendrier = Calendar.getInstance();
+                    calendrier.setTimeInMillis(System.currentTimeMillis());
+                    long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    TableHistorique.instance(getContext()).ajouter(historique, date, -1, cuve.getId(), -1, -1);
+                    afficherHistorique();
+                }
+            }
         }
         else if (v.equals(btnTransfere) && spinnerListeFutSansBrassin.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
             int quantite;
@@ -574,6 +605,17 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                     long idNouveauBrassin = TableBrassin.instance(getContext()).ajouter(getContext(), brassin.getId_brassinPere(), quantite);
                     TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), idPremierNoeud, System.currentTimeMillis(), idNouveauBrassin, fut.getDateInspectionToLong(), fut.getActif());
 
+                    if (fut.getId_noeud() != -1) {
+                        String historique = fut.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                        if ((historique != null) && (!historique.equals(""))) {
+                            Calendar calendrier2 = Calendar.getInstance();
+                            calendrier2.setTimeInMillis(System.currentTimeMillis());
+                            long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                            TableHistorique.instance(getContext()).ajouter(historique, date2, -1, -1, fut.getId(), -1);
+                            afficherHistorique();
+                        }
+                    }
+
                     parent.invalidate();
                 }
                 //Si la quantite que l'on veut transferer est plus grande ou égal à la quantite du brassin
@@ -586,7 +628,30 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                     TableHistorique.instance(getContext()).ajouter(texteTransfert, date, -1, cuve.getId(), fut.getId(), brassin.getId_brassinPere());
 
                     TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), idPremierNoeud, System.currentTimeMillis(), cuve.getIdBrassin(), fut.getDateInspectionToLong(), fut.getActif());
+
+                    if (fut.getId_noeud() != -1) {
+                        String historique = fut.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                        if ((historique != null) && (!historique.equals(""))) {
+                            Calendar calendrier2 = Calendar.getInstance();
+                            calendrier2.setTimeInMillis(System.currentTimeMillis());
+                            long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                            TableHistorique.instance(getContext()).ajouter(historique, date2, -1, -1, fut.getId(), -1);
+                            afficherHistorique();
+                        }
+                    }
+
                     TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), -1, cuve.getActif());
+
+                    if (cuve.getIdNoeud() != -1) {
+                        String historique = cuve.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                        if ((historique != null) && (!historique.equals(""))) {
+                            Calendar calendrier2 = Calendar.getInstance();
+                            calendrier2.setTimeInMillis(System.currentTimeMillis());
+                            long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                            TableHistorique.instance(getContext()).ajouter(historique, date2, -1, cuve.getId(), -1, -1);
+                            afficherHistorique();
+                        }
+                    }
 
                     parent.invalidate();
                 }
@@ -602,6 +667,17 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
             TableHistorique.instance(getContext()).ajouter(texteTransfert, date, -1, -1, -1, brassin.getId_brassinPere());
 
             TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), cuve.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), cuve.getCommentaireEtat(), -1, cuve.getActif());
+
+            if (cuve.getIdNoeud() != -1) {
+                String historique = cuve.getNoeud(getContext()).getEtat(getContext()).getHistorique();
+                if ((historique != null) && (!historique.equals(""))) {
+                    Calendar calendrier2 = Calendar.getInstance();
+                    calendrier2.setTimeInMillis(System.currentTimeMillis());
+                    long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+                    TableHistorique.instance(getContext()).ajouter(historique, date2, -1, cuve.getId(), -1, -1);
+                    afficherHistorique();
+                }
+            }
 
             parent.invalidate();
         }
