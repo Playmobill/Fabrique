@@ -4,6 +4,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,6 +156,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             long id_brassinPere = TableBrassinPere.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale);
             long id_brassin = TableBrassin.instance(contexte).ajouter(contexte, id_brassinPere, quantite);
 
+            Log.i("Coucou", editFermenteur.getSelectedItemPosition()+"");
             Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererIndex(editFermenteur.getSelectedItemPosition());
             TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud(), date, id_brassin, fermenteur.getActif());
 
