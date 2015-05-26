@@ -7,10 +7,10 @@ public class Calendrier extends Objet implements Comparable<Calendrier>{
 
     private long dateEvenement;
     private String nomEvenement;
-    private long typeObjet;
-    private int idObjet;
+    private int typeObjet;
+    private long idObjet;
 
-    public Calendrier(long id, long dateEvent, String nomEvent, long typeObjet, int idObjet) {
+    public Calendrier(long id, long dateEvent, String nomEvent, int typeObjet, long idObjet) {
         super(id);
         this.dateEvenement = dateEvent;
         this.nomEvenement = nomEvent;

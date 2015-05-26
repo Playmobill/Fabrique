@@ -143,21 +143,22 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
             fichier.createNewFile();
             FileWriter filewriter = new FileWriter(fichier, false);
                 filewriter.write(TableEmplacement.instance(contexte).sauvegarde());
-                filewriter.write(TableTypeBiere.instance(contexte).sauvegarde());
                 filewriter.write(TableRecette.instance(contexte).sauvegarde());
+                filewriter.write(TableTypeBiere.instance(contexte).sauvegarde());
+                filewriter.write(TableBrassinPere.instance(contexte).sauvegarde());
                 filewriter.write(TableBrassin.instance(contexte).sauvegarde());
-                filewriter.write(TableEtatFermenteur.instance(contexte).sauvegarde());
                 filewriter.write(TableFermenteur.instance(contexte).sauvegarde());
-                filewriter.write(TableEtatCuve.instance(contexte).sauvegarde());
+                filewriter.write(TableEtatFermenteur.instance(contexte).sauvegarde());
+                filewriter.write(TableCheminBrassinFermenteur.instance(contexte).sauvegarde());
                 filewriter.write(TableCuve.instance(contexte).sauvegarde());
-                filewriter.write(TableEtatFut.instance(contexte).sauvegarde());
+                filewriter.write(TableEtatCuve.instance(contexte).sauvegarde());
+                filewriter.write(TableCheminBrassinCuve.instance(contexte).sauvegarde());
                 filewriter.write(TableFut.instance(contexte).sauvegarde());
+                filewriter.write(TableEtatFut.instance(contexte).sauvegarde());
+                filewriter.write(TableCheminBrassinFut.instance(contexte).sauvegarde());
                 filewriter.write(TableHistorique.instance(contexte).sauvegarde());
                 filewriter.write(TableListeHistorique.instance(contexte).sauvegarde());
                 filewriter.write(TableGestion.instance(contexte).sauvegarde());
-                filewriter.write(TableCheminBrassinFermenteur.instance(contexte).sauvegarde());
-                filewriter.write(TableCheminBrassinCuve.instance(contexte).sauvegarde());
-                filewriter.write(TableCheminBrassinFut.instance(contexte).sauvegarde());
                 filewriter.write(TableCalendrier.instance(contexte).sauvegarde());
                 filewriter.close();
             Toast.makeText(contexte, "Sauvegarde réussite dans le fichier : Gestion_" + annee + "a_" + mois + "m_" + jour + "j_" + heure + "h_" + minute + "m_" + seconde + "ms.bak", Toast.LENGTH_SHORT).show();
@@ -168,16 +169,22 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
 
     private void supprimer() {
         TableEmplacement.instance(contexte).supprimerToutesLaBdd();
+        TableTypeBiere.instance(contexte).supprimerToutesLaBdd();
         TableRecette.instance(contexte).supprimerToutesLaBdd();
         TableBrassin.instance(contexte).supprimerToutesLaBdd();
+        TableBrassinPere.instance(contexte).supprimerToutesLaBdd();
         TableEtatFermenteur.instance(contexte).supprimerToutesLaBdd();
+        TableCheminBrassinFermenteur.instance(contexte).supprimerToutesLaBdd();
         TableFermenteur.instance(contexte).supprimerToutesLaBdd();
         TableEtatCuve.instance(contexte).supprimerToutesLaBdd();
+        TableCheminBrassinCuve.instance(contexte).supprimerToutesLaBdd();
         TableCuve.instance(contexte).supprimerToutesLaBdd();
         TableEtatFut.instance(contexte).supprimerToutesLaBdd();
+        TableCheminBrassinFut.instance(contexte).supprimerToutesLaBdd();
         TableFut.instance(contexte).supprimerToutesLaBdd();
         TableHistorique.instance(contexte).supprimerToutesLaBdd();
         TableListeHistorique.instance(contexte).supprimerToutesLaBdd();
+        TableCalendrier.instance(contexte).supprimerToutesLaBdd();
     }
 
     private void charger() {
@@ -724,12 +731,13 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     }
                                 }
                             }
-                            //Si il n'y a que 2 elements et qu'il n 'y a pas de corruption detecte
+                            //Si il n'y a que 3 elements et qu'il n 'y a pas de corruption detecte
                             if ((textesListeHistorique.size() == 3) && !corrompuListeHistorique) {
                                 try {
                                     TableListeHistorique.instance(contexte).ajouter(
                                             Integer.parseInt(textesListeHistorique.get(0)),
-                                            textesListeHistorique.get(1), Integer.parseInt(textesListeHistorique.get(2)));
+                                            textesListeHistorique.get(1),
+                                            Integer.parseInt(textesListeHistorique.get(2)));
                                 } catch (Exception e) {}
                             }
                             break;
@@ -803,11 +811,11 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                             //Si il n'y a que 4 elements et qu'il n 'y a pas de corruption detecte
                             if ((textesCalendrier.size() == 4) && !corrompuCalendrier) {
                                 try {
-                                    /*TableCalendrier.instance(contexte).ajouter(
-                                            Integer.parseInt(textesCalendrier.get(0)),
-                                            Integer.parseInt(textesCalendrier.get(1)),
+                                    TableCalendrier.instance(contexte).ajouter(
+                                            Long.parseLong(textesCalendrier.get(0)),
+                                            textesCalendrier.get(1),
                                             Integer.parseInt(textesCalendrier.get(2)),
-                                            Integer.parseInt(textesCalendrier.get(3)));*/
+                                            Long.parseLong(textesCalendrier.get(3)));
                                 } catch (Exception e) {}
                             }
                             break;

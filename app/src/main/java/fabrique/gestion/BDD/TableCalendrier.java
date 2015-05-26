@@ -32,7 +32,7 @@ public class TableCalendrier extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            evenements.add(new Calendrier(tmp.getLong(0), tmp.getLong(1), tmp.getString(2), tmp.getLong(3), tmp.getInt(4)));
+            evenements.add(new Calendrier(tmp.getLong(0), tmp.getLong(1), tmp.getString(2), tmp.getInt(3), tmp.getLong(4)));
         }
         Collections.sort(evenements);
     }
@@ -58,7 +58,7 @@ public class TableCalendrier extends Controle {
         evenements.clear();
     }
 
-    public long ajouter(long date, String nom, int type, int idObjet){
+    public long ajouter(long date, String nom, int type, long idObjet){
         ContentValues valeur = new ContentValues();
         valeur.put("dateEvenement", date);
         valeur.put("nomEvenement", nom);
