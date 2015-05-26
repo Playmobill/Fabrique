@@ -13,4 +13,8 @@ public abstract class Objet {
     }
 
     public abstract String sauvegarde();
+
+    public int getCapacite(){
+        return -1;
+    }
 }

@@ -127,6 +127,17 @@ public class TableFermenteur extends Controle {
         return listeFermenteur;
     }
 
+    public ArrayList<Fermenteur> recupererFermenteursPleinsActifs() {
+        ArrayList<Fermenteur> listeFermenteur = new ArrayList<>();
+        ArrayList<Fermenteur> listeFermenteurActif = recupererFermenteursActifs();
+        for (int i=0; i<listeFermenteurActif.size(); i++) {
+            if (listeFermenteurActif.get(i).getIdBrassin() != -1) {
+                listeFermenteur.add(listeFermenteurActif.get(i));
+            }
+        }
+        return listeFermenteur;
+    }
+
     public ArrayList<String> recupererNumerosFermenteurAvecBrassin() {
         ArrayList<String> listeFermenteur = new ArrayList<>();
         ArrayList<Fermenteur> listeFermenteurActif = recupererFermenteursActifs();

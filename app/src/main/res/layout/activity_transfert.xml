@@ -27,7 +27,7 @@
                 android:id="@+id/listeTypeOrigine"
                 android:layout_weight="1"
                 android:layout_margin="25dp"
-                android:minWidth="100dp"/>
+                android:minWidth="120dp"/>
 
             <Spinner
                 android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
                 android:layout_weight="1"
                 android:id="@+id/listeOrigine"
                 android:layout_margin="25dp"
-                android:minWidth="100dp"/>
+                android:minWidth="120dp"/>
 
         </LinearLayout>
 
@@ -64,6 +64,20 @@
             android:id="@+id/btnExeTransfert"
             android:text="Transférer"/>
 
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="100dp"
+            android:id="@+id/editQuantiteTransfere"
+            android:layout_above="@id/btnExeTransfert"
+            android:inputType="number"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/editQuantiteTransfere"
+            android:text="Quantité :"/>
+
     </RelativeLayout>
 
     <LinearLayout
@@ -85,7 +99,7 @@
                 android:id="@+id/listeTypeDestination"
                 android:layout_weight="1"
                 android:layout_margin="25dp"
-                android:minWidth="100dp"/>
+                android:minWidth="120dp"/>
 
             <Spinner
                 android:layout_width="wrap_content"
@@ -93,7 +107,7 @@
                 android:layout_weight="1"
                 android:id="@+id/listeDestination"
                 android:layout_margin="25dp"
-                android:minWidth="100dp"/>
+                android:minWidth="120dp"/>
 
         </LinearLayout>
 
