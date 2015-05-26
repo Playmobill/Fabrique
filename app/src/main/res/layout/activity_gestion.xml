@@ -74,8 +74,8 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Calendrier"
-            android:id="@+id/btnCalendrier"
+            android:text="Gérer les types de bières"
+            android:id="@+id/btnTypeBiere"
             android:layout_weight="1"
             android:gravity="center"
             android:layout_margin="10dp"
@@ -87,8 +87,8 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Gérer les types de bières"
-            android:id="@+id/btnTypeBiere"
+            android:text="Gestion du chemin"
+            android:id="@+id/btnChemin"
             android:layout_weight="1"
             android:gravity="center"
             android:layout_margin="10dp"
@@ -106,8 +106,8 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Gestion du chemin"
-            android:id="@+id/btnChemin"
+            android:text="Calendrier"
+            android:id="@+id/btnCalendrier"
             android:layout_weight="1"
             android:gravity="center"
             android:layout_margin="10dp"
@@ -119,16 +119,15 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="invisible"
-            android:id="@+id/btnInvisible"
+            android:text="Rapport"
+            android:id="@+id/btnRapport"
             android:layout_weight="1"
             android:gravity="center"
             android:layout_margin="10dp"
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textStyle="bold"
-            android:visibility="invisible"/>
+            android:textStyle="bold"/>
     </TableRow>
 
 
