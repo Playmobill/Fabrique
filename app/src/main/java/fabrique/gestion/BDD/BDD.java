@@ -154,6 +154,7 @@ public class BDD extends SQLiteOpenHelper {
 
     private static String createurRapport = "CREATE TABLE IF NOT EXISTS Rapport" +
                                             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                            "id_brassinPere INTEGER NOT NULL," +
                                             "mois INTEGER NOT NULL" +
                                             "annee INTEGER NOT NULL" +
                                             "quantiteFermente INTEGER NOT NULL" +

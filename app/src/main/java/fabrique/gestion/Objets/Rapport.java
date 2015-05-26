@@ -1,16 +1,22 @@
 package fabrique.gestion.Objets;
 
 
+import android.content.Context;
+
+import fabrique.gestion.BDD.TableBrassinPere;
+
 public class Rapport extends Objet implements Comparable<Rapport> {
 
+    private long id_brassinPere;
     private int mois;
     private int annee;
     private int quantiteFermente;
     private int quantiteTransfere;
     private int quantiteUtilise;
 
-    public Rapport(long id, int mois, int annee, int quantiteFermente, int quantiteTransfere, int quantiteUtilise) {
+    public Rapport(long id, long id_brassinPere, int mois, int annee, int quantiteFermente, int quantiteTransfere, int quantiteUtilise) {
         super(id);
+        this.id_brassinPere = id_brassinPere;
         this.mois = mois;
         this.annee = annee;
         this.quantiteFermente = quantiteFermente;
@@ -18,6 +24,12 @@ public class Rapport extends Objet implements Comparable<Rapport> {
         this.quantiteUtilise = quantiteUtilise;
     }
 
+    public long getId_brassinPere() {
+        return id_brassinPere;
+    }
+    public BrassinPere getBrassinPere(Context contexte) {
+        return TableBrassinPere.instance(contexte).recupererId(id_brassinPere);
+    }
     public int getMois() {
         return mois;
     }
@@ -34,12 +46,6 @@ public class Rapport extends Objet implements Comparable<Rapport> {
         return quantiteUtilise;
     }
 
-    public void setMois(int mois) {
-        this.mois = mois;
-    }
-    public void setAnnee(int annee) {
-        this.annee = annee;
-    }
     public void setQuantiteFermente(int quantiteFermente) {
         this.quantiteFermente = quantiteFermente;
     }

@@ -29,13 +29,14 @@ public class TableRapport extends Controle {
 
         Cursor tmp = super.select();
         for (tmp.moveToFirst(); !(tmp.isAfterLast()); tmp.moveToNext()) {
-            rapports.add(new Rapport(tmp.getLong(0), tmp.getInt(1), tmp.getInt(2), tmp.getInt(3), tmp.getInt(4), tmp.getInt(5)));
+            rapports.add(new Rapport(tmp.getLong(0), tmp.getLong(1), tmp.getInt(2), tmp.getInt(3), tmp.getInt(4), tmp.getInt(5), tmp.getInt(6)));
         }
         Collections.sort(rapports);
     }
 
-    public long ajouter(int mois, int annee, int quantiteFermente, int quantiteTransfere, int quantiteUtilise) {
+    public long ajouter(long id_brassinPere, int mois, int annee, int quantiteFermente, int quantiteTransfere, int quantiteUtilise) {
         ContentValues valeur = new ContentValues();
+        valeur.put("id_brassinPere", id_brassinPere);
         valeur.put("mois", mois);
         valeur.put("annee", annee);
         valeur.put("quantiteFermente", quantiteFermente);
@@ -43,7 +44,7 @@ public class TableRapport extends Controle {
         valeur.put("quantiteUtilise", quantiteUtilise);
         long id = accesBDD.insert(nomTable, null, valeur);
         if (id != -1) {
-            rapports.add(new Rapport(id, mois, annee, quantiteFermente, quantiteTransfere, quantiteUtilise));
+            rapports.add(new Rapport(id, id_brassinPere, mois, annee, quantiteFermente, quantiteTransfere, quantiteUtilise));
             Collections.sort(rapports);
         }
         return id;
@@ -70,19 +71,14 @@ public class TableRapport extends Controle {
         return null;
     }
 
-    public void modifier(long id, int mois, int annee, int quantiteFermente, int quantiteTransfere, int quantiteUtilise){
+    public void modifier(long id, int quantiteFermente, int quantiteTransfere, int quantiteUtilise){
         ContentValues valeur = new ContentValues();
-        valeur.put("mois", mois);
-        valeur.put("annee", annee);
         valeur.put("quantiteFermente", quantiteFermente);
         valeur.put("quantiteTransfere", quantiteTransfere);
         valeur.put("quantiteUtilise", quantiteUtilise);
         if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
             Rapport rapport = recupererId(id);
-            rapport.setMois(mois);
-            rapport.setAnnee(annee);
             rapport.setQuantiteFermente(quantiteFermente);
-            rapport.setQuantiteTransfere(quantiteTransfere);
             rapport.setQuantiteTransfere(quantiteTransfere);
             rapport.setQuantiteUtilise(quantiteUtilise);
             Collections.sort(rapports);

@@ -971,15 +971,16 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     }
                                 }
                             }
-                            //Si il n'y a que 5 elements et qu'il n 'y a pas de corruption detecte
-                            if ((textesRapport.size() == 5) && !corrompuRapport) {
+                            //Si il n'y a que 6 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesRapport.size() == 6) && !corrompuRapport) {
                                 try {
                                     TableRapport.instance(contexte).ajouter(
-                                            Integer.parseInt(textesRapport.get(0)),
+                                            Long.parseLong(textesRapport.get(0)),
                                             Integer.parseInt(textesRapport.get(1)),
                                             Integer.parseInt(textesRapport.get(2)),
                                             Integer.parseInt(textesRapport.get(3)),
-                                            Integer.parseInt(textesRapport.get(4)));
+                                            Integer.parseInt(textesRapport.get(4)),
+                                            Integer.parseInt(textesRapport.get(5)));
                                 } catch (Exception e) {}
                             }
                             break;
