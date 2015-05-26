@@ -81,6 +81,7 @@ public class BrassinPere extends Objet implements Comparable<BrassinPere> {
         return -1;
     }
 
+
     public static float convertDensiteVersPourcentageAlcool(float densiteO, float densiteF){
         float differenceDensite = densiteO - densiteF;
         float pourcentageAlcool = ((((differenceDensite * constanteConversionPourcentageAlcool)/densiteF)/0.789f)*100f)*1000f;

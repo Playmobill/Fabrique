@@ -94,12 +94,25 @@ public class TableBrassinPere extends Controle {
         }
     }
 
+    public int recupererIndexSelonId(long id) {
+        return brassins.indexOf(recupererId(id));
+    }
+
     public String[] numeros() {
         String[] numero = new String[brassins.size()];
         for (int i=0; i<brassins.size() ; i++) {
             numero[i] = brassins.get(i).getNumero() + "";
         }
         return numero;
+    }
+
+    public BrassinPere recupererNumero(int numero) {
+        for (int i=0; i<brassins.size() ; i++) {
+            if (brassins.get(i).getNumero() == numero) {
+                return brassins.get(i);
+            }
+        }
+        return null;
     }
 
     public ArrayList<BrassinPere> trierParNumero(){

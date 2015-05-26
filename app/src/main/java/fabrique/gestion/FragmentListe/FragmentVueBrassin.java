@@ -17,10 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import fabrique.gestion.ActivityAccueil;
-import fabrique.gestion.BDD.TableBrassin;
 import fabrique.gestion.BDD.TableBrassinPere;
 import fabrique.gestion.FragmentAmeliore;
-import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.BrassinPere;
 import fabrique.gestion.R;
 import fabrique.gestion.Vue.VueBrassinPere;
@@ -88,12 +86,12 @@ public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClick
         layout.addView(ligneEnTete, parametreLigneSpinner);
 
         if (brassinPere != null) {
-            index = TableBrassin.instance(contexte).recupererIndexSelonId(brassinPere.getId());
+            index = TableBrassinPere.instance(contexte).recupererIndexSelonId(brassinPere.getId());
             if (index > 0) {
                 btnPrecedent.setEnabled(true);
             }
             txtActuel.setText("Brassin " + brassinPere.getNumero());
-            if (index < TableBrassin.instance(contexte).tailleListe()-1) {
+            if (index < TableBrassinPere.instance(contexte).tailleListe()-1) {
                 btnSuivant.setEnabled(true);
             }
             layout.addView(new VueBrassinPere(contexte, brassinPere));
@@ -135,15 +133,19 @@ public class FragmentVueBrassin extends FragmentAmeliore implements View.OnClick
     @Override
     public void onClick(View v) {
         if (v.equals(btnPrecedent)) {
-            navigation(TableBrassin.instance(contexte).recupererIndex(index-1).getId());
+            navigation(TableBrassinPere.instance(contexte).recupererIndex(index-1).getId());
         } else if (v.equals(btnSuivant)) {
-            navigation(TableBrassin.instance(contexte).recupererIndex(index+1).getId());
+            navigation(TableBrassinPere.instance(contexte).recupererIndex(index+1).getId());
         } else if (v.equals(btnRecherche)) {
-            Brassin brassin = TableBrassin.instance(contexte).recupererNumero(Integer.parseInt(editRechercheBrassin.getText().toString()));
-            if (brassin != null) {
-                navigation(brassin.getId());
-            } else {
-                Toast.makeText(contexte, "Le brassin n'a pas été trouvé.", Toast.LENGTH_SHORT).show();
+            try {
+                BrassinPere brassin = TableBrassinPere.instance(contexte).recupererNumero(Integer.parseInt(editRechercheBrassin.getText().toString()));
+                if (brassin != null) {
+                    navigation(brassin.getId());
+                } else {
+                    Toast.makeText(contexte, "Le brassin n'a pas été trouvé.", Toast.LENGTH_SHORT).show();
+                }
+            } catch(Exception e) {
+                Toast.makeText(contexte, "Le numéro indiqué ne peut être lu", Toast.LENGTH_SHORT).show();
             }
         }
     }
