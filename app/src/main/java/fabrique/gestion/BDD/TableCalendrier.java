@@ -71,4 +71,20 @@ public class TableCalendrier extends Controle {
         }
         return id;
     }
+
+    public void supprimer(long id) {
+        if (accesBDD.delete(nomTable, "id = ?", new String[]{"" + id}) == 1) {
+            evenements.remove(recupererId(id));
+            Collections.sort(evenements);
+        }
+    }
+
+    public Calendrier recupererId(long id) {
+        for (int i=0; i<evenements.size() ; i++) {
+            if (evenements.get(i).getId() == id) {
+                return evenements.get(i);
+            }
+        }
+        return null;
+    }
 }

@@ -27,6 +27,7 @@ import fabrique.gestion.Objets.Calendrier;
 import fabrique.gestion.Objets.DateToString;
 import fabrique.gestion.Objets.Historique;
 import fabrique.gestion.R;
+import fabrique.gestion.Vue.VueEvenement;
 
 public class FragmentJour extends FragmentAmeliore implements View.OnClickListener {
 
@@ -174,10 +175,7 @@ public class FragmentJour extends FragmentAmeliore implements View.OnClickListen
 
         for (int i = 0; i < calendriers.size(); i++) {
             if(calendriers.get(i).getDateEvenement() == date) {
-                TextView textView= new TextView(contexte);
-                textView.setText(calendriers.get(i).getNomEvenement());
-                textView.setPadding(30,0,0,15);
-                affichageEvenements.addView(textView);
+                affichageEvenements.addView(new VueEvenement(contexte, calendriers.get(i), this));
             }
         }
     }
