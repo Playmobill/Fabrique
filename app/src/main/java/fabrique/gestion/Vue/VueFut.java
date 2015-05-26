@@ -232,6 +232,7 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
         ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
         sous_ligneAjouter.addView(ajoutListeHistorique);
         ajoutHistorique = new EditText(getContext());
+        ajoutHistorique.setMinEms(5);
         sous_ligneAjouter.addView(ajoutHistorique);
         ligneAjouter.addView(sous_ligneAjouter);
         btnAjouterHistorique = new TextView(getContext());

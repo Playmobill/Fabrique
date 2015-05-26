@@ -277,6 +277,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
                 ajoutListeHistorique.setAdapter(adapteurAjoutListeHistorique);
             sous_ligneAjouter.addView(ajoutListeHistorique);
                 ajoutHistorique = new EditText(getContext());
+                ajoutHistorique.setMinEms(5);
             sous_ligneAjouter.addView(ajoutHistorique);
         ligneAjouter.addView(sous_ligneAjouter);
             btnAjouterHistorique = new TextView(getContext());
