@@ -45,6 +45,7 @@ import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
+import fabrique.gestion.BDD.TableRapport;
 import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.BDD.TableTypeBiere;
 import fabrique.gestion.FragmentAmeliore;
@@ -160,6 +161,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                 filewriter.write(TableListeHistorique.instance(contexte).sauvegarde());
                 filewriter.write(TableGestion.instance(contexte).sauvegarde());
                 filewriter.write(TableCalendrier.instance(contexte).sauvegarde());
+                filewriter.write(TableRapport.instance(contexte).sauvegarde());
                 filewriter.close();
             Toast.makeText(contexte, "Sauvegarde réussite dans le fichier : Gestion_" + annee + "a_" + mois + "m_" + jour + "j_" + heure + "h_" + minute + "m_" + seconde + "ms.bak", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
@@ -185,6 +187,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
         TableHistorique.instance(contexte).supprimerToutesLaBdd();
         TableListeHistorique.instance(contexte).supprimerToutesLaBdd();
         TableCalendrier.instance(contexte).supprimerToutesLaBdd();
+        TableRapport.instance(contexte).supprimerToutesLaBdd();
     }
 
     private void charger() {
@@ -869,7 +872,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                 nomBaliseNoeudCuve = "";
                             }
                             String texteNoeudCuve = analyseur.getText();
-                            //Tant qu'il ne trouve pas la balise de fin de "Fut" ou tant qu'il ne trouve pas une balise de debut contenant 'O' (donc debut d'un objet)
+                            //Tant qu'il ne trouve pas la balise de fin de "NoeudCuve" ou tant qu'il ne trouve pas une balise de debut contenant 'O' (donc debut d'un objet)
                             while (!((eventType == XmlPullParser.END_TAG) && (nomBaliseNoeudCuve.equals("O:NoeudCuve"))) && !corrompuNoeudCuve) {
                                 if ((eventType == XmlPullParser.END_TAG) && (nomBaliseNoeudCuve.charAt(0) == 'E')) {
                                     if (texteNoeudCuve == null) {
@@ -909,7 +912,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                 nomBaliseNoeudFut = "";
                             }
                             String texteNoeudFut = analyseur.getText();
-                            //Tant qu'il ne trouve pas la balise de fin de "Fut" ou tant qu'il ne trouve pas une balise de debut contenant 'O' (donc debut d'un objet)
+                            //Tant qu'il ne trouve pas la balise de fin de "NoeudFut" ou tant qu'il ne trouve pas une balise de debut contenant 'O' (donc debut d'un objet)
                             while (!((eventType == XmlPullParser.END_TAG) && (nomBaliseNoeudFut.equals("O:NoeudFut"))) && !corrompuNoeudFut) {
                                 if ((eventType == XmlPullParser.END_TAG) && (nomBaliseNoeudFut.charAt(0) == 'E')) {
                                     if (texteNoeudFut == null) {
@@ -936,6 +939,47 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                             Long.parseLong(textesNoeudFut.get(1)),
                                             Long.parseLong(textesNoeudFut.get(2)),
                                             Long.parseLong(textesNoeudFut.get(3)));
+                                } catch (Exception e) {}
+                            }
+                            break;
+
+                        case ("O:Rapport") :
+                            eventType = analyseur.next();
+                            boolean corrompuRapport = false;
+                            ArrayList<String> textesRapport = new ArrayList<>();
+                            String nomBaliseRapport = analyseur.getName();
+                            if (nomBaliseRapport == null) {
+                                nomBaliseRapport = "";
+                            }
+                            String texteRapport = analyseur.getText();
+                            //Tant qu'il ne trouve pas la balise de fin de "Rapport" ou tant qu'il ne trouve pas une balise de debut contenant 'O' (donc debut d'un objet)
+                            while (!((eventType == XmlPullParser.END_TAG) && (nomBaliseRapport.equals("O:Rapport"))) && !corrompuRapport) {
+                                if ((eventType == XmlPullParser.END_TAG) && (nomBaliseRapport.charAt(0) == 'E')) {
+                                    if (texteRapport == null) {
+                                        texteRapport = "";
+                                    }
+                                    textesRapport.add(texteRapport);
+                                }
+                                texteRapport = analyseur.getText();
+                                if ((eventType == XmlPullParser.START_TAG) && (analyseur.getName().charAt(0) == 'O')) {
+                                    corrompuRapport = true;
+                                } else {
+                                    eventType = analyseur.next();
+                                    nomBaliseRapport = analyseur.getName();
+                                    if (nomBaliseRapport == null) {
+                                        nomBaliseRapport = "";
+                                    }
+                                }
+                            }
+                            //Si il n'y a que 5 elements et qu'il n 'y a pas de corruption detecte
+                            if ((textesRapport.size() == 5) && !corrompuRapport) {
+                                try {
+                                    TableRapport.instance(contexte).ajouter(
+                                            Integer.parseInt(textesRapport.get(0)),
+                                            Integer.parseInt(textesRapport.get(1)),
+                                            Integer.parseInt(textesRapport.get(2)),
+                                            Integer.parseInt(textesRapport.get(3)),
+                                            Integer.parseInt(textesRapport.get(4)));
                                 } catch (Exception e) {}
                             }
                             break;
