@@ -78,7 +78,7 @@ public class BDD extends SQLiteOpenHelper {
                                                 "dateLavageAcide INTEGER NOT NULL," +
                                                 "id_noeudFermenteur INTEGER NOT NULL," +
                                                 "dateEtat INTEGER NOT NULL," +
-                                                "id_brassin INTEGER," +
+                                                "id_brassin INTEGER NOT NULL," +
                                                 "actif INTEGER NOT NULL)";
 
     private static String createurTableCuve = "CREATE TABLE IF NOT EXISTS Cuve (" +
@@ -90,7 +90,7 @@ public class BDD extends SQLiteOpenHelper {
                                                 "id_noeudCuve INTEGER NOT NULL, " +
                                                 "dateEtat INTEGER NOT NULL, " +
                                                 "commentaireEtat TEXT, " +
-                                                "id_brassin INTEGER," +
+                                                "id_brassin INTEGER NOT NULL," +
                                                 "actif INTEGER NOT NULL)";
 
     private static String createurTableFut = "CREATE TABLE IF NOT EXISTS Fut (" +
@@ -99,7 +99,7 @@ public class BDD extends SQLiteOpenHelper {
                                                 "capacite INTEGER NOT NULL, " +
                                                 "id_noeudFut INTEGER NOT NULL, " +
                                                 "dateEtat INTEGER NOT NULL, " +
-                                                "id_brassin INTEGER, " +
+                                                "id_brassin INTEGER NOT NULL, " +
                                                 "dateInspection INTEGER NOT NULL," +
                                                 "actif INTEGER NOT NULL)";
 
@@ -135,22 +135,22 @@ public class BDD extends SQLiteOpenHelper {
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                 "id_noeudPrecedent INTEGER NOT NULL, " +
                                                 "id_etat INTEGER NOT NULL, " +
-                                                "id_noeudAvecBrassin INTEGER, " +
-                                                "id_noeudSansBrassin INTEGER)";
+                                                "id_noeudAvecBrassin INTEGER NOT NULL, " +
+                                                "id_noeudSansBrassin INTEGER NOT NULL)";
 
     private static String createurCheminBrassinCuve = "CREATE TABLE IF NOT EXISTS CheminBrassinCuve (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                 "id_noeudPrecedent INTEGER NOT NULL, " +
                                                 "id_etat INTEGER NOT NULL, " +
-                                                "id_noeudAvecBrassin INTEGER, " +
-                                                "id_noeudSansBrassin INTEGER)";
+                                                "id_noeudAvecBrassin INTEGER NOT NULL, " +
+                                                "id_noeudSansBrassin INTEGER NOT NULL)";
 
     private static String createurCheminBrassinFut = "CREATE TABLE IF NOT EXISTS CheminBrassinFut (" +
                                                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                 "id_noeudPrecedent INTEGER NOT NULL, " +
                                                 "id_etat INTEGER NOT NULL, " +
-                                                "id_noeudAvecBrassin INTEGER, " +
-                                                "id_noeudSansBrassin INTEGER)";
+                                                "id_noeudAvecBrassin INTEGER NOT NULL, " +
+                                                "id_noeudSansBrassin INTEGER NOT NULL)";
 
     public BDD(Context context, String name, SQLiteDatabase.CursorFactory factory) {
         super(context, name, factory, 1);
