@@ -27,7 +27,7 @@ public class Rapport extends Objet implements Comparable<Rapport> {
     public long getId_brassinPere() {
         return id_brassinPere;
     }
-    public BrassinPere getBrassinPere(Context contexte) {
+    public BrassinPere getbrassinPere(Context contexte) {
         return TableBrassinPere.instance(contexte).recupererId(id_brassinPere);
     }
     public int getMois() {
@@ -58,12 +58,18 @@ public class Rapport extends Objet implements Comparable<Rapport> {
 
     @Override
     public int compareTo(Rapport rapport) {
-        return 0;
+        if (getId() == rapport.getId()) {
+            return 0;
+        } else if (getId() > rapport.getId()) {
+            return 1;
+        }
+        return -1;
     }
 
     @Override
     public String sauvegarde() {
         return ("<O:Rapport>" +
+                    "<E:id_brassinPere>" + id_brassinPere + "</E:id_brassinPere>" +
                     "<E:mois>" + mois + "</E:mois>" +
                     "<E:annee>" + annee + "</E:annee>" +
                     "<E:quantiteFermente>" + quantiteFermente + "</E:quantiteFermente>" +

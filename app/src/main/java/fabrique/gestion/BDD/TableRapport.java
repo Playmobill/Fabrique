@@ -71,6 +71,16 @@ public class TableRapport extends Controle {
         return null;
     }
 
+    public ArrayList<Rapport> recupererRapport(int mois, int annee) {
+        ArrayList<Rapport> rapports = new ArrayList<>();
+        for (int i=0; i<this.rapports.size(); i++) {
+            if ((this.rapports.get(i).getMois() == mois) && (this.rapports.get(i).getAnnee() == annee)) {
+                rapports.add(this.rapports.get(i));
+            }
+        }
+        return rapports;
+    }
+
     public void modifier(long id, int quantiteFermente, int quantiteTransfere, int quantiteUtilise){
         ContentValues valeur = new ContentValues();
         valeur.put("quantiteFermente", quantiteFermente);
