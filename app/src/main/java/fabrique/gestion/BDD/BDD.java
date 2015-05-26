@@ -184,6 +184,7 @@ public class BDD extends SQLiteOpenHelper {
         db.execSQL(createurCheminBrassinFermenteur);
         db.execSQL(createurCheminBrassinCuve);
         db.execSQL(createurCheminBrassinFut);
+        db.execSQL(createurRapport);
 
         db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('RdC', 1)");
         db.execSQL("INSERT INTO Emplacement (texte, actif) VALUES ('Sous-sol', 1)");
