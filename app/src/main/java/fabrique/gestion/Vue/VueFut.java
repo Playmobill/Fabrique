@@ -32,7 +32,9 @@ import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
+import fabrique.gestion.BDD.TableRapport;
 import fabrique.gestion.FragmentListe.FragmentVueFut;
+import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.DateToString;
 import fabrique.gestion.Objets.Fut;
 import fabrique.gestion.Objets.Historique;
@@ -408,14 +410,24 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
             new DatePickerDialog(getContext(), this, calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).show();
         }
         else if (v.equals(btnVider)) {
+            //On récupère le brassin
+            Brassin brassin = fut.getBrassin(getContext());
+
+            //On récupère la date
+            Calendar calendrier = Calendar.getInstance();
+            calendrier.setTimeInMillis(System.currentTimeMillis());
+            long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
+            //On enlève le brassin du fut
             TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fut.getDateInspectionToLong(), fut.getActif());
 
+            //On ajoute la quantité utilisée au rapport
+            TableRapport.instance(getContext()).ajouter(brassin.getId_brassinPere(), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.YEAR), 0, 0, brassin.getQuantite());
+
+            //On ajoute un historique au fut si le nouvel état à un texte d'historique
             if (fut.getId_noeud() != -1) {
                 String historique = fut.getNoeud(getContext()).getEtat(getContext()).getHistorique();
                 if ((historique != null) && (!historique.equals(""))) {
-                    Calendar calendrier = Calendar.getInstance();
-                    calendrier.setTimeInMillis(System.currentTimeMillis());
-                    long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
                     TableHistorique.instance(getContext()).ajouter(historique, date, -1, -1, fut.getId(), -1);
                     afficherHistorique();
                 }
@@ -424,10 +436,10 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
             parent.invalidate();
         }
         else if (v.equals(btnEtatSuivantAvecBrassin)) {
+            //On change d'état le fut
             TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getNoeud(getContext()).getId_noeudAvecBrassin(), System.currentTimeMillis(), fut.getId_brassin(), fut.getDateInspectionToLong(), fut.getActif());
-            afficher();
-            afficherCheminBrassin();
 
+            //On ajoute un historique au fut si le nouvel état à un texte d'historique
             if (fut.getId_noeud() != -1) {
                 String historique = fut.getNoeud(getContext()).getEtat(getContext()).getHistorique();
                 if ((historique != null) && (!historique.equals(""))) {
@@ -438,22 +450,29 @@ public class VueFut extends TableLayout implements View.OnClickListener, DatePic
                     afficherHistorique();
                 }
             }
+
+            afficher();
+            afficherCheminBrassin();
         }
         else if (v.equals(btnEtatSuivantSansBrassin)) {
+            //On change d'état la cuve
             TableFut.instance(getContext()).modifier(fut.getId(), fut.getNumero(), fut.getCapacite(), fut.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), fut.getId_brassin(), fut.getDateInspectionToLong(), fut.getActif());
-            afficher();
-            afficherCheminBrassin();
 
+            //On ajoute un historique au fut si le nouvel état à un texte d'historique
             if (fut.getId_noeud() != -1) {
                 String historique = fut.getNoeud(getContext()).getEtat(getContext()).getHistorique();
                 if ((historique != null) && (!historique.equals(""))) {
                     Calendar calendrier = Calendar.getInstance();
                     calendrier.setTimeInMillis(System.currentTimeMillis());
                     long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
                     TableHistorique.instance(getContext()).ajouter(historique, date, -1, -1, fut.getId(), -1);
                     afficherHistorique();
                 }
             }
+
+            afficher();
+            afficherCheminBrassin();
         }
         else if (v.equals(btnAjouterHistorique)) {
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, fut.getId(), -1);

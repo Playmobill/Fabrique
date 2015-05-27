@@ -58,6 +58,7 @@
       <w>colonne</w>
       <w>commentaire</w>
       <w>compt</w>
+      <w>concernant</w>
       <w>concerne</w>
       <w>configuraton</w>
       <w>configurer</w>
@@ -73,16 +74,19 @@
       <w>createur</w>
       <w>creer</w>
       <w>création</w>
+      <w>créer</w>
       <w>cuve</w>
       <w>cuves</w>
       <w>d'affichage</w>
       <w>d'alcool</w>
       <w>d'envoi</w>
       <w>d'ethanol</w>
+      <w>d'historique</w>
       <w>d'historiques</w>
       <w>d'inspection</w>
       <w>d'un</w>
       <w>d'une</w>
+      <w>d'état</w>
       <w>decimales</w>
       <w>defaut</w>
       <w>densite</w>
@@ -104,6 +108,7 @@
       <w>ecran</w>
       <w>ecriture</w>
       <w>enlever</w>
+      <w>enlève</w>
       <w>entete</w>
       <w>entetes</w>
       <w>entre</w>
@@ -113,6 +118,7 @@
       <w>etats</w>
       <w>evenement</w>
       <w>evenements</w>
+      <w>existant</w>
       <w>fabrique</w>
       <w>faut</w>
       <w>fenetre</w>
@@ -162,6 +168,7 @@
       <w>listebrassin</w>
       <w>lors</w>
       <w>marron</w>
+      <w>modifie</w>
       <w>moins</w>
       <w>mois</w>
       <w>noeud</w>
@@ -208,6 +215,7 @@
       <w>retour</w>
       <w>rousse</w>
       <w>récipient</w>
+      <w>récupère</w>
       <w>république</w>
       <w>réussi</w>
       <w>réussite</w>
@@ -239,11 +247,14 @@
       <w>transfere</w>
       <w>transferer</w>
       <w>transfert</w>
+      <w>transfère</w>
       <w>transférer</w>
       <w>transféré</w>
+      <w>transférée</w>
       <w>trop</w>
       <w>trouve</w>
       <w>trouvé</w>
+      <w>utilisée</w>
       <w>valeur</w>
       <w>valider</w>
       <w>vers</w>

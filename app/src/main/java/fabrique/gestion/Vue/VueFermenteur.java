@@ -546,17 +546,21 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
             Calendar calendrier = Calendar.getInstance();
             calendrier.setTimeInMillis(System.currentTimeMillis());
             long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
             TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), date, fermenteur.getId(), -1, -1, -1);
             afficherHistorique();
         } else if (v.equals(btnEtatSuivantAvecBrassin)) {
+            //On change d'état le fermenteur
             TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudAvecBrassin(), System.currentTimeMillis(), fermenteur.getIdBrassin(), fermenteur.getActif());
 
+            //On ajoute un historique au fermenteur si le nouvel état à un texte d'historique
             if (fermenteur.getIdNoeud() != -1) {
                 String historique = fermenteur.getNoeud(getContext()).getEtat(getContext()).getHistorique();
                 if ((historique != null) && (!historique.equals(""))) {
                     Calendar calendrier = Calendar.getInstance();
                     calendrier.setTimeInMillis(System.currentTimeMillis());
                     long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
                     TableHistorique.instance(getContext()).ajouter(historique, date, fermenteur.getId(), -1, -1, -1);
                     afficherHistorique();
                 }
@@ -565,20 +569,24 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
             afficher();
             afficherCheminBrassin();
         } else if (v.equals(btnEtatSuivantSansBrassin)) {
+            //On change l'état du fermenteur
             TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), fermenteur.getIdBrassin(), fermenteur.getActif());
-            afficher();
-            afficherCheminBrassin();
 
+            //On ajoute un historique au fermenteur si le nouvel état à un texte d'historique
             if (fermenteur.getIdNoeud() != -1) {
                 String historique = fermenteur.getNoeud(getContext()).getEtat(getContext()).getHistorique();
                 if ((historique != null) && (!historique.equals(""))) {
                     Calendar calendrier = Calendar.getInstance();
                     calendrier.setTimeInMillis(System.currentTimeMillis());
                     long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
                     TableHistorique.instance(getContext()).ajouter(historique, date, fermenteur.getId(), -1, -1, -1);
                     afficherHistorique();
                 }
             }
+
+            afficher();
+            afficherCheminBrassin();
         } else if (v.equals(btnTransfere) && spinnerListeCuveSansBrassin.getSelectedItemPosition() != Spinner.INVALID_POSITION) {
             int quantite;
             try {
@@ -587,38 +595,46 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                 quantite = 0;
                 Toast.makeText(getContext(), "La quantite inscrite ne peut être lu.", Toast.LENGTH_SHORT).show();
             }
-            long idPremierNoeud = TableCheminBrassinCuve.instance(getContext()).recupererPremierNoeud();
-            if (idPremierNoeud == -1) {
-                Toast.makeText(getContext(), "La cuve n'a pas de chemin du brassin", Toast.LENGTH_SHORT).show();
-            }
-            else if (quantite > 0) {
+
+            if (quantite > 0) {
+                //On récupère la cuve sélectionné
                 Cuve cuve = listeCuveSansBrassin.get(spinnerListeCuveSansBrassin.getSelectedItemPosition());
+
+                //On récupère le brassin
                 Brassin brassin = TableBrassin.instance(getContext()).recupererId(fermenteur.getIdBrassin());
+
                 //Si la quantite que l'on veut transferer est plus petit à la quantite du brassin
                 //ET que cette quantite est plus petite ou égal à la capacite de la cuve alors on creer un nouveau brassin
                 if ((brassin.getQuantite() > quantite) && (quantite <= cuve.getCapacite())) {
+                    //Date
                     Calendar calendrier = Calendar.getInstance();
                     calendrier.setTimeInMillis(System.currentTimeMillis());
                     long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
+                    //On ajoute un historique concernant ce transfert
                     String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(2).getTexte() + " du brassin n°" + brassin.getNumero() + " (" + quantite + "L)" + " du fermenteur n°" + fermenteur.getNumero() + " à la cuve n°" + cuve.getNumero();
                     TableHistorique.instance(getContext()).ajouter(texteTransfert, date, fermenteur.getId(), cuve.getId(), -1, brassin.getId_brassinPere());
 
+                    //On modifie le brassin existant
                     TableBrassin.instance(getContext()).modifier(brassin.getId(), brassin.getId_brassinPere(), brassin.getNumero(), brassin.getCommentaire(), brassin.getDateLong(), brassin.getQuantite() - quantite, brassin.getId_recette(), brassin.getDensiteOriginale(), brassin.getDensiteFinale());
+
+                    //On créer un nouveau brassin
                     long idNouveauBrassin = TableBrassin.instance(getContext()).ajouter(getContext(), brassin.getId_brassinPere(), quantite);
-                    TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), idPremierNoeud, System.currentTimeMillis(), cuve.getCommentaireEtat(), idNouveauBrassin, cuve.getActif());
 
-                    TableRapport.instance(getContext()).ajouter(TableBrassin.instance(getContext()).recupererId(idNouveauBrassin).getId_brassinPere(), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.YEAR), 0, quantite, 0);
+                    //On ajout le nouveau brassin à la cuve et on le change d'état
+                    TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), TableCheminBrassinCuve.instance(getContext()).recupererPremierNoeud(), System.currentTimeMillis(), cuve.getCommentaireEtat(), idNouveauBrassin, cuve.getActif());
 
+                    //On ajout un historique à la cuve
                     if (cuve.getIdNoeud() != -1) {
                         String historique = cuve.getNoeud(getContext()).getEtat(getContext()).getHistorique();
                         if ((historique != null) && (!historique.equals(""))) {
-                            Calendar calendrier2 = Calendar.getInstance();
-                            calendrier2.setTimeInMillis(System.currentTimeMillis());
-                            long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
-                            TableHistorique.instance(getContext()).ajouter(historique, date2, -1, cuve.getId(), -1, -1);
+                            TableHistorique.instance(getContext()).ajouter(historique, date, -1, cuve.getId(), -1, -1);
                             afficherHistorique();
                         }
                     }
+
+                    //On ajoute la quantité fermentée au rapport
+                    TableRapport.instance(getContext()).ajouter(TableBrassin.instance(getContext()).recupererId(idNouveauBrassin).getId_brassinPere(), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.YEAR), 0, quantite, 0);
 
                     parent.invalidate();
                 }
@@ -628,33 +644,34 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                     Calendar calendrier = Calendar.getInstance();
                     calendrier.setTimeInMillis(System.currentTimeMillis());
                     long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
+                    //On ajoute un historique concernant ce transfert
                     String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(2).getTexte() + " du brassin n°" + brassin.getNumero() + " (" + quantite + "L)" + " du fermenteur n°" + fermenteur.getNumero() + " à la cuve n°" + cuve.getNumero();
                     TableHistorique.instance(getContext()).ajouter(texteTransfert, date, fermenteur.getId(), cuve.getId(), -1, brassin.getId_brassinPere());
 
-                    TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), idPremierNoeud, System.currentTimeMillis(), cuve.getCommentaireEtat(), brassin.getId(), cuve.getActif());
+                    //On ajoute le brassin à la cuve et on le change d'état
+                    TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), TableCheminBrassinCuve.instance(getContext()).recupererPremierNoeud(), System.currentTimeMillis(), cuve.getCommentaireEtat(), brassin.getId(), cuve.getActif());
 
+                    //On ajoute un historique à la cuve si le nouvel état à un texte d'historique
                     if (cuve.getIdNoeud() != -1) {
                         String historique = cuve.getNoeud(getContext()).getEtat(getContext()).getHistorique();
                         if ((historique != null) && (!historique.equals(""))) {
-                            Calendar calendrier2 = Calendar.getInstance();
-                            calendrier2.setTimeInMillis(System.currentTimeMillis());
-                            long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
-                            TableHistorique.instance(getContext()).ajouter(historique, date2, -1, cuve.getId(), -1, -1);
+                            TableHistorique.instance(getContext()).ajouter(historique, date, -1, cuve.getId(), -1, -1);
                             afficherHistorique();
                         }
                     }
 
+                    //On ajoute la quantité fermentée au rapport
                     TableRapport.instance(getContext()).ajouter(brassin.getId_brassinPere(), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.YEAR), 0, brassin.getQuantite(), 0);
 
+                    //On enlève le brassin du fermenteur et on le change d'état
                     TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fermenteur.getActif());
 
+                    //On ajoute un historique au fermenteur si le nouvel état à un texte d'historique
                     if (fermenteur.getIdNoeud() != -1) {
                         String historique = fermenteur.getNoeud(getContext()).getEtat(getContext()).getHistorique();
                         if ((historique != null) && (!historique.equals(""))) {
-                            Calendar calendrier2 = Calendar.getInstance();
-                            calendrier2.setTimeInMillis(System.currentTimeMillis());
-                            long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
-                            TableHistorique.instance(getContext()).ajouter(historique, date2, fermenteur.getId(), -1, -1, -1);
+                            TableHistorique.instance(getContext()).ajouter(historique, date, fermenteur.getId(), -1, -1, -1);
                             afficherHistorique();
                         }
                     }
@@ -664,23 +681,26 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
             }
         }
         else if (v.equals(btnVider)) {
+            //On récupère le brassin
             Brassin brassin = TableBrassin.instance(getContext()).recupererId(fermenteur.getIdBrassin());
 
+            //On récupère la date
             Calendar calendrier = Calendar.getInstance();
             calendrier.setTimeInMillis(System.currentTimeMillis());
             long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
+
+            //On ajoute un historique
             String texteTransfert = "Perte de " + brassin.getQuantite() + "L" + " du brassin n°" + brassin.getNumero();
             TableHistorique.instance(getContext()).ajouter(texteTransfert, date, -1, -1, -1, brassin.getId_brassinPere());
 
+            //On enlève le brassin du fermenteur
             TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fermenteur.getActif());
 
+            //On ajoute un historique au fermenteur si le nouvel état à un texte d'historique
             if (fermenteur.getIdNoeud() != -1) {
                 String historique = fermenteur.getNoeud(getContext()).getEtat(getContext()).getHistorique();
                 if ((historique != null) && (!historique.equals(""))) {
-                    Calendar calendrier2 = Calendar.getInstance();
-                    calendrier2.setTimeInMillis(System.currentTimeMillis());
-                    long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
-                    TableHistorique.instance(getContext()).ajouter(historique, date2, fermenteur.getId(), -1, -1, -1);
+                    TableHistorique.instance(getContext()).ajouter(historique, date, fermenteur.getId(), -1, -1, -1);
                     afficherHistorique();
                 }
             }
