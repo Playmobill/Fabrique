@@ -45,37 +45,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Brassin"
-                android:layout_gravity="center"
+                android:textStyle="bold"
                 android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:textStyle="bold" />
+                android:layout_gravity="center"
+                android:gravity="center" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quantité en litres fermentée"
-                android:layout_gravity="center"
+                android:textStyle="bold"
                 android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:textStyle="bold" />
+                android:layout_gravity="center"
+                android:gravity="center" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quantité en litres tansférée"
-                android:layout_gravity="center"
+                android:textStyle="bold"
                 android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:textStyle="bold" />
+                android:layout_gravity="center"
+                android:gravity="center" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Total transféré en litres"
-                android:layout_gravity="center"
+                android:textStyle="bold"
                 android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:textStyle="bold" />
+                android:layout_gravity="center"
+                android:gravity="center" />
         </TableRow>
 
     </TableLayout>

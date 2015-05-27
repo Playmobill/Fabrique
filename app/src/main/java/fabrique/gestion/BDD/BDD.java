@@ -152,13 +152,13 @@ public class BDD extends SQLiteOpenHelper {
                                                 "id_noeudAvecBrassin INTEGER NOT NULL, " +
                                                 "id_noeudSansBrassin INTEGER NOT NULL)";
 
-    private static String createurRapport = "CREATE TABLE IF NOT EXISTS Rapport" +
+    private static String createurRapport = "CREATE TABLE IF NOT EXISTS Rapport (" +
                                             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                             "id_brassinPere INTEGER NOT NULL," +
-                                            "mois INTEGER NOT NULL" +
-                                            "annee INTEGER NOT NULL" +
-                                            "quantiteFermente INTEGER NOT NULL" +
-                                            "quantiteTransfere INTEGER NOT NULL" +
+                                            "mois INTEGER NOT NULL, " +
+                                            "annee INTEGER NOT NULL, " +
+                                            "quantiteFermente INTEGER NOT NULL, " +
+                                            "quantiteTransfere INTEGER NOT NULL, " +
                                             "quantiteUtilise INTEGER NOT NULL)";
 
     public BDD(Context context, String name, SQLiteDatabase.CursorFactory factory) {

@@ -36,6 +36,7 @@ import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableGestion;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
+import fabrique.gestion.BDD.TableRapport;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.Cuve;
@@ -583,14 +584,14 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
             try {
                 quantite = Integer.parseInt(quantiteTransfere.getText().toString());
             } catch (Exception e) {
-                quantite = -1;
+                quantite = 0;
                 Toast.makeText(getContext(), "La quantite inscrite ne peut être lu.", Toast.LENGTH_SHORT).show();
             }
             long idPremierNoeud = TableCheminBrassinCuve.instance(getContext()).recupererPremierNoeud();
             if (idPremierNoeud == -1) {
                 Toast.makeText(getContext(), "La cuve n'a pas de chemin du brassin", Toast.LENGTH_SHORT).show();
             }
-            else if (quantite >= 0) {
+            else if (quantite > 0) {
                 Cuve cuve = listeCuveSansBrassin.get(spinnerListeCuveSansBrassin.getSelectedItemPosition());
                 Brassin brassin = TableBrassin.instance(getContext()).recupererId(fermenteur.getIdBrassin());
                 //Si la quantite que l'on veut transferer est plus petit à la quantite du brassin
@@ -605,6 +606,8 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                     TableBrassin.instance(getContext()).modifier(brassin.getId(), brassin.getId_brassinPere(), brassin.getNumero(), brassin.getCommentaire(), brassin.getDateLong(), brassin.getQuantite() - quantite, brassin.getId_recette(), brassin.getDensiteOriginale(), brassin.getDensiteFinale());
                     long idNouveauBrassin = TableBrassin.instance(getContext()).ajouter(getContext(), brassin.getId_brassinPere(), quantite);
                     TableCuve.instance(getContext()).modifier(cuve.getId(), cuve.getNumero(), cuve.getCapacite(), cuve.getIdEmplacement(), cuve.getDateLavageAcide(), idPremierNoeud, System.currentTimeMillis(), cuve.getCommentaireEtat(), idNouveauBrassin, cuve.getActif());
+
+                    TableRapport.instance(getContext()).ajouter(TableBrassin.instance(getContext()).recupererId(idNouveauBrassin).getId_brassinPere(), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.YEAR), 0, quantite, 0);
 
                     if (cuve.getIdNoeud() != -1) {
                         String historique = cuve.getNoeud(getContext()).getEtat(getContext()).getHistorique();
@@ -640,6 +643,8 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                             afficherHistorique();
                         }
                     }
+
+                    TableRapport.instance(getContext()).ajouter(brassin.getId_brassinPere(), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.YEAR), 0, brassin.getQuantite(), 0);
 
                     TableFermenteur.instance(getContext()).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), fermenteur.getNoeud(getContext()).getId_noeudSansBrassin(), System.currentTimeMillis(), -1, fermenteur.getActif());
 

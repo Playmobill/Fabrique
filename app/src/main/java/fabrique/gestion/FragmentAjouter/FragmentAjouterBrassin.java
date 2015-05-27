@@ -23,6 +23,7 @@ import fabrique.gestion.BDD.TableBrassinPere;
 import fabrique.gestion.BDD.TableCheminBrassinFermenteur;
 import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableHistorique;
+import fabrique.gestion.BDD.TableRapport;
 import fabrique.gestion.BDD.TableRecette;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.Objets.Fermenteur;
@@ -166,6 +167,8 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
 
             Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(listeFermenteursDisponibles.get(editFermenteur.getSelectedItemPosition()).getId());
             TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud(), date, id_brassin, fermenteur.getActif());
+
+            TableRapport.instance(contexte).ajouter(id_brassinPere, calendrier.get(Calendar.MONTH), calendrier.get(Calendar.YEAR), quantite, 0, 0);
 
             if (fermenteur.getIdNoeud() != -1) {
                 String historique = fermenteur.getNoeud(contexte).getEtat(contexte).getHistorique();

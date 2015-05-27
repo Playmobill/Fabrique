@@ -34,20 +34,24 @@ public class TableRapport extends Controle {
         Collections.sort(rapports);
     }
 
-    public long ajouter(long id_brassinPere, int mois, int annee, int quantiteFermente, int quantiteTransfere, int quantiteUtilise) {
-        ContentValues valeur = new ContentValues();
-        valeur.put("id_brassinPere", id_brassinPere);
-        valeur.put("mois", mois);
-        valeur.put("annee", annee);
-        valeur.put("quantiteFermente", quantiteFermente);
-        valeur.put("quantiteTransfere", quantiteTransfere);
-        valeur.put("quantiteUtilise", quantiteUtilise);
-        long id = accesBDD.insert(nomTable, null, valeur);
-        if (id != -1) {
-            rapports.add(new Rapport(id, id_brassinPere, mois, annee, quantiteFermente, quantiteTransfere, quantiteUtilise));
-            Collections.sort(rapports);
+    public void ajouter(long id_brassinPere, int mois, int annee, int quantiteFermente, int quantiteTransfere, int quantiteUtilise) {
+        Rapport rapport = recupererRapport(id_brassinPere, mois, annee);
+        if (rapport != null) {
+            modifier(rapport, quantiteFermente, quantiteTransfere, quantiteUtilise);
+        } else {
+            ContentValues valeur = new ContentValues();
+            valeur.put("id_brassinPere", id_brassinPere);
+            valeur.put("mois", mois);
+            valeur.put("annee", annee);
+            valeur.put("quantiteFermente", quantiteFermente);
+            valeur.put("quantiteTransfere", quantiteTransfere);
+            valeur.put("quantiteUtilise", quantiteUtilise);
+            long id = accesBDD.insert(nomTable, null, valeur);
+            if (id != -1) {
+                rapports.add(new Rapport(id, id_brassinPere, mois, annee, quantiteFermente, quantiteTransfere, quantiteUtilise));
+                Collections.sort(rapports);
+            }
         }
-        return id;
     }
 
     public int tailleListe() {
@@ -81,16 +85,24 @@ public class TableRapport extends Controle {
         return rapports;
     }
 
-    public void modifier(long id, int quantiteFermente, int quantiteTransfere, int quantiteUtilise){
+    public Rapport recupererRapport(long id_brassinPere, int mois, int annee) {
+        for (int i=0; i<rapports.size(); i++) {
+            if ((rapports.get(i).getId_brassinPere() == id_brassinPere) && (rapports.get(i).getMois() == mois) && (rapports.get(i).getAnnee() == annee)) {
+                return rapports.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void modifier(Rapport rapport, int quantiteFermente, int quantiteTransfere, int quantiteUtilise){
         ContentValues valeur = new ContentValues();
-        valeur.put("quantiteFermente", quantiteFermente);
-        valeur.put("quantiteTransfere", quantiteTransfere);
-        valeur.put("quantiteUtilise", quantiteUtilise);
-        if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
-            Rapport rapport = recupererId(id);
-            rapport.setQuantiteFermente(quantiteFermente);
-            rapport.setQuantiteTransfere(quantiteTransfere);
-            rapport.setQuantiteUtilise(quantiteUtilise);
+        valeur.put("quantiteFermente", rapport.getQuantiteFermente() + quantiteFermente);
+        valeur.put("quantiteTransfere", rapport.getQuantiteTransfere() + quantiteTransfere);
+        valeur.put("quantiteUtilise", rapport.getQuantiteUtilise() + quantiteUtilise);
+        if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + rapport.getId()}) == 1) {
+            rapport.setQuantiteFermente(rapport.getQuantiteFermente() + quantiteFermente);
+            rapport.setQuantiteTransfere(rapport.getQuantiteTransfere() + quantiteTransfere);
+            rapport.setQuantiteUtilise(rapport.getQuantiteUtilise() + quantiteUtilise);
             Collections.sort(rapports);
         }
     }

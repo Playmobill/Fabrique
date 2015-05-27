@@ -4,6 +4,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,17 +81,29 @@ public class FragmentRapport extends FragmentAmeliore implements View.OnClickLis
     private void afficherBrassin(int mois, int annee) {
         ArrayList<Rapport> rapports = TableRapport.instance(contexte).recupererRapport(mois, annee);
 
+        TableRow.LayoutParams parametre = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        parametre.weight = 1;
+        //parametre.gravity = Gravity.CENTER;
+
         for (int i=0; i<rapports.size(); i++) {
             TableRow ligne = new TableRow(contexte);
+                TextView numeroBrassin = new TextView(contexte);
+                numeroBrassin.setGravity(Gravity.CENTER);
+                numeroBrassin.setText(rapports.get(i).getbrassinPere(contexte).getNumero() + "");
+            ligne.addView(numeroBrassin, parametre);
                 TextView quantiteFermente = new TextView(contexte);
-                quantiteFermente.setText(rapports.get(i).getQuantiteFermente());
-            ligne.addView(quantiteFermente);
+                quantiteFermente.setGravity(Gravity.CENTER);
+                quantiteFermente.setText(rapports.get(i).getQuantiteFermente() + "");
+            ligne.addView(quantiteFermente, parametre);
                 TextView quantiteTransfere = new TextView(contexte);
-                quantiteTransfere.setText(rapports.get(i).getQuantiteTransfere());
-            ligne.addView(quantiteTransfere);
+                quantiteTransfere.setGravity(Gravity.CENTER);
+                quantiteTransfere.setText(rapports.get(i).getQuantiteTransfere() + "");
+            ligne.addView(quantiteTransfere, parametre);
                 TextView quantiteUtilise = new TextView(contexte);
-                quantiteUtilise.setText(rapports.get(i).getQuantiteUtilise());
-            ligne.addView(quantiteUtilise);
+                quantiteUtilise.setGravity(Gravity.CENTER);
+                quantiteUtilise.setText(rapports.get(i).getQuantiteUtilise() + "");
+            ligne.addView(quantiteUtilise, parametre);
+            tableau.addView(ligne);
         }
     }
 
