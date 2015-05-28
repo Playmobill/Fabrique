@@ -11,10 +11,18 @@ import fabrique.gestion.Objets.BrassinPere;
 
 public class TableBrassinPere extends Controle {
 
+    /**
+     * Liste des brassins père
+     */
     private ArrayList<BrassinPere> brassins;
 
     private static TableBrassinPere INSTANCE;
 
+    /**
+     * Constructeur qui prend un objet Context
+     * @param contexte
+     * @return instance de TableBrassinPere
+     */
     public static TableBrassinPere instance(Context contexte){
         if(INSTANCE == null){
             INSTANCE = new TableBrassinPere(contexte);
@@ -22,6 +30,10 @@ public class TableBrassinPere extends Controle {
         return INSTANCE;
     }
 
+    /**
+     * Constructeur privé qui lit la bdd
+     * @param contexte
+     */
     private TableBrassinPere(Context contexte){
         super(contexte, "BrassinPere");
 
@@ -34,6 +46,17 @@ public class TableBrassinPere extends Controle {
         Collections.sort(brassins);
     }
 
+    /**
+     * Fonction à utilisé pour ajouter un brassin pere
+     * @param numero numero du brassin père
+     * @param commentaire commentaire du brassin père
+     * @param dateCreation date de creation du brassin père
+     * @param quantite quantite du brassin père
+     * @param id_recette recette du brassin père
+     * @param densiteOriginale densité originale du brassin père
+     * @param densiteFinale densité finale du brassin père
+     * @return
+     */
     public long ajouter(int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
@@ -51,10 +74,19 @@ public class TableBrassinPere extends Controle {
         return id;
     }
 
+    /**
+     * Fonction qui retourne la taille de la liste des brassins père
+     * @return taille de la liste des brassins père
+     */
     public int tailleListe() {
         return brassins.size();
     }
 
+    /**
+     * Fonction qui renvoi un brassin père selon l'index qu'il a dans la liste et renvoie null si l'index spécifié n'existe pas
+     * @param index index du brassin père voulu
+     * @return le brassin père selon l'index qu'il a dans la liste et renvoie null si l'index spécifié n'existe pas
+     */
     public BrassinPere recupererIndex(int index){
         try {
             return brassins.get(index);
@@ -63,6 +95,11 @@ public class TableBrassinPere extends Controle {
         }
     }
 
+    /**
+     * Fonction qui renvoi un brassin père selon l'id qu'il a dans la bdd et renvoie null si l'id spécifié n'existe pas
+     * @param id id du brassin père voulu
+     * @return le brassin père selon l'id qu'il a dans la bdd et renvoie null si l'id spécifié n'existe pas
+     */
     public BrassinPere recupererId(long id) {
         for (int i=0; i<brassins.size() ; i++) {
             if (brassins.get(i).getId() == id) {
@@ -72,6 +109,17 @@ public class TableBrassinPere extends Controle {
         return null;
     }
 
+    /**
+     * Fonction à utilisé pour modifier un brassin père
+     * @param id id du brassin père à modifier
+     * @param numero nouveau numero
+     * @param commentaire nouveau commentaire
+     * @param dateCreation nouvelle date de creation
+     * @param quantite nouvelle quantite
+     * @param id_recette nouvelle recette
+     * @param densiteOriginale nouvelle densite originale
+     * @param densiteFinale nouvelle densite finale
+     */
     public void modifier(long id, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
@@ -94,18 +142,20 @@ public class TableBrassinPere extends Controle {
         }
     }
 
+    /**
+     * Fonction qui récupère l'index du brassin père selon l'id qu'il a, retourne -1 si aucun brassin père n'a cette id
+     * @param id id du brassin père recherché
+     * @return l'index du brassin père selon l'id qu'il a, retourne -1 si aucun brassin père n'a cette id
+     */
     public int recupererIndexSelonId(long id) {
         return brassins.indexOf(recupererId(id));
     }
 
-    public String[] numeros() {
-        String[] numero = new String[brassins.size()];
-        for (int i=0; i<brassins.size() ; i++) {
-            numero[i] = brassins.get(i).getNumero() + "";
-        }
-        return numero;
-    }
-
+    /**
+     * Fonction qui récupère le premier brassin père qui porte le numéro donné en paramètre
+     * @param numero numéro du brassin père recherché
+     * @return le premier brassin père qui porte le numéro donné en paramètre
+     */
     public BrassinPere recupererNumero(int numero) {
         for (int i=0; i<brassins.size() ; i++) {
             if (brassins.get(i).getNumero() == numero) {
@@ -115,6 +165,10 @@ public class TableBrassinPere extends Controle {
         return null;
     }
 
+    /**
+     * Fonction qui tri les brassins père par ordre croissant selon leur numéro
+     * @return liste des brassins père par ordre croissant selon leur numéro
+     */
     public ArrayList<BrassinPere> trierParNumero(){
         ArrayList<BrassinPere> result = new ArrayList<>();
         int index;
@@ -142,6 +196,10 @@ public class TableBrassinPere extends Controle {
         return result;
     }
 
+    /**
+     * Fonction qui tri les brassins père par ordre croissant selon les id de leur recette
+     * @return liste des brassins père par ordre croissant selon les id de leur recette
+     */
     public ArrayList<BrassinPere> trierParRecette() {
         ArrayList<BrassinPere> result = new ArrayList<>();
         int index;
@@ -176,6 +234,10 @@ public class TableBrassinPere extends Controle {
         return result;
     }
 
+    /**
+     * Fonction qui tri les brassins père par ordre croissant de leur date de création (du plus vieux au plus jeunes)
+     * @return liste des brassins père par ordre croissant de leur date de création (du plus vieux au plus jeunes)
+     */
     public ArrayList<BrassinPere> trierParDateCreation() {
         ArrayList<BrassinPere> result = new ArrayList<>();
         int index;
@@ -210,6 +272,13 @@ public class TableBrassinPere extends Controle {
         return result;
     }
 
+    /**
+     * Tri (tri rapide) par id les brassins père pour qu'il soit enregistré dans cet ordre lors de la sauvegarde
+     * @param liste liste à trier
+     * @param petitIndex index de début de la liste à trier
+     * @param grandIndex index de fin de la liste à trier
+     * @return la liste trier par ordre croissant d'id
+     */
     private ArrayList<BrassinPere> trierParId(ArrayList<BrassinPere> liste, int petitIndex, int grandIndex) {
         int i = petitIndex;
         int j = grandIndex;
@@ -242,6 +311,10 @@ public class TableBrassinPere extends Controle {
         return liste;
     }
 
+    /**
+     * Retourne l'ensemble des brassins père sous forme de string
+     * @return string regroupant toutes les informations nécessaires à la sauvegarde des brassins père
+     */
     @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
@@ -254,6 +327,9 @@ public class TableBrassinPere extends Controle {
         return texte.toString();
     }
 
+    /**
+     * Supprimer toute la table BrassinPere de la bdd pour ajouté ensuite les entrées d'un fichier de sauvegarde
+     */
     @Override
     public void supprimerToutesLaBdd() {
         super.supprimerToutesLaBdd();

@@ -12,10 +12,18 @@ import fabrique.gestion.Objets.BrassinPere;
 
 public class TableBrassin extends Controle {
 
+    /**
+     * Liste des brassins
+     */
     private ArrayList<Brassin> brassins;
 
     private static TableBrassin INSTANCE;
 
+    /**
+     * Constructeur qui prend un objet Context
+     * @param contexte
+     * @return instance de TableBrassin
+     */
     public static TableBrassin instance(Context contexte){
         if(INSTANCE == null){
             INSTANCE = new TableBrassin(contexte);
@@ -23,6 +31,10 @@ public class TableBrassin extends Controle {
         return INSTANCE;
     }
 
+    /**
+     * Constructeur privé qui lit la bdd
+     * @param contexte
+     */
     private TableBrassin(Context contexte) {
         super(contexte, "Brassin");
 
@@ -35,6 +47,13 @@ public class TableBrassin extends Controle {
         Collections.sort(brassins);
     }
 
+    /**
+     * Fonction à utilisé pour ajouter un brassin
+     * @param contexte
+     * @param id_brassinPere id dans la bdd du brassin père
+     * @param quantite quantite du brassin père qu'il prend
+     * @return id de ce nouvel ajout dans le bdd
+     */
     public long ajouter(Context contexte, long id_brassinPere, int quantite) {
         
         ContentValues valeur = new ContentValues();
@@ -49,10 +68,19 @@ public class TableBrassin extends Controle {
         return id;
     }
 
+    /**
+     * Fonction qui retourne la taille de la liste des brassins
+     * @return taille de la liste des brassins
+     */
     public int tailleListe() {
         return brassins.size();
     }
 
+    /**
+     * Fonction qui renvoi un brassin selon l'index qu'il a dans la liste et renvoie null si l'index spécifié n'existe pas
+     * @param index index du brassin voulu
+     * @return le brassin selon l'index qu'il a dans la liste et renvoie null si l'index spécifié n'existe pas
+     */
     public Brassin recupererIndex(int index){
         try {
             return brassins.get(index);
@@ -61,10 +89,11 @@ public class TableBrassin extends Controle {
         }
     }
 
-    public int recupererIndexSelonId(long id) {
-        return brassins.indexOf(recupererId(id));
-    }
-
+    /**
+     * Fonction qui renvoi un brassin selon l'id qu'il a dans la bdd et renvoie null si l'id spécifié n'existe pas
+     * @param id id du brassin voulu
+     * @return le brassin selon l'id qu'il a dans la bdd et renvoie null si l'id spécifié n'existe pas
+     */
     public Brassin recupererId(long id) {
         for (int i=0; i<brassins.size() ; i++) {
             if (brassins.get(i).getId() == id) {
@@ -74,18 +103,19 @@ public class TableBrassin extends Controle {
         return null;
     }
 
-    public Brassin recupererNumero(int numero) {
-        for (int i=0; i<brassins.size() ; i++) {
-            if (brassins.get(i).getNumero() == numero) {
-                return brassins.get(i);
-            }
-        }
-        return null;
-    }
-
-    public void modifier(long id, long id_brassinPere, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
+    /**
+     * Fonction à utilisé pour modifier un brassin
+     * @param id id du brassin à modifier
+     * @param numero nouveau numero
+     * @param commentaire nouveau commentaire
+     * @param dateCreation nouvelle date de creation
+     * @param quantite nouvelle quantite
+     * @param id_recette nouvelle recette
+     * @param densiteOriginale nouvelle densite originale
+     * @param densiteFinale nouvelle densite finale
+     */
+    public void modifier(long id, int numero, String commentaire, long dateCreation, int quantite, long id_recette, float densiteOriginale, float densiteFinale){
         ContentValues valeur = new ContentValues();
-        valeur.put("id_brassinPere", id_brassinPere);
         valeur.put("quantite", quantite);
         if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
             Brassin brassin = recupererId(id);
@@ -100,6 +130,13 @@ public class TableBrassin extends Controle {
         }
     }
 
+    /**
+     * Tri (tri rapide) par id les brassins pour qu'il soit enregistré dans cet ordre lors de la sauvegarde
+     * @param liste liste à trier
+     * @param petitIndex index de début de la liste à trier
+     * @param grandIndex index de fin de la liste à trier
+     * @return la liste trier par ordre croissant d'id
+     */
     private ArrayList<Brassin> trierParId(ArrayList<Brassin> liste, int petitIndex, int grandIndex) {
         int i = petitIndex;
         int j = grandIndex;
@@ -132,6 +169,10 @@ public class TableBrassin extends Controle {
         return liste;
     }
 
+    /**
+     * Retourne l'ensemble des brassins sous forme de string
+     * @return string regroupant toutes les informations nécessaires à la sauvegarde des brassins
+     */
     @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
@@ -144,6 +185,9 @@ public class TableBrassin extends Controle {
         return texte.toString();
     }
 
+    /**
+     * Supprimer toute la table Brassin de la bdd pour ajouté ensuite les entrées d'un fichier de sauvegarde
+     */
     @Override
     public void supprimerToutesLaBdd() {
         super.supprimerToutesLaBdd();

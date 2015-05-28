@@ -155,6 +155,7 @@
       <w>jours</w>
       <w>l'application</w>
       <w>l'historique</w>
+      <w>l'id</w>
       <w>l'image</w>
       <w>l'index</w>
       <w>l'objet</w>
@@ -171,6 +172,7 @@
       <w>modifie</w>
       <w>moins</w>
       <w>mois</w>
+      <w>n'existe</w>
       <w>noeud</w>
       <w>noeuds</w>
       <w>noir</w>
@@ -202,6 +204,7 @@
       <w>prochain</w>
       <w>produit</w>
       <w>précédent</w>
+      <w>père</w>
       <w>qu'il</w>
       <w>quantite</w>
       <w>quantité</w>
@@ -211,8 +214,10 @@
       <w>regrouper</w>
       <w>remettre</w>
       <w>remplir</w>
+      <w>renvoie</w>
       <w>resultat</w>
       <w>retour</w>
+      <w>retourne</w>
       <w>rousse</w>
       <w>récipient</w>
       <w>récupère</w>
@@ -229,6 +234,7 @@
       <w>seperateur</w>
       <w>simplifie</w>
       <w>sinon</w>
+      <w>spécifié</w>
       <w>sqlite</w>
       <w>supprimer</w>
       <w>sélectionnée</w>

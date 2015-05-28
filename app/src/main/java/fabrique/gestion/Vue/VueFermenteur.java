@@ -616,7 +616,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                     TableHistorique.instance(getContext()).ajouter(texteTransfert, date, fermenteur.getId(), cuve.getId(), -1, brassin.getId_brassinPere());
 
                     //On modifie le brassin existant
-                    TableBrassin.instance(getContext()).modifier(brassin.getId(), brassin.getId_brassinPere(), brassin.getNumero(), brassin.getCommentaire(), brassin.getDateLong(), brassin.getQuantite() - quantite, brassin.getId_recette(), brassin.getDensiteOriginale(), brassin.getDensiteFinale());
+                    TableBrassin.instance(getContext()).modifier(brassin.getId(), brassin.getNumero(), brassin.getCommentaire(), brassin.getDateLong(), brassin.getQuantite() - quantite, brassin.getId_recette(), brassin.getDensiteOriginale(), brassin.getDensiteFinale());
 
                     //On créer un nouveau brassin
                     long idNouveauBrassin = TableBrassin.instance(getContext()).ajouter(getContext(), brassin.getId_brassinPere(), quantite);

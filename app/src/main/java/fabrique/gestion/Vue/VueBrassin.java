@@ -413,7 +413,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
 
             long recette = listeRecetteActifs.get(editRecette.getSelectedItemPosition()).getId();
 
-            TableBrassin.instance(getContext()).modifier(brassin.getId(), brassin.getId_brassinPere(), numero, editCommentaire.getText().toString(), brassin.getDateLong(), quantite, recette, densiteOriginale, densiteFinale);
+            TableBrassin.instance(getContext()).modifier(brassin.getId(), numero, editCommentaire.getText().toString(), brassin.getDateLong(), quantite, recette, densiteOriginale, densiteFinale);
 
             BrassinPere brassinPere = TableBrassinPere.instance(getContext()).recupererId(brassin.getId_brassinPere());
 

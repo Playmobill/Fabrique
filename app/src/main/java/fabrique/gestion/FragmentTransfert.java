@@ -155,7 +155,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                         else{
                             Brassin brassinAine = TableBrassin.instance(contexte).recupererId(fermenteur.getIdBrassin());
                             idBrassinTransfere = TableBrassin.instance(contexte).ajouter(contexte, brassinAine.getId_brassinPere(), quantiteTransfere);
-                            TableBrassin.instance(contexte).modifier(brassinAine.getId(), brassinAine.getId_brassinPere(), brassinAine.getNumero(), brassinAine.getCommentaire(),brassinAine.getDateLong(), (brassinAine.getQuantite()-quantiteTransfere) ,brassinAine.getId_recette(), brassinAine.getDensiteOriginale(),brassinAine.getDensiteFinale());
+                            TableBrassin.instance(contexte).modifier(brassinAine.getId(), brassinAine.getNumero(), brassinAine.getCommentaire(),brassinAine.getDateLong(), (brassinAine.getQuantite()-quantiteTransfere) ,brassinAine.getId_recette(), brassinAine.getDensiteOriginale(),brassinAine.getDensiteFinale());
                         }
 
                         if (fermenteur.getIdNoeud() != -1) {
@@ -178,7 +178,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                         else{
                             Brassin brassinAine = TableBrassin.instance(contexte).recupererId(cuve.getIdBrassin());
                             idBrassinTransfere = TableBrassin.instance(contexte).ajouter(contexte, brassinAine.getId_brassinPere(), quantiteTransfere);
-                            TableBrassin.instance(contexte).modifier(brassinAine.getId(), brassinAine.getId_brassinPere(), brassinAine.getNumero(), brassinAine.getCommentaire(),brassinAine.getDateLong(), (brassinAine.getQuantite()-quantiteTransfere) ,brassinAine.getId_recette(), brassinAine.getDensiteOriginale(),brassinAine.getDensiteFinale());
+                            TableBrassin.instance(contexte).modifier(brassinAine.getId(), brassinAine.getNumero(), brassinAine.getCommentaire(),brassinAine.getDateLong(), (brassinAine.getQuantite()-quantiteTransfere) ,brassinAine.getId_recette(), brassinAine.getDensiteOriginale(),brassinAine.getDensiteFinale());
                         }
 
                         if (cuve.getIdNoeud() != -1) {
