@@ -11,10 +11,18 @@ import fabrique.gestion.Objets.NoeudFut;
 
 public class TableCheminBrassinFut extends Controle  {
 
+    /**
+     * Liste des noeuds du chemin du brassin dans le fut
+     */
     private ArrayList<NoeudFut> noeuds;
 
     private static TableCheminBrassinFut INSTANCE;
 
+    /**
+     * Constructeur qui prend un objet Context
+     * @param contexte
+     * @return instance de TableCheminBrassinFermenteur
+     */
     public static TableCheminBrassinFut instance(Context contexte){
         if(INSTANCE == null){
             INSTANCE = new TableCheminBrassinFut(contexte);
@@ -22,6 +30,10 @@ public class TableCheminBrassinFut extends Controle  {
         return INSTANCE;
     }
 
+    /**
+     * Constructeur privé qui lit la bdd
+     * @param contexte
+     */
     private TableCheminBrassinFut(Context contexte){
         super(contexte, "CheminBrassinFut");
         noeuds = new ArrayList<>();
@@ -33,6 +45,14 @@ public class TableCheminBrassinFut extends Controle  {
         Collections.sort(noeuds);
     }
 
+    /**
+     * Fonction à utilisé pour ajouter un noeud au chemin du brassin dans le fut
+     * @param id_noeudPrecedent id du noeud precedent celui-ci
+     * @param id_etat id de l'état que contiendra ce noeud
+     * @param id_noeudAvecBrassin id du prochain noeud avec brassin
+     * @param id_noeudSansBrassin id du prochain noeud sans brassin
+     * @return
+     */
     public long ajouter(long id_noeudPrecedent, long id_etat, long id_noeudAvecBrassin, long id_noeudSansBrassin) {
         ContentValues valeur = new ContentValues();
         valeur.put("id_noeudPrecedent", id_noeudPrecedent);
@@ -47,6 +67,12 @@ public class TableCheminBrassinFut extends Controle  {
         return id;
     }
 
+    /**
+     * Fonction à utilisé pour modifier un noeud au chemin du brassin dans le fut
+     * @param id du noeud à modifier
+     * @param id_noeudAvecBrassin nouvelle id du prochain noeud avec brassin
+     * @param id_noeudSansBrassin nouvelle id du prochain noeud sans brassin
+     */
     public void modifier(long id, long id_noeudAvecBrassin, long id_noeudSansBrassin) {
         ContentValues valeur = new ContentValues();
         valeur.put("id_noeudAvecBrassin", id_noeudAvecBrassin);
@@ -58,10 +84,19 @@ public class TableCheminBrassinFut extends Controle  {
         }
     }
 
+    /**
+     * Fonction qui retourne la taille de la liste des noeuds
+     * @return taille de la liste des noeuds
+     */
     public int tailleListe() {
         return noeuds.size();
     }
 
+    /**
+     * Fonction qui renvoi un noeud selon l'index qu'il a dans la liste et renvoie null si l'index spécifié n'existe pas
+     * @param index index du noeud voulu
+     * @return le noeud selon l'index qu'il a dans la liste et renvoie null si l'index spécifié n'existe pas
+     */
     public NoeudFut recupererIndex(int index){
         try {
             return noeuds.get(index);
@@ -70,6 +105,11 @@ public class TableCheminBrassinFut extends Controle  {
         }
     }
 
+    /**
+     * Fonction qui renvoi un noeud selon l'id qu'il a dans la liste et renvoie null si l'id spécifié n'existe pas
+     * @param id id du noeud voulu
+     * @return le noeud selon l'id qu'il a dans la liste et renvoie null si l'id spécifié n'existe pas
+     */
     public NoeudFut recupererId(long id) {
         for (int i=0; i< noeuds.size() ; i++) {
             if (noeuds.get(i).getId() == id) {
@@ -79,6 +119,11 @@ public class TableCheminBrassinFut extends Controle  {
         return null;
     }
 
+    /**
+     * Renvoi le premier noeud du chemin du brassin dans le fut
+     * en sachant que le premier noeud n'a pas de precedent
+     * @return l'id du premier noeud du chemin du brassin dans le fut
+     */
     public long recupererPremierNoeud() {
         for (int i=0; i<noeuds.size(); i++) {
             if (noeuds.get(i).getId_noeudPrecedent() == -1) {
@@ -88,6 +133,10 @@ public class TableCheminBrassinFut extends Controle  {
         return -1;
     }
 
+    /**
+     * Supprimer le noeud dont l'id est spécifié si il n'a pas de suivant
+     * @param id id du noeud à supprimer
+     */
     public void supprimer(long id) {
         NoeudFut noeud = recupererId(id);
         if ((noeud.getId_noeudAvecBrassin() == -1) && (noeud.getId_noeudSansBrassin() == -1) && (accesBDD.delete(nomTable, "id = ?", new String[] {""+id}) == 1)) {
@@ -103,6 +152,13 @@ public class TableCheminBrassinFut extends Controle  {
         }
     }
 
+    /**
+     * Tri (tri rapide) par id les noeud pour qu'il soit enregistré dans cet ordre lors de la sauvegarde
+     * @param liste liste à trier
+     * @param petitIndex index de début de la liste à trier
+     * @param grandIndex index de fin de la liste à trier
+     * @return la liste trier par ordre croissant d'id
+     */
     private ArrayList<NoeudFut> trierParId(ArrayList<NoeudFut> liste, int petitIndex, int grandIndex) {
         int i = petitIndex;
         int j = grandIndex;
@@ -135,6 +191,10 @@ public class TableCheminBrassinFut extends Controle  {
         return liste;
     }
 
+    /**
+     * Retourne l'ensemble des noeuds sous forme de string
+     * @return string regroupant toutes les informations nécessaires à la sauvegarde du chemin du brassin dans le fut
+     */
     @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
@@ -147,6 +207,9 @@ public class TableCheminBrassinFut extends Controle  {
         return texte.toString();
     }
 
+    /**
+     * Supprimer toute la table CheminBrassinFermenteur de la bdd pour ajouté ensuite les entrées d'un fichier de sauvegarde
+     */
     @Override
     public void supprimerToutesLaBdd() {
         super.supprimerToutesLaBdd();

@@ -43,9 +43,6 @@ public class NoeudFut extends Objet implements Comparable<NoeudFut> {
         return TableCheminBrassinFut.instance(contexte).recupererId(id_noeudSansBrassin);
     }
 
-    public void setId_etat(long id_etat) {
-        this.id_etat = id_etat;
-    }
     public void setId_noeudAvecBrassin(long id_noeudAvecBrassin) {
         this.id_noeudAvecBrassin = id_noeudAvecBrassin;
     }
