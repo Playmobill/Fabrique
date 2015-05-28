@@ -6,11 +6,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:layout_weight="1">
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Liste des fermenteurs"
             android:id="@+id/btnFermenteur"
             android:layout_weight="1"
@@ -23,8 +24,8 @@
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Liste des cuves"
             android:id="@+id/btnCuve"
             android:layout_weight="1"
@@ -41,11 +42,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:layout_weight="1">
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Liste des fûts"
             android:id="@+id/btnFut"
             android:layout_weight="1"
@@ -57,8 +59,8 @@
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Liste des brassins"
             android:id="@+id/btnBrassin"
             android:layout_weight="1"
@@ -74,11 +76,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:layout_weight="1">
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Liste des recettes"
             android:id="@+id/btnRecette"
             android:layout_weight="1"
@@ -90,8 +93,8 @@
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Liste des emplacements"
             android:id="@+id/btnEmplacement"
             android:layout_weight="1"

@@ -643,7 +643,7 @@ public class VueCuve extends TableLayout implements View.OnClickListener, DatePi
                     long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
 
                     //On ajoute un historique concernant ce transfert
-                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(4).getTexte() + " du brassin n°" + brassin.getNumero() + " (" + quantite + "L)" + " de la cuve n°" + cuve.getId() + " au fût n°" + fut.getId();
+                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(4).getTexte() + " du brassin n°" + brassin.getNumero() + " (" + brassin.getQuantite() + "L)" + " de la cuve n°" + cuve.getId() + " au fût n°" + fut.getId();
                     TableHistorique.instance(getContext()).ajouter(texteTransfert, date, -1, cuve.getId(), fut.getId(), brassin.getId_brassinPere());
 
                     //On ajoute le brassin au fut et on la change d'état

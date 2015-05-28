@@ -5,11 +5,12 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_weight="1">
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Gérer les états"
             android:id="@+id/btnEtat"
             android:layout_weight="1"
@@ -21,8 +22,8 @@
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Gérer les textes des historiques"
             android:id="@+id/btnListeHistorique"
             android:layout_weight="1"
@@ -37,11 +38,12 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_weight="1">
 
         <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:text="Gérer le temps d'inspection / de lavage Acide"
         android:id="@+id/btnTemps"
         android:layout_weight="1"
@@ -53,8 +55,8 @@
         android:textStyle="bold"/>
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Gérer les emplacements"
             android:id="@+id/btnEmplacement"
             android:layout_weight="1"
@@ -69,11 +71,12 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_weight="1">
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Gérer les types de bières"
             android:id="@+id/btnTypeBiere"
             android:layout_weight="1"
@@ -85,8 +88,8 @@
             android:textStyle="bold"/>
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Gestion du chemin"
             android:id="@+id/btnChemin"
             android:layout_weight="1"
@@ -101,11 +104,12 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_weight="1">
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Calendrier"
             android:id="@+id/btnCalendrier"
             android:layout_weight="1"
@@ -117,8 +121,8 @@
             android:textStyle="bold"/>
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Rapport"
             android:id="@+id/btnRapport"
             android:layout_weight="1"
