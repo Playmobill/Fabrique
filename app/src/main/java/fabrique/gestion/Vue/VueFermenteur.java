@@ -646,7 +646,7 @@ public class VueFermenteur extends TableLayout implements View.OnClickListener, 
                     long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
 
                     //On ajoute un historique concernant ce transfert
-                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(2).getTexte() + " du brassin n°" + brassin.getNumero() + " (" + quantite + "L)" + " du fermenteur n°" + fermenteur.getNumero() + " à la cuve n°" + cuve.getNumero();
+                    String texteTransfert = TableListeHistorique.instance(getContext()).recupererId(2).getTexte() + " du brassin n°" + brassin.getNumero() + " (" + brassin.getQuantite() + "L)" + " du fermenteur n°" + fermenteur.getNumero() + " à la cuve n°" + cuve.getNumero();
                     TableHistorique.instance(getContext()).ajouter(texteTransfert, date, fermenteur.getId(), cuve.getId(), -1, brassin.getId_brassinPere());
 
                     //On ajoute le brassin à la cuve et on le change d'état
