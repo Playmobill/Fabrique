@@ -208,7 +208,7 @@ public class TableCheminBrassinFut extends Controle  {
     }
 
     /**
-     * Supprimer toute la table CheminBrassinFermenteur de la bdd pour ajouté ensuite les entrées d'un fichier de sauvegarde
+     * Vide toute la table CheminBrassinFermenteur de la bdd pour ajouté ensuite les entrées d'un fichier de sauvegarde
      */
     @Override
     public void supprimerToutesLaBdd() {

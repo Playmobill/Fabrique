@@ -186,7 +186,7 @@ public class TableBrassin extends Controle {
     }
 
     /**
-     * Supprimer toute la table Brassin de la bdd pour ajouté ensuite les entrées d'un fichier de sauvegarde
+     * Vide toute la table Brassin de la bdd pour ajouté ensuite les entrées d'un fichier de sauvegarde
      */
     @Override
     public void supprimerToutesLaBdd() {

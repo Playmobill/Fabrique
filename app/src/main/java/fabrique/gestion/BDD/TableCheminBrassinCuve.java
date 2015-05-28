@@ -208,7 +208,7 @@ public class TableCheminBrassinCuve extends Controle  {
     }
 
     /**
-     * Supprimer toute la table CheminBrassinCuve de la bdd pour ajouté ensuite les entrées d'un fichier de sauvegarde
+     * Vide toute la table CheminBrassinCuve de la bdd pour ajouté ensuite les entrées d'un fichier de sauvegarde
      */
     @Override
     public void supprimerToutesLaBdd() {
