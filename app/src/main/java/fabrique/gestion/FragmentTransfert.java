@@ -210,7 +210,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                                 }
                             }
 
-                            String texteTransfert = TableListeHistorique.instance(contexte).recupererId(4).getTexte() + " du brassin n°" + TableBrassinPere.instance(contexte).recupererId(TableBrassin.instance(contexte).recupererId(idBrassinTransfere).getId_brassinPere()).getNumero() + " de la cuve n°" + TableCuve.instance(contexte).recupererId(idOrigine).getNumero() + " au fût n°" + futDest.getNumero();
+                            String texteTransfert = TableListeHistorique.instance(contexte).recupererId(4).getTexte() + " du brassin n°" + TableBrassinPere.instance(contexte).recupererId(TableBrassin.instance(contexte).recupererId(idBrassinTransfere).getId_brassinPere()).getNumero() + " ("+quantiteTransfere+"L) de la cuve n°" + TableCuve.instance(contexte).recupererId(idOrigine).getNumero() + " au fût n°" + futDest.getNumero();
                             TableHistorique.instance(contexte).ajouter(texteTransfert, date, -1, idOrigine, futDest.getId(), TableBrassin.instance(contexte).recupererId(idBrassinTransfere).getId_brassinPere());
                         }
                     } else if (listeTypeDestination.getText().toString().equals("Cuve")) {
@@ -231,7 +231,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                                 }
                             }
 
-                            String texteTransfert = TableListeHistorique.instance(contexte).recupererId(2).getTexte() + " du brassin n°" + TableBrassinPere.instance(contexte).recupererId(TableBrassin.instance(contexte).recupererId(idBrassinTransfere).getId_brassinPere()).getNumero() + " du fermenteur n°" + TableFermenteur.instance(contexte).recupererId(idOrigine).getNumero() + " à la cuve n°" + cuveDest.getNumero();
+                            String texteTransfert = TableListeHistorique.instance(contexte).recupererId(2).getTexte() + " du brassin n°" + TableBrassinPere.instance(contexte).recupererId(TableBrassin.instance(contexte).recupererId(idBrassinTransfere).getId_brassinPere()).getNumero() + " ("+quantiteTransfere+"L) du fermenteur n°" + TableFermenteur.instance(contexte).recupererId(idOrigine).getNumero() + " à la cuve n°" + cuveDest.getNumero();
                             TableHistorique.instance(contexte).ajouter(texteTransfert, date, idOrigine, cuveDest.getId(), -1, TableBrassin.instance(contexte).recupererId(idBrassinTransfere).getId_brassinPere());
                         }
 
