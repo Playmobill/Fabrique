@@ -47,7 +47,7 @@ public class TableCuve extends Controle{
     }
 
     /**
-     * Fonction à utilisé pour ajouter un brassin
+     * Fonction à utilisé pour ajouter une cuve
      * @param numero numero de la cuve
      * @param capacite capacité de la cuve
      * @param id_emplacement emplacement de la cuve

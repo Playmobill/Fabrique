@@ -12,10 +12,18 @@ import fabrique.gestion.Objets.Fut;
 
 public class TableFut extends Controle {
 
+    /**
+     * Liste des futs
+     */
     private ArrayList<Fut> futs;
 
     private static TableFut INSTANCE;
 
+    /**
+     * Constructeur qui prend un objet Context
+     * @param contexte
+     * @return instance de TableFermenteur
+     */
     public static TableFut instance(Context contexte) {
         if (INSTANCE == null) {
             INSTANCE = new TableFut(contexte);
@@ -23,6 +31,10 @@ public class TableFut extends Controle {
         return INSTANCE;
     }
 
+    /**
+     * Constructeur privé qui lit la bdd
+     * @param contexte
+     */
     private TableFut(Context contexte) {
         super(contexte, "Fut");
 
@@ -35,6 +47,17 @@ public class TableFut extends Controle {
         Collections.sort(futs);
     }
 
+    /**
+     * Fonction à utilisé pour ajouter un fut
+     * @param numero numero du fut
+     * @param capacite capacité du fut
+     * @param id_noeud noeud dans lequel la cuve se trouve
+     * @param dateEtat date de l'état actuel du fut
+     * @param id_brassin brassin que la cuve contient
+     * @param dateInspection date de l'inspection
+     * @param actif si le fut est actif ou non
+     * @return
+     */
     public long ajouter(int numero, int capacite, long id_noeud, long dateEtat, long id_brassin, long dateInspection, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
@@ -52,10 +75,19 @@ public class TableFut extends Controle {
         return id;
     }
 
+    /**
+     * Fonction qui retourne la taille de la liste des futs
+     * @return taille de la liste des futs
+     */
     public int tailleListe() {
         return futs.size();
     }
 
+    /**
+     * Fonction qui renvoi une cuve selon l'index qu'il a dans la liste et renvoie null si l'index spécifié n'existe pas
+     * @param index index du fut voulu
+     * @return la cuve selon l'index qu'il a dans la liste et renvoie null si l'index spécifié n'existe pas
+     */
     public Fut recupererIndex(int index) {
         try {
             return futs.get(index);
@@ -64,6 +96,11 @@ public class TableFut extends Controle {
         }
     }
 
+    /**
+     * Fonction qui renvoi une cuve selon l'id qu'il a dans la liste et renvoie null si l'id spécifié n'existe pas
+     * @param id id du fut voulu
+     * @return la cuve selon l'id qu'il a dans la liste et renvoie null si l'id spécifié n'existe pas
+     */
     public Fut recupererId(long id) {
         for (int i=0; i<futs.size() ; i++) {
             if (futs.get(i).getId() == id) {
@@ -73,6 +110,17 @@ public class TableFut extends Controle {
         return null;
     }
 
+    /**
+     * Fonction à utilsé pour modifier un fut
+     * @param id id du fut à modifier
+     * @param numero nouveau numéro
+     * @param capacite nouvelle capacité
+     * @param id_noeud nouveau noeud dans lequel il se trouve
+     * @param dateEtat nouvelle date d'état
+     * @param id_brassin nouveau brassin
+     * @param dateInspection date de l'inspection
+     * @param actif si il est actif ou non
+     */
     public void modifier(long id, int numero, int capacite, long id_noeud, long dateEtat, long id_brassin, long dateInspection, boolean actif){
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
@@ -95,14 +143,10 @@ public class TableFut extends Controle {
         }
     }
 
-    public String[] numeros() {
-        String[] numeroFuts = new String[futs.size()];
-        for (int i=0; i<futs.size() ; i++) {
-            numeroFuts[i] = futs.get(i).getNumero() + "";
-        }
-        return numeroFuts;
-    }
-
+    /**
+     * Focntion qui retourne la liste des futs actifs
+     * @return la liste des futs actifs
+     */
     public ArrayList<Fut> recupererFutActifs() {
         ArrayList<Fut> listeFut = new ArrayList<>();
 
@@ -114,6 +158,10 @@ public class TableFut extends Controle {
         return listeFut;
     }
 
+    /**
+     * Focntion qui retourne la liste des futs non-actifs
+     * @return la liste des futs non-actifs
+     */
     public ArrayList<Fut> recupererFutNonActifs() {
         ArrayList<Fut> listeFut = new ArrayList<>();
 
@@ -348,34 +396,12 @@ public class TableFut extends Controle {
         return listeListe;
     }
 
-    public ArrayList<Fut> recupererFutAvecBrassin() {
-        ArrayList<Fut> listeCuve = new ArrayList<>();
-
-        for (int i=0; i<futs.size(); i++) {
-            if (futs.get(i).getId_brassin() != -1) {
-                listeCuve.add(futs.get(i));
-            }
-        }
-        return listeCuve;
-    }
-
     public ArrayList<Fut> recupererFutSansBrassin() {
         ArrayList<Fut> listeCuve = new ArrayList<>();
 
         for (int i=0; i<futs.size(); i++) {
             if (futs.get(i).getId_brassin() == -1) {
                 listeCuve.add(futs.get(i));
-            }
-        }
-        return listeCuve;
-    }
-
-    public ArrayList<String> recupererNumeroFutAvecBrassin() {
-        ArrayList<String> listeCuve = new ArrayList<>();
-
-        for (int i=0; i<futs.size(); i++) {
-            if (futs.get(i).getId_brassin() != -1) {
-                listeCuve.add(Integer.toString(futs.get(i).getNumero()));
             }
         }
         return listeCuve;
@@ -424,6 +450,10 @@ public class TableFut extends Controle {
         return liste;
     }
 
+    /**
+     * Retourne l'ensemble des futs sous forme de string
+     * @return string regroupant toutes les informations nécessaires à la sauvegarde des futs
+     */
     @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
@@ -436,12 +466,19 @@ public class TableFut extends Controle {
         return texte.toString();
     }
 
+    /**
+     * Supprime la cuve selon l'id spécifié
+     * @param id id du fut à supprimer
+     */
     public void supprimer(long id) {
         if (accesBDD.delete(nomTable, "id = ?", new String[]{"" + id}) == 1) {
             futs.remove(recupererId(id));
         }
     }
 
+    /**
+     * Vide toute la table Fermenteur de la bdd pour ajouté ensuite les entrées d'un fichier de sauvegarde
+     */
     @Override
     public void supprimerToutesLaBdd() {
         super.supprimerToutesLaBdd();

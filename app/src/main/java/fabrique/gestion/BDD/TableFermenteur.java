@@ -47,7 +47,7 @@ public class TableFermenteur extends Controle {
     }
 
     /**
-     * Fonction à utilisé pour ajouter un brassin
+     * Fonction à utilisé pour ajouter un fermenteur
      * @param numero numero du fermenteur
      * @param capacite capacité du fermenteur
      * @param id_emplacement emplacement du fermenteur
@@ -112,7 +112,7 @@ public class TableFermenteur extends Controle {
     }
 
     /**
-     * Fonction à utilsé pour modifier une cuve
+     * Fonction à utilsé pour modifier un fermenteur
      * @param id id du fermenteur à modifier
      * @param numero nouveau numéro
      * @param capacite nouvelle capacité
@@ -160,8 +160,8 @@ public class TableFermenteur extends Controle {
     }
 
     /**
-     * Focntion qui retourne la liste des fermenteurs actives
-     * @return la liste des fermenteurs actives
+     * Focntion qui retourne la liste des fermenteurs actifs
+     * @return la liste des fermenteurs actifs
      */
     public ArrayList<Fermenteur> recupererFermenteursActifs() {
         ArrayList<Fermenteur> listeFermenteur = new ArrayList<>();
@@ -175,8 +175,8 @@ public class TableFermenteur extends Controle {
     }
 
     /**
-     * Fonction qui retourne la liste des fermenteurs actives ayant un brassin
-     * @return la liste des fermenteurs actives ayant un brassin
+     * Fonction qui retourne la liste des fermenteurs actifs ayant un brassin
+     * @return la liste des fermenteurs actifs ayant un brassin
      */
     public ArrayList<Fermenteur> recupererFermenteursVidesActifs() {
         ArrayList<Fermenteur> listeFermenteur = new ArrayList<>();
@@ -190,8 +190,8 @@ public class TableFermenteur extends Controle {
     }
 
     /**
-     * Fonction qui retourne la liste des fermenteurs actives sans brassin
-     * @return la liste des fermenteurs actives sans brassin
+     * Fonction qui retourne la liste des fermenteurs actifs sans brassin
+     * @return la liste des fermenteurs actifs sans brassin
      */
     public ArrayList<Fermenteur> recupererFermenteursPleinsActifs() {
         ArrayList<Fermenteur> listeFermenteur = new ArrayList<>();
@@ -205,8 +205,8 @@ public class TableFermenteur extends Controle {
     }
 
     /**
-     * Fonction qui retourne la liste des numéros des fermenteurs actives ayant un brassin
-     * @return la liste des numéros des fermenteurs actives ayant un brassin
+     * Fonction qui retourne la liste des numéros des fermenteurs actifs ayant un brassin
+     * @return la liste des numéros des fermenteurs actifs ayant un brassin
      */
     public ArrayList<String> recupererNumerosFermenteurAvecBrassin() {
         ArrayList<String> listeFermenteur = new ArrayList<>();
@@ -220,8 +220,8 @@ public class TableFermenteur extends Controle {
     }
 
     /**
-     * Fonction qui retourne la liste des numéros des fermenteurs actives sans brassin
-     * @return la liste des numéros des fermenteurs actives sans brassin
+     * Fonction qui retourne la liste des numéros des fermenteurs actifs sans brassin
+     * @return la liste des numéros des fermenteurs actifs sans brassin
      */
     public ArrayList<String> recupererNumerosFermenteurSansBrassin() {
         ArrayList<String> listeFermenteur = new ArrayList<>();
