@@ -171,7 +171,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             //Créer le premier brassin fils
             long id_brassin = TableBrassin.instance(contexte).ajouter(contexte, id_brassinPere, quantite);
 
-            //On donne au fermenteur le brassin fils et on le fait changé d'état
+            //On donne au fermenteur le brassin fils et on le fait changer d'état
             Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(listeFermenteursDisponibles.get(editFermenteur.getSelectedItemPosition()).getId());
             TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud(), date, id_brassin, fermenteur.getActif());
 

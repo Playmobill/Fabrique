@@ -51,7 +51,7 @@ import fabrique.gestion.BDD.TableTypeBiere;
 import fabrique.gestion.FragmentAmeliore;
 import fabrique.gestion.R;
 
-public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClickListener {
+public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClickListener, DialogInterface.OnClickListener {
 
     private View view;
 
@@ -62,6 +62,8 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
     private Button sauvegarde, charger, envoi;
 
     private LigneSauvegarde ligne;
+
+    private AlertDialog dialog;
 
     @Nullable
     @Override
@@ -335,7 +337,7 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                             }
                             String texteBrassinPere = analyseur.getText();
                             //Tant qu'il ne trouve pas la balise de fin de "BrassinPere" ou tant qu'il ne trouve pas une balise de debut contenant 'O' (donc debut d'un objet)
-                            while (!((eventType == XmlPullParser.END_TAG) && (nomBaliseBrassinPere.equals("O:Brassin"))) && !corrompuBrassinPere) {
+                            while (!((eventType == XmlPullParser.END_TAG) && (nomBaliseBrassinPere.equals("O:BrassinPere"))) && !corrompuBrassinPere) {
                                 if ((eventType == XmlPullParser.END_TAG) && (nomBaliseBrassinPere.charAt(0) == 'E')) {
                                     if (texteBrassinPere == null) {
                                         texteBrassinPere = "";
@@ -402,7 +404,9 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
                                     TableBrassin.instance(contexte).ajouter(contexte,
                                             Long.parseLong(textesBrassin.get(0)),
                                             Integer.parseInt(textesBrassin.get(1)));
-                                } catch (Exception e) {}
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                             break;
 
@@ -1020,27 +1024,14 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
         } else if (view.equals(charger)) {
             if (ligne != null) {
                 TextView texteView = new TextView(contexte);
-                texteView.setText("    Voulez-vous sauvegarder l'état actuel de l'application ?");
+                texteView.setText("          Voulez-vous sauvegarder l'état actuel de l'application ?");
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(contexte);
-                dialogBuilder.setTitle("Lecture");
-                dialogBuilder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sauvegarder();
-                        supprimer();
-                        charger();
-                        afficherListeFichier();
-                    }
-                });
-                dialogBuilder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        supprimer();
-                        charger();
-                    }
-                });
+                dialogBuilder.setTitle("Chargement");
+                dialogBuilder.setPositiveButton("Oui", this);
+                dialogBuilder.setNegativeButton("Non", this);
                 dialogBuilder.setView(texteView);
-                dialogBuilder.show();
+                dialog = dialogBuilder.create();
+                dialog.show();
             }
         } else if (view.equals(envoi)) {
             if (ligne != null) {
@@ -1051,4 +1042,22 @@ public class FragmentSauvegarde extends FragmentAmeliore implements View.OnClick
 
     @Override
     public void onBackPressed() {}
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if (which == AlertDialog.BUTTON_POSITIVE) {
+            this.dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+            this.dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setEnabled(false);
+            sauvegarder();
+            supprimer();
+            charger();
+            afficherListeFichier();
+        } else if (which == AlertDialog.BUTTON_NEGATIVE) {
+            this.dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+            this.dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setEnabled(false);
+            supprimer();
+            charger();
+            afficherListeFichier();
+        }
+    }
 }

@@ -97,7 +97,7 @@ public class BrassinPere extends Objet implements Comparable<BrassinPere> {
     }
 
     public String sauvegarde() {
-        return ("<O:Brassin>" +
+        return ("<O:BrassinPere>" +
                     "<E:numero>" + numero + "</E:numero>" +
                     "<E:commentaire>" + commentaire + "</E:commentaire>" +
                     "<E:dateCreation>" + dateCreation + "</E:dateCreation>" +
@@ -105,6 +105,6 @@ public class BrassinPere extends Objet implements Comparable<BrassinPere> {
                     "<E:id_recette>" + id_recette + "</E:id_recette>" +
                     "<E:densiteOriginale>" + densiteOriginale + "</E:densiteOriginale>" +
                     "<E:densiteFinale>" + densiteFinale + "</E:densiteFinale>" +
-                "</O:Brassin>");
+                "</O:BrassinPere>");
     }
 }

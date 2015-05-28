@@ -319,7 +319,7 @@ public class TableBrassinPere extends Controle {
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
         if (brassins.size() > 0) {
-            ArrayList<BrassinPere> trierParId = trierParId(brassins, 0, brassins.size() - 1);
+            ArrayList<BrassinPere> trierParId = trierParId(brassins, 0, brassins.size()-1);
             for (int i = 0; i < trierParId.size(); i++) {
                 texte.append(trierParId.get(i).sauvegarde());
             }

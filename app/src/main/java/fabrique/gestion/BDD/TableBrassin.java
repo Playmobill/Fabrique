@@ -55,7 +55,6 @@ public class TableBrassin extends Controle {
      * @return id de ce nouvel ajout dans le bdd
      */
     public long ajouter(Context contexte, long id_brassinPere, int quantite) {
-        
         ContentValues valeur = new ContentValues();
         valeur.put("id_brassinPere", id_brassinPere);
         valeur.put("quantite", quantite);

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import fabrique.gestion.BDD.TableBrassin;
+import fabrique.gestion.BDD.TableBrassinPere;
 import fabrique.gestion.BDD.TableCuve;
 import fabrique.gestion.BDD.TableEmplacement;
 import fabrique.gestion.BDD.TableEtatCuve;
@@ -82,6 +83,9 @@ public class ActivityAccueil extends FragmentActivity {
 
         progressDialog.setMessage("Recettes");
         TableRecette.instance(this);
+
+        progressDialog.setMessage("Brassins Père");
+        TableBrassinPere.instance(this);
 
         progressDialog.setMessage("Brassins");
         TableBrassin.instance(this);
