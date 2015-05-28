@@ -4,7 +4,7 @@
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1">
 
@@ -24,7 +24,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Gérer les textes des historiques"
+            android:text="Gérer les textes \n des historiques"
             android:id="@+id/btnListeHistorique"
             android:layout_weight="1"
             android:gravity="center"
@@ -37,22 +37,22 @@
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1">
 
         <Button
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Gérer le temps d'inspection / de lavage Acide"
-        android:id="@+id/btnTemps"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:layout_margin="10dp"
-        android:textAllCaps="false"
-        android:textColor="@color/noir"
-        android:background="@color/blanc"
-        android:textStyle="bold"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Gérer les temps de \n lavage acide / inspection"
+            android:id="@+id/btnTemps"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textAllCaps="false"
+            android:textColor="@color/noir"
+            android:background="@color/blanc"
+            android:textStyle="bold" />
 
         <Button
             android:layout_width="match_parent"
@@ -65,12 +65,12 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1">
 
@@ -85,7 +85,7 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Button
             android:layout_width="match_parent"
@@ -98,12 +98,12 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1">
 
@@ -118,7 +118,7 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Button
             android:layout_width="match_parent"
@@ -131,7 +131,7 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:background="@color/blanc"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </TableRow>
 
 

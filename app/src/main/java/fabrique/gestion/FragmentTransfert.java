@@ -28,6 +28,7 @@ import fabrique.gestion.BDD.TableFermenteur;
 import fabrique.gestion.BDD.TableFut;
 import fabrique.gestion.BDD.TableHistorique;
 import fabrique.gestion.BDD.TableListeHistorique;
+import fabrique.gestion.BDD.TableRapport;
 import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.Cuve;
 import fabrique.gestion.Objets.Fermenteur;
@@ -161,12 +162,13 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                         if (fermenteur.getIdNoeud() != -1) {
                             String historique = fermenteur.getNoeud(contexte).getEtat(contexte).getHistorique();
                             if ((historique != null) && (!historique.equals(""))) {
-                                Calendar calendrier2 = Calendar.getInstance();
-                                calendrier2.setTimeInMillis(System.currentTimeMillis());
-                                long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
-                                TableHistorique.instance(contexte).ajouter(historique, date2, fermenteur.getId(), -1, -1, -1);
+                                TableHistorique.instance(contexte).ajouter(historique, date, fermenteur.getId(), -1, -1, -1);
                             }
                         }
+
+                        Brassin brassinAine = TableBrassin.instance(contexte).recupererId(fermenteur.getIdBrassin());
+                        TableRapport.instance(contexte).ajouter(brassinAine.getId_brassinPere(), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.YEAR), 0, brassinAine.getQuantite(), 0);
+
                     } else if (listeTypeOrigine.getSelectedItem().equals("Cuve")) {
                         Cuve cuve = TableCuve.instance(contexte).recupererId(origines.get(listeOrigine.getSelectedItemPosition()).getId());
                         idOrigine = cuve.getId();
@@ -184,10 +186,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                         if (cuve.getIdNoeud() != -1) {
                             String historique = cuve.getNoeud(contexte).getEtat(contexte).getHistorique();
                             if ((historique != null) && (!historique.equals(""))) {
-                                Calendar calendrier2 = Calendar.getInstance();
-                                calendrier2.setTimeInMillis(System.currentTimeMillis());
-                                long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
-                                TableHistorique.instance(contexte).ajouter(historique, date2, -1, cuve.getId(), -1, -1);
+                                TableHistorique.instance(contexte).ajouter(historique, date, -1, cuve.getId(), -1, -1);
                             }
                         }
                     }
