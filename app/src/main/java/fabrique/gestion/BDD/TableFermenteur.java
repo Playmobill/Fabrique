@@ -11,10 +11,18 @@ import fabrique.gestion.Objets.Fermenteur;
 
 public class TableFermenteur extends Controle {
 
+    /**
+     * Liste des fermenteurs
+     */
     private ArrayList<Fermenteur> fermenteurs;
 
     private static TableFermenteur INSTANCE;
 
+    /**
+     * Constructeur qui prend un objet Context
+     * @param contexte
+     * @return instance de TableFermenteur
+     */
     public static TableFermenteur instance(Context contexte){
         if(INSTANCE == null){
             INSTANCE = new TableFermenteur(contexte);
@@ -22,6 +30,10 @@ public class TableFermenteur extends Controle {
         return INSTANCE;
     }
 
+    /**
+     * Constructeur privé qui lit la bdd
+     * @param contexte
+     */
     private TableFermenteur(Context contexte) {
         super(contexte, "Fermenteur");
 
@@ -34,6 +46,18 @@ public class TableFermenteur extends Controle {
         Collections.sort(fermenteurs);
     }
 
+    /**
+     * Fonction à utilisé pour ajouter un brassin
+     * @param numero numero du fermenteur
+     * @param capacite capacité du fermenteur
+     * @param id_emplacement emplacement du fermenteur
+     * @param dateLavageAcide date de lavage acide du fermenteur
+     * @param id_noeud noeud dans lequel la cuve se trouve
+     * @param dateEtat date de l'état actuel du fermenteur
+     * @param id_brassin brassin que la cuve contient
+     * @param actif si le fermenteur est actif ou non
+     * @return
+     */
     public long ajouter(int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_noeud, long dateEtat, long id_brassin, boolean actif) {
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
@@ -52,10 +76,19 @@ public class TableFermenteur extends Controle {
         return id;
     }
 
+    /**
+     * Fonction qui retourne la taille de la liste des fermenteurs
+     * @return taille de la liste des fermenteurs
+     */
     public int tailleListe() {
         return fermenteurs.size();
     }
 
+    /**
+     * Fonction qui renvoi une cuve selon l'index qu'il a dans la liste et renvoie null si l'index spécifié n'existe pas
+     * @param index index du fermenteur voulu
+     * @return la cuve selon l'index qu'il a dans la liste et renvoie null si l'index spécifié n'existe pas
+     */
     public Fermenteur recupererIndex(int index) {
         try {
             return fermenteurs.get(index);
@@ -64,6 +97,11 @@ public class TableFermenteur extends Controle {
         }
     }
 
+    /**
+     * Fonction qui renvoi une cuve selon l'id qu'il a dans la liste et renvoie null si l'id spécifié n'existe pas
+     * @param id id du fermenteur voulu
+     * @return la cuve selon l'id qu'il a dans la liste et renvoie null si l'id spécifié n'existe pas
+     */
     public Fermenteur recupererId(long id){
         for (int i=0; i<fermenteurs.size() ; i++) {
             if (fermenteurs.get(i).getId() == id) {
@@ -73,6 +111,18 @@ public class TableFermenteur extends Controle {
         return null;
     }
 
+    /**
+     * Fonction à utilsé pour modifier une cuve
+     * @param id id du fermenteur à modifier
+     * @param numero nouveau numéro
+     * @param capacite nouvelle capacité
+     * @param id_emplacement nouvel emplacement
+     * @param dateLavageAcide nouvelle date de lavage acide
+     * @param id_noeud nouveau noeud dans lequel il se trouve
+     * @param dateEtat nouvelle date d'état
+     * @param id_brassin nouveau brassin
+     * @param actif si il est actif ou non
+     */
     public void modifier(long id, int numero, int capacite, long id_emplacement, long dateLavageAcide, long id_noeud, long dateEtat, long id_brassin, boolean actif){
         ContentValues valeur = new ContentValues();
         valeur.put("numero", numero);
@@ -97,6 +147,10 @@ public class TableFermenteur extends Controle {
         }
     }
 
+    /**
+     * Fonction qui retounre la liste des numéros des fermenteurs
+     * @return listes des numéros des fermenteurs
+     */
     public String[] numeros() {
         String[] numeroFermenteurs = new String[fermenteurs.size()];
         for (int i=0; i<fermenteurs.size() ; i++) {
@@ -105,6 +159,10 @@ public class TableFermenteur extends Controle {
         return numeroFermenteurs;
     }
 
+    /**
+     * Focntion qui retourne la liste des fermenteurs actives
+     * @return la liste des fermenteurs actives
+     */
     public ArrayList<Fermenteur> recupererFermenteursActifs() {
         ArrayList<Fermenteur> listeFermenteur = new ArrayList<>();
 
@@ -116,6 +174,10 @@ public class TableFermenteur extends Controle {
         return listeFermenteur;
     }
 
+    /**
+     * Fonction qui retourne la liste des fermenteurs actives ayant un brassin
+     * @return la liste des fermenteurs actives ayant un brassin
+     */
     public ArrayList<Fermenteur> recupererFermenteursVidesActifs() {
         ArrayList<Fermenteur> listeFermenteur = new ArrayList<>();
         ArrayList<Fermenteur> listeFermenteurActif = recupererFermenteursActifs();
@@ -127,6 +189,10 @@ public class TableFermenteur extends Controle {
         return listeFermenteur;
     }
 
+    /**
+     * Fonction qui retourne la liste des fermenteurs actives sans brassin
+     * @return la liste des fermenteurs actives sans brassin
+     */
     public ArrayList<Fermenteur> recupererFermenteursPleinsActifs() {
         ArrayList<Fermenteur> listeFermenteur = new ArrayList<>();
         ArrayList<Fermenteur> listeFermenteurActif = recupererFermenteursActifs();
@@ -138,6 +204,10 @@ public class TableFermenteur extends Controle {
         return listeFermenteur;
     }
 
+    /**
+     * Fonction qui retourne la liste des numéros des fermenteurs actives ayant un brassin
+     * @return la liste des numéros des fermenteurs actives ayant un brassin
+     */
     public ArrayList<String> recupererNumerosFermenteurAvecBrassin() {
         ArrayList<String> listeFermenteur = new ArrayList<>();
         ArrayList<Fermenteur> listeFermenteurActif = recupererFermenteursActifs();
@@ -149,6 +219,10 @@ public class TableFermenteur extends Controle {
         return listeFermenteur;
     }
 
+    /**
+     * Fonction qui retourne la liste des numéros des fermenteurs actives sans brassin
+     * @return la liste des numéros des fermenteurs actives sans brassin
+     */
     public ArrayList<String> recupererNumerosFermenteurSansBrassin() {
         ArrayList<String> listeFermenteur = new ArrayList<>();
         ArrayList<Fermenteur> listeFermenteurActif = recupererFermenteursActifs();
@@ -160,6 +234,13 @@ public class TableFermenteur extends Controle {
         return listeFermenteur;
     }
 
+    /**
+     * Tri (tri rapide) par id les brassins pour qu'il soit enregistré dans cet ordre lors de la sauvegarde
+     * @param liste liste à trier
+     * @param petitIndex index de début de la liste à trier
+     * @param grandIndex index de fin de la liste à trier
+     * @return la liste trier par ordre croissant d'id
+     */
     private ArrayList<Fermenteur> trierParId(ArrayList<Fermenteur> liste, int petitIndex, int grandIndex) {
         int i = petitIndex;
         int j = grandIndex;
@@ -192,12 +273,20 @@ public class TableFermenteur extends Controle {
         return liste;
     }
 
+    /**
+     * Supprime la cuve selon l'id spécifié
+     * @param id id du fermenteur à supprimer
+     */
     public void supprimer(long id) {
         if (accesBDD.delete(nomTable, "id = ?", new String[] {""+id}) == 1) {
             fermenteurs.remove(recupererId(id));
         }
     }
 
+    /**
+     * Retourne l'ensemble des fermenteurs sous forme de string
+     * @return string regroupant toutes les informations nécessaires à la sauvegarde des fermenteurs
+     */
     @Override
     public String sauvegarde() {
         StringBuilder texte = new StringBuilder();
@@ -210,6 +299,9 @@ public class TableFermenteur extends Controle {
         return texte.toString();
     }
 
+    /**
+     * Vide toute la table Fermenteur de la bdd pour ajouté ensuite les entrées d'un fichier de sauvegarde
+     */
     @Override
     public void supprimerToutesLaBdd() {
         super.supprimerToutesLaBdd();
