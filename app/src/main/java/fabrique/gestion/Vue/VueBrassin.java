@@ -463,7 +463,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
         }
 
         else if (v.equals(btnAjouterHistorique)) {
-            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() + ajoutHistorique.getText().toString(), System.currentTimeMillis(), -1, -1, -1, brassin.getId());
+            TableHistorique.instance(getContext()).ajouter(ajoutListeHistorique.getSelectedItem() +" ("+ ajoutHistorique.getText().toString()+")", System.currentTimeMillis(), -1, -1, -1, TableBrassin.instance(getContext()).recupererId(brassin.getId()).getId_brassinPere());
             afficherHistorique();
         }
     }
