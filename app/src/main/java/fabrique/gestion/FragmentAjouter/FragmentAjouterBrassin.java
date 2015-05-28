@@ -58,7 +58,9 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
         View view = inflater.inflate(R.layout.activity_ajouter_brassin, container, false);
 
         editNumero = (EditText)view.findViewById(R.id.editNumero);
+
         TableBrassin tableBrassin = TableBrassin.instance(contexte);
+        //Recherche du plus grand numéro dans la liste des brassins pour afficher ce nombre+1
         int max = 0;
         for (int i=0; i<tableBrassin.tailleListe(); i=i+1) {
             if (max < tableBrassin.recupererIndex(i).getNumero()) {
@@ -94,6 +96,9 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
         return view;
     }
 
+    /**
+     * Ajoute le nouveau brassin père, créer un fils associé à ce père et le mes dans le fermenteur sélectionné
+     */
     private void ajouter() {
         String erreur = "";
 
@@ -152,8 +157,6 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             erreur = erreur + "Le quantité du brassin est trop importante par rapport à la capacité du fermenteur.";
         }
 
-
-
         if (erreur.equals("")) {
             long recette = TableRecette.instance(contexte).recupererIndex(editRecette.getSelectedItemPosition()).getId();
 
@@ -162,27 +165,31 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             calendrier.setTimeInMillis(System.currentTimeMillis());
             long date = new GregorianCalendar(calendrier.get(Calendar.YEAR), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
 
+            //Créer le brassin père
             long id_brassinPere = TableBrassinPere.instance(contexte).ajouter(numero, editCommentaire.getText().toString() + "", date, quantite, recette, densiteOriginale, densiteFinale);
+
+            //Créer le premier brassin fils
             long id_brassin = TableBrassin.instance(contexte).ajouter(contexte, id_brassinPere, quantite);
 
+            //On donne au fermenteur le brassin fils et on le fait changé d'état
             Fermenteur fermenteur = TableFermenteur.instance(contexte).recupererId(listeFermenteursDisponibles.get(editFermenteur.getSelectedItemPosition()).getId());
             TableFermenteur.instance(contexte).modifier(fermenteur.getId(), fermenteur.getNumero(), fermenteur.getCapacite(), fermenteur.getIdEmplacement(), fermenteur.getDateLavageAcideToLong(), TableCheminBrassinFermenteur.instance(contexte).recupererPremierNoeud(), date, id_brassin, fermenteur.getActif());
 
+            //On ajoute au rapport du mois, cette nouvelle quantité fermenté
             TableRapport.instance(contexte).ajouter(id_brassinPere, calendrier.get(Calendar.MONTH), calendrier.get(Calendar.YEAR), quantite, 0, 0);
 
+            //On ajout un historique au fermenteur si l'état actuel à un message
             if (fermenteur.getIdNoeud() != -1) {
                 String historique = fermenteur.getNoeud(contexte).getEtat(contexte).getHistorique();
                 if ((historique != null) && (!historique.equals(""))) {
-                    Calendar calendrier2 = Calendar.getInstance();
-                    calendrier2.setTimeInMillis(System.currentTimeMillis());
-                    long date2 = new GregorianCalendar(calendrier2.get(Calendar.YEAR), calendrier2.get(Calendar.MONTH), calendrier2.get(Calendar.DAY_OF_MONTH)).getTimeInMillis();
-                    TableHistorique.instance(contexte).ajouter(historique, date2, fermenteur.getId(), -1, -1, -1);
+                    TableHistorique.instance(contexte).ajouter(historique, date, fermenteur.getId(), -1, -1, -1);
                 }
             }
 
             Toast.makeText(contexte, "Brassin ajouté !", Toast.LENGTH_SHORT).show();
             TableBrassin tableBrassin = TableBrassin.instance(contexte);
 
+            //Recherche du plus grand numéro dans la liste des brassins pour afficher ce nombre+1
             int max = 0;
             for (int i=0; i<tableBrassin.tailleListe(); i=i+1) {
                 if (max < tableBrassin.recupererIndex(i).getNumero()) {
@@ -191,6 +198,7 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
             }
             editNumero.setText("" + (max+1));
 
+            //On actualise la liste des fermenteurs sans brassin
             listeFermenteursDisponibles = TableFermenteur.instance(contexte).recupererFermenteursVidesActifs();
             labelsListeDeroulanteFermenteurs = new ArrayList<>();
             for (int i = 0; i < listeFermenteursDisponibles.size(); i++) {
@@ -219,6 +227,9 @@ public class FragmentAjouterBrassin extends FragmentAmeliore implements View.OnC
         }
     }
 
+    /**
+     * Retourne à la page précédente (FragmentAjouter) si on appui sur le bouton de retour
+     */
     @Override
     public void onBackPressed() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
