@@ -9,7 +9,7 @@
         android:layout_weight="1">
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Gérer les états"
             android:id="@+id/btnEtat"
@@ -22,7 +22,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Gérer les textes \n des historiques"
             android:id="@+id/btnListeHistorique"
@@ -42,7 +42,7 @@
         android:layout_weight="1">
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Gérer les temps de \n lavage acide / inspection"
             android:id="@+id/btnTemps"
@@ -55,7 +55,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Gérer les emplacements"
             android:id="@+id/btnEmplacement"
@@ -75,7 +75,7 @@
         android:layout_weight="1">
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Gérer les types de bières"
             android:id="@+id/btnTypeBiere"
@@ -88,7 +88,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Gestion du chemin"
             android:id="@+id/btnChemin"
@@ -108,7 +108,7 @@
         android:layout_weight="1">
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Calendrier"
             android:id="@+id/btnCalendrier"
@@ -121,7 +121,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Rapport"
             android:id="@+id/btnRapport"

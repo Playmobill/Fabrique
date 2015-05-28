@@ -9,7 +9,7 @@
         android:layout_weight="1">
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Ajouter un fermenteur"
             android:id="@+id/btnFermenteur"
@@ -22,7 +22,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Ajouter une cuve"
             android:id="@+id/btnCuve"
@@ -42,7 +42,7 @@
         android:layout_weight="1">
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Ajouter un fût"
             android:id="@+id/btnFut"
@@ -55,7 +55,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Ajouter un brassin"
             android:id="@+id/btnBrassin"
@@ -75,7 +75,7 @@
         android:layout_weight="1">
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Ajouter une recette"
             android:id="@+id/btnRecette"
@@ -88,7 +88,7 @@
             android:textStyle="bold"/>
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Autre"
             android:id="@+id/btnAutre"

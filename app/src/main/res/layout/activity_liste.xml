@@ -9,7 +9,7 @@
         android:layout_weight="1">
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Liste des fermenteurs"
             android:id="@+id/btnFermenteur"
@@ -22,7 +22,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Liste des cuves"
             android:id="@+id/btnCuve"
@@ -42,7 +42,7 @@
         android:layout_weight="1">
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Liste des fûts"
             android:id="@+id/btnFut"
@@ -55,7 +55,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Liste des brassins"
             android:id="@+id/btnBrassin"
@@ -75,7 +75,7 @@
         android:layout_weight="1">
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Liste des recettes"
             android:id="@+id/btnRecette"
@@ -88,7 +88,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Liste des emplacements"
             android:id="@+id/btnEmplacement"
