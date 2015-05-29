@@ -62,7 +62,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Quantité en litres tansférée"
+                android:text="Quantité en litres transférée"
                 android:textStyle="bold"
                 android:layout_weight="1"
                 android:layout_gravity="center"
