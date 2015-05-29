@@ -129,6 +129,16 @@ public class TableBrassin extends Controle {
         }
     }
 
+    public ArrayList<Brassin> recupererFils(long id_brassinPere) {
+        ArrayList<Brassin> brassinsFils = new ArrayList<>();
+        for (int i=0; i<brassins.size(); i++) {
+            if (brassins.get(i).getId_brassinPere() == id_brassinPere) {
+                brassinsFils.add(brassins.get(i));
+            }
+        }
+        return brassinsFils;
+    }
+
     /**
      * Tri (tri rapide) par id les brassins pour qu'il soit enregistré dans cet ordre lors de la sauvegarde
      * @param liste liste à trier

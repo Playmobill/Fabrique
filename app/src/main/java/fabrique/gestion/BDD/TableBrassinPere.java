@@ -7,6 +7,7 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import fabrique.gestion.Objets.Brassin;
 import fabrique.gestion.Objets.BrassinPere;
 
 public class TableBrassinPere extends Controle {
@@ -110,7 +111,7 @@ public class TableBrassinPere extends Controle {
     }
 
     /**
-     * Fonction à utilisé pour modifier un brassin père
+     * Fonction à utilisé pour modifier un brassin père et modifié les brassins fils associés
      * @param id id du brassin père à modifier
      * @param numero nouveau numero
      * @param commentaire nouveau commentaire
@@ -130,15 +131,24 @@ public class TableBrassinPere extends Controle {
         valeur.put("densiteOriginale", densiteOriginale);
         valeur.put("densiteFinale", densiteFinale);
         if (accesBDD.update(nomTable, valeur, "id = ?", new String[] {"" + id}) == 1) {
-            BrassinPere brassin = recupererId(id);
-            brassin.setNumero(numero);
-            brassin.setCommentaire(commentaire);
-            brassin.setDateCreation(dateCreation);
-            brassin.setQuantite(quantite);
-            brassin.setId_recette(id_recette);
-            brassin.setDensiteOriginale(densiteOriginale);
-            brassin.setDensiteFinale(densiteFinale);
+            BrassinPere brassinPere = recupererId(id);
+            brassinPere.setNumero(numero);
+            brassinPere.setCommentaire(commentaire);
+            brassinPere.setDateCreation(dateCreation);
+            brassinPere.setQuantite(quantite);
+            brassinPere.setId_recette(id_recette);
+            brassinPere.setDensiteOriginale(densiteOriginale);
+            brassinPere.setDensiteFinale(densiteFinale);
             Collections.sort(brassins);
+            ArrayList<Brassin> brassinsFils = TableBrassin.instance(null).recupererFils(id);
+            for (int i=0; i<brassinsFils.size(); i++) {
+                brassinsFils.get(i).setNumero(numero);
+                brassinsFils.get(i).setCommentaire(commentaire);
+                brassinsFils.get(i).setDateCreation(dateCreation);
+                brassinsFils.get(i).setId_recette(id_recette);
+                brassinsFils.get(i).setDensiteOriginale(densiteOriginale);
+                brassinsFils.get(i).setDensiteFinale(densiteFinale);
+            }
         }
     }
 
