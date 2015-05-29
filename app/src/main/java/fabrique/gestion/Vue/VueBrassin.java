@@ -421,7 +421,7 @@ public class VueBrassin extends LinearLayout implements View.OnClickListener, Da
             if(quantitePere <= quantite){
                 quantitePere = quantite;
             }
-            TableBrassinPere.instance(getContext()).modifier(brassinPere.getId(), numero, editCommentaire.getText().toString(), brassinPere.getDateLong(), quantitePere, brassinPere.getId_recette(), densiteOriginale, densiteFinale);
+            TableBrassinPere.instance(getContext()).modifier(brassinPere.getId(), numero, editCommentaire.getText().toString(), brassin.getDateLong(), quantitePere, recette, densiteOriginale, densiteFinale);
 
         } else {
             Toast.makeText(getContext(), erreur, Toast.LENGTH_SHORT).show();
