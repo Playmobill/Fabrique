@@ -167,6 +167,7 @@ public class FragmentTransfert extends FragmentAmeliore implements AdapterView.O
                         }
 
                         Brassin brassinAine = TableBrassin.instance(contexte).recupererId(fermenteur.getIdBrassin());
+                        //FIXME : Corriger la NullPointerException un jour
                         TableRapport.instance(contexte).ajouter(brassinAine.getId_brassinPere(), calendrier.get(Calendar.MONTH), calendrier.get(Calendar.YEAR), 0, brassinAine.getQuantite(), 0);
 
                     } else if (listeTypeOrigine.getSelectedItem().equals("Cuve")) {
